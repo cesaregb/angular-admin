@@ -5,6 +5,7 @@ angular.module('processAdminApp')
     $stateProvider
       .state('clientEdit', {
         url: '/clientEdit',
-        template: '<client-edit></client-edit>'
+        template: '<client-edit></client-edit>',
+        params : {client : null}
       });
   });
