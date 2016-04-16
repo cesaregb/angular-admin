@@ -85,12 +85,17 @@
         </li>
         <li>
           <a href="" ng-click="nav.myEventListener();">
+            <i class="glyphicon glyphicon-plus"></i> Place holder
+          </a>
+        </li>
+        <li>
+          <a href="" ui-sref="newOrder">
             <i class="glyphicon glyphicon-plus"></i> New Order
           </a>
         </li>
         <li ng-repeat="item in nav.menu">
            <a href="" ui-sref="{{item.state}}" >
-            {{item.title}}
+            {{item.title}} == {{item.state}}
             </a>
          </li>
       </ul>
