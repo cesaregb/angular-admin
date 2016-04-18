@@ -17,7 +17,7 @@
           Client Form
         </div>
         <div class="panel-body">
-          <form class="form-horizontal" name="$cn.clientForm" ng-submit="saveClient()" novalidate>
+          <form class="form-horizontal" name="$cn.clientForm" ng-submit="$cn.saveClient()" novalidate>
             <fieldset>
 
               <!-- Form Name -->
@@ -29,18 +29,18 @@
                 <div class="col-md-4">
                   <input id="name" name="name" type="text" placeholder="name" class="form-control input-md" required
                     ng-model="$cn.client.name" ng-minlength="3">
-                  <p ng-show="$cn.clientForm.username.$error.minlength" class="help-block">Value to short</p>
+                  <p ng-show="$cn.clientForm.name.$error.minlength" class="help-block">Value to short</p>
                   <span class="help-block">Enter user first name</span>
                 </div>
               </div>
 
               <!-- Text input-->
-              <div class="form-group" ng-class="{ 'has-error' : $cn.clientForm.lastname.$invalid && !$cn.clientForm.lastname.$pristine }">
-                <label class="col-md-4 control-label" for="lastname">Last Name*</label>
+              <div class="form-group" ng-class="{ 'has-error' : $cn.clientForm.lastName.$invalid && !$cn.clientForm.lastName.$pristine }">
+                <label class="col-md-4 control-label" for="lastName">Last Name*</label>
                 <div class="col-md-4">
-                  <input id="lastname" name="lastname" type="text" placeholder="lastname" class="form-control input-md" required
-                    ng-model="$cn.client.lastname" ng-minlength="3">
-                  <p ng-show="$cn.clientForm.lastname.$error.minlength" class="help-block">Value to short</p>
+                  <input id="lastName" name="lastName" type="text" placeholder="lastName" class="form-control input-md" required
+                    ng-model="$cn.client.lastName" ng-minlength="3">
+                  <p ng-show="$cn.clientForm.lastName.$error.minlength" class="help-block">Value to short</p>
                   <span class="help-block">Enter user last name</span>
                 </div>
               </div>
@@ -48,9 +48,9 @@
               <!-- Text input-->
               <div class="form-group"
                   ng-hide="!$cn.newClient" ng-class="{ 'has-error' : $cn.clientForm.phonenumber.$invalid && !$cn.clientForm.phonenumber.$pristine }">
-                <label class="col-md-4 control-label" for="lastname">Phone Number*</label>
+                <label class="col-md-4 control-label" for="phonenumber">Phone Number*</label>
                 <div class="col-md-4">
-                  <input id="phonenumber" name="phonenumber" type="text" placeholder="3331112233" class="form-control input-md" required
+                  <input id="phonenumber" name="phonenumber" type="text" placeholder="3331112233" class="form-control input-md"
                     ng-model="$cn.temporalPhone" ng-minlength="3">
                   <p ng-show="$cn.clientForm.phonenumber.$error.minlength" class="help-block">Value to short</p>
                 </div>
@@ -64,7 +64,7 @@
                       ng-options="phone as phone.number for phone in $cn.client.phoneNumbers"
                       ng-model="$cn.selectedPhone" ng-change="$cn.updatePhone()"></select>
                 </div>
-                <button type="submit" class="btn btn-default">Edit Phones</button>
+                <button type="button" class="btn btn-default" ui-sref="clientPhone">Edit Phones</button>
               </div>
 
               <!-- Select Basic -->
@@ -75,7 +75,18 @@
                       ng-options="addr as addr.address for addr in $cn.client.addresses"
                       ng-model="$cn.selectedAddress" ng-change="$cn.updateAddress()"></select>
                 </div>
-                <button type="submit" class="btn btn-default">Edit Phones</button>
+                <button type="button" class="btn btn-default">Edit Phones</button>
+              </div>
+
+              <!-- Select Basic -->
+              <div class="form-group" ng-hide="$cn.newClient">
+                <label class="col-md-4 control-label" for="primaryPayment">Select Primary Payment</label>
+                <div class="col-md-4">
+                  <select class="form-control"
+                      ng-options="payment as payment.token for payment in $cn.client.clientPaymentInfos"
+                      ng-model="$cn.selectedPayment" ng-change="$cn.updatePayment()"></select>
+                </div>
+                <button type="button" class="btn btn-default">Edit Payments</button>
               </div>
 
               <!-- Text input-->
@@ -101,8 +112,7 @@
               <div class="form-group">
                 <label class="col-md-4 control-label" for="save"></label>
                 <div class="col-md-8 pull-right">
-                  <button class="btn btn-success" type="submit"
-                    disabled="$cn.clientForm.$invalid">Save</button>
+                  <button type="submit" class="btn btn-primary" ng-disabled="$cn.clientForm.$invalid">Submit</button>
                 </div>
               </div>
 

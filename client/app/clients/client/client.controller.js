@@ -11,7 +11,6 @@ class ClientComponent {
     this.serviceClients = serviceClients;
     this.client = null;
     this.message = 'Hello';
-    console.log("---> " + factoryClients.getURL());
     this.gatherClients();
   }
 
@@ -20,8 +19,6 @@ class ClientComponent {
   }
 
   selectClient(client){
-
-    console.log("intoSelectClient");
     this.client = client;
     this.$state.go('clientEdit', {client: client}, { reload: true });
   }
@@ -31,7 +28,7 @@ class ClientComponent {
 
 angular.module('processAdminApp')
   .component('client', {
-    templateUrl: 'app/client/client.html',
+    templateUrl: 'app/clients/client/client.html',
     controller: ClientComponent,
     controllerAs: '$cn'
   });

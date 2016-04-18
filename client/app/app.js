@@ -10,7 +10,10 @@ angular.module('processAdminApp', [
     'btford.socket-io',
     'ui.router',
     'ui.bootstrap',
-    'validation.match'
+    'validation.match',
+    'angular-noty',
+    'formly',
+    'formlyBootstrap'
   ])
   .config(function($urlRouterProvider, $locationProvider) {
     $urlRouterProvider.otherwise('/');
