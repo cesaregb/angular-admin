@@ -5,6 +5,7 @@ angular.module('processAdminApp')
     $stateProvider
       .state('clientPhone', {
         url: '/clientPhone',
-        template: '<client-phone></client-phone>'
+        template: '<client-phone></client-phone>',
+        params : {client : null}
       });
   });

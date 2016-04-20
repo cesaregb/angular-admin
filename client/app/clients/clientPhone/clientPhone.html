@@ -1,4 +1,5 @@
 <div id="page-wrapper">
+
   <div class="row">
     <div class="col-lg-12">
       <div class="pull-right" style="padding: 10px;">
@@ -22,7 +23,7 @@
               <div class="row">
                 <div class="col-lg-12">
                   <div class="pull-right" style="padding: 10px;">
-                    <a href="#" ng-click="$cn.openModal();" class="btn btn-info btn-sm">
+                    <a href="#" ng-click="$cn.openNewModal();" class="btn btn-info btn-sm">
                       <span class="glyphicon glyphicon-plus"></span> Add Phone
                     </a>
                   </div>
@@ -43,7 +44,7 @@
                           ng-class-odd="'odd'" ng-class-even="'even'"
                           ng-repeat="phone in $cn.client.phoneNumbers">
                           <td>
-                            <a href="" ng-click="$cn.selectPhone(phone);">
+                            <a href="" ng-click="$cn.openModal(phone);">
                               {{phone.number}}
                             </a>
                           </td>

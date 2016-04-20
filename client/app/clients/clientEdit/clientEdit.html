@@ -29,7 +29,7 @@
                 <div class="col-md-4">
                   <input id="name" name="name" type="text" placeholder="name" class="form-control input-md" required
                     ng-model="$cn.client.name" ng-minlength="3">
-                  <p ng-show="$cn.clientForm.name.$error.minlength" class="help-block">Value to short</p>
+                  <p ng-show="$cn.clientForm.name.$error.minlength" class="help-block">Value too short</p>
                   <span class="help-block">Enter user first name</span>
                 </div>
               </div>
@@ -40,7 +40,7 @@
                 <div class="col-md-4">
                   <input id="lastName" name="lastName" type="text" placeholder="lastName" class="form-control input-md" required
                     ng-model="$cn.client.lastName" ng-minlength="3">
-                  <p ng-show="$cn.clientForm.lastName.$error.minlength" class="help-block">Value to short</p>
+                  <p ng-show="$cn.clientForm.lastName.$error.minlength" class="help-block">Value too short</p>
                   <span class="help-block">Enter user last name</span>
                 </div>
               </div>
@@ -50,9 +50,9 @@
                   ng-hide="!$cn.newClient" ng-class="{ 'has-error' : $cn.clientForm.phonenumber.$invalid && !$cn.clientForm.phonenumber.$pristine }">
                 <label class="col-md-4 control-label" for="phonenumber">Phone Number*</label>
                 <div class="col-md-4">
-                  <input id="phonenumber" name="phonenumber" type="text" placeholder="3331112233" class="form-control input-md"
+                  <input id="phonenumber" name="phonenumber" type="text" class="form-control input-md"
                     ng-model="$cn.temporalPhone" ng-minlength="3">
-                  <p ng-show="$cn.clientForm.phonenumber.$error.minlength" class="help-block">Value to short</p>
+                  <p ng-show="$cn.clientForm.phonenumber.$error.minlength" class="help-block">Value too short</p>
                 </div>
               </div>
 
@@ -62,9 +62,9 @@
                 <div class="col-md-4">
                   <select class="form-control"
                       ng-options="phone as phone.number for phone in $cn.client.phoneNumbers"
-                      ng-model="$cn.selectedPhone" ng-change="$cn.updatePhone()"></select>
+                      ng-model="$cn.selectedPhone" ng-change="$cn.changeDefaultPhone()"></select>
                 </div>
-                <button type="button" class="btn btn-default" ui-sref="clientPhone">Edit Phones</button>
+                <button type="button" class="btn btn-default" ui-sref="clientPhone({client: $cn.client})">Edit Phones</button>
               </div>
 
               <!-- Select Basic -->
@@ -75,7 +75,7 @@
                       ng-options="addr as addr.address for addr in $cn.client.addresses"
                       ng-model="$cn.selectedAddress" ng-change="$cn.updateAddress()"></select>
                 </div>
-                <button type="button" class="btn btn-default">Edit Phones</button>
+                <button type="button" class="btn btn-default">Edit Addresses</button>
               </div>
 
               <!-- Select Basic -->

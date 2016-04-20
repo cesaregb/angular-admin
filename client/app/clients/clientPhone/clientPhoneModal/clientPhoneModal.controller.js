@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('ClientPhoneModalCtrl', function ($scope, $uibModalInstance, items, phone) {
+  .controller('ClientPhoneModalCtrl', function ($scope, $uibModalInstance, phone) {
 
     $scope.phone = phone;
-    $scope.items = items;
 
     this.init = function(){
 
@@ -12,18 +11,11 @@ angular.module('processAdminApp')
       if ($scope.phone != null){
         $scope.title = "Edit phone";
       }
-
-      $scope.selected = {
-        item: $scope.items[0]
-      };
     };
 
     this.init();
 
     /*******  FORM  */
-
-    $scope.phone = {};
-
     $scope.phoneFields = [
       {
         key: 'number',
@@ -34,21 +26,24 @@ angular.module('processAdminApp')
           placeholder: '# # # # # # # # # #',
           required: true
         }
-      }, {
-        key: 'prefered',
-        type: 'checkbox',
-        templateOptions: {
-          label: 'Prefered'
-        }
       }
+      // , {
+      //   key: 'prefered',
+      //   type: 'checkbox',
+      //   templateOptions: {
+      //     label: 'Prefered'
+      //   }
+      // }
     ];
 
     /*******  END  FORM  */
-
-
     $scope.ok = function () {
       $uibModalInstance.close($scope.selected.item);
     };
+
+    $scope.savePhone = function(){
+      $uibModalInstance.close($scope.phone);
+    }
 
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');

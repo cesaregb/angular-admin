@@ -38,7 +38,7 @@ class ClientEditComponent {
 
       this.selectedPhone = this.client.phoneNumbers[0];
       this.client.phoneNumbers.forEach(function(item){
-        if (item.prefered == 1){
+        if (item.prefered){
           _this.selectedPhone = item;
         }
       });
@@ -52,7 +52,7 @@ class ClientEditComponent {
 
       this.selectedAddress = this.client.addresses[0];
       this.client.addresses.forEach(function(item){
-        if (item.prefered == 1){
+        if (item.prefered ){
           _this.selectedAddress = item;
         }
       });
@@ -66,7 +66,7 @@ class ClientEditComponent {
 
       this.selectedPayment = this.client.clientPaymentInfos[0];
       this.client.clientPaymentInfos.forEach(function(item){
-        if (item.prefered == 1){
+        if (item.prefered ){
           _this.selectedPayment = item;
         }
       });
@@ -78,19 +78,38 @@ class ClientEditComponent {
     this.$state.go('client',null , { reload: true });
   }
 
-  updatePhone(){
-    console.log("phone: " + JSON.stringify(this.selectedPhone));
+  changeDefaultPhone(){
     // change the selected phone.
+    var _this = this;
+
     _this.client.phoneNumbers.forEach(function (item, index, theArray) {
       if (item.idPhoneNumber ==  _this.selectedPhone.idPhoneNumber){
-        theArray[index].prefered = 1;
+        theArray[index].prefered = true;
+        _this.updatePhone(theArray[index], _this.getClient);
       }else{
-        theArray[index].prefered = 0;
+        if (theArray[index].prefered){
+          theArray[index].prefered = false;
+          _this.updatePhone(theArray[index], _this.getClient);
+        }
       }
     });
+  }
 
-    _this.saveExistingClient();
+  updatePhone(phone, callback){
+    this.factoryClients.updatePhoneNumber(phone).then(function(result){
+      console.log("updatePhone sucessful " + JSON.stringify(result));
+      callback();
+    }), function(error){
+      console.log("error updatePhone: " + JSON.stringify(error));
+      callback();
+    }
+  }
 
+  getClient(id){
+    var _this = this;
+    _this.factoryClients.getClientByID(id).then(function(data){
+      _this.client = data;
+    });
   }
 
   updateAddress(){
@@ -98,9 +117,9 @@ class ClientEditComponent {
     // change the selected phone.
     _this.client.addresses.forEach(function (item, index, theArray) {
       if (item.idAddress ==  _this.selectedAddress.idAddress){
-        theArray[index].prefered = 1;
+        theArray[index].prefered = true;
       }else{
-        theArray[index].prefered = 0;
+        theArray[index].prefered = false;
       }
     });
 
@@ -112,9 +131,9 @@ class ClientEditComponent {
     // change the selected phone.
     _this.client.clientPaymentInfos.forEach(function (item, index, theArray) {
       if (item.idClientPaymentInfo ==  _this.selectedPayment.idClientPaymentInfo){
-        theArray[index].prefered = 1;
+        theArray[index].prefered = true;
       }else{
-        theArray[index].prefered = 0;
+        theArray[index].prefered = false;
       }
     });
 
@@ -134,26 +153,15 @@ class ClientEditComponent {
 
         var phoneNumberTmp = {};
         phoneNumberTmp.number = this.temporalPhone;
-        phoneNumberTmp.prefered = 1;
+        phoneNumberTmp.prefered = true;
         myClient.phoneNumbers.push(phoneNumberTmp);
 
         // not abstracting this piece cuz its only used here.
         _this.factoryClients.saveClient( myClient ).then( function(data){ // saving new
-          _this.noty.showNoty({
-            text: "Client saved succesful ",
-            ttl: 1000 * 2,
-            type: "success" // warning
-          });
-
+          console.log("Client saved... " + JSON.stringify(data));
           _this.$state.go('client', { reload: true });
-
-        }),function(data){ // error saving new
-          console.log("Error saving client " + JSON.stringify(data));
-          _this.noty.showNoty({
-            text: "Error saving client... ",
-            ttl: 1000 * 2,
-            type: "warning"
-          });
+        }),function(error){ // error saving new
+          console.log("Error saving client " + JSON.stringify(error));
         };
 
       }else{
@@ -165,19 +173,11 @@ class ClientEditComponent {
   saveExistingClient(){
     var _this = this;
     _this.factoryClients.updateClient( _this.client ).then(function(data){ // updating existing
-      _this.noty.showNoty({
-        text: "Client saved succesful ",
-        ttl: 1000 * 2,
-        type: "success"
-      });
-      _this.$state.go('client', { reload: true });
+      console.log("Client updated. " + JSON.stringify(data));
+      // _this.$state.go('client', { reload: true });
 
-    }),function(data){ // error saving existing
-      _this.noty.showNoty({
-        text: "Error saving client... ",
-        ttl: 1000 * 2,
-        type: "warning"
-      });
+    }),function(error){ // error saving existing
+      console.log("Error updating client: " + JSON.stringify(error));
     };
   }
 
