@@ -17,23 +17,33 @@
 }
 
 #page-wrapper {
-    padding: 0 15px;
     min-height: 568px;
     background-color: white;
+
+}
+
+#viewItemsTable label {
+    font-weight: normal;
+    white-space: nowrap;
+    text-align: left;
 }
 
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;
         margin: 0 0 0 250px;
-        padding: 0 30px;
+        padding: 10px 30px;
         border-left: 1px solid darken(@gray-lightest, 6.5%);
     }
 }
 
 /* inject:less */
 @import 'admin/admin';
+@import 'clients/client/client';
+@import 'clients/clientEdit/clientEdit';
+@import 'clients/clientPhone/clientPhone';
 @import 'main/main';
+@import 'newOrder/newOrder';
 @import '../components/footer/footer';
 @import '../components/modal/modal';
 @import '../components/navbar/navbar';
