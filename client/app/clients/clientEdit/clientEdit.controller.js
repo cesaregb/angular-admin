@@ -85,29 +85,19 @@ class ClientEditComponent {
     _this.client.phoneNumbers.forEach(function (item, index, theArray) {
       if (item.idPhoneNumber ==  _this.selectedPhone.idPhoneNumber){
         theArray[index].prefered = true;
-        _this.updatePhone(theArray[index], _this.getClient);
+        _this.factoryClients.updatePhoneNumberCallback(theArray[index], _this.getClient);
       }else{
         if (theArray[index].prefered){
           theArray[index].prefered = false;
-          _this.updatePhone(theArray[index], _this.getClient);
+          _this.factoryClients.updatePhoneNumberCallback(theArray[index], _this.getClient);
         }
       }
     });
   }
 
-  updatePhone(phone, callback){
-    this.factoryClients.updatePhoneNumber(phone).then(function(result){
-      console.log("updatePhone sucessful " + JSON.stringify(result));
-      callback();
-    }), function(error){
-      console.log("error updatePhone: " + JSON.stringify(error));
-      callback();
-    }
-  }
-
   getClient(id){
     var _this = this;
-    _this.factoryClients.getClientByID(id).then(function(data){
+    _this.factoryClients.getClientById(id).then(function(data){
       _this.client = data;
     });
   }

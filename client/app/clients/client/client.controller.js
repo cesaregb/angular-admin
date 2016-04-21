@@ -23,7 +23,6 @@ class ClientComponent {
     this.$state.go('clientEdit', {client: client}, { reload: true });
   }
 
-
 }
 
 angular.module('processAdminApp')

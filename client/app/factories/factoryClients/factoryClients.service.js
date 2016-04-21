@@ -79,7 +79,7 @@ angular.module('processAdminApp')
     factory.getClients = function () {
        return get("/clients");
     };
-    factory.getClientByID = function (clientId) {
+    factory.getClientById = function (clientId) {
        return get("/clients/" + clientId);
     };
     factory.saveClient = function (data) {
@@ -99,6 +99,52 @@ angular.module('processAdminApp')
     factory.updatePhoneNumber = function ( data ) {
        return put(data, "/phone-number");
     };
+
+    // method used for transitional updates.
+    factory.savePhoneNumberCallback(phone, callback){
+      this.savePhoneNumber(phone).then(function(result){
+        callback();
+      }), function(error){
+        callback();
+      }
+    }
+    // method used for transitional updates.
+    factory.updatePhoneNumberCallback(phone, callback){
+      this.updatePhoneNumber(phone).then(function(result){
+        callback();
+      }), function(error){
+        callback();
+      }
+    }
+
+    //********** Phone Numbers CRUD
+    factory.getPhoneNumbers = function () {
+       return get("/phone-number");
+    };
+    factory.savePhoneNumber = function ( data ) {
+       return post(data, "/phone-number");
+    };
+    factory.updatePhoneNumber = function ( data ) {
+       return put(data, "/phone-number");
+    };
+
+    // method used for transitional updates.
+    factory.savePhoneNumberCallback(phone, callback){
+      this.savePhoneNumber(phone).then(function(result){
+        callback();
+      }), function(error){
+        callback();
+      }
+    }
+    // method used for transitional updates.
+    factory.updatePhoneNumberCallback(phone, callback){
+      this.updatePhoneNumber(phone).then(function(result){
+        callback();
+      }), function(error){
+        callback();
+      }
+    }
+
 
     return factory;
   });

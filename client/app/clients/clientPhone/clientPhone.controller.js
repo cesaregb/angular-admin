@@ -18,47 +18,14 @@
 
     getClientInfo() {
       var _this = this;
-      _this.factoryClients.getClientByID(this.client.idClient).then(function( response ) {
+      _this.factoryClients.getClientById(this.client.idClient).then(function( response ) {
           _this.client = response;
-          console.log("updating client: " + JSON.stringify(_this.client));
-        }),
-        function( err ) {
-          _this.noty.showNoty({
-            text: "Error getting client phones. ",
-            ttl: 1000 * 2,
-            type: "warning"
-          });
-        }
+        }), function( err ) {}
     }
 
     openNewModal() {
       this.openModal({idClient: this.client.idClient});
     }
-
-
-    createPhone(phone, callback){
-      console.log("Creating phone.. ");
-      this.factoryClients.savePhoneNumber(phone).then(function(result){
-        console.log("phone saved sucessful " + JSON.stringify(result));
-        callback();
-      }), function(error){
-        console.log("error saving phone: " + JSON.stringify(error));
-        callback();
-      }
-
-
-    }
-
-    updatePhone(phone, callback){
-      this.factoryClients.updatePhoneNumber(phone).then(function(result){
-        console.log("phone updatePhone sucessful " + JSON.stringify(result));
-        callback();
-      }), function(error){
-        console.log("error updatePhone phone: " + JSON.stringify(error));
-        callback();
-      }
-    }
-
 
     openModal ( phone ) {
 
@@ -91,12 +58,12 @@
 
         if (phone.idPhoneNumber != null && phone.idPhoneNumber > 0) {
           // update phone
-          _this.updatePhone(phone, function(){
+          _this.factoryClients.updatePhoneNumberCallback(phone, function(){
             _this.getClientInfo();
           });
         } else {
           // save new phone
-          _this.createPhone(phone, function(){
+          _this.factoryClients.savePhoneNumberCallback(phone, function(){
             _this.getClientInfo();
           });
         }
