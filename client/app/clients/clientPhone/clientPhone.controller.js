@@ -9,25 +9,30 @@
       this.noty = noty;
       this.$state = $state;
       this.client = $stateParams.client;
-      if (this.client == null){
-        this.$state.go('client', null, { reload: true });
-      }else{
+      if (this.client == null) {
+        this.$state.go('client', null, {
+          reload: true
+        });
+      } else {
         this.getClientInfo();
       }
     }
 
     getClientInfo() {
       var _this = this;
-      _this.factoryClients.getClientById(this.client.idClient).then(function( response ) {
+      _this.factoryClients.getClientById(this.client.idClient).then(function(response) {
           _this.client = response;
-        }), function( err ) {}
+        }),
+        function(err) {}
     }
 
     openNewModal() {
-      this.openModal({idClient: this.client.idClient});
+      this.openModal({
+        idClient: this.client.idClient
+      });
     }
 
-    openModal ( phone ) {
+    openModal(phone) {
 
       var _this = this;
       var modalInstance = this.$uibModal.open({
@@ -58,12 +63,12 @@
 
         if (phone.idPhoneNumber != null && phone.idPhoneNumber > 0) {
           // update phone
-          _this.factoryClients.updatePhoneNumberCallback(phone, function(){
+          _this.factoryClients.updatePhoneNumberCallback(phone, function() {
             _this.getClientInfo();
           });
         } else {
           // save new phone
-          _this.factoryClients.savePhoneNumberCallback(phone, function(){
+          _this.factoryClients.savePhoneNumberCallback(phone, function() {
             _this.getClientInfo();
           });
         }

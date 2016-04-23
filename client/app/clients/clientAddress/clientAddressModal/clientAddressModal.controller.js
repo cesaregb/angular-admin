@@ -1,29 +1,68 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('ClientAddressModalCtrl', function ($scope, $uibModalInstance, phone) {
+  .controller('ClientAddressModalCtrl', function ($scope, $uibModalInstance, address) {
 
-    $scope.phone = phone;
+    $scope.address = address;
 
     this.init = function(){
 
-      $scope.title = "New phone";
-      if ($scope.phone != null){
-        $scope.title = "Edit phone";
+      $scope.title = "New address";
+      if ($scope.address != null){
+        $scope.title = "Edit address";
       }
     };
 
     this.init();
 
     /*******  FORM  */
-    $scope.phoneFields = [
+    $scope.addressFields = [
       {
-        key: 'number',
+        key: 'country',
+        type: 'input',
+        defaultValue: 'Mexico',
+        templateOptions: {
+          type: 'text',
+          label: 'Country'
+        }
+      },{
+        key: 'state',
+        type: 'input',
+        defaultValue: 'Guadalajara',
+        templateOptions: {
+          type: 'text',
+          label: 'State'
+        }
+      },{
+        key: 'zipcode',
         type: 'input',
         templateOptions: {
           type: 'text',
-          label: 'Phone Number',
-          placeholder: '# # # # # # # # # #',
+          label: 'Zipcode'
+        }
+      },{
+        key: 'city',
+        type: 'input',
+        defaultValue: 'Guadalajara',
+        templateOptions: {
+          type: 'text',
+          label: 'City',
+          required: true
+        }
+      },{
+        key: 'address',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'Street and number',
+          required: true
+        }
+      },{
+        key: 'address2',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'Neigh',
           required: true
         }
       }
@@ -34,8 +73,8 @@ angular.module('processAdminApp')
       $uibModalInstance.close($scope.selected.item);
     };
 
-    $scope.savePhone = function(){
-      $uibModalInstance.close($scope.phone);
+    $scope.saveAddress = function(){
+      $uibModalInstance.close($scope.address);
     }
 
     $scope.cancel = function () {

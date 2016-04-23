@@ -3,9 +3,9 @@
 angular.module('processAdminApp')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('clientAddress', {
-        url: '/clientAddress',
-        template: '<client-address></client-address>',
+      .state('clientPaymentInfo', {
+        url: '/clientPaymentInfo',
+        template: '<client-payment-info></client-payment-info>',
         params : {client : null}
       });
   });

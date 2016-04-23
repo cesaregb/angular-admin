@@ -37,17 +37,23 @@
     }
 }
 
+.divider{
+  border-bottom: 1px solid @gray-darker;
+  margin: 5px 0;
+}
+
 /* inject:less */
 @import 'admin/admin';
 @import 'clients/client/client';
 @import 'clients/clientAddress/clientAddress';
 @import 'clients/clientEdit/clientEdit';
+@import 'clients/clientPaymentInfo/clientPaymentInfo';
 @import 'clients/clientPhone/clientPhone';
 @import 'main/main';
 @import 'newOrder/newOrder';
+@import 'variables';
 @import '../components/footer/footer';
 @import '../components/modal/modal';
 @import '../components/navbar/navbar';
-@import '../components/navbar/variables';
 @import '../components/oauth-buttons/oauth-buttons';
 /* endinject */

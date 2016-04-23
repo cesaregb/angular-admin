@@ -101,7 +101,7 @@ angular.module('processAdminApp')
     };
 
     // method used for transitional updates.
-    factory.savePhoneNumberCallback(phone, callback){
+    factory.savePhoneNumberCallback = function(phone, callback){
       this.savePhoneNumber(phone).then(function(result){
         callback();
       }), function(error){
@@ -109,7 +109,7 @@ angular.module('processAdminApp')
       }
     }
     // method used for transitional updates.
-    factory.updatePhoneNumberCallback(phone, callback){
+    factory.updatePhoneNumberCallback = function(phone, callback){
       this.updatePhoneNumber(phone).then(function(result){
         callback();
       }), function(error){
@@ -117,28 +117,56 @@ angular.module('processAdminApp')
       }
     }
 
-    //********** Phone Numbers CRUD
-    factory.getPhoneNumbers = function () {
-       return get("/phone-number");
+    //********** Address Numbers CRUD
+    factory.getAddress = function () {
+       return get("/address");
     };
-    factory.savePhoneNumber = function ( data ) {
-       return post(data, "/phone-number");
+    factory.saveAddress = function ( data ) {
+       return post(data, "/address");
     };
-    factory.updatePhoneNumber = function ( data ) {
-       return put(data, "/phone-number");
+    factory.updateAddress = function ( data ) {
+       return put(data, "/address");
     };
 
     // method used for transitional updates.
-    factory.savePhoneNumberCallback(phone, callback){
-      this.savePhoneNumber(phone).then(function(result){
+    factory.saveAddressCallback = function(address, callback){
+      this.saveAddress(address).then(function(result){
         callback();
       }), function(error){
         callback();
       }
     }
     // method used for transitional updates.
-    factory.updatePhoneNumberCallback(phone, callback){
-      this.updatePhoneNumber(phone).then(function(result){
+    factory.updateAddressCallback = function(address, callback){
+      this.updateAddress(address).then(function(result){
+        callback();
+      }), function(error){
+        callback();
+      }
+    }
+
+    //********** clientPaymentInfoFields
+    factory.getClientPaymentInfo = function () {
+       return get("/client-payment-info");
+    };
+    factory.saveClientPaymentInfo = function ( data ) {
+       return post(data, "/client-payment-info");
+    };
+    factory.updateClientPaymentInfo = function ( data ) {
+       return put(data, "/client-payment-info");
+    };
+
+    // method used for transitional updates.
+    factory.saveClientPaymentInfoCallback = function(address, callback){
+      this.saveClientPaymentInfo(address).then(function(result){
+        callback();
+      }), function(error){
+        callback();
+      }
+    }
+    // method used for transitional updates.
+    factory.updateClientPaymentInfoCallback = function(address, callback){
+      this.updateClientPaymentInfo(address).then(function(result){
         callback();
       }), function(error){
         callback();

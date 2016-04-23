@@ -1,7 +1,7 @@
 'use strict';
 (function() {
 
-  class ClientAddressComponent {
+  class ClientPaymentInfoComponent {
 
     constructor($uibModal, $stateParams, $state, noty, factoryClients) {
       this.factoryClients = factoryClients;
@@ -32,45 +32,44 @@
       });
     }
 
-    openModal(address) {
+    openModal(clientPaymentInfo) {
 
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
-        templateUrl: '/app/clients/clientAddress/clientAddressModal/addAddressModal.html',
-        controller: 'ClientAddressModalCtrl',
+        templateUrl: '/app/clients/clientPaymentInfo/clientPaymentInfoModal/clientPaymentInfo.html',
+        controller: 'ClientPaymentInfoModalCtrl',
         size: 'md',
         resolve: {
-          address: function() {
-            return address;
+          clientPaymentInfo: function() {
+            return clientPaymentInfo;
           }
         }
       });
 
       modalInstance.result.then(function(selectedItem) {
         console.log("selectedItem: " + JSON.stringify(selectedItem));
-        var address = selectedItem;
 
-        if (address.idAddressNumber != null && address.idAddressNumber > 0) {
-          // update address
-          _this.factoryClients.updateAddressCallback(address, function() {
+        var clientPaymentInfo = selectedItem;
+        if (clientPaymentInfo.idClientPaymentInfo != null && clientPaymentInfo.idClientPaymentInfo > 0) {
+          // update clientPaymentInfo
+          _this.factoryClients.updateClientPaymentInfoCallback(clientPaymentInfo, function() {
             _this.getClientInfo();
           });
         } else {
-          // save new address
-          _this.factoryClients.saveAddressCallback(address, function() {
+          // save new clientPaymentInfo
+          _this.factoryClients.saveClientPaymentInfoCallback(clientPaymentInfo, function() {
             _this.getClientInfo();
           });
         }
-
       });
     }
-  }
+  } // closing class
 
   angular.module('processAdminApp')
-    .component('clientAddress', {
-      templateUrl: 'app/clients/clientAddress/clientAddress.html',
-       controller: ClientAddressComponent,
+    .component('clientPaymentInfo', {
+      templateUrl: 'app/clients/clientPaymentInfo/clientPaymentInfo.html',
+      controller: ClientPaymentInfoComponent,
       controllerAs: '$cn'
     });
 

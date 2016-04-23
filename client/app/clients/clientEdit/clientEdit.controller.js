@@ -25,6 +25,10 @@ class ClientEditComponent {
       this.newClient = false;
       this.title = "Edit: " + this.client.name;
     }
+    this.tmpAddress = {};
+    this.tmpAddress.city = "Guadalajara";
+    this.tmpAddress.state = "Jalisco";
+    this.tmpAddress.country = "Mexico";
 
     this.selectedPhone = null;
     this.selectedAddress = null;
@@ -79,7 +83,6 @@ class ClientEditComponent {
   }
 
   changeDefaultPhone(){
-    // change the selected phone.
     var _this = this;
 
     _this.client.phoneNumbers.forEach(function (item, index, theArray) {
@@ -95,39 +98,43 @@ class ClientEditComponent {
     });
   }
 
+  changeDefaultAddress(){
+    var _this = this;
+
+    _this.client.addresses.forEach(function (item, index, theArray) {
+      if (item.idAddress ==  _this.selectedAddress.idAddress){
+        theArray[index].prefered = true;
+        _this.factoryClients.updateAddressCallback(theArray[index], _this.getClient);
+      }else{
+        if (theArray[index].prefered){
+          theArray[index].prefered = false;
+          _this.factoryClients.updateAddressCallback(theArray[index], _this.getClient);
+        }
+      }
+    });
+  }
+
+  changeDefaultPayment(){
+    var _this = this;
+
+    _this.client.clientPaymentInfos.forEach(function (item, index, theArray) {
+      if (item.idClientPaymentInfo ==  _this.selectedPayment.idClientPaymentInfo){
+        theArray[index].prefered = true;
+        _this.factoryClients.updateClientPaymentInfoCallback(theArray[index], _this.getClient);
+      }else{
+        if (theArray[index].prefered){
+          theArray[index].prefered = false;
+          _this.factoryClients.updateClientPaymentInfoCallback(theArray[index], _this.getClient);
+        }
+      }
+    });
+  }
+
   getClient(id){
     var _this = this;
     _this.factoryClients.getClientById(id).then(function(data){
       _this.client = data;
     });
-  }
-
-  updateAddress(){
-    console.log("address: " + JSON.stringify(this.selectedAddress));
-    // change the selected phone.
-    _this.client.addresses.forEach(function (item, index, theArray) {
-      if (item.idAddress ==  _this.selectedAddress.idAddress){
-        theArray[index].prefered = true;
-      }else{
-        theArray[index].prefered = false;
-      }
-    });
-
-    _this.saveExistingClient();
-  }
-
-  updatePayment(){
-    console.log("payment: " + JSON.stringify(this.selectedPayment));
-    // change the selected phone.
-    _this.client.clientPaymentInfos.forEach(function (item, index, theArray) {
-      if (item.idClientPaymentInfo ==  _this.selectedPayment.idClientPaymentInfo){
-        theArray[index].prefered = true;
-      }else{
-        theArray[index].prefered = false;
-      }
-    });
-
-    _this.saveExistingClient();
   }
 
   saveClient(){
@@ -146,9 +153,11 @@ class ClientEditComponent {
         phoneNumberTmp.prefered = true;
         myClient.phoneNumbers.push(phoneNumberTmp);
 
+        myClient.addresses = [];
+        myClient.addresses.push(_this.tmpAddress);
+
         // not abstracting this piece cuz its only used here.
         _this.factoryClients.saveClient( myClient ).then( function(data){ // saving new
-          console.log("Client saved... " + JSON.stringify(data));
           _this.$state.go('client', { reload: true });
         }),function(error){ // error saving new
           console.log("Error saving client " + JSON.stringify(error));
