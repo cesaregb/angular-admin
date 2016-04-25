@@ -5,12 +5,11 @@ class ClientComponent {
 
   title = "Clients";
 
-  constructor( factoryClients, serviceClients, $state, $stateParams ) {
+  constructor( factoryClients, serviceClients, $state, $stateParams, uiGmapIsReady ) {
     this.$state = $state;
     this.factoryClients = factoryClients;
     this.serviceClients = serviceClients;
     this.client = null;
-    this.message = 'Hello';
     this.gatherClients();
   }
 
