@@ -23,7 +23,7 @@ angular.module('processAdminApp', [
   }).config(function(uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
        key: 'AIzaSyCkf62CueLleu2_yaZqfL_lxKvTQm-srS0',
-       v: '3.20', //defaults to latest 3.X anyhow
-       libraries: 'weather,geometry,visualization'
+       v: '3.22',
+       libraries: 'geometry,places'
     });
-});
+  });

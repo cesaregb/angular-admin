@@ -2,10 +2,6 @@
   <div class="row">
     <div class="col-lg-12">
       <fieldset class="form-group">
-        <label for="exampleInputEmail1">Country</label>
-        <input type="text" class="form-control" ng-model="$cn.add.country">
-      </fieldset>
-      <fieldset class="form-group">
         <label for="exampleInputEmail1">State</label>
         <input type="text" class="form-control" ng-model="$cn.add.state">
       </fieldset>
@@ -20,6 +16,7 @@
       <fieldset class="form-group">
         <label for="exampleInputEmail1">Street and number</label>
         <input type="text" class="form-control" ng-model="$cn.add.address2">
+        <input type="text" class="form-control" ng-model="mySearchValue">
       </fieldset>
       <button type="submit" class="btn btn-primary" ng-click="$cn.searchAddress()">Submit</button>
 
@@ -27,28 +24,20 @@
   </div>
   <div class="row">
     <div class="col-lg-4">
-        Address:
+      Address:
     </div>
     <div class="col-lg-4">
-        {{$cn.fullAddressString}}
+
     </div>
   </div>
   <div class="row">
     <div class="col-lg-12">
 
-      <ui-gmap-google-map draggable="true"
-          bounds="$cn.clientMap.bounds" center="$cn.clientMap.center" zoom="$cn.clientMap.zoom" options="$cn.options" pan='{string or boolean}'>
-        <ui-gmap-circle ng-repeat="c in $cn.circles track by c.id" center="c.center" stroke="c.stroke" fill="c.fill" radius="c.radius"
-                visible="c.visible" geodesic="c.geodesic" editable="c.editable" draggable="c.draggable" clickable="c.clickable" control="c.control"></ui-gmap-circle>
-          <!-- <ui-gmap-drawing-manager options="$cn.clientMap.drawingManagerOptions" control="drawingManagerControl"></ui-gmap-drawing-manager> -->
-      </ui-gmap-google-map>
+      <div id="searchbox">
+        <label>Enter an address: </label>
+      </div>
 
 
-      <!-- <div style="display:block;z-index:100;position:absolute;bottom:30px;left:3px;width:380px;height:38px;background:white;">
-          <label>Show drawing manager (via options)? <input type="checkbox" ng-model="$cn.clientMap.drawingManagerOptions.drawingControl"/></label><br/>
-          {{markersAndCircleFlag}}<br />
-          <label>Allow marker and circle drawing modes (via control)? <input type="checkbox" ng-model="markersAndCircleFlag"/></label>
-      </div> -->
 
 
       <!-- /.panel -->

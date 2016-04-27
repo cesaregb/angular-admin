@@ -9,6 +9,6 @@ web:
   volumes:
     - "./node_app:/myapp"
   ports:
-    - "9000:9000"
+    - "3001:3001"
   links:
     - "db:mongo"

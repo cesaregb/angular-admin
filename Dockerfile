@@ -7,8 +7,9 @@
 FROM nodesource/node:4.0
 MAINTAINER Cesar Gonzalez, cesareg.borjon@gmail.com
 
-#sett the environment to be used... 
+#sett the environment to be used...
 ENV NODE_ENV=docker
+ENV PORT=3001
 
 ADD dist/package.json package.json
 RUN npm install
