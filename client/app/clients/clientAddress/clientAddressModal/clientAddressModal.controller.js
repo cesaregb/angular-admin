@@ -28,7 +28,7 @@ angular.module('processAdminApp')
       },{
         key: 'state',
         type: 'input',
-        defaultValue: 'Guadalajara',
+        defaultValue: 'Jalisco',
         templateOptions: {
           type: 'text',
           label: 'State'

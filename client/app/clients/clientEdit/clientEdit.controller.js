@@ -24,11 +24,13 @@ class ClientEditComponent {
     if (this.client != null){
       this.newClient = false;
       this.title = "Edit: " + this.client.name;
+    }else{
+      this.tmpAddress = {};
+      this.tmpAddress.city = "Guadalajara";
+      this.tmpAddress.state = "Jalisco";
+      // this.tmpAddress.country = "Mexico";
     }
-    this.tmpAddress = {};
-    this.tmpAddress.city = "Guadalajara";
-    this.tmpAddress.state = "Jalisco";
-    this.tmpAddress.country = "Mexico";
+
 
     this.selectedPhone = null;
     this.selectedAddress = null;
@@ -79,7 +81,7 @@ class ClientEditComponent {
 
 
   back() { // back handler...
-    this.$state.go('client',null , { reload: true });
+    this.$state.go('client.all',null , { reload: true });
   }
 
   changeDefaultPhone(){
@@ -158,7 +160,9 @@ class ClientEditComponent {
 
         // not abstracting this piece cuz its only used here.
         _this.factoryClients.saveClient( myClient ).then( function(data){ // saving new
-          _this.$state.go('client', { reload: true });
+          _this.client = data;
+          _this.settupClient();
+          // _this.$state.go('client', { reload: true });
         }),function(error){ // error saving new
           console.log("Error saving client " + JSON.stringify(error));
         };

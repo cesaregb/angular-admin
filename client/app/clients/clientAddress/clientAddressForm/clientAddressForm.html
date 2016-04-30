@@ -1,0 +1,51 @@
+<div id="page-wrapper">
+  <div class="row" style="padding-top:20px">
+    <div class="col-lg-12">
+
+      <input id="pac-input" class="controls" type="text"
+        placeholder="Enter a location">
+      <div id="type-selector" class="controls">
+        <input type="radio" name="type" id="changetype-all" checked="checked">
+        <label for="changetype-all">All</label>
+
+        <input type="radio" name="type" id="changetype-establishment">
+        <label for="changetype-establishment">Establishments</label>
+
+        <input type="radio" name="type" id="changetype-address">
+        <label for="changetype-address">Addresses</label>
+
+        <input type="radio" name="type" id="changetype-geocode">
+        <label for="changetype-geocode">Geocodes</label>
+      </div>
+      <div id="map"></div>
+      <div class="modal-footer">
+        <button class="btn btn-default" type="submit" ng-click="$cn.createCircles()" >View Areas</button>
+        <button class="btn btn-default" type="submit" ng-click="$cn.parseAddress()" ng-disabled="$cn.place == null">Parse Address</button>
+      </div>
+
+      <!-- <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+      <div id="map"></div> -->
+      <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+  </div>
+
+  <form novalidate>
+      <div>
+        <div class="modal-header">
+          <h3 class="modal-title">{{$cn.title}}</h3>
+        </div>
+        {{$cn.address.lat}} -- {{$cn.address.lng}}
+        <div class="modal-body">
+          <formly-form model="$cn.address" fields="$cn.addressFields" form="$cn.addressForm"> </formly-form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" type="submit" ng-click="$cn.createCircles()" >View Areas</button>
+          <button class="btn btn-default" type="submit" ng-click="$cn.searchAddress()" >Search</button>
+          <button class="btn btn-primary" type="submit" ng-click="$cn.saveAddress()" ng-disabled="$cn.addressForm.$invalid">Save</button>
+        </div>
+      </div>
+
+  </form>
+
+</div>

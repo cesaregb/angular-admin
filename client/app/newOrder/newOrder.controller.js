@@ -4,17 +4,61 @@
   class NewOrderComponent {
 
 
-    // var marker = new google.maps.Marker({
-    // // The below line is equivalent to writing:
-    // // position: new google.maps.LatLng(-34.397, 150.644)
-    //   position: {lat: -34.397, lng: 150.644},
-    //   map: map
-    // });
+    circlesVisible = false;
+    circles = [{
+      id: 3,
+      center: {
+        lat: 20.621335,
+        lng: -103.418127
+      },
+      radius: 3200,
+      stroke: {
+        color: '#FF0000',
+        weight: 2,
+      },
+      fill: {
+        color: '#FF0000',
+        opacity: 0.5
+      },
+      geodesic: false,
+      draggable: false,
+      clickable: false,
+      editable: false,
+      visible: false,
+      control: {}
+    }, {
+      id: 2,
+      center: {
+        lat: 20.621335,
+        lng: -103.418127
+      },
+      radius: 1600,
+      stroke: {
+        color: '#E8AD3C'
+      },
+      fill: {
+        color: '#E8AD3C'
+      }
+    }, {
+      id: 1,
+      center: {
+        lat: 20.621335,
+        lng: -103.418127
+      },
+      radius: 800,
+      stroke: {
+        color: '#08B21F'
+      },
+      fill: {
+        color: '#08B21F'
+      }
+    }];
 
-    constructor($scope, uiGmapGoogleMapApi) {
+    markers = [];
+
+    constructor($scope, $timeout) {
       var _this = this;
       this.place = null;
-      this.uiGmapGoogleMapApi = uiGmapGoogleMapApi;
       this.$scope = $scope;
       this.objAddress = {};
       this.objAddress.country = "Mexico";
@@ -22,142 +66,131 @@
       this.objAddress.city = "Guadalajara";
       this.searchAddress();
 
-      uiGmapGoogleMapApi.then(function(maps) {
-        _this.tersusLatLng = new google.maps.LatLng(20.621335, -103.418127);
+
+      $timeout(function() {
+
+        _this.initAutocomplete();
+
+      }, 100);
+
+      // this.initMap();
+
+    }
+
+
+    initAutocomplete() {
+      var _this = this;
+      this.tersusLatLng = new google.maps.LatLng(20.621335, -103.418127);
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: {
+          lat: 20.621335,
+          lng: -103.418127
+        },
+        zoom: 13,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
       });
 
-      this.$scope.mySearchValue = null;
-      this.$scope.$watch('mySearchValue', this.searchValueChanged());
+      // Create the search box and link it to the UI element.
+      var input = document.getElementById('pac-input');
+      var searchBox = new google.maps.places.SearchBox(input);
+      map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-      this.initMap();
-    }
+      // Bias the SearchBox results towards current map's viewport.
+      map.addListener('bounds_changed', function() {
+        searchBox.setBounds(map.getBounds());
+      });
 
-    searchValueChanged(newValue, oldValue){
-      return () => {
-        if (newValue == oldValue) {
-          return null;
-        } else {
-          console.log("the value changed to " + newValue);
+      var markers = [];
+      // Listen for the event fired when the user selects a prediction and retrieve
+      // more details for that place.
+      searchBox.addListener('places_changed', function() {
+        var places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+          return;
         }
-      }
-    }
 
-    initMap() {
-      var _this = this;
-      this.$scope.map = {
-        center: {
-          latitude: 20.621335,
-          longitude: -103.418127
-        },
-        zoom: 15,
-        searchbox: {
-          template: 'searchbox.tpl.html',
-          events: {
-            places_changed: function(searchBox) {
-              console.log("place changed: " + JSON.stringify(searchBox));
-            }
+        // Clear out the old markers.
+        markers.forEach(function(marker) {
+          marker.setMap(null);
+        });
+        markers = [];
+
+        // For each place, get the icon, name and location.
+        var bounds = new google.maps.LatLngBounds();
+        places.forEach(function(place) {
+          var icon = {
+            url: place.icon,
+            size: new google.maps.Size(71, 71),
+            origin: new google.maps.Point(0, 0),
+            anchor: new google.maps.Point(17, 34),
+            scaledSize: new google.maps.Size(25, 25)
+          };
+
+          // Create a marker for each place.
+          markers.push(new google.maps.Marker({
+            map: map,
+            icon: icon,
+            title: place.name,
+            position: place.geometry.location
+          }));
+
+          if (place.geometry.viewport) {
+            // Only geocodes have viewport.
+            bounds.union(place.geometry.viewport);
+          } else {
+            bounds.extend(place.geometry.location);
           }
-        }
-      };
-      this.$scope.options = {
-        scrollwheel: false
-      };
-      this.$scope.circles = [{
-        id: 3,
-        center: {
-          latitude: 20.621335,
-          longitude: -103.418127
-        },
-        radius: 3200,
-        stroke: {
-          color: '#FF0000',
-          weight: 2,
-          opacity: 1
-        },
-        fill: {
-          color: '#FF0000',
-          opacity: 0.5
-        },
-        geodesic: false,
-        draggable: false,
-        clickable: false,
-        editable: false,
-        visible: false,
-        control: {}
-      }, {
-        id: 2,
-        center: {
-          latitude: 20.621335,
-          longitude: -103.418127
-        },
-        radius: 1600,
-        stroke: {
-          color: '#E8AD3C',
-          weight: 2,
-          opacity: 1
-        },
-        fill: {
-          color: '#E8AD3C',
-          opacity: 0.5
-        },
-        geodesic: false,
-        draggable: false,
-        clickable: false,
-        editable: false,
-        visible: false,
-        control: {}
-      }, {
-        id: 1,
-        center: {
-          latitude: 20.621335,
-          longitude: -103.418127
-        },
-        radius: 800,
-        stroke: {
-          color: '#08B21F',
-          weight: 2,
-          opacity: 1
-        },
-        fill: {
-          color: '#08B21F',
-          opacity: 0.5
-        },
-        geodesic: false,
-        draggable: false,
-        clickable: false,
-        editable: false,
-        visible: true,
-        control: {}
-      }];
+        });
+        map.fitBounds(bounds);
+      });
 
-      this.$scope.marker = {
-        id: Date.now()
+      this.map = map;
+
+      google.maps.event.addListener(map, 'click', function(event) {
+        _this.placeMarker(event.latLng);
+      });
+    }
+
+
+
+    placeMarker(location) {
+      var _this = this;
+      var marker = new google.maps.Marker({
+        position: location,
+        map: _this.map
+      });
+
+      map.panTo(location);
+    }
+
+    circleObj = [];
+    createCircles() {
+      var _this = this;
+
+      if (this.circlesVisible){
+        this.circlesVisible = false;
+        _this.circleObj.forEach(function(item){
+          item.setMap(null);
+        });
+      }else{
+        this.circlesVisible = true;
+        this.circles.forEach(function(item) {
+          var priceCircle = new google.maps.Circle({
+            strokeColor: item.stroke.color,
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: item.fill.color,
+            fillOpacity: 0.35,
+            map: _this.map,
+            center: item.center,
+            radius: item.radius
+          });
+          _this.circleObj.push(priceCircle);
+
+        });
       }
-
-      var events = {
-        places_changed: function(searchBox) {
-          var place = searchBox.getPlaces()[0];
-          console.log(place.geometry.location.lat());
-          var lat = place.geometry.location.lat(),
-            lon = place.geometry.location.lng();
-          _this.$scope.marker = {
-            id: Date.now(),
-            coords: {
-              latitude: lat,
-              longitude: lon
-            }
-          };
-          _this.$scope.map.center = {
-            latitude: lat,
-            longitude: lon
-          };
-        }
-      }
-      this.$scope.searchbox = {
-        template: 'searchbox.tpl.html',
-        events: events
-      };
-
+      this.map.setCenter(this.tersusLatLng);
     }
 
     selectTersus() {
@@ -181,9 +214,7 @@
       if (this.objAddress.country) addressArr.push(this.objAddress.country);
       this.address = addressArr.join(", ");
 
-      console.log("mySearchValue: " + this.$scope.mySearchValue);
-
-      this.$scope.mySearchValue = 'porfaaaa';
+      document.getElementById("pac-input").value = this.address;
 
     }
 

@@ -10,7 +10,7 @@
       this.$state = $state;
       this.client = $stateParams.client;
       if (this.client == null) {
-        this.$state.go('client', null, {
+        this.$state.go('client.all', null, {
           reload: true
         });
       } else {

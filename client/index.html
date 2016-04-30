@@ -45,7 +45,7 @@
       ga('send', 'pageview');
     </script>
 
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkf62CueLleu2_yaZqfL_lxKvTQm-srS0&libraries=geometry,places"> </script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkf62CueLleu2_yaZqfL_lxKvTQm-srS0&libraries=geometry,places" async defer></script>
 
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -68,8 +68,6 @@
       <script src="bower_components/api-check/dist/api-check.js"></script>
       <script src="bower_components/angular-formly/dist/formly.js"></script>
       <script src="bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js"></script>
-      <script src="bower_components/angular-simple-logger/dist/angular-simple-logger.js"></script>
-      <script src="bower_components/angular-google-maps/dist/angular-google-maps.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
@@ -86,18 +84,16 @@
       <script src="app/admin/admin.controller.js"></script>
       <script src="app/admin/admin.router.js"></script>
       <script src="app/app.constant.js"></script>
+      <script src="app/clients/client.js"></script>
       <script src="app/clients/client/client.controller.js"></script>
-      <script src="app/clients/client/client.js"></script>
       <script src="app/clients/clientAddress/clientAddress.controller.js"></script>
-      <script src="app/clients/clientAddress/clientAddress.js"></script>
+      <script src="app/clients/clientAddress/clientAddressForm/clientAddressForm.controller.js"></script>
       <script src="app/clients/clientAddress/clientAddressModal/clientAddressModal.controller.js"></script>
       <script src="app/clients/clientEdit/clientEdit.controller.js"></script>
-      <script src="app/clients/clientEdit/clientEdit.js"></script>
+      <script src="app/clients/clientMainController/clientMainController.controller.js"></script>
       <script src="app/clients/clientPaymentInfo/clientPaymentInfo.controller.js"></script>
-      <script src="app/clients/clientPaymentInfo/clientPaymentInfo.js"></script>
       <script src="app/clients/clientPaymentInfo/clientPaymentInfoModal/clientPhoneModal.controller.js"></script>
       <script src="app/clients/clientPhone/clientPhone.controller.js"></script>
-      <script src="app/clients/clientPhone/clientPhone.js"></script>
       <script src="app/clients/clientPhone/clientPhoneModal/clientPhoneModal.controller.js"></script>
       <script src="app/constants/constants.service.js"></script>
       <script src="app/factories/factoryClients/factoryClients.service.js"></script>

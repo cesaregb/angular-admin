@@ -5,7 +5,7 @@ class NavbarController {
   menu = [
     {
       'title': 'Clients',
-      'state': 'client',
+      'state': 'client.all',
     }, {
       title: 'Specs',
       state: 'specs'
