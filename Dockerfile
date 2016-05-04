@@ -3,7 +3,7 @@
 #
 # To run:
 # run docker mongo....
-# docker run -p 27017:27017 --name mongo-admin -d mongo
+#   docker run -p 27017:27017 --name mongo-admin -d mongo
 # docker run -p 9001:9001 --link mongo-admin:mongo -it process-admin:v1
 # docker run -p 9001:9001 --link mongo-admin:mongo -it --entrypoint bash process-admin:v1
 

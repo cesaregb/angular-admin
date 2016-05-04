@@ -13,7 +13,6 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(client) app/vendor.css -->
       <!-- bower:css -->
-      <link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css" />
       <link rel="stylesheet" href="bower_components/Angular-Notys/angular-notys.css" />
       <!-- endbower -->
     <!-- endbuild -->
@@ -77,11 +76,9 @@
       <script src="app/admin/admin.module.js"></script>
       <script src="components/auth/auth.module.js"></script>
       <script src="components/util/util.module.js"></script>
-      <script src="app/account/account.js"></script>
-      <script src="app/account/login/login.controller.js"></script>
-      <script src="app/account/settings/settings.controller.js"></script>
-      <script src="app/account/signup/signup.controller.js"></script>
+      <script src="app/factories/factoryClients/factoryClients.service.js"></script>
       <script src="app/admin/admin.controller.js"></script>
+      <script src="app/account/account.js"></script>
       <script src="app/admin/admin.router.js"></script>
       <script src="app/app.constant.js"></script>
       <script src="app/clients/client.js"></script>
@@ -96,12 +93,13 @@
       <script src="app/clients/clientPhone/clientPhone.controller.js"></script>
       <script src="app/clients/clientPhone/clientPhoneModal/clientPhoneModal.controller.js"></script>
       <script src="app/constants/constants.service.js"></script>
-      <script src="app/factories/factoryClients/factoryClients.service.js"></script>
+      <script src="app/account/login/login.controller.js"></script>
       <script src="app/main/main.controller.js"></script>
       <script src="app/main/main.js"></script>
       <script src="app/newOrder/newOrder.controller.js"></script>
       <script src="app/newOrder/newOrder.js"></script>
       <script src="app/services/serviceClients/serviceClients.service.js"></script>
+      <script src="app/account/settings/settings.controller.js"></script>
       <script src="components/auth/auth.service.js"></script>
       <script src="components/auth/interceptor.service.js"></script>
       <script src="components/auth/router.decorator.js"></script>
@@ -114,6 +112,7 @@
       <script src="components/oauth-buttons/oauth-buttons.controller.js"></script>
       <script src="components/oauth-buttons/oauth-buttons.directive.js"></script>
       <script src="components/socket/socket.service.js"></script>
+      <script src="app/account/signup/signup.controller.js"></script>
       <script src="components/util/util.service.js"></script>
       <!-- endinjector -->
     <!-- endbuild -->
