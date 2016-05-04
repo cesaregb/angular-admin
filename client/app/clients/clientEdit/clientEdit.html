@@ -67,32 +67,6 @@
                 <button type="button" class="btn btn-default glyphicon glyphicon-edit" ui-sref="client.phone({client: $cn.client})"></button>
               </div>
 
-              <!-- Text input-->
-              <div ng-hide="!$cn.newClient">
-                <div class="form-group" >
-                  <label class="col-md-4 control-label">Street and number</label>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control input-md"
-                      ng-model="$cn.tmpAddress.address">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-4 control-label">Neighbor</label>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control input-md"
-                      ng-model="$cn.tmpAddress.address2">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="col-md-4 control-label">City</label>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control input-md"
-                      ng-model="$cn.tmpAddress.city" >
-                  </div>
-                </div>
-              </div>
-
-
               <!-- Select Basic -->
               <div class="form-group" ng-hide="$cn.newClient">
                 <label class="col-md-4 control-label" for="primaryAddress">Select Primary Address</label>
@@ -135,11 +109,11 @@
               </div>
 
               <!-- Button (Double) -->
-              <div class="form-group">
-                <label class="col-md-4 control-label" for="save"></label>
-                <div class="col-md-8 pull-right">
-                  <button type="submit" class="btn btn-primary" ng-disabled="$cn.clientForm.$invalid">Submit</button>
-                </div>
+              <div class="buttons-footer">
+                <button type="submit" class="btn btn-primary" ng-disabled="$cn.clientForm.$invalid">Submit</button>
+                <button type="button" class="btn btn-regular" ng-click="$parent.openAddressForm($cn.client, {idClient: $cn.client.idClient})"
+                    ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">
+                  Add Addrees</button>
               </div>
 
             </fieldset>

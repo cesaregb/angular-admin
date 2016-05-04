@@ -59,7 +59,7 @@
         lat: 20.621335,
         lng: -103.418127
       },
-      radius: 3200,
+      radius: 1000 * 12, //  mts
       stroke: {
         color: '#FF0000',
         weight: 2,
@@ -80,7 +80,7 @@
         lat: 20.621335,
         lng: -103.418127
       },
-      radius: 1600,
+      radius: 1000 * 6,
       stroke: {
         color: '#E8AD3C'
       },
@@ -93,7 +93,7 @@
         lat: 20.621335,
         lng: -103.418127
       },
-      radius: 800,
+      radius: 1000 * 3,
       stroke: {
         color: '#08B21F'
       },
@@ -120,101 +120,22 @@
         this.$state.go('client.all', null, {
           reload: true
         });
-      }else{
+      } else {
         this.title = "New address";
-
+        this.newAddress = true;
         if (this.address != null && this.address.address != null) {
+          this.newAddress = false;
           this.title = "Edit address";
         }
+        this.title = this.title + " -- Client: " + this.client.name
         this.existingMarker = false;
         this.markers = [];
 
         $timeout(function() {
-          // _this.initAutocomplete();
           _this.initMap();
         }, 100);
       }
     }
-
-    initAutocomplete() {
-      var _this = this;
-      this.tersusLatLng = new google.maps.LatLng(20.621335, -103.418127);
-      var map = new google.maps.Map(document.getElementById('map'), {
-        center: {
-          lat: 20.621335,
-          lng: -103.418127
-        },
-        zoom: 13,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      });
-
-      // Create the search box and link it to the UI element.
-      var input = document.getElementById('pac-input');
-
-      var searchBox = new google.maps.places.SearchBox(input);
-      // var searchBox = new google.maps.places.Autocomplete(input, options);
-
-      map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-      // Bias the SearchBox results towards current map's viewport.
-      map.addListener('bounds_changed', function() {
-        searchBox.setBounds(map.getBounds());
-      });
-
-      // Listen for the event fired when the user selects a prediction and retrieve
-      // more details for that place.
-      searchBox.addListener('places_changed', function() {
-        var places = searchBox.getPlaces();
-
-        if (places.length == 0) {
-          return;
-        }
-
-        // Clear out the old this.markers.
-        _this.markers.forEach(function(marker) {
-          marker.setMap(null);
-        });
-        _this.markers = [];
-
-        // For each place, get the icon, name and location.
-        var bounds = new google.maps.LatLngBounds();
-        places.forEach(function(place) {
-          _this.place = place;
-          // esto...
-          // console.log("place: " + JSON.stringify(place));
-          var icon = {
-            url: place.icon,
-            size: new google.maps.Size(71, 71),
-            origin: new google.maps.Point(0, 0),
-            anchor: new google.maps.Point(17, 34),
-            scaledSize: new google.maps.Size(25, 25)
-          };
-
-          // Create a marker for each place.
-          _this.markers.push(new google.maps.Marker({
-            map: map,
-            icon: icon,
-            title: place.name,
-            position: place.geometry.location
-          }));
-
-          if (place.geometry.viewport) {
-            // Only geocodes have viewport.
-            bounds.union(place.geometry.viewport);
-          } else {
-            bounds.extend(place.geometry.location);
-          }
-        });
-        map.fitBounds(bounds);
-      });
-
-      this.map = map;
-
-      google.maps.event.addListener(map, 'click', function(event) {
-        _this.placeMarker(event.latLng);
-      });
-    }
-
 
     initMap() {
       var _this = this;
@@ -225,6 +146,7 @@
           lat: 20.621335,
           lng: -103.418127
         },
+        scrollwheel: false,
         zoom: 13,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       });
@@ -306,28 +228,51 @@
       setupClickListener('changetype-all', []);
       setupClickListener('changetype-address', ['address']);
       setupClickListener('changetype-establishment', ['establishment']);
-      setupClickListener('changetype-geocode', ['geocode']);
+      // setupClickListener('changetype-geocode', ['geocode']);
 
       this.map = map;
 
       google.maps.event.addListener(map, 'click', function(event) {
         _this.placeMarker(event.latLng);
       });
+      this.addExistingMarker();
+    }
+
+
+    addExistingMarker() {
+      if (this.address != null && this.address.lat != null && this.address.lng != null) {
+        var selectedPlaceLatLng = new google.maps.LatLng(this.address.lat, this.address.lng);
+        // add marker
+        var marker = new google.maps.Marker({
+          position: selectedPlaceLatLng,
+          map: this.map
+        });
+
+        this.markers.push(marker);
+        this.existingMarker = true;
+        this.map.panTo(selectedPlaceLatLng);
+      }
     }
 
     placeMarker(location) {
       // console.log("location: " + JSON.stringify(location));
-      if (this.place == null) {
+      if (this.addressParsed) {
+        this.noty.showNoty({
+          text: "Please make a search before creating marker.",
+          ttl: 1000 * 2,
+          type: "warning"
+        });
+      } else if (this.place == null) {
         this.noty.showNoty({
           text: "Please search by address first",
           ttl: 1000 * 2,
           type: "warning"
         });
       } else {
-        var _this = this;
+
         // clear markers
         if (this.existingMarker && this.markers.length > 0) {
-          _this.markers.forEach(function(item) {
+          this.markers.forEach(function(item) {
             item.setMap(null);
           });
           this.markers = [];
@@ -335,7 +280,7 @@
         // add marker
         var marker = new google.maps.Marker({
           position: location,
-          map: _this.map
+          map: this.map
         });
 
         this.markers.push(marker);
@@ -343,10 +288,9 @@
         this.map.panTo(location);
 
         // addong lat and lng
-        this.address.lat = location.lat;
-        this.address.lng = location.lng;
+        this.address.lat = location.lat();
+        this.address.lng = location.lng();
 
-        console.log("marker address: " + JSON.stringify(this.address));
       }
     }
 
@@ -359,7 +303,9 @@
         _this.circleObj.forEach(function(item) {
           item.setMap(null);
         });
+
       } else {
+
         this.circlesVisible = true;
         this.circles.forEach(function(item) {
           var priceCircle = new google.maps.Circle({
@@ -376,49 +322,59 @@
 
         });
       }
-      this.map.setCenter(this.tersusLatLng);
+      // this.map.setCenter(this.tersusLatLng);
     }
 
+
+    addressParsed = false;
+    distance = 0;
+    distancePrice = 0;
     parseAddress() {
-      // $.each([ 52, 97 ], function( index, value ) {
-      //   console.log( index + ": " + value );
-      // });
+      var selectedPlaceLatLng = new google.maps.LatLng(this.address.lat, this.address.lng);
+      this.distance = google.maps.geometry.spherical.computeDistanceBetween(this.tersusLatLng, selectedPlaceLatLng);
+
+      if (this.distance < 2000) {
+        this.distancePrice = 20;
+      } else if (this.distance > 2000 && this.distance < 4000) {
+        this.distancePrice = 25;
+      } else if (this.distance > 4000) {
+        this.distancePrice = 30;
+      }
+      this.distance = this.distance/1000;
+      this.distance = Math.round(this.distance);
       var _this = this;
-      if (this.place == null){
+      if (this.place == null) {
         this.noty.showNoty({
           text: "Please search by address first",
           ttl: 1000 * 2,
           type: "warning"
         });
-      }else{
+      } else {
         // adding address info from the place
         // console.log("this.place: " + JSON.stringify(this.place));
         var components = this.place.address_components;
-
-        components.forEach(function(item){
-          if ($.inArray('route', item.types) >= 0 ){
+        this.addressParsed = true;
+        components.forEach(function(item) {
+          if ($.inArray('route', item.types) >= 0) {
             _this.address.address2 = item.long_name;
           }
-          if ($.inArray('sublocality', item.types) >= 0 ){
+          if ($.inArray('sublocality', item.types) >= 0) {
             _this.address.address = item.long_name;
           }
-          if ($.inArray('locality', item.types) >= 0 ){
+          if ($.inArray('locality', item.types) >= 0) {
             _this.address.city = item.long_name;
           }
-          if ($.inArray('administrative_area_level_1', item.types) >= 0 ){
+          if ($.inArray('administrative_area_level_1', item.types) >= 0) {
             _this.address.state = item.long_name;
           }
-          if ($.inArray('country', item.types) >= 0 ){
+          if ($.inArray('country', item.types) >= 0) {
             _this.address.country = item.long_name;
           }
-          if ($.inArray('postal_code', item.types) >= 0 ){
+          if ($.inArray('postal_code', item.types) >= 0) {
             _this.address.zipcode = item.long_name;
           }
         });
       }
-
-      console.log("Addres: " + JSON.stringify(this.address));
-
     }
 
     saveAddress() {
@@ -426,7 +382,6 @@
       if (_this.address.idAddressNumber != null && _this.address.idAddressNumber > 0) {
         // update address
         _this.factoryClients.updateAddressCallback(_this.address, function() {
-
           _this.$state.go('client.address', {
             client: _this.client
           }, {

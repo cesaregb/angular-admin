@@ -21,14 +21,9 @@ class ClientEditComponent {
   // load initial client if any...
   settupClient(){
     var _this = this;
-    if (this.client != null){
+    if (this.client != null) {
       this.newClient = false;
       this.title = "Edit: " + this.client.name;
-    }else{
-      this.tmpAddress = {};
-      this.tmpAddress.city = "Guadalajara";
-      this.tmpAddress.state = "Jalisco";
-      // this.tmpAddress.country = "Mexico";
     }
 
 
@@ -154,9 +149,6 @@ class ClientEditComponent {
         phoneNumberTmp.number = this.temporalPhone;
         phoneNumberTmp.prefered = true;
         myClient.phoneNumbers.push(phoneNumberTmp);
-
-        myClient.addresses = [];
-        myClient.addresses.push(_this.tmpAddress);
 
         // not abstracting this piece cuz its only used here.
         _this.factoryClients.saveClient( myClient ).then( function(data){ // saving new
