@@ -40,6 +40,10 @@ var all = {
       }
     }
   },
+  mongoDocker: {
+    uri: 'mongodb://mongo/processadmin-dev'
+    // uri: 'mongodb://192.168.99.100:27017/processadmin-dev'
+  },
 
   facebook: {
     clientID:     process.env.FACEBOOK_ID || 'id',
@@ -62,7 +66,17 @@ var all = {
 
 // Export the config object based on the NODE_ENV
 // ==============================================
-module.exports = _.merge(
+var exportInfo = _.merge(
   all,
   require('./shared'),
   require('./' + process.env.NODE_ENV + '.js') || {});
+
+if (process.env.DOCKER){
+  console.log("****** " + process.env.NODE_ENV +  " - Changing the MONGO uri.... exportInfo: " + exportInfo.mongoDocker.uri);
+  exportInfo.mongo.uri = exportInfo.mongoDocker.uri;
+}else{
+  console.log("****** SAME OLD MONGO!!");
+}
+
+
+module.exports = exportInfo

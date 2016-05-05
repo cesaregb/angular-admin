@@ -536,6 +536,9 @@ module.exports = function (grunt) {
       prod: {
         NODE_ENV: 'production'
       },
+      docker: {
+        NODE_ENV: 'docker'
+      },
       all: localConfig
     },
 
