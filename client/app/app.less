@@ -17,26 +17,50 @@
 }
 
 #page-wrapper {
-    padding: 0 15px;
     min-height: 568px;
     background-color: white;
+
+}
+
+#viewItemsTable label {
+    font-weight: normal;
+    white-space: nowrap;
+    text-align: left;
 }
 
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;
         margin: 0 0 0 250px;
-        padding: 0 30px;
+        padding: 10px 30px;
         border-left: 1px solid darken(@gray-lightest, 6.5%);
     }
 }
 
+.buttons-footer {
+    padding: 15px;
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+}
+
+.divider{
+  border-bottom: 1px solid @gray-darker;
+  margin: 5px 0;
+}
+
 /* inject:less */
-@import 'admin/admin';
-@import 'main/main';
-@import '../components/footer/footer';
-@import '../components/modal/modal';
-@import '../components/navbar/navbar';
-@import '../components/navbar/variables';
-@import '../components/oauth-buttons/oauth-buttons';
+@import 'admin/admin.less';
+@import 'clients/client/client.less';
+@import 'clients/clientAddress/clientAddress.less';
+@import 'clients/clientAddress/clientAddressForm/clientAddressForm.less';
+@import 'clients/clientEdit/clientEdit.less';
+@import 'clients/clientPaymentInfo/clientPaymentInfo.less';
+@import 'clients/clientPhone/clientPhone.less';
+@import 'main/main.less';
+@import 'newOrder/newOrder.less';
+@import 'variables.less';
+@import '../components/footer/footer.less';
+@import '../components/modal/modal.less';
+@import '../components/navbar/navbar.less';
+@import '../components/oauth-buttons/oauth-buttons.less';
 /* endinject */

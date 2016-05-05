@@ -1,0 +1,14 @@
+db:
+  image: mongo
+  ports:
+    - "27017:27017"
+  command: "--smallfiles --logpath=/dev/null"
+web:
+  image: process-admin:v1
+  command: npm start
+  volumes:
+    - "./node_app:/myapp"
+  ports:
+    - "9001:9001"
+  links:
+    - "db:mongo"

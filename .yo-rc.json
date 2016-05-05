@@ -30,7 +30,7 @@
       "googleAuth": true,
       "facebookAuth": true,
       "twitterAuth": true,
-      "gulp": true,
+      "grunt": true,
       "jasmine": true,
       "mocha": false,
       "should": false,

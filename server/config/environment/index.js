@@ -19,7 +19,7 @@ var all = {
   root: path.normalize(__dirname + '/../../..'),
 
   // Server port
-  port: process.env.PORT || 9000,
+  port: process.env.PORT || 9001,
 
   // Server IP
   ip: process.env.IP || '0.0.0.0',
@@ -39,6 +39,10 @@ var all = {
         safe: true
       }
     }
+  },
+  mongoDocker: {
+    uri: 'mongodb://mongo/processadmin-dev'
+    // uri: 'mongodb://192.168.99.100:27017/processadmin-dev'
   },
 
   facebook: {
@@ -62,7 +66,17 @@ var all = {
 
 // Export the config object based on the NODE_ENV
 // ==============================================
-module.exports = _.merge(
+var exportInfo = _.merge(
   all,
   require('./shared'),
   require('./' + process.env.NODE_ENV + '.js') || {});
+
+if (process.env.DOCKER){
+  console.log("****** " + process.env.NODE_ENV +  " - Changing the MONGO uri.... exportInfo: " + exportInfo.mongoDocker.uri);
+  exportInfo.mongo.uri = exportInfo.mongoDocker.uri;
+}else{
+  console.log("****** SAME OLD MONGO!!");
+}
+
+
+module.exports = exportInfo

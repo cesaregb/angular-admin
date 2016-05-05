@@ -78,7 +78,7 @@ export default function(app) {
     app.use(require('connect-livereload')());
   }
 
-  if ('development' === env || 'test' === env) {
+  if ('development' === env || 'test' === env || 'docker' === env) {
     app.use(express.static(path.join(config.root, '.tmp')));
     app.use(express.static(app.get('appPath')));
     app.use(morgan('dev'));

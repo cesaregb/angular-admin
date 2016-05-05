@@ -9,7 +9,7 @@ This project was generated with the [Angular Full-Stack Generator](https://githu
 - [Git](https://git-scm.com/)
 - [Node.js and npm](nodejs.org) Node ^4.2.3, npm ^2.14.7
 - [Bower](bower.io) (`npm install --global bower`)
-- [Gulp](http://gulpjs.com/) (`npm install --global gulp`)
+- [Grunt](http://gruntjs.com/) (`npm install --global grunt-cli`)
 - [MongoDB](https://www.mongodb.org/) - Keep a running daemon with `mongod`
 
 ### Developing
@@ -20,7 +20,7 @@ This project was generated with the [Angular Full-Stack Generator](https://githu
 
 3. Run `mongod` in a separate shell to keep an instance of the MongoDB Daemon running
 
-4. Run `gulp serve` to start the development server. It should automatically open the client in your browser when ready.
+4. Run `grunt serve` to start the development server. It should automatically open the client in your browser when ready.
 
 ## Build & development
 

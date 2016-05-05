@@ -1,0 +1,51 @@
+<div id="page-wrapper" class="row">
+
+  <div class="row">
+    <div>
+      <div class="col-lg-12">
+        <fieldset class="form-group">
+          <label for="exampleInputEmail1">Client</label>
+          <input type="text" class="form-control" ng-model="$cn.objAddress.city">
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="exampleInputEmail1">Neighbor</label>
+          <input type="text" class="form-control" ng-model="$cn.objAddress.address">
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="exampleInputEmail1">Street and number</label>
+          <input type="text" class="form-control" ng-model="$cn.objAddress.address2">
+        </fieldset>
+        <button type="submit" class="btn btn-secondary" ng-click="$cn.createCircles()">Draw Circles</button>
+        <button type="submit" class="btn btn-primary" ng-click="$cn.searchAddress()">Search</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <fieldset class="form-group">
+        <label for="exampleInputEmail1">City</label>
+        <input type="text" class="form-control" ng-model="$cn.objAddress.city">
+      </fieldset>
+      <fieldset class="form-group">
+        <label for="exampleInputEmail1">Neighbor</label>
+        <input type="text" class="form-control" ng-model="$cn.objAddress.address">
+      </fieldset>
+      <fieldset class="form-group">
+        <label for="exampleInputEmail1">Street and number</label>
+        <input type="text" class="form-control" ng-model="$cn.objAddress.address2">
+      </fieldset>
+      <button type="submit" class="btn btn-secondary" ng-click="$cn.createCircles()">Draw Circles</button>
+      <button type="submit" class="btn btn-primary" ng-click="$cn.searchAddress()">Search</button>
+    </div>
+  </div>
+
+  <div class="row" style="padding-top:20px">
+    <div class="col-lg-12">
+      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+      <div id="map"></div>
+      <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+  </div>
+</div>

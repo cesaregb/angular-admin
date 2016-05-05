@@ -1,0 +1,12 @@
+# To build:
+# docker build -t process-admin-dependencies:v1 -f DockerfileDependencies .
+# docker push cesaregb/process-admin-dependencies:v1
+
+FROM node
+# FROM bitnami/node
+MAINTAINER Cesar Gonzalez, cesareg.borjon@gmail.com
+
+RUN mkdir app
+COPY dist/package.json app/package.json
+WORKDIR app
+RUN npm install
