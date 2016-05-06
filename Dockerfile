@@ -27,15 +27,14 @@ RUN bower install
 ADD . /app
 RUN grunt build --force
 WORKDIR /app/dist
-ENV NODE_ENV production
+ENV NODE_ENV development
 RUN npm install
-
 
 # Define working directory.
 WORKDIR /app
 
 # Define default command.
-CMD ["npm", "start"]
+ENTRYPOINT ["npm", "start"]
 
 # Expose ports.
 EXPOSE 9000
