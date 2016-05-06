@@ -48,7 +48,6 @@
       });
 
       modalInstance.result.then(function(selectedItem) {
-        console.log("selectedItem: " + JSON.stringify(selectedItem));
 
         var phone = selectedItem;
         // if (phone.prefered){

@@ -4,11 +4,11 @@
 # To run:
 # run docker mongo....
 #   docker run -p 27017:27017 --name mongo-admin -d mongo
-# docker run -p 9001:9001 --link mongo-admin:mongo -it process-admin:v1
-# docker run -p 9001:9001 --link mongo-admin:mongo -it --entrypoint bash process-admin:v1
+# docker run -p 9000:9000 --link mongo-admin:mongo -it process-admin:v1
+# docker run -p 9000:9000 --link mongo-admin:mongo -it --entrypoint bash process-admin:v1
 
-# docker run -p 9001:9001-it process-admin:v1
-# docker run -p 9001:9001 -it --entrypoint bash process-admin:v1
+# docker run -p 9000:9000-it process-admin:v1
+# docker run -p 9000:9000 -it --entrypoint bash process-admin:v1
 
 FROM digitallyseamless/nodejs-bower-grunt
 
@@ -45,7 +45,7 @@ RUN npm install
 WORKDIR /app
 
 # Expose ports.
-EXPOSE 9001
+EXPOSE 9000
 
 # Define default command.
 ENTRYPOINT ["npm", "start"]

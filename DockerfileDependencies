@@ -1,5 +1,5 @@
 # To build:
-# docker build -t process-admin-dependencies:v1 -f DockerfileDependencies .
+# docker build -t cesaregb/process-admin-dependencies:v1 -f DockerfileDependencies .
 # docker push cesaregb/process-admin-dependencies:v1
 
 FROM node
