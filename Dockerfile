@@ -10,20 +10,32 @@
 
 # docker run -p 9000:9000-it process-admin:v1
 # docker run -p 9000:9000 -it --entrypoint bash process-admin:v1
-FROM cesaregb/process-admin-dependencies:v1
-MAINTAINER Cesar Gonzalez, cesareg.borjon@gmail.com
 
-#sett the environment to be used...
-ENV NODE_ENV=development
-ENV DOCKER=dockerDB
-ENV PORT=9000
+FROM digitallyseamless/nodejs-bower-grunt
+
+RUN apt-get update && apt-get install -y ruby ruby-compass && \
+            apt-get clean && \
+            rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Set instructions on build.
+ADD package.json /app/
+RUN npm install
+ADD bower.json /app/
+ADD .bowerrc /app/
+WORKDIR /app
+RUN bower install
+ADD . /app
+RUN grunt build --force
+WORKDIR /app/dist
+ENV NODE_ENV production
+RUN npm install
+
+
+# Define working directory.
+WORKDIR /app
+
+# Define default command.
+CMD ["npm", "start"]
+
+# Expose ports.
 EXPOSE 9000
-
-# Instllation done by dependencies image.
-# ADD dist/package.json package.json
-# RUN npm install
-COPY dist .
-# RUN chmod -R 700 .
-# WORKDIR app
-
-ENTRYPOINT ["npm", "start"]
