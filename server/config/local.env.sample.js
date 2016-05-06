@@ -6,7 +6,7 @@
 // You will need to set these on the server you deploy to.
 
 module.exports = {
-  DOMAIN:           'http://localhost:9001',
+  DOMAIN:           'http://localhost:9000',
   SESSION_SECRET:   'processadmin-secret',
 
   FACEBOOK_ID:      'app-id',
