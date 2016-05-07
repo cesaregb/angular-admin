@@ -11,27 +11,17 @@
 # docker run -p 9000:9000-it process-admin:v1
 # docker run -p 9000:9000 -it --entrypoint bash process-admin:v1
 
-FROM digitallyseamless/nodejs-bower-grunt
+FROM cesaregb/process-admin-dependencies:v1
 
-RUN apt-get update && apt-get install -y ruby ruby-compass && \
-            apt-get clean && \
-            rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Set instructions on build.
-ADD package.json /app/
-RUN npm install
-ADD bower.json /app/
-ADD .bowerrc /app/
-WORKDIR /app
+#Current workingdir is app from dependencies image.
+ADD bower.json .
+ADD .bowerrc .
 RUN bower install
-ADD . /app
+ADD . .
 RUN grunt build --force
-WORKDIR /app/dist
+WORKDIR /dist
 ENV NODE_ENV development
 RUN npm install
-
-# Define working directory.
-WORKDIR /app
 
 # Define default command.
 ENTRYPOINT ["npm", "start"]
