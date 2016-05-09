@@ -32,7 +32,7 @@ WORKDIR /app
 ADD bower.json /app
 ADD .bowerrc /app
 
-RUN bower install
+RUN bower install --allow-root
 ADD . /app
 
 RUN grunt build --force
