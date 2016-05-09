@@ -22,6 +22,7 @@ COPY package.json app/package.json
 WORKDIR app
 RUN npm install
 
+RUN npm install -g grunt-cli
 
 #Current workingdir is app from dependencies image.
 WORKDIR /app
