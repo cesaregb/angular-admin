@@ -14,14 +14,17 @@
 FROM cesaregb/process-admin-dependencies:v1
 
 #Current workingdir is app from dependencies image.
-ADD bower.json .
-ADD .bowerrc .
+WORKDIR /app
+ADD bower.json /app
+ADD .bowerrc /app
+
 RUN bower install
-ADD . .
+ADD . /app
+
 RUN grunt build --force
-WORKDIR /dist
+WORKDIR /app/dist
 ENV NODE_ENV development
-RUN npm install
+ENV DOCKER useDockerDb
 
 # Define default command.
 ENTRYPOINT ["npm", "start"]
