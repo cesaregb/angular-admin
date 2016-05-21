@@ -53,10 +53,14 @@
 
               <!-- Button (Double) -->
               <div class="buttons-footer">
-                <a href="#" class="btn btn-info btn-sm" ng-disabled="$cn.route.idRoutes == null || $cn.route.idRoutes == 0">
+                <a href="#" class="btn btn-info btn-sm"
+                    ui-sref="routes.calendar({route: $cn.route})"
+                    ng-disabled="$cn.route.idRoutes == null || $cn.route.idRoutes == 0">
                   <span class="glyphicon glyphicon-calendar"></span> Calendar
                 </a>
-                <a href="#" class="btn btn-info btn-sm" ng-disabled="$cn.route.idRoutes == null || $cn.route.idRoutes == 0">
+                <a href="#" class="btn btn-info btn-sm"
+                    ui-sref="routes.stopsAll({route: $cn.route})"
+                    ng-disabled="$cn.route.idRoutes == null || $cn.route.idRoutes == 0">
                   <span class="glyphicon glyphicon-map-marker"></span> Stops
                 </a>
                 <button type="submit" class="btn btn-primary" ng-disabled="$cn.routeForm.$invalid">Submit</button>

@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Component: RouteCalendarComponent', function () {
+describe('Component: StopAllComponent', function () {
 
   // load the controller's module
   beforeEach(module('processAdminApp'));
 
-  var RouteCalendarComponent, scope;
+  var StopAllComponent, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($componentController, $rootScope) {
     scope = $rootScope.$new();
-    RouteCalendarComponent = $componentController('RouteCalendarComponent', {
+    StopAllComponent = $componentController('StopAllComponent', {
       $scope: scope
     });
   }));

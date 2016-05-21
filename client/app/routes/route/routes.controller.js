@@ -16,7 +16,7 @@ class RoutesComponent {
     this.newRoute = true;
     this.$state = $state;
     this.route = $stateParams.route;
-    this.$log.info("Route: " + JSON.stringify(this.route));
+    // this.$log.info("Route: " + JSON.stringify(this.route));
     this.title = "New Route"
     this.validRoute = null;
     this.setupRoute();
@@ -32,19 +32,18 @@ class RoutesComponent {
       this.route = {};
       this.route.category = 1;
     }
-
   }
 
   back() { // back handler...
     this.$state.go('route.all',null , { reload: true });
   }
 
-  getRoute( id ){
-    var _this = this;
-    this.factoryRoutes.getRouteById(id).then(function(data){
-      _this.route = data;
-    });
-  }
+  // getRoute( id ){
+  //   var _this = this;
+  //   this.factoryRoutes.getRouteById(id).then(function(data){
+  //     _this.route = data;
+  //   });
+  // }
 
   saveRoute(){
     var _this = this;

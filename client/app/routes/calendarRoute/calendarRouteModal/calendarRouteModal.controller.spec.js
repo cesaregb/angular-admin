@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: ClientPaymentInfoModalCtrl', function () {
+describe('Controller: RoutePaymentInfoModalCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('processAdminApp.clientPhoneModal'));
+  beforeEach(module('processAdminApp.routePhoneModal'));
 
-  var ClientPaymentInfoModalCtrl, scope;
+  var RoutePaymentInfoModalCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    ClientPaymentInfoModalCtrl = $controller('ClientPaymentInfoModalCtrl', {
+    RoutePaymentInfoModalCtrl = $controller('RoutePaymentInfoModalCtrl', {
       $scope: scope
     });
   }));

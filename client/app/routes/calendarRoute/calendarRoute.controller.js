@@ -1,7 +1,7 @@
 'use strict';
 (function(){
 
-class RouteCalendarComponent {
+class CalendarRouteComponent {
 
   constructor($uibModal, $stateParams, $state, noty, factoryRoutes) {
     this.factoryRoutes = factoryRoutes;
@@ -20,7 +20,7 @@ class RouteCalendarComponent {
 
   getRouteInfo() {
     var _this = this;
-    _this.factoryRoutes.getRouteById(this.route.idRoute).then(function(response) {
+    _this.factoryRoutes.getRouteById(this.route.idRoutes).then(function(response) {
         _this.route = response;
       }),
       function(err) {}
@@ -28,36 +28,35 @@ class RouteCalendarComponent {
 
   openNewModal() {
     this.openModal({
-      idRoute: this.route.idRoute
+      idRoutes: this.route.idRoutes
     });
   }
 
-  openModal(routePaymentInfo) {
+  openModal(calendarRoute) {
 
     var _this = this;
     var modalInstance = this.$uibModal.open({
       animation: false,
-      templateUrl: '/app/routes/routePaymentInfo/routePaymentInfoModal/routePaymentInfo.html',
-      controller: 'RoutePaymentInfoModalCtrl',
+      templateUrl: '/app/routes/calendarRoute/calendarRouteModal/calendarRouteModal.html',
+      controller: 'CalendarRouteModalCtrl',
       size: 'md',
       resolve: {
-        routePaymentInfo: function() {
-          return routePaymentInfo;
+        calendarRoute: function() {
+          return calendarRoute;
         }
       }
     });
 
     modalInstance.result.then(function(selectedItem) {
-
-      var routePaymentInfo = selectedItem;
-      if (routePaymentInfo.idRoutePaymentInfo != null && routePaymentInfo.idRoutePaymentInfo > 0) {
-        // update routePaymentInfo
-        _this.factoryRoutes.updateRoutePaymentInfoCallback(routePaymentInfo, function() {
+      var calendarRoute = selectedItem;
+      if (calendarRoute.idCalendarRoute != null && calendarRoute.idCalendarRoute > 0) {
+        // update calendarRoute
+        _this.factoryRoutes.updateCalendarRouteCallback(calendarRoute, function() {
           _this.getRouteInfo();
         });
       } else {
-        // save new routePaymentInfo
-        _this.factoryRoutes.saveRoutePaymentInfoCallback(routePaymentInfo, function() {
+        // save new calendarRoute
+        _this.factoryRoutes.saveCalendarRouteCallback(calendarRoute, function() {
           _this.getRouteInfo();
         });
       }
@@ -66,9 +65,9 @@ class RouteCalendarComponent {
 }
 
 angular.module('processAdminApp')
-  .component('routeCalendar', {
-    templateUrl: 'app/routes/routeCalendar/routeCalendar.html',
-    controller: RouteCalendarComponent
+  .component('calendarRoute', {
+    templateUrl: 'app/routes/calendarRoute/calendarRoute.html',
+    controller: CalendarRouteComponent,
+    controllerAs: "$cn"
   });
-
 })();

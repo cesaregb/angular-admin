@@ -20,7 +20,23 @@ angular.module('processAdminApp')
         url: '/all',
         template: '<routes-all></routes-all>'
       }).state('routes.calendar', {
-        url: '/routeCalendar',
-        template: '<route-calendar></route-calendar>'
+        url: '/calendarRoute',
+        template: '<calendar-route></calendar-route>',
+        params: {
+          route: null
+        }
+      }).state('routes.stopsAll', {
+        url: '/stopsAll',
+        template: '<stops-all></stops-all>',
+        params: {
+          route: null
+        }
+      }).state('routes.stopForm', {
+        url: '/stopForm',
+        template: '<stop-form></stop-form>',
+        params: {
+          route: null,
+          stop: null
+        }
       });
   });

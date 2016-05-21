@@ -1,0 +1,15 @@
+<form novalidate>
+    <div>
+      <div class="modal-header">
+        <h3 class="modal-title">{{title}}</h3>
+      </div>
+      <div class="modal-body">
+        <formly-form model="address" fields="addressFields" form="addressForm"> </formly-form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="submit" ng-click="saveAddress()" ng-disabled="addressForm.$invalid">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+      </div>
+    </div>
+
+</form>

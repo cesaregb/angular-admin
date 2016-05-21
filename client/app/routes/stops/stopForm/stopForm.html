@@ -1,0 +1,69 @@
+<div id="page-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="pull-right" style="padding: 10px;">
+        <a href="#" ui-sref="client.address({client: $cn.client})" class="btn btn-info btn-sm">
+          <span class="glyphicon glyphicon-chevron-left"></span> Back
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          {{$cn.title}}
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-lg-12">
+              View Price Area: <input type="checkbox" ng-click="$cn.createCircles()"/>
+            </div>
+          </div>
+          <div class="row" style="padding-top:20px">
+            <div class="col-lg-12">
+
+              <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
+              <div id="type-selector" class="controls">
+                <input type="radio" name="type" id="changetype-all" checked="checked">
+                <label for="changetype-all">All</label>
+
+                <input type="radio" name="type" id="changetype-establishment">
+                <label for="changetype-establishment">Establishments</label>
+
+                <input type="radio" name="type" id="changetype-address">
+                <label for="changetype-address">Addresses</label>
+<!--            <input type="radio" name="type" id="changetype-geocode">
+                <label for="changetype-geocode">Geocodes</label> -->
+              </div>
+              <div id="map"></div>
+              <div class="buttons-footer">
+                <button class="btn btn-default" type="button" ng-click="$cn.parseAddress()">Parse Address</button>
+              </div>
+            </div>
+            <!-- /.col-lg-12 -->
+          </div>
+          <div class="row" style="padding-bottom:5px">
+            <div class="col-lg-12">
+              Distance: {{$cn.distance}} Km </br>
+              Proce: ${{$cn.distancePrice}}
+            </div>
+          </div>
+          <div class="row">
+            <form novalidate>
+              <div class="col-lg-12">
+                <formly-form model="$cn.address" fields="$cn.addressFields" form="$cn.addressForm"> </formly-form>
+              </div>
+              <div class="buttons-footer">
+                <button class="btn btn-primary" type="submit" ng-click="$cn.saveAddress()" ng-disabled="$cn.addressForm.$invalid">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
