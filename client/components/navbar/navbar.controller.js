@@ -7,8 +7,8 @@ class NavbarController {
       'title': 'Clients',
       'state': 'client.all',
     }, {
-      title: 'Specs',
-      state: 'specs'
+      title: 'Routes',
+      state: 'routes.all'
     }, {
       title: 'Service',
       state: 'services'

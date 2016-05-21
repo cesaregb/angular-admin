@@ -13,7 +13,9 @@ angular.module('processAdminApp', [
     'validation.match',
     'angular-noty',
     'formly',
-    'formlyBootstrap'
+    'formlyBootstrap',
+    // 'formlyMaterial',
+    'ngMaterial'
   ])
   .config(function($urlRouterProvider, $locationProvider) {
     $urlRouterProvider.otherwise('/');

@@ -1,0 +1,74 @@
+<div id="page-wrapper" class="row">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="pull-right" style="padding: 10px;">
+        <a href="#" ui-sref="routes.all" class="btn btn-info btn-sm">
+          <span class="glyphicon glyphicon-chevron-left"></span> Back
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Route Form
+        </div>
+        <div class="panel-body">
+          <form class="form-horizontal" name="$cn.routeForm" ng-submit="$cn.saveRoute()" novalidate>
+            <fieldset>
+
+              <!-- Form Name -->
+              <legend>{{$cn.title}}</legend>
+
+              <!-- Text input-->
+              <div class="form-group" ng-class="{ 'has-error' : $cn.routeForm.name.$invalid && !$cn.routeForm.name.$pristine }">
+                <label class="col-md-4 control-label" for="name">Name *</label>
+                <div class="col-md-6">
+                  <input id="name" name="name" type="text" placeholder="name" class="form-control input-md" required
+                    ng-model="$cn.route.name" ng-minlength="3">
+                  <p ng-show="$cn.routeForm.name.$error.minlength" class="help-block">Value too short</p>
+                </div>
+              </div>
+
+              <!-- Text input-->
+              <div class="form-group" ng-class="{ 'has-error' : $cn.routeForm.description.$invalid && !$cn.routeForm.description.$pristine }">
+                <label class="col-md-4 control-label" for="description">Description *</label>
+                <div class="col-md-6">
+                  <input id="description" name="description" type="text" class="form-control input-md" required
+                    ng-model="$cn.route.description" ng-minlength="3">
+                  <p ng-show="$cn.routeForm.description.$error.minlength" class="help-block">Value too short</p>
+                </div>
+              </div>
+
+              <!-- Text input-->
+              <div class="form-group" ng-class="{ 'has-error' : $cn.routeForm.description.$invalid && !$cn.routeForm.description.$pristine }">
+                <label class="col-md-4 control-label" for="description">Category *</label>
+                <div class="col-md-6">
+                  <select class="form-control" ng-model="$cn.route.category" ng-options="category.value as category.name for category in $cn.categories"></select>
+                </div>
+              </div>
+
+              <!-- Button (Double) -->
+              <div class="buttons-footer">
+                <a href="#" class="btn btn-info btn-sm" ng-disabled="$cn.route.idRoutes == null || $cn.route.idRoutes == 0">
+                  <span class="glyphicon glyphicon-calendar"></span> Calendar
+                </a>
+                <a href="#" class="btn btn-info btn-sm" ng-disabled="$cn.route.idRoutes == null || $cn.route.idRoutes == 0">
+                  <span class="glyphicon glyphicon-map-marker"></span> Stops
+                </a>
+                <button type="submit" class="btn btn-primary" ng-disabled="$cn.routeForm.$invalid">Submit</button>
+              </div>
+
+            </fieldset>
+          </form>
+        </div>
+      </div>
+
+    </div>
+    <!-- /.col-lg-12 -->
+  </div>
+
+</div>

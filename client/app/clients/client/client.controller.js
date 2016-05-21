@@ -5,8 +5,15 @@ class ClientComponent {
 
   title = "Clients";
 
-  constructor( factoryClients, serviceClients, $state, $stateParams ) {
+  filters = [
+      {name:'Name', value:'name'},
+      {name:'Email', value:'email'},
+      {name:'Phone Number', value:'phone'}
+    ];
+
+  constructor( factoryClients, serviceClients, $state, $stateParams, $log ) {
     this.$state = $state;
+    this.$log = $log;
     this.factoryClients = factoryClients;
     this.serviceClients = serviceClients;
     this.client = null;
@@ -15,11 +22,29 @@ class ClientComponent {
 
   gatherClients(){
     this.clients = this.serviceClients.query();
+    this.searchFilter = this.filters[0];
   }
 
   selectClient(client){
     this.client = client;
     this.$state.go('client.edit', {client: client}, { reload: true });
+  }
+
+  searchClient(){
+    var _this = this;
+    var text = this.searchText;
+    var filter = this.searchFilter;
+
+    var filterArray = [];
+    var applyFilter = {'key':filter.value, 'value':text};
+    filterArray.push(applyFilter);
+
+    this.$log.info("Filter: " + JSON.stringify(filterArray));
+
+    this.factoryClients.getClientByFilter(filterArray).then(function(response){
+        _this.clients = response;
+    });
+
   }
 
 }

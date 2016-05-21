@@ -12,8 +12,8 @@
               <div class="row">
                 <div class="col-lg-12">
                   <div class="pull-right" style="padding: 10px;">
-                    <a href="#" ui-sref="client.edit" class="btn btn-info btn-sm">
-                      <span class="glyphicon glyphicon-plus"></span> Add Client
+                    <a href="#" ui-sref="routes.edit" class="btn btn-info btn-sm">
+                      <span class="glyphicon glyphicon-plus"></span> Add Route
                     </a>
                   </div>
                 </div>
@@ -22,11 +22,7 @@
                 <div class="col-md-12">
                   <div class="pull-right">
                     <label>Search:
-                      <input type="search" class="form-control input-sm" ng-model="$cn.searchText" aria-controls="dataTables-example">
-                      <select class="form-control" ng-model="$cn.searchFilter" ng-options="filter.name for filter in $cn.filters"></select>
-                      <a href="#" ng-click="$cn.searchClient()" class="btn btn-info btn-sm">
-                        <span class="glyphicon glyphicon-search"></span>
-                      </a>
+                      <input type="search" class="form-control input-sm" placeholder="" aria-controls="dataTables-example">
                     </label>
                   </div>
                 </div>
@@ -37,26 +33,24 @@
                     <thead>
                       <tr role="row">
                         <th>Name</th>
-                        <th>Lastname</th>
-                        <th>Email</th>
-                        <th>Phones</th>
-                        <th>Address</th>
+                        <th>Description</th>
+                        <th>Category</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr ng-show="$cn.clients.length == 0"><td colspan="5">No Items found</td></tr>
+                      <tr ng-show="$cn.appRoutes.length == 0"><td colspan="5">No Items found</td></tr>
                       <tr class="gradeA" role="row"
                           ng-class-odd="'odd'" ng-class-even="'even'"
-                          ng-repeat="client in $cn.clients">
+                          ng-repeat="appRoute in $cn.appRoutes">
                           <td>
-                            <a href="" ng-click="$cn.selectClient(client);">
-                              {{client.name}}
+                            <a href="" ng-click="$cn.selectRoute(appRoute);">
+                              {{appRoute.name}}
                             </a>
                           </td>
-                          <td>{{client.lastName}}</td>
-                          <td>{{client.email}}</td>
-                          <td>{{client.defaultPhone}}</td>
-                          <td>{{client.defaultAddress}}</td>
+                          <td>{{appRoute.description}}</td>
+                          <td ng-show="appRoute.category == 1">Apartments</td>
+                          <td ng-show="appRoute.category == 2">Offices</td>
+                          <td ng-show="appRoute.category == 3">Client (Business)</td>
                       </tr>
                     </tbody>
                   </table>
@@ -72,5 +66,5 @@
     </div>
     <!-- /.col-lg-12 -->
   </div>
-  <ui-gmap-google-map center='$cn.clientMap.center' zoom='$cn.clientMap.zoom'></ui-gmap-google-map>
+  <ui-gmap-google-map center='$cn.routeMap.center' zoom='$cn.routeMap.zoom'></ui-gmap-google-map>
 </div>
