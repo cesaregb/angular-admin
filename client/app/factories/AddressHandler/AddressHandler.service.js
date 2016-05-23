@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('AddressHandlerCtrl', function ($scope, $stateParams, factoryClients, $timeout, $state, noty) {
-    // Start controller
+  .factory('AddressHandler', function (noty, $log) {
+    var factory = {};
 
-    $scope.circlesVisible = false;
-    var circles = [{
+    //********** Routes CRUD
+    factory.circles = [{
       id: 3,
       center: {
         lat: 20.621335,
@@ -54,44 +54,23 @@ angular.module('processAdminApp')
       }
     }];
 
-    $scope.init = function () {
-      $scope.noty = noty;
-      // console.log("$scope: "  + $scope.$parent.appModule);
-
-      $scope.client = $stateParams.client;
-      $scope.$state = $state;
-      $scope.place = null;
-      // console.log("$stateParams: " + JSON.stringify($stateParams));
-      $scope.address = $stateParams.address;
-      $scope.factoryClients = factoryClients;
-
-
-      if ($scope.client == null) {
-        $scope.$state.go('client.all', null, {
-          reload: true
-        });
-      } else {
-        $scope.title = "New address";
-        $scope.newAddress = true;
-        if ($scope.address != null && $scope.address.address != null) {
-          $scope.newAddress = false;
-          $scope.title = "Edit address";
-        }
-        $scope.title = $scope.title + " -- Client: " + $scope.client.name
-        $scope.existingMarker = false;
-        $scope.markers = [];
-
-        $timeout(function() {
-          $scope.initMap();
-        }, 100);
-      }
+    factory.resetValues = function(){
+      factory.tersusLatLng = new google.maps.LatLng(20.621335, -103.418127);
+      factory.circlesVisible = false;
+      factory.address = {};
+      factory.place = null;
+      factory.map = null;
+      factory.markers = [];
+      factory.existingMarker = false;
+      factory.addressParsed = false;
+      factory.distance = 0;
+      factory.distancePrice = 0;
     }
 
-    $scope.init();
+    factory.initMap = function() {
 
-    $scope.initMap() {
-
-      $scope.tersusLatLng = new google.maps.LatLng(20.621335, -103.418127);
+      factory.resetValues();
+      // google provided code...
       var map = new google.maps.Map(document.getElementById('map'), {
         center: {
           lat: 20.621335,
@@ -101,7 +80,6 @@ angular.module('processAdminApp')
         zoom: 13,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       });
-
 
       var input = /** @type {!HTMLInputElement} */ (
         document.getElementById('pac-input'));
@@ -131,7 +109,7 @@ angular.module('processAdminApp')
         infowindow.close();
         marker.setVisible(false);
         var place = autocomplete.getPlace();
-        $scope.place = place;
+        factory.place = place;
 
         if (!place.geometry) {
           window.alert("Autocomplete's returned place contains no geometry");
@@ -181,40 +159,44 @@ angular.module('processAdminApp')
       setupClickListener('changetype-establishment', ['establishment']);
       // setupClickListener('changetype-geocode', ['geocode']);
 
-      $scope.map = map;
+      factory.map = map;
 
       google.maps.event.addListener(map, 'click', function(event) {
-        $scope.placeMarker(event.latLng);
+        factory.placeMarker(event.latLng);
       });
-      $scope.addExistingMarker();
+
+    };
+
+    factory.setAddress = function(address){
+      factory.address = address;
     }
 
-
-    function addExistingMarker() {
-      if ($scope.address != null && $scope.address.lat != null && $scope.address.lng != null) {
-        var selectedPlaceLatLng = new google.maps.LatLng($scope.address.lat, $scope.address.lng);
+    factory.addExistingMarker = function () {
+      if (factory.address != null && factory.address.lat != null && factory.address.lng != null) {
+        var selectedPlaceLatLng = new google.maps.LatLng(factory.address.lat, factory.address.lng);
         // add marker
         var marker = new google.maps.Marker({
           position: selectedPlaceLatLng,
-          map: $scope.map
+          map: factory.map
         });
 
-        $scope.markers.push(marker);
-        $scope.existingMarker = true;
-        $scope.map.panTo(selectedPlaceLatLng);
+        factory.markers.push(marker);
+        factory.existingMarker = true;
+        factory.map.panTo(selectedPlaceLatLng);
       }
-    }
+    };
 
-    function placeMarker(location) {
+
+    factory.placeMarker = function (location) {
       // console.log("location: " + JSON.stringify(location));
-      if ($scope.addressParsed) {
-        $scope.noty.showNoty({
+      if (factory.addressParsed) {
+        noty.showNoty({
           text: "Please make a search before creating marker.",
           ttl: 1000 * 2,
           type: "warning"
         });
-      } else if ($scope.place == null) {
-        $scope.noty.showNoty({
+      } else if (factory.place == null) {
+        noty.showNoty({
           text: "Please search by address first",
           ttl: 1000 * 2,
           type: "warning"
@@ -222,129 +204,104 @@ angular.module('processAdminApp')
       } else {
 
         // clear markers
-        if ($scope.existingMarker && $scope.markers.length > 0) {
-          $scope.markers.forEach(function(item) {
+        if (factory.existingMarker && factory.markers.length > 0) {
+          factory.markers.forEach(function(item) {
             item.setMap(null);
           });
-          $scope.markers = [];
+          factory.markers = [];
         }
         // add marker
         var marker = new google.maps.Marker({
           position: location,
-          map: $scope.map
+          map: factory.map
         });
 
-        $scope.markers.push(marker);
-        $scope.existingMarker = true;
-        $scope.map.panTo(location);
+        factory.markers.push(marker);
+        factory.existingMarker = true;
+        factory.map.panTo(location);
 
         // addong lat and lng
-        $scope.address.lat = location.lat();
-        $scope.address.lng = location.lng();
-
+        factory.address.lat = location.lat();
+        factory.address.lng = location.lng();
       }
     }
 
     var circleObj = [];
-    $scope.createCircles = function() {
-      if ($scope.circlesVisible) {
-        $scope.circlesVisible = false;
-        $scope.circleObj.forEach(function(item) {
+    factory.createCircles = function() {
+      if (factory.circlesVisible) {
+        factory.circlesVisible = false;
+        circleObj.forEach(function(item) {
           item.setMap(null);
         });
 
       } else {
 
-        $scope.circlesVisible = true;
-        circles.forEach(function(item) {
+        factory.circlesVisible = true;
+        factory.circles.forEach(function(item) {
           var priceCircle = new google.maps.Circle({
             strokeColor: item.stroke.color,
             strokeOpacity: 0.8,
             strokeWeight: 2,
             fillColor: item.fill.color,
             fillOpacity: 0.35,
-            map: $scope.map,
+            map: factory.map,
             center: item.center,
             radius: item.radius
           });
-          $scope.circleObj.push(priceCircle);
+          circleObj.push(priceCircle);
         });
       }
     };
 
-
     var addressParsed = false;
-    var distance = 0;
-    var distancePrice = 0;
-    $scope.parseAddress = function() {
-      var selectedPlaceLatLng = new google.maps.LatLng($scope.address.lat, $scope.address.lng);
-      $scope.distance = google.maps.geometry.spherical.computeDistanceBetween($scope.tersusLatLng, selectedPlaceLatLng);
 
-      if ($scope.distance < 2000) {
-        $scope.distancePrice = 20;
-      } else if ($scope.distance > 2000 && $scope.distance < 4000) {
-        $scope.distancePrice = 25;
-      } else if ($scope.distance > 4000) {
-        $scope.distancePrice = 30;
+    factory.parseAddress = function(callback) {
+      var selectedPlaceLatLng = new google.maps.LatLng(factory.address.lat, factory.address.lng);
+      factory.distance = google.maps.geometry.spherical.computeDistanceBetween(factory.tersusLatLng, selectedPlaceLatLng);
+
+      if (factory.distance < 2000) {
+        factory.distancePrice = 20;
+      } else if (factory.distance > 2000 && factory.distance < 4000) {
+        factory.distancePrice = 25;
+      } else if (factory.distance > 4000) {
+        factory.distancePrice = 30;
       }
-      $scope.distance = $scope.distance/1000;
-      $scope.distance = Math.round($scope.distance);
+      factory.distance = factory.distance/1000;
+      factory.distance = Math.round(factory.distance);
 
-      if ($scope.place == null) {
-        $scope.noty.showNoty({
+      if (factory.place == null) {
+        noty.showNoty({
           text: "Please search by address first",
           ttl: 1000 * 2,
           type: "warning"
         });
       } else {
-        // adding address info from the place
-        // console.log("$scope.place: " + JSON.stringify($scope.place));
-        var components = $scope.place.address_components;
-        $scope.addressParsed = true;
+        var components = factory.place.address_components;
+        factory.addressParsed = true;
         components.forEach(function(item) {
           if ($.inArray('route', item.types) >= 0) {
-            $scope.address.address2 = item.long_name;
+            factory.address.address = item.long_name;
           }
           if ($.inArray('sublocality', item.types) >= 0) {
-            $scope.address.address = item.long_name;
+            factory.address.address2 = item.long_name;
           }
           if ($.inArray('locality', item.types) >= 0) {
-            $scope.address.city = item.long_name;
+            factory.address.city = item.long_name;
           }
           if ($.inArray('administrative_area_level_1', item.types) >= 0) {
-            $scope.address.state = item.long_name;
+            factory.address.state = item.long_name;
           }
           if ($.inArray('country', item.types) >= 0) {
-            $scope.address.country = item.long_name;
+            factory.address.country = item.long_name;
           }
           if ($.inArray('postal_code', item.types) >= 0) {
-            $scope.address.zipcode = item.long_name;
+            factory.address.zipcode = item.long_name;
           }
         });
       }
+      // callback(factory.address);
     };
 
-    $scope.saveAddress = function() {
-      if ($scope.address.idAddressNumber != null && $scope.address.idAddressNumber > 0) {
-        // update address
-        $scope.factoryClients.updateAddressCallback($scope.address, function() {
-          $scope.$state.go('client.address', {
-            client: $scope.client
-          }, {
-            reload: true
-          });
-        });
-      } else {
-        // save new address
-        $scope.factoryClients.saveAddressCallback($scope.address, function() {
-          $scope.$state.go('client.address', {
-            client: $scope.client
-          }, {
-            reload: true
-          });
-        });
-      }
-    };
 
-    //END controller
+    return factory;
   });

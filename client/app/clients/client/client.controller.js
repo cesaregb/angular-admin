@@ -39,8 +39,6 @@ class ClientComponent {
     var applyFilter = {'key':filter.value, 'value':text};
     filterArray.push(applyFilter);
 
-    this.$log.info("Filter: " + JSON.stringify(filterArray));
-
     this.factoryClients.getClientByFilter(filterArray).then(function(response){
         _this.clients = response;
     });

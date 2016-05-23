@@ -35,10 +35,10 @@
                     <thead>
                       <tr role="row">
                         <th>Stop</th>
-                        <th>Stop 2</th>
-                        <th>City</th>
-                        <th>Zipcode</th>
-                        <th>Default</th>
+                        <th>Arrive At</th>
+                        <th>Time</th>
+                        <th>Action</th>
+                        <th>Address</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -48,13 +48,14 @@
                           ng-repeat="stop in $cn.route.stops">
                           <td>
                             <a href="" ng-click="$cn.addEditItem(stop);">
-                              {{stop.stop}}
+                              {{stop.name}}
                             </a>
                           </td>
-                          <td>{{stop.stop2}}</td>
-                          <td>{{stop.city}}</td>
-                          <td>{{stop.zipcode}}</td>
-                          <td>{{stop.prefered}}</td>
+                          <td>{{stop.arriveAt}}</td>
+                          <td>{{stop.time}}</td>
+                          <td ng-show="stop.stopAction == 1">Pick Up</td>
+                          <td ng-show="stop.stopAction == 2">Deliver</td>
+                          <td>{{stop.addressRoute.address}}</td>
                       </tr>
                     </tbody>
                   </table>

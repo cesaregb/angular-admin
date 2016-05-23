@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="pull-right" style="padding: 10px;">
-        <a href="#" ui-sref="client.address({client: $cn.client})" class="btn btn-info btn-sm">
+        <a href="#" ui-sref="routes.edit({route: $cn.route})" class="btn btn-info btn-sm">
           <span class="glyphicon glyphicon-chevron-left"></span> Back
         </a>
       </div>
@@ -19,10 +19,18 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-lg-12">
-              View Price Area: <input type="checkbox" ng-click="$cn.createCircles()"/>
+              <formly-form model="$cn.stop" fields="$cn.stopFieldsGeneral" > </formly-form>
             </div>
           </div>
-          <div class="row" style="padding-top:20px">
+
+          <div class="row" style="padding-bottom:10px;">
+            <div class="col-lg-12">
+              Client: <input type="checkbox" ng-model="$cn.showClient" ng-click="$cn.showClientInfo()"/>
+              {{$cn.stop.type}}
+            </div>
+          </div>
+
+          <div class="row" style="padding-top:20px" ng-show="$cn.stop.type == 0">
             <div class="col-lg-12">
 
               <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
@@ -35,8 +43,6 @@
 
                 <input type="radio" name="type" id="changetype-address">
                 <label for="changetype-address">Addresses</label>
-<!--            <input type="radio" name="type" id="changetype-geocode">
-                <label for="changetype-geocode">Geocodes</label> -->
               </div>
               <div id="map"></div>
               <div class="buttons-footer">
@@ -45,21 +51,41 @@
             </div>
             <!-- /.col-lg-12 -->
           </div>
-          <div class="row" style="padding-bottom:5px">
-            <div class="col-lg-12">
-              Distance: {{$cn.distance}} Km </br>
-              Proce: ${{$cn.distancePrice}}
-            </div>
-          </div>
-          <div class="row">
+          <div class="row" ng-show="$cn.stop.type == 0">
             <form novalidate>
               <div class="col-lg-12">
-                <formly-form model="$cn.address" fields="$cn.addressFields" form="$cn.addressForm"> </formly-form>
+                <formly-form model="$cn.stop.adress" fields="$cn.stopFields" form="$cn.stopForm" options="$cn.formOptions"> </formly-form>
               </div>
               <div class="buttons-footer">
-                <button class="btn btn-primary" type="submit" ng-click="$cn.saveAddress()" ng-disabled="$cn.addressForm.$invalid">Save</button>
+                <button class="btn btn-primary" type="submit" ng-click="$cn.saveStop()" ng-disabled="$cn.stopForm.$invalid">Save</button>
               </div>
             </form>
+          </div>
+          <div class="row" ng-show="$cn.stop.type == 1">
+            <div class="col-lg-12">
+              <div>
+                <p>
+                  Selected Client: {{$cn.stop.client.name}}
+                </p>
+                <p>
+                  <!-- Select Basic -->
+                  <div class="form-group">
+                    <label class="col-md-4 control-label" for="primaryAddress">Select Address</label>
+                    <div class="col-md-6">
+                      <select class="form-control"
+                          ng-options="addr as addr.address for addr in $cn.stop.client.addresses"
+                          ng-model="$cn.stop.address"></select>
+                    </div>
+                  </div>
+
+                  Client's Address: {{$cn.stop.client.address}} {{this.stop.client.address2}}
+                </p>
+              </div>
+              <div class="buttons-footer">
+                <button class="btn btn-primary" type="button" ng-click="$cn.openClientSearch()">Select Client</button>
+                <button class="btn btn-primary" type="submit" ng-click="$cn.saveStop()">Save</button>
+              </div>
+            </div>
           </div>
         </div>
 

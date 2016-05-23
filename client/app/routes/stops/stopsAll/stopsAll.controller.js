@@ -18,8 +18,6 @@
       } else {
         // this.getRoute();
       }
-
-      this.$log.info("Route: " + JSON.stringify(this.route));
     }
 
     getRoute() {
@@ -32,11 +30,12 @@
 
     addNewItem() {
       this.addEditItem({
-        idRoute: this.route.idRoute
+        idRoutes: this.route.idRoutes
       });
     }
 
     addEditItem( stop ) {
+      stop.type = 1;
       this.$scope.$parent.openStopForm(this.route, stop);
     }
   }

@@ -3,7 +3,8 @@
 
   class ClientAddressComponent {
 
-    constructor($uibModal, $stateParams, $state, noty, factoryClients, $scope) {
+    constructor($uibModal, $stateParams, $state, noty, factoryClients, $scope, $log) {
+      this.$log = $log;
       this.factoryClients = factoryClients;
       this.$uibModal = $uibModal;
       this.$scope = $scope;
