@@ -26,7 +26,6 @@
           <div class="row" style="padding-bottom:10px;">
             <div class="col-lg-12">
               Client: <input type="checkbox" ng-model="$cn.showClient" ng-click="$cn.showClientInfo()"/>
-              {{$cn.stop.type}}
             </div>
           </div>
 
@@ -54,7 +53,7 @@
           <div class="row" ng-show="$cn.stop.type == 0">
             <form novalidate>
               <div class="col-lg-12">
-                <formly-form model="$cn.stop.adress" fields="$cn.stopFields" form="$cn.stopForm" options="$cn.formOptions"> </formly-form>
+                <formly-form model="$cn.stop.address" fields="$cn.stopFields" form="$cn.stopForm" options="$cn.formOptions"> </formly-form>
               </div>
               <div class="buttons-footer">
                 <button class="btn btn-primary" type="submit" ng-click="$cn.saveStop()" ng-disabled="$cn.stopForm.$invalid">Save</button>

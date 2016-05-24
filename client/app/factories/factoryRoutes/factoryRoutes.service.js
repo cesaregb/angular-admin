@@ -51,8 +51,14 @@ angular.module('processAdminApp')
 
     //********** Stop CRUD
     var stopsURI = "/stops";
-      factory.getStops = function () {
+    factory.getStops = function () {
        return factoryCommon.get(stopsURI);
+    };
+    factory.getStopById = function (id) {
+       return factoryCommon.get(stopsURI + '/' + id);
+    };
+    factory.getAddressByStop = function (type, id) {
+       return factoryCommon.get(stopsURI + '/address/' + type + '/' + id);
     };
     factory.saveStop = function ( data ) {
        return factoryCommon.save(data, stopsURI);

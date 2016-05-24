@@ -164,7 +164,6 @@ angular.module('processAdminApp')
       google.maps.event.addListener(map, 'click', function(event) {
         factory.placeMarker(event.latLng);
       });
-
     };
 
     factory.setAddress = function(address){
@@ -220,7 +219,6 @@ angular.module('processAdminApp')
         factory.existingMarker = true;
         factory.map.panTo(location);
 
-        // addong lat and lng
         factory.address.lat = location.lat();
         factory.address.lng = location.lng();
       }

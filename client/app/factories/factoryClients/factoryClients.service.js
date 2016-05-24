@@ -15,6 +15,9 @@ angular.module('processAdminApp')
     factory.getClientByFilter = function (object) {
        return factoryCommon.post(object, "/clients/byFilters");
     };
+    factory.getClientByIdAddress = function (idAddress) {
+       return factoryCommon.get("/clients/addressId/" + idAddress);
+    };
     factory.saveClient = function (data) {
        return factoryCommon.save(data, "/clients");
     };

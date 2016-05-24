@@ -115,8 +115,9 @@
       }
     }];
 
-    constructor($scope, $stateParams, factoryRoutes, $timeout, $state, noty, AddressHandler, $log, $uibModal) {
+    constructor($scope, $stateParams, factoryRoutes, factoryClients, $timeout, $state, noty, AddressHandler, $log, $uibModal) {
       this.$log = $log;
+      this.factoryClients = factoryClients;
       this.$uibModal = $uibModal;
       this.$scope = $scope;
       this.$timeout = $timeout;
@@ -146,13 +147,33 @@
         if (this.stop != null && this.stop.idStops != null) {
           this.newAddress = false;
           this.title = "Edit stop";
+          // load address
+          this.factoryRoutes.getAddressByStop(this.stop.type, this.stop.idAddress).then(function(response){
+            _this.stop.address = response;
+            _this.AddressHandler.setAddress(_this.stop.address);
+            // get
+            if (_this.stop.type == 1) {
+              _this.factoryClients.getClientByIdAddress(_this.stop.idAddress).then(function(result){
+                // defaulting out to 0
+                _this.stop.client = result[0];
+
+
+                _this.$log.info("complete Object: " + JSON.stringify(_this.stop));
+
+              });
+            }else{
+              _this.initMap();
+              _this.$log.info("complete Object: " + JSON.stringify(_this.stop));
+            }
+          });
+
         } else {
           this.stop.stopAction = 1;
           this.stop.type = 0;
         }
         this.title = this.title + " Route: " + this.route.name;
         if (this.stop.type == 0){
-          this.initMap();
+          // do nothing
         }
       }
       this.updateFormStatus();
@@ -160,18 +181,21 @@
 
     mapInitialized = false;
     initMap(){
+      var _this = this;
       if (!this.mapInitialized){
         this.mapInitialized = true;
-        var _this = this;
+
         this.$timeout(function() {
           _this.AddressHandler.initMap();
-          _this.AddressHandler.setAddress(_this.stop.adress);
+          _this.AddressHandler.setAddress(_this.stop.address);
 
-          if (_this.stop.adress != null && _this.stop.adress.idAddress != null) {
+          if (_this.stop.address != null) {
             _this.AddressHandler.addExistingMarker();
           }
 
         }, 100);
+      }else{
+        _this.AddressHandler.setAddress(_this.stop.address);
       }
     }
 
@@ -190,7 +214,7 @@
     parseAddress() {
       this.formOptions.formState.disabled = false;
       this.AddressHandler.parseAddress();
-      this.stop.adress = this.AddressHandler.address;
+      this.stop.address = this.AddressHandler.address;
     }
 
     saveStop() {
@@ -222,7 +246,7 @@
         this.stop.type = 0;
         this.initMap();
       }
-      this.stop.adress = null;
+      this.stop.address = null;
       // shoow Modal for search clients...
     }
 

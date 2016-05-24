@@ -35,7 +35,7 @@
     }
 
     addEditItem( stop ) {
-      stop.type = 1;
+      // stop.type = 1;
       this.$scope.$parent.openStopForm(this.route, stop);
     }
   }
