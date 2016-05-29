@@ -24,6 +24,9 @@ angular.module('processAdminApp')
     factory.updateClient = function (data) {
        return factoryCommon.put(data, "/clients");
     };
+    factory.deleteClient = function (data) {
+       return factoryCommon.delete(data, "/clients/" + data.idClient);
+    };
 
     //********** Phone Numbers CRUD
     factory.getPhoneNumbers = function () {
@@ -34,6 +37,9 @@ angular.module('processAdminApp')
     };
     factory.updatePhoneNumber = function ( data ) {
        return factoryCommon.put(data, "/phone-number");
+    };
+    factory.deletePhoneNumber = function ( data ) {
+       return factoryCommon.delete(data, "/phone-number/" + + data.idPhoneNumber);
     };
 
     // method used for transitional updates.
@@ -63,6 +69,10 @@ angular.module('processAdminApp')
     factory.updateAddress = function ( data ) {
        return factoryCommon.put(data, "/address");
     };
+    factory.deleteAddress = function ( data ) {
+       return factoryCommon.delete(data, "/address/" + data.idAddress);
+    };
+
 
     // method used for transitional updates.
     factory.saveAddressCallback = function(address, callback){
@@ -90,6 +100,9 @@ angular.module('processAdminApp')
     };
     factory.updateClientPaymentInfo = function ( data ) {
        return factoryCommon.put(data, "/client-payment-info");
+    };
+    factory.deleteClientPaymentInfo = function ( data ) {
+       return factoryCommon.delete(data, "/client-payment-info/" + data.idClientPaymentInfo);
     };
 
     // method used for transitional updates.

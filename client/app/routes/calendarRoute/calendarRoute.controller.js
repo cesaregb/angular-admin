@@ -3,7 +3,9 @@
 
 class CalendarRouteComponent {
 
-  constructor($uibModal, $stateParams, $state, noty, factoryRoutes) {
+  constructor($uibModal, $stateParams, $state, noty, factoryRoutes, $confirm, $log) {
+    this.$log = $log;
+    this.$confirm = $confirm;
     this.factoryRoutes = factoryRoutes;
     this.$uibModal = $uibModal;
     this.noty = noty;
@@ -61,6 +63,22 @@ class CalendarRouteComponent {
         });
       }
     });
+  }
+
+  delete(calendarRoute){
+    var _this = this;
+    this.$confirm({
+        text: 'Are you sure you want to delete?'
+      })
+      .then(function() {
+        _this.factoryRoutes.deleteCalendarRoute(calendarRoute).then(function(info){
+          _this.back();
+        });
+    });
+  }
+
+  back() {
+    this.getRouteInfo();
   }
 }
 

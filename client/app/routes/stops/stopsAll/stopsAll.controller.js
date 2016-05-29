@@ -3,8 +3,9 @@
 
   class StopAllComponent {
 
-    constructor($uibModal, $stateParams, $state, noty, factoryRoutes, $scope, $log) {
+    constructor($uibModal, $stateParams, $state, noty, factoryRoutes, $scope, $log, $confirm) {
       this.$log = $log;
+      this.$confirm = $confirm;
       this.factoryRoutes = factoryRoutes;
       this.$uibModal = $uibModal;
       this.$scope = $scope;
@@ -16,13 +17,13 @@
           reload: true
         });
       } else {
-        // this.getRoute();
+        this.getRoute();
       }
     }
 
     getRoute() {
       var _this = this;
-      _this.factoryRoutes.getRouteById(this.route.idRoute).then(function(response) {
+      _this.factoryRoutes.getRouteById(this.route.idRoutes).then(function(response) {
           _this.route = response;
         }),
         function(err) {}
@@ -37,6 +38,22 @@
     addEditItem( stop ) {
       // stop.type = 1;
       this.$scope.$parent.openStopForm(this.route, stop);
+    }
+
+    delete(stop){
+      var _this = this;
+      this.$confirm({
+          text: 'Are you sure you want to delete?'
+        })
+        .then(function() {
+          _this.factoryRoutes.deleteStop(stop).then(function(info){
+            _this.back();
+          });
+        });
+    }
+
+    back() {
+      this.getRoute();
     }
   }
 

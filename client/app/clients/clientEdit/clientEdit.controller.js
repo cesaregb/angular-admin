@@ -4,8 +4,10 @@
 class ClientEditComponent {
   selectedPhone = null;
 
-  constructor($stateParams, $state, noty, serviceClients, factoryClients) {
+  constructor($stateParams, $state, noty, serviceClients, factoryClients, $confirm, $log) {
+    this.$log = $log;
     var _this = this;
+    this.$confirm = $confirm;
     this.serviceClients = serviceClients;
     this.factoryClients = factoryClients;
     this.noty = noty;
@@ -74,8 +76,19 @@ class ClientEditComponent {
     }
   }
 
+  delete(){
+    var _this = this;
+    this.$confirm({
+        text: 'Are you sure you want to delete?'
+      })
+      .then(function() {
+        _this.factoryClients.deleteClient(_this.client).then(function(info){
+          _this.back();
+        });
+      });
+  }
 
-  back() { // back handler...
+  back() {
     this.$state.go('client.all',null , { reload: true });
   }
 

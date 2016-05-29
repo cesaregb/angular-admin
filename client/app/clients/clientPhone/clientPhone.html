@@ -36,6 +36,7 @@
                       <tr role="row">
                         <th>Number</th>
                         <th>Prefered</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -49,6 +50,11 @@
                             </a>
                           </td>
                           <td>{{phone.prefered}}</td>
+                          <td class="action-column">
+                            <a href="#" ng-click="$cn.delete(phone)" class="btn btn-danger btn-circle">
+                              <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                          </td>
                       </tr>
                     </tbody>
                   </table>

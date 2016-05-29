@@ -39,10 +39,11 @@
                         <th>City</th>
                         <th>Zipcode</th>
                         <th>Default</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr ng-show="$cn.client.addresses.length == 0 || $cn.client.addresses == null"><td colspan="5">No Items found</td></tr>
+                      <tr ng-show="$cn.client.addresses.length == 0 || $cn.client.addresses == null"><td colspan="6">No Items found</td></tr>
                       <tr class="gradeA" role="row"
                           ng-class-odd="'odd'" ng-class-even="'even'"
                           ng-repeat="address in $cn.client.addresses">
@@ -55,6 +56,11 @@
                           <td>{{address.city}}</td>
                           <td>{{address.zipcode}}</td>
                           <td>{{address.prefered}}</td>
+                          <td class="action-column">
+                            <a href="#" ng-click="$cn.delete(address)" class="btn btn-danger btn-circle">
+                              <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                          </td>
                       </tr>
                     </tbody>
                   </table>

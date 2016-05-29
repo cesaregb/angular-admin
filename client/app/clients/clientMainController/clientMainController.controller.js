@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('ClientMainControllerCtrl', function($scope, $state, $log) {
+  .controller('ClientMainControllerCtrl', function($scope, $state, $log, factoryClients) {
 
     $scope.appModule = "clients"
 

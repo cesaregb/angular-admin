@@ -9,14 +9,14 @@ class RoutesComponent {
       {name:'Clients (Business)', value:3}
     ];
 
-  constructor($stateParams, $state, noty, factoryRoutes, $log) {
+  constructor($stateParams, $state, noty, factoryRoutes, $log, $confirm) {
+    this.$confirm = $confirm;
     this.factoryRoutes = factoryRoutes;
     this.noty = noty;
     this.$log = $log;
     this.newRoute = true;
     this.$state = $state;
     this.route = $stateParams.route;
-    // this.$log.info("Route: " + JSON.stringify(this.route));
     this.title = "New Route"
     this.validRoute = null;
     this.setupRoute();
@@ -28,26 +28,34 @@ class RoutesComponent {
     if (this.route != null) {
       this.newRoute = false;
       this.title = "Edit: " + this.route.name;
+      // reloead route ...
+      this.factoryRoutes.getRouteById(this.route.idRoutes).then(function(result){
+        _this.route = result;
+      });
     }else{
       this.route = {};
       this.route.category = 1;
     }
   }
 
-  back() { // back handler...
-    this.$state.go('route.all',null , { reload: true });
+  delete(){
+    var _this = this;
+    this.$confirm({
+        text: 'Are you sure you want to delete?'
+      })
+      .then(function() {
+        _this.factoryRoutes.deleteRoute(_this.route).then(function(info){
+          _this.back();
+        });
+      });
   }
 
-  // getRoute( id ){
-  //   var _this = this;
-  //   this.factoryRoutes.getRouteById(id).then(function(data){
-  //     _this.route = data;
-  //   });
-  // }
+  back() {
+    this.$state.go('routes.all',null , { reload: true });
+  }
 
   saveRoute(){
     var _this = this;
-
     if (this.routeForm.$valid) {
       if (this.newRoute){
         var myRoute = this.route;
@@ -74,11 +82,13 @@ class RoutesComponent {
   saveExistingRoute(){
     var _this = this;
     _this.factoryRoutes.updateRoute( _this.route ).then(function(data){ // updating existing
-      console.log("Route updated. " + JSON.stringify(data));
+      _this.setupRoute();
     }),function(error){ // error saving existing
       console.log("Error updating route: " + JSON.stringify(error));
     };
   }
+
+
 
 }
 

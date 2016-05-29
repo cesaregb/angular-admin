@@ -62,12 +62,12 @@
       type: 'input',
       templateOptions: {
         type: 'text',
-        label: 'Comments',
-        required: true
+        label: 'Comments'
       }
     }];
 
-    constructor($scope, $stateParams, factoryClients, $timeout, $state, noty, AddressHandler, $log) {
+    constructor($scope, $stateParams, factoryClients, $timeout, $state, noty, AddressHandler, $log, $confirm) {
+      this.$confirm = $confirm;
       this.$log = $log;
       this.$scope = $scope;
       this.AddressHandler = AddressHandler;
@@ -99,7 +99,7 @@
           _this.AddressHandler.setAddress(_this.address);
 
           if (_this.address != null && _this.address.idAddress != null) {
-              _this.AddressHandler.addExistingMarker();
+            _this.AddressHandler.addExistingMarker();
           }
 
         }, 100);
@@ -107,7 +107,7 @@
       this.updateFormStatus();
     }
 
-    updateFormStatus(){
+    updateFormStatus() {
       angular.forEach(this.addressFields, function(field) {
         field.expressionProperties = field.expressionProperties || {};
         field.expressionProperties['templateOptions.disabled'] = 'formState.disabled';
@@ -120,12 +120,32 @@
     }
 
     parseAddress() {
-      this.formOptions.formState.disabled=false;
+      this.formOptions.formState.disabled = false;
       this.AddressHandler.parseAddress();
       this.address = this.AddressHandler.address;
     }
 
-  saveAddress() {
+    delete(){
+      var _this = this;
+      this.$confirm({
+        text: 'Are you sure you want to delete?'
+      })
+      .then(function() {
+        _this.factoryClients.deleteAddress(_this.address).then(function(info){
+          _this.back();
+        });
+      });
+    }
+
+    back() {
+      this.$state.go('client.address', {
+        client: this.client
+      }, {
+        reload: true
+      });
+    }
+
+    saveAddress() {
       var _this = this;
       if (_this.address.idAddress != null && _this.address.idAddress > 0) {
         // update address

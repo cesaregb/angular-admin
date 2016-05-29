@@ -11,13 +11,16 @@ angular.module('processAdminApp')
        return factoryCommon.get(routesURI);
     };
     factory.getRouteById = function (routeId) {
-       return factoryCommon.get("/routes/" + routeId);
+       return factoryCommon.get(routesURI + "/" + routeId);
     };
     factory.saveRoute = function (data) {
        return factoryCommon.save(data, routesURI);
     };
     factory.updateRoute = function (data) {
        return factoryCommon.put(data, routesURI);
+    };
+    factory.deleteRoute = function (data) {
+       return factoryCommon.delete(data, routesURI + "/" + data.idRoutes);
     };
 
     //********** CalendarRoute CRUD
@@ -30,6 +33,9 @@ angular.module('processAdminApp')
     };
     factory.updateCalendarRoute = function ( data ) {
        return factoryCommon.put(data, calendarRoutesURI);
+    };
+    factory.deleteCalendarRoute = function (data) {
+       return factoryCommon.delete(data, calendarRoutesURI + "/" + data.idCalendarRoute);
     };
 
     // method used for transitional updates.
@@ -65,6 +71,9 @@ angular.module('processAdminApp')
     };
     factory.updateStop = function ( data ) {
        return factoryCommon.put(data, stopsURI);
+    };
+    factory.deleteStop = function ( data ) {
+       return factoryCommon.delete(data, stopsURI + "/" + data.idStops);
     };
 
     // method used for transitional updates.

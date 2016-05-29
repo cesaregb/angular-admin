@@ -36,6 +36,7 @@
                       <tr role="row">
                         <th>Day</th>
                         <th>Starting Time</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -55,6 +56,11 @@
                             </a>
                           </td>
                           <td>{{calendar.time}}</td>
+                          <td class="action-column">
+                            <a href="#" ng-click="$cn.delete(calendar)" class="btn btn-danger btn-circle">
+                              <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                          </td>
                       </tr>
                     </tbody>
                   </table>

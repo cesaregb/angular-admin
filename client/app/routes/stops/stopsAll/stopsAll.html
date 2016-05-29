@@ -39,10 +39,11 @@
                         <th>Time</th>
                         <th>Action</th>
                         <th>Address</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr ng-show="$cn.route.stops.length == 0 || $cn.route.stops == null"><td colspan="5">No Items found</td></tr>
+                      <tr ng-show="$cn.route.stops.length == 0 || $cn.route.stops == null"><td colspan="8">No Items found</td></tr>
                       <tr class="gradeA" role="row"
                           ng-class-odd="'odd'" ng-class-even="'even'"
                           ng-repeat="stop in $cn.route.stops">
@@ -56,6 +57,11 @@
                           <td ng-show="stop.stopAction == 1">Pick Up</td>
                           <td ng-show="stop.stopAction == 2">Deliver</td>
                           <td>{{stop.addressRoute.address}}</td>
+                          <td class="action-column">
+                            <a href="#" ng-click="$cn.delete(stop)" class="btn btn-danger btn-circle">
+                              <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                          </td>
                       </tr>
                     </tbody>
                   </table>

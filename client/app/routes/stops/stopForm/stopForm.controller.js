@@ -3,8 +3,6 @@
 
   class StopFormComponent {
 
-    showClient = false;
-
     formOptions = {
       formState: {
         disabled: true
@@ -110,93 +108,101 @@
       type: 'input',
       templateOptions: {
         type: 'text',
-        label: 'Comments',
-        required: true
+        label: 'Comments'
       }
     }];
 
-    constructor($scope, $stateParams, factoryRoutes, factoryClients, $timeout, $state, noty, AddressHandler, $log, $uibModal) {
+    types = [{
+      name: 'Address',
+      value: 0
+    }, {
+      name: 'Client',
+      value: 1
+    }];
+
+    constructor($scope, $stateParams, factoryRoutes, factoryClients, $timeout, $state, noty, AddressHandler, $log, $uibModal, $confirm) {
       this.$log = $log;
+      this.$confirm = $confirm;
       this.factoryClients = factoryClients;
       this.$uibModal = $uibModal;
       this.$scope = $scope;
       this.$timeout = $timeout;
       this.AddressHandler = AddressHandler;
-      var _this = this;
       this.noty = noty;
-
       this.route = $stateParams.route;
       this.$state = $state;
       this.place = null;
-
       this.stop = $stateParams.stop;
-
       this.factoryRoutes = factoryRoutes;
+
+      var _this = this;
       if (this.route == null) {
-        this.$state.go('routes.all', null, {
-          reload: true
-        });
+        this.back()
       } else {
-        if (this.stop.type == null || this.stop.type == undefined){
-          this.stop.type = 0;
-        }else{
-          this.showClient = true;
-        }
         this.title = "New stop";
-        this.newAddress = true;
+
         if (this.stop != null && this.stop.idStops != null) {
           this.newAddress = false;
           this.title = "Edit stop";
           // load address
-          this.factoryRoutes.getAddressByStop(this.stop.type, this.stop.idAddress).then(function(response){
+          this.factoryRoutes.getAddressByStop(this.stop.type, this.stop.idAddress).then(function(response) {
             _this.stop.address = response;
-            _this.AddressHandler.setAddress(_this.stop.address);
-            // get
-            if (_this.stop.type == 1) {
-              _this.factoryClients.getClientByIdAddress(_this.stop.idAddress).then(function(result){
-                // defaulting out to 0
+
+            if (_this.stop.type == 1) { // get the client in case of client type
+              _this.factoryClients.getClientByIdAddress(_this.stop.idAddress).then(function(result) {
                 _this.stop.client = result[0];
-
-
-                _this.$log.info("complete Object: " + JSON.stringify(_this.stop));
-
+                _this.stop.client.addresses.forEach(function(item) {
+                  if (item.idAddress == _this.stop.idAddress) {
+                    _this.stop.address = item;
+                  }
+                });
               });
-            }else{
+            } else {
               _this.initMap();
-              _this.$log.info("complete Object: " + JSON.stringify(_this.stop));
             }
           });
 
         } else {
-          this.stop.stopAction = 1;
           this.stop.type = 0;
+          this.newAddress = true;
+          this.stop.stopAction = 1;
+          // new item.
+          this.initMap();
+
         }
+
         this.title = this.title + " Route: " + this.route.name;
-        if (this.stop.type == 0){
-          // do nothing
-        }
       }
-      this.updateFormStatus();
+
+      this.updateFormStatus(); // formly dissabled!!
+
     }
 
     mapInitialized = false;
-    initMap(){
+    initMap() {
       var _this = this;
-      if (!this.mapInitialized){
+      if (!this.mapInitialized) {
         this.mapInitialized = true;
 
         this.$timeout(function() {
+
           _this.AddressHandler.initMap();
           _this.AddressHandler.setAddress(_this.stop.address);
-
           if (_this.stop.address != null) {
             _this.AddressHandler.addExistingMarker();
           }
 
-        }, 100);
-      }else{
-        _this.AddressHandler.setAddress(_this.stop.address);
+        }, 500);
+
       }
+    }
+
+    changeType() {
+      if (this.stop.type == 0) {
+        this.initMap();
+        this.stop.client = null;
+      }
+      this.stop.address = null;
     }
 
     updateFormStatus() {
@@ -205,7 +211,6 @@
         field.expressionProperties['templateOptions.disabled'] = 'formState.disabled';
       });
     }
-
 
     createCircles() {
       this.AddressHandler.createCircles();
@@ -219,37 +224,18 @@
 
     saveStop() {
       var _this = this;
+      _this.stop.idAddress = _this.stop.address.idAddress;
+
       if (_this.stop.idStops != null && _this.stop.idStops > 0) {
         _this.factoryRoutes.updateStopCallback(_this.stop, function() {
-          _this.$state.go('routes.edit', {
-            route: _this.route
-          }, {
-            reload: true
-          });
+          _this.back();
         });
       } else {
         _this.factoryRoutes.saveStopCallback(_this.stop, function() {
-          _this.$state.go('routes.edit', {
-            route: _this.route
-          }, {
-            reload: true
-          });
+          _this.back();
         });
       }
     }
-
-    showClientInfo() {
-      var _this = this;
-      if (this.showClient) {
-        this.stop.type = 1;
-      } else {
-        this.stop.type = 0;
-        this.initMap();
-      }
-      this.stop.address = null;
-      // shoow Modal for search clients...
-    }
-
 
     openClientSearch() {
       var clientInfo = {};
@@ -267,7 +253,28 @@
       });
 
       modalInstance.result.then(function(client) {
+        _this.stop.idAddress = client.idAddress;
         _this.stop.client = client;
+      });
+    }
+
+    delete() {
+      var _this = this;
+      this.$confirm({
+          text: 'Are you sure you want to delete?'
+        })
+        .then(function() {
+          _this.factoryRoutes.deleteStop(_this.stop).then(function(info) {
+            _this.back();
+          });
+        });
+    }
+
+    back() {
+      this.$state.go('routes.stopsAll', {
+        route: this.route
+      }, {
+        reload: true
       });
     }
   }

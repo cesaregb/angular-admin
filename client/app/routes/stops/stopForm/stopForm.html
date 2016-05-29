@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="pull-right" style="padding: 10px;">
-        <a href="#" ui-sref="routes.edit({route: $cn.route})" class="btn btn-info btn-sm">
+        <a href="#" ui-sref="routes.stopsAll({route: $cn.route})" class="btn btn-info btn-sm">
           <span class="glyphicon glyphicon-chevron-left"></span> Back
         </a>
       </div>
@@ -19,76 +19,80 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-lg-12">
-              <formly-form model="$cn.stop" fields="$cn.stopFieldsGeneral" > </formly-form>
+              <formly-form model="$cn.stop" fields="$cn.stopFieldsGeneral"> </formly-form>
+
+              <div class="form-group">
+                <label for="disabledSelect">Stop Type </label>
+                <select class="form-control"
+                    ng-model="$cn.stop.type"
+                    ng-options="type.value as type.name for type in $cn.types"
+                    ng-change="$cn.changeType()"></select>
+              </div>
+
             </div>
           </div>
 
-          <div class="row" style="padding-bottom:10px;">
-            <div class="col-lg-12">
-              Client: <input type="checkbox" ng-model="$cn.showClient" ng-click="$cn.showClientInfo()"/>
-            </div>
-          </div>
+          <div class="panel panel-default" ng-show="$cn.stop.type == 0">
+            <div class="panel-body">
+              <div class="row" style="padding-top:20px">
+                <div class="col-lg-12">
+                  <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
+                  <div id="type-selector" class="controls">
+                    <input type="radio" name="type" id="changetype-all" checked="checked">
+                    <label for="changetype-all">All</label>
 
-          <div class="row" style="padding-top:20px" ng-show="$cn.stop.type == 0">
-            <div class="col-lg-12">
+                    <input type="radio" name="type" id="changetype-establishment">
+                    <label for="changetype-establishment">Establishments</label>
 
-              <input id="pac-input" class="controls" type="text" placeholder="Enter a location">
-              <div id="type-selector" class="controls">
-                <input type="radio" name="type" id="changetype-all" checked="checked">
-                <label for="changetype-all">All</label>
-
-                <input type="radio" name="type" id="changetype-establishment">
-                <label for="changetype-establishment">Establishments</label>
-
-                <input type="radio" name="type" id="changetype-address">
-                <label for="changetype-address">Addresses</label>
-              </div>
-              <div id="map"></div>
-              <div class="buttons-footer">
-                <button class="btn btn-default" type="button" ng-click="$cn.parseAddress()">Parse Address</button>
-              </div>
-            </div>
-            <!-- /.col-lg-12 -->
-          </div>
-          <div class="row" ng-show="$cn.stop.type == 0">
-            <form novalidate>
-              <div class="col-lg-12">
-                <formly-form model="$cn.stop.address" fields="$cn.stopFields" form="$cn.stopForm" options="$cn.formOptions"> </formly-form>
-              </div>
-              <div class="buttons-footer">
-                <button class="btn btn-primary" type="submit" ng-click="$cn.saveStop()" ng-disabled="$cn.stopForm.$invalid">Save</button>
-              </div>
-            </form>
-          </div>
-          <div class="row" ng-show="$cn.stop.type == 1">
-            <div class="col-lg-12">
-              <div>
-                <p>
-                  Selected Client: {{$cn.stop.client.name}}
-                </p>
-                <p>
-                  <!-- Select Basic -->
-                  <div class="form-group">
-                    <label class="col-md-4 control-label" for="primaryAddress">Select Address</label>
-                    <div class="col-md-6">
-                      <select class="form-control"
-                          ng-options="addr as addr.address for addr in $cn.stop.client.addresses"
-                          ng-model="$cn.stop.address"></select>
-                    </div>
+                    <input type="radio" name="type" id="changetype-address">
+                    <label for="changetype-address">Addresses</label>
                   </div>
-
-                  Client's Address: {{$cn.stop.client.address}} {{this.stop.client.address2}}
-                </p>
+                  <div id="map"></div>
+                  <div class="buttons-footer">
+                    <button class="btn btn-default" type="button" ng-click="$cn.parseAddress()">Parse Address</button>
+                  </div>
+                </div>
               </div>
-              <div class="buttons-footer">
-                <button class="btn btn-primary" type="button" ng-click="$cn.openClientSearch()">Select Client</button>
-                <button class="btn btn-primary" type="submit" ng-click="$cn.saveStop()">Save</button>
+              <div class="row">
+                <form novalidate>
+                  <div class="col-lg-12">
+                    <formly-form model="$cn.stop.address" fields="$cn.stopFields" form="$cn.stopForm" options="$cn.formOptions"> </formly-form>
+                  </div>
+                </form>
               </div>
             </div>
+            <div class="buttons-footer">
+              <button class="btn btn-primary" type="submit" ng-click="$cn.saveStop()" ng-disabled="$cn.stopForm.$invalid">Save</button>
+            </div>
+          </div>
+
+          <div class="panel panel-default" ng-show="$cn.stop.type == 1">
+            <div class="panel-body">
+              <div class="form-group">
+                <label for="disabledSelect">Selecte Client</label>
+                <label class="form-control">{{$cn.stop.client.name}}</label>
+              </div>
+              <div class="form-group">
+                <label for="disabledSelect">Selected Address</label>
+                <select class="form-control"
+                    ng-options="addr as addr.address for addr in $cn.stop.client.addresses"
+                    ng-model="$cn.stop.address"></select>
+              </div>
+            </div>
+            <div class="buttons-footer">
+              <button class="btn btn-info btn-sm " type="button" ng-click="$cn.openClientSearch()">Select Client</button>
+              <button class="btn btn-primary" type="submit" ng-click="$cn.saveStop()">Save</button>
+            </div>
+          </div>
+          <div class="buttons-footer">
+            <button type="button" ng-click="delete()" confirm="Are you sure, {{name}}?">Delete</button>
+            <a href="#" class="btn btn-danger btn-sm"
+                ng-click="$cn.delete()"
+                ng-disabled="$cn.stop.idStop != null || $cn.stop.idStop > 0">
+              <span class="glyphicon glyphicon-remove"></span> Delete
+            </a>
           </div>
         </div>
-
       </div>
     </div>
   </div>
-</div>

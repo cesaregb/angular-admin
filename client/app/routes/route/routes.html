@@ -64,6 +64,11 @@
                   <span class="glyphicon glyphicon-map-marker"></span> Stops
                 </a>
                 <button type="submit" class="btn btn-primary" ng-disabled="$cn.routeForm.$invalid">Submit</button>
+                <a href="#" class="btn btn-danger btn-sm"
+                    ng-click="$cn.delete()"
+                    ng-disabled="$cn.route.idRoutes == null || $cn.route.idRoutes == 0">
+                  <span class="glyphicon glyphicon-remove"></span> Delete
+                </a>
               </div>
 
             </fieldset>

@@ -3,7 +3,8 @@
 
   class ClientPhoneComponent {
 
-    constructor($uibModal, $stateParams, $state, noty, factoryClients) {
+    constructor($uibModal, $stateParams, $state, noty, factoryClients, $confirm) {
+      this.$confirm = $confirm;
       this.factoryClients = factoryClients;
       this.$uibModal = $uibModal;
       this.noty = noty;
@@ -74,6 +75,27 @@
 
       });
     }
+
+    delete(phoneNumber){
+      var _this = this;
+      this.$confirm({
+        text: 'Are you sure you want to delete?'
+      })
+      .then(function() {
+        _this.factoryClients.deletePhoneNumber(phoneNumber).then(function(info){
+          _this.back();
+        });
+      });
+    }
+
+    back() {
+      this.$state.go('client.phone', {
+        client: this.client
+      }, {
+        reload: true
+      });
+    }
+
   } // closing class
 
   angular.module('processAdminApp')

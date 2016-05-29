@@ -48,18 +48,22 @@
           <div class="row" style="padding-bottom:5px">
             <div class="col-lg-12">
               Distance: {{$cn.distance}} Km </br>
-              Proce: ${{$cn.distancePrice}}
-              Proce: ${{$cn.formOptions}}
+              Price: ${{$cn.distancePrice}}
             </div>
           </div>
           <div class="row">
             <form novalidate>
               <div class="col-lg-12">
-                <formly-form model="$cn.address" fields="$cn.addressFields" form="$cn.addressForm" options="$cn.formOptions"> </formly-form>
+                <formly-form model="$cn.address" fields="$cn.addressFields" form="$cn.addressForm" options="$cn.formOptions"></formly-form>
               </div>
               <div class="buttons-footer">
                 <button class="btn btn-primary" type="submit" ng-click="$cn.saveAddress()" ng-disabled="$cn.addressForm.$invalid">Save</button>
               </div>
+              <div class="buttons-footer">
+                <button type="button" class="btn btn-danger" ng-click="$cn.delete()"
+                    ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">Delete</button>
+              </div>
+
             </form>
           </div>
         </div>

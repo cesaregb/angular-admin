@@ -15,6 +15,7 @@ angular.module('processAdminApp', [
     'formly',
     'formlyBootstrap',
     // 'formlyMaterial',
+    'angular-confirm',
     'ngMaterial'
   ])
   .config(function($urlRouterProvider, $locationProvider) {

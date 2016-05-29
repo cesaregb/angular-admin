@@ -3,7 +3,8 @@
 
   class ClientAddressComponent {
 
-    constructor($uibModal, $stateParams, $state, noty, factoryClients, $scope, $log) {
+    constructor($uibModal, $stateParams, $state, noty, factoryClients, $scope, $log, $confirm) {
+      this.$confirm = $confirm;
       this.$log = $log;
       this.factoryClients = factoryClients;
       this.$uibModal = $uibModal;
@@ -36,6 +37,26 @@
 
     addEditItem(address) {
       this.$scope.$parent.openAddressForm(this.client, address);
+    }
+
+    delete(address){
+      var _this = this;
+      this.$confirm({
+        text: 'Are you sure you want to delete?'
+      })
+      .then(function() {
+        _this.factoryClients.deleteAddress(address).then(function(info){
+          _this.back();
+        });
+      });
+    }
+
+    back() { 
+      this.$state.go('client.address', {
+        client: this.client
+      }, {
+        reload: true
+      });
     }
   }
 

@@ -97,6 +97,34 @@ angular.module('processAdminApp')
       return deferred.promise;
     }
 
+    factory.delete = function ( data, url ) {
+      var _this = this;
+      var deferred = $q.defer();
+      url = API_ENDPOINT + url ;
+
+      $http.delete(url, data)
+        .success(function(data, status, headers, config) {
+          noty.showNoty({
+            text: "Item deleted ",
+            ttl: 1000 * 2,
+            type: "success" // warning
+          });
+
+          deferred.resolve(data);
+
+        }).error(function(error){
+          noty.showNoty({
+            text: "Error deleting... ",
+            ttl: 1000 * 2,
+            type: "warning"
+          });
+
+          deferred.reject(error);
+        });
+
+      return deferred.promise;
+    }
+
     return factory;
 
   });
