@@ -25,8 +25,6 @@ COPY package.json app/package.json
 WORKDIR app
 RUN npm install
 
-
-
 #Current workingdir is app from dependencies image.
 WORKDIR /app
 ADD bower.json /app
