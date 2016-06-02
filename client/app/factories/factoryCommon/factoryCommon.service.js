@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .factory('factoryCommon', function ($http, $q, API_ENDPOINT, noty) {
+  .factory('factoryCommon', function ($http, $q, constants, noty) {
 
     var factory = {};
 
     factory.post = function( data, url ) {
       var deferred = $q.defer();
-      url = API_ENDPOINT + url ;
+      url = constants.API_ENDPOINT + url ;
 
       $http.post( url, data )
         .success(function(data, status, headers, config) {
@@ -30,7 +30,7 @@ angular.module('processAdminApp')
 
     factory.save = function( data, url ) {
       var deferred = $q.defer();
-      url = API_ENDPOINT + url ;
+      url = constants.API_ENDPOINT + url ;
 
       $http.post( url, data )
         .success(function(data, status, headers, config) {
@@ -53,7 +53,7 @@ angular.module('processAdminApp')
 
     factory.get = function(url) {
       var deferred = $q.defer();
-      url = API_ENDPOINT + url ;
+      url = constants.API_ENDPOINT + url ;
 
       $http.get( url )
         .success(function(data, status, headers, config) {
@@ -72,7 +72,7 @@ angular.module('processAdminApp')
     factory.put = function ( data, url ) {
       var _this = this;
       var deferred = $q.defer();
-      url = API_ENDPOINT + url ;
+      url = constants.API_ENDPOINT + url ;
 
       $http.put(url, data)
         .success(function(data, status, headers, config) {
@@ -100,7 +100,7 @@ angular.module('processAdminApp')
     factory.delete = function ( data, url ) {
       var _this = this;
       var deferred = $q.defer();
-      url = API_ENDPOINT + url ;
+      url = constants.API_ENDPOINT + url ;
 
       $http.delete(url, data)
         .success(function(data, status, headers, config) {
