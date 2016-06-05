@@ -26,8 +26,10 @@ angular.module('processAdminApp', [
 
     if (url.indexOf('localhost') > 0){
       constants.API_ENDPOINT = constants.LOCAL_API_ENDPOINT;
+    }else if (url.indexOf('52.6.82.228') > 0){ // dev elastic ip "52.6.82.228"
+      constants.API_ENDPOINT = constants.DEV_API_ENDPOINT;
     }else{
       constants.API_ENDPOINT = constants.PROD_API_ENDPOINT;
     }
-    $log.info('[run] $location: ' + $location.absUrl() + " -- " + constants.API_ENDPOINT);
+    $log.info('[run] Services URI: ' + constants.API_ENDPOINT);
   });
