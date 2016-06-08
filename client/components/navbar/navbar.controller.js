@@ -1,25 +1,7 @@
 'use strict';
 
 class NavbarController {
-  //start-non-standard
-  menu = [
-    {
-      'title': 'Clients',
-      'state': 'client.all',
-    }, {
-      title: 'Routes',
-      state: 'routes.all'
-    }, {
-      title: 'Service',
-      state: 'services'
-    }, {
-      title: 'Orders',
-      state: 'orders'
-    }, {
-      title: 'Tasks',
-      state: 'tasks'
-    }];
-
+  menu = [];
   employee = {
     name: 'Cesar'
   };
@@ -35,11 +17,15 @@ class NavbarController {
     }, 1000);
   };
 
-  //end-non-standard
-  constructor(Auth) {
+  constructor(Auth, factoryUtils) {
+    this.factoryUtils = factoryUtils;
     this.isLoggedIn = Auth.isLoggedIn;
     this.isAdmin = Auth.isAdmin;
     this.getCurrentUser = Auth.getCurrentUser;
+    var _this = this;
+    this.factoryUtils.getMenu().then(function(result){
+      _this.menu = result;
+    });
   }
 }
 

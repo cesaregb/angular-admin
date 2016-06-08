@@ -83,13 +83,13 @@
           </div>
           <!-- /input-group -->
         </li>
-        <li>
+        <!-- <li>
           <a href="" ng-click="nav.myEventListener();">
             <i class="glyphicon glyphicon-plus"></i> Place holder
           </a>
-        </li>
+        </li> -->
         <li>
-          <a href="" ui-sref="cleint.address">
+          <a href="" ui-sref="tasks.taskMenu">
             <i class="glyphicon glyphicon-plus"></i> Calis
           </a>
         </li>
@@ -100,7 +100,7 @@
         </li>
         <li ng-repeat="item in nav.menu">
            <a href="" ui-sref="{{item.state}}" >
-            {{item.title}}
+            {{item.name}}
             </a>
          </li>
       </ul>
