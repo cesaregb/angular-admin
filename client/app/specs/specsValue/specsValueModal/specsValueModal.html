@@ -1,0 +1,77 @@
+<form class="form-horizontal" novalidate>
+  <fieldset>
+    <div>
+      <div class="modal-header">
+        <h3 class="modal-title">{{title}}</h3>
+      </div>
+      <div class="modal-body">
+        <div class="panel-body">
+          <legend>Spec Value</legend>
+
+          <!-- Select Basic -->
+          <div class="form-group">
+            <label class="col-md-4 control-label">Spec</label>
+            <div class="col-md-6">
+              <select class="form-control" ng-options="spec.idSpecs as spec.name for spec in specs" required="" ng-model="formItem.idSpecs"></select>
+            </div>
+          </div>
+
+          <!-- Select Basic -->
+          <div class="form-group">
+            <label class="col-md-4 control-label">Spec Value Type</label>
+            <div class="col-md-6">
+              <select class="form-control" ng-options="type.value as type.name for type in types" ng-model="formItem.type"
+                  ng-change="changeSpecValueType()"></select>
+            </div>
+          </div>
+
+          <!-- Select Basic -->
+          <div class="form-group"
+              ng-show="formItem.type == 2">
+            <label class="col-md-4 control-label">Product Type</label>
+            <div class="col-md-6">
+              <select class="form-control" ng-options="productType.idProductType as productType.name for productType in productTypes"
+                  ng-model="formItem.idProductType"></select>
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group" ng-class="{ 'has-error' : formItem.value.$invalid && !formItem.value.$pristine}" ng-show="formItem.type == 1">
+            <label class="col-md-4 control-label" for="value">Value</label>
+            <div class="col-md-6">
+              <input id="value" name="value" type="text" class="form-control input-md" required ng-model="formItem.value">
+            </div>
+          </div>
+
+          <!-- Select Basic -->
+          <div class="form-group" ng-show="formItem.type == 1">
+            <label class="col-md-4 control-label">Cost Type</label>
+            <div class="col-md-6">
+              <select class="form-control" ng-options="costType.value as costType.name for costType in costTypes" ng-model="formItem.costType"></select>
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group" ng-show="formItem.type == 1 && formItem.costType == 0">
+            <label class="col-md-4 control-label" for="value">Increment %</label>
+            <div class="col-md-6">
+              <input id="value" name="value" type="text" class="form-control input-md" required ng-model="formItem.serviceIncrement">
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="form-group" ng-show="formItem.type == 1 && formItem.costType == 1">
+            <label class="col-md-4 control-label" for="value">Price $</label>
+            <div class="col-md-6">
+              <input id="value" name="value" type="text" class="form-control input-md" required ng-model="formItem.specPrice">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="okAction()" ng-disabled="invalidForm()">Submit</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+      </div>
+    </div>
+  </fieldset>
+</form>

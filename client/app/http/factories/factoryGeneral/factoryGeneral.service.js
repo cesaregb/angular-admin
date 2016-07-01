@@ -5,72 +5,6 @@ angular.module('processAdminApp')
 
     var factory = {};
 
-    var taskTypeURI = "/task-type";
-    factory.getTaskTypes = function () {
-       return factoryCommon.get(taskTypeURI);
-    };
-    factory.getTaskTypeById = function (id) {
-       return factoryCommon.get(taskTypeURI + "/" + id);
-    };
-    factory.saveTaskType = function (data) {
-       return factoryCommon.save(data, taskTypeURI);
-    };
-    factory.updateTaskType = function (data) {
-       return factoryCommon.put(data, taskTypeURI);
-    };
-    factory.deleteTaskType = function (data) {
-       return factoryCommon.delete(data, taskTypeURI + "/" + data.idTaskType);
-    };
-
-    factory.saveTaskTypeCallback = function(dataInput, callback){
-      this.saveTaskType(dataInput).then(function(result){
-        callback();
-      }), function(error){
-        callback();
-      }
-    }
-    factory.updateTaskTypeCallback = function(dataInput, callback){
-      this.updateTaskType(dataInput).then(function(result){
-        callback();
-      }), function(error){
-        callback();
-      }
-    }
-
-    var taskURI = "/task";
-    factory.getTasks = function () {
-       return factoryCommon.get(taskURI);
-    };
-    factory.getTaskById = function (id) {
-       return factoryCommon.get(taskURI + "/" + id);
-    };
-    factory.saveTask = function (data) {
-       return factoryCommon.save(data, taskURI);
-    };
-    factory.updateTask = function (data) {
-       return factoryCommon.put(data, taskURI);
-    };
-    factory.deleteTask = function (data) {
-       return factoryCommon.delete(data, taskURI + "/" + data.idTask);
-    };
-
-    // method used for transitional updates.
-    factory.saveTaskCallback = function(dataInput, callback){
-      this.saveTask(dataInput).then(function(result){
-        callback();
-      }), function(error){
-        callback();
-      }
-    }
-    // method used for transitional updates.
-    factory.updateTaskCallback = function(dataInput, callback){
-      this.updateTask(dataInput).then(function(result){
-        callback();
-      }), function(error){
-        callback();
-      }
-    }
-
     var employeeURI = "/employee";
     factory.getEmployees = function () {
        return factoryCommon.get(employeeURI);
@@ -85,7 +19,7 @@ angular.module('processAdminApp')
        return factoryCommon.put(data, employeeURI);
     };
     factory.deleteEmployee = function (data) {
-       return factoryCommon.delete(data, employeeURI + "/" + data.idEmployee);
+       return factoryCommon.delete(employeeURI + "/" + data.idEmployee);
     };
 
     factory.saveEmployeeCallback = function(dataInput, callback){
@@ -103,7 +37,6 @@ angular.module('processAdminApp')
       }
     }
 
-
     var employeeTypeURI = "/employee-type";
     factory.getEmployeeTypes = function () {
        return factoryCommon.get(employeeTypeURI);
@@ -118,7 +51,7 @@ angular.module('processAdminApp')
        return factoryCommon.put(data, employeeTypeURI);
     };
     factory.deleteEmployeeType = function (data) {
-       return factoryCommon.delete(data, employeeTypeURI + "/" + data.idEmployeeType);
+       return factoryCommon.delete(employeeTypeURI + "/" + data.idEmployeeType);
     };
 
     factory.saveEmployeeTypeCallback = function(dataInput, callback){
@@ -150,7 +83,7 @@ angular.module('processAdminApp')
        return factoryCommon.put(data, assetURI);
     };
     factory.deleteAsset = function (data) {
-       return factoryCommon.delete(data, assetURI + "/" + data.idAsset);
+       return factoryCommon.delete(assetURI + "/" + data.idAsset);
     };
 
     factory.saveAssetCallback = function(dataInput, callback){
@@ -182,7 +115,7 @@ angular.module('processAdminApp')
        return factoryCommon.put(data, assetTypeURI);
     };
     factory.deleteAssetType = function (data) {
-       return factoryCommon.delete(data, assetTypeURI + "/" + data.idAssetType);
+       return factoryCommon.delete(assetTypeURI + "/" + data.idAssetType);
     };
 
     factory.saveAssetTypeCallback = function(dataInput, callback){
@@ -214,7 +147,7 @@ angular.module('processAdminApp')
        return factoryCommon.put(data, productURI);
     };
     factory.deleteProduct = function (data) {
-       return factoryCommon.delete(data, productURI + "/" + data.idProduct);
+       return factoryCommon.delete(productURI + "/" + data.idProduct);
     };
 
     factory.saveProductCallback = function(dataInput, callback){
@@ -246,7 +179,7 @@ angular.module('processAdminApp')
        return factoryCommon.put(data, productTypeURI);
     };
     factory.deleteProductType = function (data) {
-       return factoryCommon.delete(data, productTypeURI + "/" + data.idProductType);
+       return factoryCommon.delete(productTypeURI + "/" + data.idProductType);
     };
 
     factory.saveProductTypeCallback = function(dataInput, callback){

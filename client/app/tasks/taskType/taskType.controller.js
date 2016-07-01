@@ -4,10 +4,10 @@
   class TaskTypeComponent {
     taskTypes = [];
 
-    constructor($stateParams, $state, noty, factoryGeneral, $confirm, $log, $uibModal) {
+    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal) {
       this.$log = $log;
       this.$confirm = $confirm;
-      this.factoryGeneral = factoryGeneral;
+      this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.noty = noty;
       this.$state = $state;
@@ -17,7 +17,7 @@
 
     getInfo() {
       var _this = this;
-      this.factoryGeneral.getTaskTypes().then(function(response) {
+      this.factoryServices.getResources('taskType').then(function(response) {
         _this.taskTypes = response;
       });
     }
@@ -43,12 +43,12 @@
       modalInstance.result.then(function(resultItem) {
         var taskType = resultItem;
         if (taskType.idTaskType != null && taskType.idTaskType > 0) {
-          _this.factoryGeneral.updateTaskTypeCallback(taskType, function() {
+          _this.factoryServices.updateResourceCallback('taskType', taskType, function() {
             _this.getInfo();
           });
         } else {
 
-          _this.factoryGeneral.saveTaskTypeCallback(taskType, function() {
+          _this.factoryServices.saveResourceCallback('taskType', taskType, function() {
             _this.getInfo();
           });
         }
@@ -61,7 +61,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryGeneral.deleteTaskType(item).then(function(info){
+        _this.factoryServices.deleteResource('taskType', item.idTaskType).then(function(info){
           _this.back();
         });
       });

@@ -1,11 +1,32 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .factory('AddressHandler', function (noty, $log) {
+  .factory('AddressHandler', function (noty, $log, factoryServices) {
     var factory = {};
 
     //********** Routes CRUD
-    factory.circles = [{
+    factory.circlesTemplates = [{
+      id: 4,
+      center: {
+        lat: 20.621335,
+        lng: -103.418127
+      },
+      radius: 1000 * 24, //  mts
+      stroke: {
+        color: '#800000',
+        weight: 2,
+      },
+      fill: {
+        color: '#800000',
+        opacity: 0.5
+      },
+      geodesic: false,
+      draggable: false,
+      clickable: false,
+      editable: false,
+      visible: false,
+      control: {}
+    }, {
       id: 3,
       center: {
         lat: 20.621335,
@@ -53,6 +74,7 @@ angular.module('processAdminApp')
         color: '#08B21F'
       }
     }];
+    factory.circles = [];
 
     factory.resetValues = function(){
       factory.tersusLatLng = new google.maps.LatLng(20.621335, -103.418127);
@@ -67,9 +89,25 @@ angular.module('processAdminApp')
       factory.distancePrice = 0;
     }
 
+    var distanceInfo = [];
+
     factory.initMap = function() {
 
       factory.resetValues();
+
+      factoryServices.getResources('distanceInfo').then(function(response){
+        distanceInfo = response;
+        var i = 0;
+        distanceInfo.forEach(function(item){
+          var circleTemplate = factory.circlesTemplates[i];
+          i++;
+          circleTemplate.radius = 1000 * item.distance;
+          factory.circles.push(circleTemplate);
+        });
+        $log.info('[initMap] complete fill circleTemplate');
+
+      });
+
       // google provided code...
       var map = new google.maps.Map(document.getElementById('map'), {
         center: {
@@ -252,6 +290,24 @@ angular.module('processAdminApp')
     };
 
     var addressParsed = false;
+
+
+    factory.calculateDistancePrice = function(){
+      var selectedPlaceLatLng = new google.maps.LatLng(factory.address.lat, factory.address.lng);
+      factory.distance = google.maps.geometry.spherical.computeDistanceBetween(factory.tersusLatLng, selectedPlaceLatLng);
+
+      if (factory.distance < 2000) {
+        factory.distancePrice = 20;
+      } else if (factory.distance > 2000 && factory.distance < 4000) {
+        factory.distancePrice = 25;
+      } else if (factory.distance > 4000) {
+        factory.distancePrice = 30;
+      }
+      factory.distance = factory.distance/1000;
+      factory.distance = Math.round(factory.distance);
+
+
+    }
 
     factory.parseAddress = function(callback) {
       var selectedPlaceLatLng = new google.maps.LatLng(factory.address.lat, factory.address.lng);

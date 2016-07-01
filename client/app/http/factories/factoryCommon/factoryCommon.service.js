@@ -97,12 +97,12 @@ angular.module('processAdminApp')
       return deferred.promise;
     }
 
-    factory.delete = function ( data, url ) {
+    factory.delete = function ( url ) {
       var _this = this;
       var deferred = $q.defer();
       url = constants.API_ENDPOINT + url ;
 
-      $http.delete(url, data)
+      $http.delete(url)
         .success(function(data, status, headers, config) {
           noty.showNoty({
             text: "Item deleted ",

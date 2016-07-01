@@ -66,14 +66,19 @@
       }
     }];
 
-    constructor($scope, $stateParams, factoryClients, $timeout, $state, noty, AddressHandler, $log, $confirm) {
+    constructor($scope, $stateParams, factoryClients, $timeout, $state, noty, AddressHandler, $log, $confirm, factoryServices) {
       this.$confirm = $confirm;
+      this.factoryServices = factoryServices;
       this.$log = $log;
       this.$scope = $scope;
       this.AddressHandler = AddressHandler;
       var _this = this;
       this.noty = noty;
 
+
+      this.factoryServices.getResources('distanceInfo').then(function(response){
+        _this.distanceInfo = response;
+      });
 
       this.client = $stateParams.client;
       this.$state = $state;
@@ -99,6 +104,7 @@
           _this.AddressHandler.setAddress(_this.address);
 
           if (_this.address != null && _this.address.idAddress != null) {
+            _this.calculateDistancePrice();
             _this.AddressHandler.addExistingMarker();
           }
 
@@ -123,6 +129,21 @@
       this.formOptions.formState.disabled = false;
       this.AddressHandler.parseAddress();
       this.address = this.AddressHandler.address;
+      this.calculateDistancePrice();
+    }
+
+    calculateDistancePrice(){
+      var _this = this;
+      this.AddressHandler.calculateDistancePrice();
+      this.distance = this.AddressHandler.distance;
+      if (Boolean(this.distanceInfo)){
+        this.distanceInfo.forEach(function(item){
+          if (_this.distance < item.distance ){
+            _this.distancePrice = item.price;
+          }
+        });
+      }
+      // this.distancePrice = this.AddressHandler.distancePrice;
     }
 
     delete(){

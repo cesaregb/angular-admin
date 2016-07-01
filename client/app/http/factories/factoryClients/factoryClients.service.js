@@ -25,7 +25,7 @@ angular.module('processAdminApp')
        return factoryCommon.put(data, "/clients");
     };
     factory.deleteClient = function (data) {
-       return factoryCommon.delete(data, "/clients/" + data.idClient);
+       return factoryCommon.delete("/clients/" + data.idClient);
     };
 
     //********** Phone Numbers CRUD
@@ -39,7 +39,7 @@ angular.module('processAdminApp')
        return factoryCommon.put(data, "/phone-number");
     };
     factory.deletePhoneNumber = function ( data ) {
-       return factoryCommon.delete(data, "/phone-number/" + + data.idPhoneNumber);
+       return factoryCommon.delete("/phone-number/" + + data.idPhoneNumber);
     };
 
     // method used for transitional updates.
@@ -70,7 +70,7 @@ angular.module('processAdminApp')
        return factoryCommon.put(data, "/address");
     };
     factory.deleteAddress = function ( data ) {
-       return factoryCommon.delete(data, "/address/" + data.idAddress);
+       return factoryCommon.delete("/address/" + data.idAddress);
     };
 
 
@@ -102,7 +102,7 @@ angular.module('processAdminApp')
        return factoryCommon.put(data, "/client-payment-info");
     };
     factory.deleteClientPaymentInfo = function ( data ) {
-       return factoryCommon.delete(data, "/client-payment-info/" + data.idClientPaymentInfo);
+       return factoryCommon.delete("/client-payment-info/" + data.idClientPaymentInfo);
     };
 
     // method used for transitional updates.

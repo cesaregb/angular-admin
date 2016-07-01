@@ -40,19 +40,6 @@
         placeholder: '9:30',
         required: true
       }
-    }, {
-      key: 'stopAction',
-      type: 'select',
-      templateOptions: {
-        label: 'Action',
-        options: [{
-          "name": "Pickup",
-          "value": 1
-        }, {
-          "name": "Deliver",
-          "value": 2
-        }]
-      }
     }];
 
     stopFields = [{

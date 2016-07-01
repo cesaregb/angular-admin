@@ -11,7 +11,7 @@ class ClientComponent {
       {name:'Phone Number', value:'phone'}
     ];
 
-  constructor( factoryClients, serviceClients, $state, $stateParams, $log ) {
+  constructor( factoryClients, serviceClients, $state, $log ) {
     this.$state = $state;
     this.$log = $log;
     this.factoryClients = factoryClients;
