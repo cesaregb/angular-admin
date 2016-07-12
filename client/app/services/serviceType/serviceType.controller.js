@@ -19,7 +19,6 @@
       var _this = this;
       this.factoryServices.getResources('serviceType').then(function(response) {
         _this.serviceTypes = response;
-
       });
     }
 
@@ -28,7 +27,6 @@
     }
 
     openModal(formItem) {
-
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
@@ -54,6 +52,34 @@
             _this.getInfo();
           });
         }
+      });
+    }
+
+    openManageSpecsModal(formItem) {
+      var _this = this;
+
+      var modalInstance = this.$uibModal.open({
+        animation: false,
+        templateUrl: '/app/services/serviceType/manageSpecsModal/manageSpecsModal.html',
+        controller: 'ManageSpecsModalCtrl',
+        size: 'md',
+        resolve: {
+          formItem: function() {
+            return formItem;
+          }
+        }
+      });
+
+      modalInstance.result.then(function(resultItem) {
+        var serviceType = resultItem;
+        if (serviceType.serviceTypeSpecs.length > 0){
+          serviceType.serviceTypeSpecs.forEach(function(serviceTypeSpec){
+            _this.factoryServices.saveResource('serviceTypeSpec', serviceTypeSpec).then(function(response){
+              _this.$log.info('[save serviceTypeSpec] response: ' + response);
+            })
+          });
+        }
+        // all the info should be saved.
       });
     }
 

@@ -15,8 +15,6 @@ angular.module('processAdminApp')
         }else{
           $scope.formItem.idSpecs = response[0].idSpecs;
           $scope.formItem.type = 1;
-
-          $log.info('[init] $scope.formItem: ' + JSON.stringify($scope.formItem, null, 2));
         }
       });
     };
@@ -25,18 +23,18 @@ angular.module('processAdminApp')
     $scope.productTypes = [];
 
     $scope.types = [{
-      name: 'Value',
+      name: 'Valor',
       value: 1
     },{
-      name: 'Product',
+      name: 'Tipo Producto',
       value: 2
     }];
 
     $scope.costTypes = [{
-      name: 'Increment',
+      name: 'Incremento %',
       value: 0
     },{
-      name: 'Price',
+      name: 'Precio',
       value: 1
     }];
 
@@ -55,8 +53,6 @@ angular.module('processAdminApp')
 
         return !result;
       }
-
-
     }
 
     $scope.changeSpecValueType = function(){

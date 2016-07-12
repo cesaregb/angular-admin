@@ -114,7 +114,7 @@ angular.module('processAdminApp')
 
         }).error(function(error){
           noty.showNoty({
-            text: "Error deleting... ",
+            text: "Error deleting... " + error.message,
             ttl: 1000 * 2,
             type: "warning"
           });

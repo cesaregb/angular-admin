@@ -15,6 +15,7 @@
       <!-- bower:css -->
       <link rel="stylesheet" href="bower_components/Angular-Notys/angular-notys.css" />
       <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+      <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -73,6 +74,7 @@
       <script src="bower_components/angular-material/angular-material.js"></script>
       <script src="bower_components/angular-formly-material/dist/formly-material.js"></script>
       <script src="bower_components/angular-confirm-modal/angular-confirm.js"></script>
+      <script src="bower_components/angular-ui-select/dist/select.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
@@ -82,7 +84,7 @@
       <script src="app/admin/admin.module.js"></script>
       <script src="components/auth/auth.module.js"></script>
       <script src="components/util/util.module.js"></script>
-      <script src="app/products/product/product.controller.js"></script>
+      <script src="app/products/product/productModal/productModal.controller.js"></script>
       <script src="app/admin/admin.controller.js"></script>
       <script src="app/account/account.js"></script>
       <script src="app/admin/admin.router.js"></script>
@@ -128,11 +130,12 @@
       <script src="app/newOrder/newOrder.js"></script>
       <script src="app/products/ProductMainController/ProductMainController.controller.js"></script>
       <script src="app/products/product.js"></script>
+      <script src="app/products/product/product.controller.js"></script>
       <script src="app/account/login/login.controller.js"></script>
-      <script src="app/products/product/productModal/productModal.controller.js"></script>
       <script src="app/products/productMenu/productMenu.controller.js"></script>
       <script src="app/products/productType/productType.controller.js"></script>
       <script src="app/products/productType/productTypeModal/productTypeModal.controller.js"></script>
+      <script src="app/propsFilter/propsFilter.filter.js"></script>
       <script src="app/routes/RoutesMainController/RoutesMainController.controller.js"></script>
       <script src="app/routes/calendarRoute/calendarRoute.controller.js"></script>
       <script src="app/routes/calendarRoute/calendarRouteModal/calendarRouteModal.controller.js"></script>
@@ -146,6 +149,7 @@
       <script src="app/services/serviceCategory/serviceCategory.controller.js"></script>
       <script src="app/services/serviceCategory/serviceCategoryModal/serviceCategoryModal.controller.js"></script>
       <script src="app/services/serviceMenu/serviceMenu.controller.js"></script>
+      <script src="app/services/serviceType/manageSpecsModal/manageSpecsModal.controller.js"></script>
       <script src="app/services/serviceType/serviceType.controller.js"></script>
       <script src="app/services/serviceType/serviceTypeModal/serviceTypeModal.controller.js"></script>
       <script src="app/specs/SpecMainController/SpecMainController.controller.js"></script>

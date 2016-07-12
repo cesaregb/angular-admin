@@ -16,7 +16,9 @@ angular.module('processAdminApp', [
     'formlyBootstrap',
     // 'formlyMaterial',
     'angular-confirm',
-    'ngMaterial'
+    'ngMaterial',
+    'ui.select',
+    'ngSanitize'
   ])
   .config(function($urlRouterProvider, $locationProvider) {
     $urlRouterProvider.otherwise('/');
