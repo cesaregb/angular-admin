@@ -9,7 +9,7 @@ angular.module('processAdminApp')
     $scope.serviceTypeSpecs = [];
 
     this.init = function() {
-      $scope.title = "Service Type";
+      $scope.title = "Asignar Subproductos";
       if (Boolean($scope.formItem)) {
         if (Boolean($scope.formItem.serviceTypeSpecs)){
             $scope.serviceTypeSpecs = $scope.formItem.serviceTypeSpecs;
@@ -34,7 +34,7 @@ angular.module('processAdminApp')
     }
 
     $scope.deleteItem = function(deleteItem){
-      var deleteIndex = indexOfElement(deleteItem);
+      var deleteIndex = indexOfElement(deleteItem.spec);
       if (deleteIndex >= 0){
           $scope.serviceTypeSpecs.splice(deleteIndex, 1);
       }

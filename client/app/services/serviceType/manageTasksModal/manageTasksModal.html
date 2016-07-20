@@ -5,17 +5,33 @@
     </div>
     <div class="modal-body">
       <div class="row">
+
         <!-- Text input-->
-        <div class="form-group" ng-class="{ 'has-error' : $cn.clientForm.name.$invalid && !$cn.clientForm.name.$pristine }">
-          <label class="col-md-4 control-label" for="name">Subproductos:</label>
+        <div class="form-group">
+          <label class="col-md-4 control-label" for="name">Task Type:</label>
+          <div class="col-md-6">
+            <ui-select ng-model="selected.value" on-select="taskTypeSelected($item, $model)">
+              <ui-select-match>
+                <span ng-bind="$select.selected.name"></span>
+              </ui-select-match>
+              <ui-select-choices repeat="taskType in taskTypes | propsFilter: {name: $select.search}">
+                <span ng-bind="taskType.idSpecs"></span>
+                <span ng-bind="taskType.name"></span>
+              </ui-select-choices>
+            </ui-select>
+          </div>
+        </div>
+
+        <div class="form-group" style="padding-top:10px;">
+          <label class="col-md-4 control-label" for="name">Task:</label>
           <div class="col-md-6">
             <ui-select ng-model="selected.value" on-select="fromSelected($item, $model)">
               <ui-select-match>
                 <span ng-bind="$select.selected.name"></span>
               </ui-select-match>
-              <ui-select-choices repeat="spec in specs | propsFilter: {name: $select.search, idSpecs: $select.search}">
-                <span ng-bind="spec.idSpecs"></span>
-                <span ng-bind="spec.name"></span>
+              <ui-select-choices repeat="task in tasks | propsFilter: {name: $select.search}">
+                <span ng-bind="task.idSpecs"></span>
+                <span ng-bind="task.name"></span>
               </ui-select-choices>
             </ui-select>
           </div>
@@ -32,14 +48,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-show="serviceTypeSpecs.length == 0 || serviceTypeSpecs == null"><td colspan="5">No Items found</td></tr>
+              <tr ng-show="serviceTypeTasks.length == 0 || serviceTypeTasks == null"><td colspan="5">No Items found</td></tr>
               <tr class="gradeA" role="row"
                   ng-class-odd="'odd'" ng-class-even="'even'"
-                  ng-repeat="selectedSpec in serviceTypeSpecs">
+                  ng-repeat="selectedSpec in serviceTypeTasks">
                   <td>
-                    {{selectedSpec.spec.name}}
+                    {{selectedSpec.tasks.name}}
                   </td>
-                  <td>{{selectedSpec.spec.description}}</td>
+                  <td>{{selectedSpec.tasks.description}}</td>
                   <td class="action-column">
                     <a href="#" ng-click="deleteItem(selectedSpec)"
                         class="btn btn-danger btn-circle">

@@ -22,9 +22,11 @@ angular.module('processAdminApp')
     factory.getResources = function(idUri) {
       return factoryCommon.get(uris[idUri].uri);
     };
+
     factory.getResourceById = function(idUri, idResource) {
       return factoryCommon.get(uris[idUri].uri + '/' + idResource);
     };
+
     factory.saveResource = function(idUri, data) {
       return factoryCommon.save(data, uris[idUri].uri);
     };
@@ -43,6 +45,7 @@ angular.module('processAdminApp')
           callback();
         }
     }
+
     factory.updateResourceCallback = function(idUri, dataInput, callback) {
       this.updateResource(idUri, dataInput).then(function(result) {
           callback();
@@ -52,12 +55,16 @@ angular.module('processAdminApp')
         }
     }
 
-
     // ******* non repetetive...
     factory.getSpecValuesBySpec = function (idSpec) {
       var uri = uris.specsValue.uri;
        return factoryCommon.get(uri + "/spec/" + idSpec);
     };
+
+    factory.getTaskByType = function(idTasktype){
+      var uri = uris.task.uri + '/taskType/' + idTasktype;
+      return factoryCommon.get(uri);
+    }
 
     return factory;
 
