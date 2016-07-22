@@ -22,7 +22,13 @@ angular.module('processAdminApp')
         url: '/serviceType',
         template: '<service-type></service-type>',
         params: {
-          service: null
+          serviceType: null
+        }
+      }).state('services.serviceTypeForm', {
+        url: '/serviceTypeForm',
+        template: '<service-type-form></service-type-form>',
+        params: {
+          serviceType: null
         }
       });
   });

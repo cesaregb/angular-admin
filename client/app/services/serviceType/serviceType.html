@@ -23,7 +23,7 @@
               <div class="row">
                 <div class="col-lg-12">
                   <div class="pull-right" style="padding: 10px;">
-                    <a href="#" ng-click="$cn.openNewModal();" class="btn btn-info btn-sm">
+                    <a href="#" ui-sref="services.serviceTypeForm" class="btn btn-info btn-sm">
                       <span class="glyphicon glyphicon-plus"></span> Add Service Type
                     </a>
                   </div>
@@ -47,7 +47,7 @@
                           ng-class-odd="'odd'" ng-class-even="'even'"
                           ng-repeat="serviceType in $cn.serviceTypes">
                           <td>
-                            <a href="" ng-click="$cn.openModal(serviceType);">
+                            <a href="" ng-click="$cn.openServiceTypeForm(serviceType);">
                               {{serviceType.name}}
                             </a>
                           </td>
@@ -58,16 +58,6 @@
                             <a href="#" ng-click="$cn.delete(serviceType)"
                                 class="btn btn-danger btn-circle">
                               <span class="glyphicon glyphicon-remove"></span>
-                            </a>
-                            <a href="#" ng-click="$cn.openManageSpecsModal(serviceType)"
-                                class="btn btn-info">
-                              <span class="glyphicon glyphicon-list-alt"></span>
-                              Subproductos
-                            </a>
-                            <a href="#" ng-click="$cn.openManageSpecsModal(serviceType)"
-                                class="btn btn-info">
-                              <span class="glyphicon glyphicon-list-alt"></span>
-                              Tareas
                             </a>
                           </td>
                       </tr>

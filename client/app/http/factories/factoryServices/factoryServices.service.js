@@ -17,6 +17,7 @@ angular.module('processAdminApp')
       productType : {uri: '/product-type'},
       distanceInfo : {uri: '/distance-info'},
       serviceTypeSpec : {uri: '/service-type-specs'},
+      serviceTypeTask : {uri: '/service-type-task'},
     };
 
     factory.getResources = function(idUri) {

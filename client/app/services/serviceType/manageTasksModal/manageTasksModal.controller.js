@@ -10,12 +10,10 @@ angular.module('processAdminApp')
     $scope.serviceTypeTasks = [];
 
     this.init = function() {
-      $scope.title = "Agregar Tareas";
       if (Boolean($scope.formItem)) {
-        if (Boolean($scope.formItem.serviceTypeTasks)){
-            $scope.serviceTypeTasks = $scope.formItem.serviceTypeTasks;
+        if (Boolean($scope.formItem.serviceTypeTasks)) {
+          $scope.serviceTypeTasks = $scope.formItem.serviceTypeTasks;
         }
-        // placeholder
       }
       factoryServices.getResources('taskType').then(function(response) {
         $scope.taskTypes = response;
@@ -25,11 +23,12 @@ angular.module('processAdminApp')
     this.init();
 
     $scope.fromSelected = function(item, model) {
-      if (indexOfElement(item) == -1){
-        var selectedSpec = {};
-        selectedSpec.spec = item;
-        selectedSpec.idServiceType = $scope.formItem.idServiceType;
-        $scope.serviceTypeTasks.push(selectedSpec);
+      if (indexOfElement(item) == -1) {
+        var selectedTask = {};
+        selectedTask.sortingOrder = $scope.serviceTypeTasks.length + 1;
+        selectedTask.task = item;
+        selectedTask.idServiceType = $scope.formItem.idServiceType;
+        $scope.serviceTypeTasks.push(selectedTask);
       }
     }
 
@@ -37,27 +36,28 @@ angular.module('processAdminApp')
       factoryServices.getTaskByType(item.idTaskType).then(function(response) {
         $scope.tasks = response;
       });
-
-
     }
 
-    $scope.deleteItem = function(deleteItem){
-      var deleteIndex = indexOfElement(deleteItem.spec);
-      if (deleteIndex >= 0){
-          $scope.serviceTypeTasks.splice(deleteIndex, 1);
+    $scope.deleteItem = function(deleteItem) {
+      var deleteIndex = indexOfElement(deleteItem.task);
+      if (deleteIndex >= 0) {
+        $scope.serviceTypeTasks.splice(deleteIndex, 1);
+        // for (var i = deleteItem.sortingOrder; i++  )
       }
     };
 
-    function indexOfElement(findItem){
+    // helper
+    function indexOfElement(findItem) {
       var index = -1;
-      for (var i = 0; i < $scope.serviceTypeTasks.length; i++){
-        if ($scope.serviceTypeTasks[i].spec.idSpecs == findItem.idSpecs){
+      for (var i = 0; i < $scope.serviceTypeTasks.length; i++) {
+        if ($scope.serviceTypeTasks[i].task.idTask == findItem.idTask) {
           index = i;
         }
       }
       return index;
     };
 
+    // form actions...
     $scope.okAction = function() {
       $scope.formItem.serviceTypeTasks = $scope.serviceTypeTasks;
       $uibModalInstance.close($scope.formItem);

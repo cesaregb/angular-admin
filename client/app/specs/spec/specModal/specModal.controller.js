@@ -12,7 +12,7 @@ angular.module('processAdminApp')
         // placeholder
       }else{
         formItem.optional = 0;
-        formItem.primary = 0;
+        formItem.isPrimary = 0; // hardcoded.. was not used... yet
         formItem.max_qty = 0;
       }
     };
@@ -41,7 +41,7 @@ angular.module('processAdminApp')
       type: 'input',
       templateOptions: {
         type: 'text',
-        label: 'Cuantes se pueden agregar?',
+        label: 'Cuantes se pueden agregar? (0 = infinito)',
         required: true
       }
     },{
@@ -54,19 +54,6 @@ angular.module('processAdminApp')
           "value": 0
         }, {
           "name": "Yes",
-          "value": 1
-        }]
-      }
-    },{
-      key: 'primary',
-      type: 'select',
-      templateOptions: {
-        label: 'Sub Producto',
-        options: [{
-          "name": "No",
-          "value": 0
-        }, {
-          "name": "Si",
           "value": 1
         }]
       }

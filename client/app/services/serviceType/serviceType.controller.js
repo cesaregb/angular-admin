@@ -26,87 +26,38 @@
       this.openModal({});
     }
 
-    openModal(formItem) {
-      var _this = this;
-      var modalInstance = this.$uibModal.open({
-        animation: false,
-        templateUrl: '/app/services/serviceType/serviceTypeModal/serviceTypeModal.html',
-        controller: 'ServiceTypeModalCtrl',
-        size: 'md',
-        resolve: {
-          formItem: function() {
-            return formItem;
-          }
-        }
-      });
+    // openServiceTypeForm2(formItem) {
+    //   var _this = this;
+    //   var modalInstance = this.$uibModal.open({
+    //     animation: false,
+    //     templateUrl: '/app/services/serviceType/serviceTypeModal/serviceTypeModal.html',
+    //     controller: 'ServiceTypeModalCtrl',
+    //     size: 'md',
+    //     resolve: {
+    //       formItem: function() {
+    //         return formItem;
+    //       }
+    //     }
+    //   });
+    //
+    //   modalInstance.result.then(function(resultItem) {
+    //     var serviceType = resultItem;
+    //     if (serviceType.idServiceType != null && serviceType.idServiceType > 0) {
+    //       _this.factoryServices.updateResourceCallback('serviceType', serviceType, function() {
+    //         _this.getInfo();
+    //       });
+    //     } else {
+    //
+    //       _this.factoryServices.saveResourceCallback('serviceType', serviceType, function() {
+    //         _this.getInfo();
+    //       });
+    //     }
+    //   });
+    // }
 
-      modalInstance.result.then(function(resultItem) {
-        var serviceType = resultItem;
-        if (serviceType.idServiceType != null && serviceType.idServiceType > 0) {
-          _this.factoryServices.updateResourceCallback('serviceType', serviceType, function() {
-            _this.getInfo();
-          });
-        } else {
-
-          _this.factoryServices.saveResourceCallback('serviceType', serviceType, function() {
-            _this.getInfo();
-          });
-        }
-      });
-    }
-
-    openManageSpecsModal(formItem) {
-      var _this = this;
-      var modalInstance = this.$uibModal.open({
-        animation: false,
-        templateUrl: '/app/services/serviceType/manageSpecsModal/manageSpecsModal.html',
-        controller: 'ManageSpecsModalCtrl',
-        size: 'lg',
-        resolve: {
-          formItem: function() {
-            return formItem;
-          }
-        }
-      });
-
-      modalInstance.result.then(function(resultItem) {
-        var serviceType = resultItem;
-        if (serviceType.serviceTypeSpecs.length > 0){
-          serviceType.serviceTypeSpecs.forEach(function(serviceTypeSpec){
-            _this.factoryServices.saveResource('serviceTypeSpec', serviceTypeSpec).then(function(response){
-              $log.info('[save] serviceTypeSpec: ' + JSON.stringify(serviceTypeSpec, null, 2));
-            })
-          });
-        }
-        // all the info should be saved.
-      });
-    }
-
-    openManageSpecsModal(formItem) {
-      var _this = this;
-      var modalInstance = this.$uibModal.open({
-        animation: false,
-        templateUrl: '/app/services/serviceType/manageTasksModal/manageTasksModal.html',
-        controller: 'ManageTasksModalCtrl',
-        size: 'md',
-        resolve: {
-          formItem: function() {
-            return formItem;
-          }
-        }
-      });
-
-      modalInstance.result.then(function(resultItem) {
-        var serviceType = resultItem;
-        if (serviceType.serviceTypeTasks.length > 0){
-          serviceType.serviceTypeTasks.forEach(function(serviceTypeTask){
-            _this.factoryServices.saveResource('serviceTypeTask', serviceTypeTask).then(function(response){
-              $log.info('[save] serviceTypeTask: ' + JSON.stringify(serviceTypeTask, null, 2));
-            })
-          });
-        }
-        // all the info should be saved.
-      });
+    openServiceTypeForm(serviceType){
+      this.serviceType = serviceType;
+      this.$state.go('services.serviceTypeForm', {serviceType: serviceType}, { reload: true });
     }
 
     delete(item){
