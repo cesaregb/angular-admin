@@ -30,7 +30,7 @@
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
-        templateUrl: '/app/services/serviceCategory/serviceCategoryModal/serviceCategoryModal.html',
+        templateUrl: 'app/services/serviceCategory/serviceCategoryModal/serviceCategoryModal.html',
         controller: 'ServiceCategoryModalCtrl',
         size: 'md',
         resolve: {

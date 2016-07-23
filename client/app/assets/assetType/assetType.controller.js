@@ -30,7 +30,7 @@
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
-        templateUrl: '/app/assets/assetType/assetTypeModal/assetTypeModal.html',
+        templateUrl: 'app/assets/assetType/assetTypeModal/assetTypeModal.html',
         controller: 'AssetTypeModalCtrl',
         size: 'md',
         resolve: {

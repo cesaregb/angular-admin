@@ -94,7 +94,7 @@ class ServiceTypeFormComponent {
     var _this = this;
     var modalInstance = this.$uibModal.open({
       animation: false,
-      templateUrl: '/app/services/serviceType/manageSpecsModal/manageSpecsModal.html',
+      templateUrl: 'app/services/serviceType/manageSpecsModal/manageSpecsModal.html',
       controller: 'ManageSpecsModalCtrl',
       size: 'lg',
       resolve: {
@@ -121,7 +121,7 @@ class ServiceTypeFormComponent {
     var _this = this;
     var modalInstance = this.$uibModal.open({
       animation: false,
-      templateUrl: '/app/services/serviceType/manageTasksModal/manageTasksModal.html',
+      templateUrl: 'app/services/serviceType/manageTasksModal/manageTasksModal.html',
       controller: 'ManageTasksModalCtrl',
       size: 'lg',
       resolve: {

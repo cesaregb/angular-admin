@@ -39,7 +39,7 @@ class CalendarRouteComponent {
     var _this = this;
     var modalInstance = this.$uibModal.open({
       animation: false,
-      templateUrl: '/app/routes/calendarRoute/calendarRouteModal/calendarRouteModal.html',
+      templateUrl: 'app/routes/calendarRoute/calendarRouteModal/calendarRouteModal.html',
       controller: 'CalendarRouteModalCtrl',
       size: 'md',
       resolve: {
