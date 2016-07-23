@@ -38,7 +38,7 @@
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
-        templateUrl: '/app/clients/clientPhone/clientPhoneModal/addPhoneModal.html',
+        templateUrl: 'app/clients/clientPhone/clientPhoneModal/addPhoneModal.html',
         controller: 'ClientPhoneModalCtrl',
         size: 'md',
         resolve: {

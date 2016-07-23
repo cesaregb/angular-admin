@@ -30,7 +30,7 @@
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
-        templateUrl: '/app/specs/spec/specModal/specModal.html',
+        templateUrl: 'app/specs/spec/specModal/specModal.html',
         controller: 'SpecModalCtrl',
         size: 'md',
         resolve: {

@@ -38,7 +38,7 @@
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
-        templateUrl: '/app/clients/clientPaymentInfo/clientPaymentInfoModal/clientPaymentInfo.html',
+        templateUrl: 'app/clients/clientPaymentInfo/clientPaymentInfoModal/clientPaymentInfo.html',
         controller: 'ClientPaymentInfoModalCtrl',
         size: 'md',
         resolve: {

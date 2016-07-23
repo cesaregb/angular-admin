@@ -32,7 +32,7 @@
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
-        templateUrl: '/app/employees/employee/employeeModal/employeeModal.html',
+        templateUrl: 'app/employees/employee/employeeModal/employeeModal.html',
         controller: 'EmployeeModalCtrl',
         size: 'md',
         resolve: {

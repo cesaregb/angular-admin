@@ -229,7 +229,7 @@
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
-        templateUrl: '/app/clients/clientSearchModal/clientSearchModal.html',
+        templateUrl: 'app/clients/clientSearchModal/clientSearchModal.html',
         controller: 'ClientSearchModalCtrl',
         size: 'lg',
         resolve: {

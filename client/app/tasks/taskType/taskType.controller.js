@@ -30,7 +30,7 @@
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
-        templateUrl: '/app/tasks/taskType/taskTypeModal/taskTypeModal.html',
+        templateUrl: 'app/tasks/taskType/taskTypeModal/taskTypeModal.html',
         controller: 'TaskTypeModalCtrl',
         size: 'md',
         resolve: {

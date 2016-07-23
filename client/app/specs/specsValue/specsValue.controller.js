@@ -53,7 +53,7 @@
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
-        templateUrl: '/app/specs/specsValue/specsValueModal/specsValueModal.html',
+        templateUrl: 'app/specs/specsValue/specsValueModal/specsValueModal.html',
         controller: 'SpecsValueModalCtrl',
         size: 'md',
         resolve: {
