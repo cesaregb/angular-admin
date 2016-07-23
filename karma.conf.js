@@ -32,6 +32,9 @@ module.exports = function(config) {
       'client/bower_components/angular-material/angular-material.js',
       'client/bower_components/angular-formly-material/dist/formly-material.js',
       'client/bower_components/angular-confirm-modal/angular-confirm.js',
+      'client/bower_components/angular-ui-select/dist/select.js',
+      'client/bower_components/angular-loading-bar/build/loading-bar.js',
+      'client/bower_components/ng-table/dist/ng-table.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'node_modules/socket.io-client/socket.io.js',
