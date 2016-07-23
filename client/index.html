@@ -17,6 +17,7 @@
       <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
       <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
       <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+      <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -77,6 +78,7 @@
       <script src="bower_components/angular-confirm-modal/angular-confirm.js"></script>
       <script src="bower_components/angular-ui-select/dist/select.js"></script>
       <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+      <script src="bower_components/ng-table/dist/ng-table.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
@@ -86,7 +88,7 @@
       <script src="app/admin/admin.module.js"></script>
       <script src="components/auth/auth.module.js"></script>
       <script src="components/util/util.module.js"></script>
-      <script src="app/products/product/productModal/productModal.controller.js"></script>
+      <script src="app/products/ProductMainController/ProductMainController.controller.js"></script>
       <script src="app/admin/admin.controller.js"></script>
       <script src="app/account/account.js"></script>
       <script src="app/admin/admin.router.js"></script>
@@ -131,10 +133,16 @@
       <script src="app/main/main.js"></script>
       <script src="app/newOrder/newOrder.controller.js"></script>
       <script src="app/newOrder/newOrder.js"></script>
-      <script src="app/products/ProductMainController/ProductMainController.controller.js"></script>
+      <script src="app/orders/OrderMainController/OrderMainController.controller.js"></script>
+      <script src="app/orders/orderMenu/orderMenu.controller.js"></script>
+      <script src="app/orders/orderType/manageTasksModal/manageTasksModal.controller.js"></script>
+      <script src="app/orders/orderType/orderType.controller.js"></script>
+      <script src="app/orders/orderTypeForm/orderTypeForm.controller.js"></script>
+      <script src="app/orders/orders.js"></script>
+      <script src="app/account/login/login.controller.js"></script>
       <script src="app/products/product.js"></script>
       <script src="app/products/product/product.controller.js"></script>
-      <script src="app/account/login/login.controller.js"></script>
+      <script src="app/products/product/productModal/productModal.controller.js"></script>
       <script src="app/products/productMenu/productMenu.controller.js"></script>
       <script src="app/products/productType/productType.controller.js"></script>
       <script src="app/products/productType/productTypeModal/productTypeModal.controller.js"></script>

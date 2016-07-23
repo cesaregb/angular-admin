@@ -19,7 +19,8 @@ angular.module('processAdminApp', [
     'ngMaterial',
     'ui.select',
     'ngSanitize',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'ngTable'
   ])
   .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
     $urlRouterProvider.otherwise('/');

@@ -1,22 +1,21 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('ManageTasksModalCtrl', function($scope, factoryServices, $uibModalInstance, formItem, $log) {
+  .controller('ManageOrderTasksModalCtrl', function($scope, factoryServices, $uibModalInstance, formItem, $log) {
 
     $scope.formItem = formItem;
     $scope.tasks = [];
     $scope.taskTypes = [];
     $scope.selected = {};
-    $scope.serviceTypeTasks = [];
+    $scope.orderTypeTasks = [];
+
 
     this.init = function() {
-      if (Boolean($scope.formItem)) {
-        if (Boolean($scope.formItem.serviceTypeTasks)) {
-          $scope.serviceTypeTasks = $scope.formItem.serviceTypeTasks;
-
-          $log.info('[init] $scope.serviceTypeTasks: ' + JSON.stringify($scope.serviceTypeTasks, null, 2));
-        }
+      if (Boolean($scope.formItem) && Boolean($scope.formItem.orderTypeTasks)) {
+          $scope.orderTypeTasks = $scope.formItem.orderTypeTasks;
+          $log.info('[init] $scope.orderTypeTasks: ' + JSON.stringify($scope.orderTypeTasks, null, 2));
       }
+
       factoryServices.getResources('taskType').then(function(response) {
         $scope.taskTypes = response;
       });
@@ -27,10 +26,10 @@ angular.module('processAdminApp')
     $scope.fromSelected = function(item, model) {
       if (indexOfElement(item) == -1) {
         var selectedTask = {};
-        selectedTask.sortingOrder = $scope.serviceTypeTasks.length + 1;
+        selectedTask.sortingOrder = $scope.orderTypeTasks.length + 1;
         selectedTask.task = item;
-        selectedTask.idServiceType = $scope.formItem.idServiceType;
-        $scope.serviceTypeTasks.push(selectedTask);
+        selectedTask.idOrderType = $scope.formItem.idOrderType;
+        $scope.orderTypeTasks.push(selectedTask);
       }
     }
 
@@ -43,7 +42,7 @@ angular.module('processAdminApp')
     $scope.deleteItem = function(deleteItem) {
       var deleteIndex = indexOfElement(deleteItem.task);
       if (deleteIndex >= 0) {
-        $scope.serviceTypeTasks.splice(deleteIndex, 1);
+        $scope.orderTypeTasks.splice(deleteIndex, 1);
         // for (var i = deleteItem.sortingOrder; i++  )
       }
     };
@@ -51,8 +50,8 @@ angular.module('processAdminApp')
     // helper
     function indexOfElement(findItem) {
       var index = -1;
-      for (var i = 0; i < $scope.serviceTypeTasks.length; i++) {
-        if ($scope.serviceTypeTasks[i].task.idTask == findItem.idTask) {
+      for (var i = 0; i < $scope.orderTypeTasks.length; i++) {
+        if ($scope.orderTypeTasks[i].task.idTask == findItem.idTask) {
           index = i;
         }
       }
@@ -61,7 +60,7 @@ angular.module('processAdminApp')
 
     // form actions...
     $scope.okAction = function() {
-      $scope.formItem.serviceTypeTasks = $scope.serviceTypeTasks;
+      $scope.formItem.orderTypeTasks = $scope.orderTypeTasks;
       $uibModalInstance.close($scope.formItem);
     }
 

@@ -39,6 +39,25 @@ angular.module('processAdminApp')
       }
     }];
 
+    factory.orderType = [
+      {
+      key: 'name',
+      type: 'input',
+      templateOptions: {
+        type: 'text',
+        label: 'Name',
+        required: true
+      }
+    }, {
+      key: 'description',
+      type: 'input',
+      templateOptions: {
+        type: 'text',
+        label: 'Description',
+        required: true
+      }
+    }];
+
 
     return factory;
   });

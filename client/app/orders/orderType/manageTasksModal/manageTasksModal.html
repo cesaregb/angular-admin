@@ -44,7 +44,9 @@
 
     <div class="row" style="padding-top:10px;">
       <div class="col-sm-12">
-        <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info">
+
+        <table class="table table-striped table-bordered table-hover dataTable no-footer"
+            role="grid">
           <thead>
             <tr role="row">
               <th>Type</th>
@@ -55,11 +57,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-show="serviceTypeTasks.length == 0 || serviceTypeTasks == null">
+            <tr ng-show="orderTypeTasks.length == 0 || orderTypeTasks == null">
               <td colspan="5">No Items found</td>
             </tr>
             <tr class="gradeA" role="row" ng-class-odd="'odd'" ng-class-even="'even'"
-                ng-repeat="currentRow in serviceTypeTasks| orderBy:'-sortingOrder'">
+                ng-repeat="currentRow in orderTypeTasks| orderBy:'-sortingOrder'">
               <td>
                 {{currentRow.taskTypeName}}
               </td>

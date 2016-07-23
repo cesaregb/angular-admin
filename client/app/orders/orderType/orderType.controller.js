@@ -1,8 +1,8 @@
 'use strict';
 (function() {
 
-  class ServiceTypeComponent {
-    serviceTypes = [];
+  class OrderTypeComponent {
+    orderTypes = [];
 
     constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams) {
       this.NgTableParams = NgTableParams;
@@ -17,7 +17,7 @@
       var _this = this;
       this.tableParams = new this.NgTableParams({}, {
         getData: function(params) {
-          return _this.factoryServices.getResourcesForTable('serviceType', params);
+          return _this.factoryServices.getResourcesForTable('orderType', params);
         }
       });
     }
@@ -26,9 +26,9 @@
       this.openModal({});
     }
 
-    openServiceTypeForm(serviceType){
-      this.serviceType = serviceType;
-      this.$state.go('services.serviceTypeForm', {serviceType: serviceType}, { reload: true });
+    openOrderTypeForm(orderType){
+      this.orderType = orderType;
+      this.$state.go('orders.orderTypeForm', {orderType: orderType}, { reload: true });
     }
 
     delete(item){
@@ -37,7 +37,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteResource('serviceType', item.idServiceType).then(function(info){
+        _this.factoryServices.deleteResource('orderType', item.idOrderType).then(function(info){
           _this.back();
         });
       });
@@ -49,9 +49,9 @@
   }
 
   angular.module('processAdminApp')
-    .component('serviceType', {
-      templateUrl: 'app/services/serviceType/serviceType.html',
-      controller: ServiceTypeComponent,
+    .component('orderType', {
+      templateUrl: 'app/orders/orderType/orderType.html',
+      controller: OrderTypeComponent,
       controllerAs: '$cn'
     });
 
