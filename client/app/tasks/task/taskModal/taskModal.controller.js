@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('TaskModalCtrl', function($scope, factoryGeneral, $uibModalInstance, formItem, $log) {
+  .controller('TaskModalCtrl', function($scope, factoryServices, $uibModalInstance, formItem, $log) {
 
     $scope.formItem = formItem;
 
@@ -12,7 +12,7 @@ angular.module('processAdminApp')
         // placeholder
       }
 
-      factoryGeneral.getTaskTypes().then(function(response){
+      factoryServices.getResources('taskType').then(function(response){
         response.forEach(function(item){
           $scope.parentSelect.push({name : item.name, value: item.idTaskType});
         });

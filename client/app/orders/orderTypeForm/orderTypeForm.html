@@ -1,0 +1,50 @@
+<div id="page-wrapper" class="row">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="pull-right" style="padding: 10px;">
+        <a href="#" ui-sref="orders.orderType" class="btn btn-info btn-sm">
+          <span class="glyphicon glyphicon-chevron-left"></span> Back
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Order Type Form
+        </div>
+        <div class="panel-body">
+          <div class="row" ng-show="$cn.editMode">
+            <div class="col-lg-12 pull-right">
+              <div class="pull-right" style="padding: 10px;">
+                <a href="#" ng-click="$cn.openManageTaskModal($cn.orderType)"
+                    class="btn btn-info btn-sm">
+                  <span class="glyphicon glyphicon-list-alt"></span>
+                  Tareas
+                </a>
+              </div>
+            </div>
+          </div>
+          <legend>{{$cn.title}}</legend>
+          <formly-form
+              model="$cn.orderType"
+              fields="$cn.formItemFields"
+              form="$cn.orderTypeForm"
+              ng-submit="$cn.saveOrderType()"></formly-form>
+          <!-- Button (Double) -->
+          <div class="buttons-footer">
+            <button type="button" class="btn btn-primary"
+                ng-disabled="$cn.orderTypeForm.$invalid"
+                ng-click="$cn.saveOrderType()">Submit</button>
+            <button type="button" class="btn btn-danger"
+                ng-click="$cn.delete()"
+                ng-disabled="$cn.orderType.idOrderType == null || $cn.orderType.idOrderType == 0">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.col-lg-12 -->
+  </div>
+</div>

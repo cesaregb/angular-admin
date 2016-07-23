@@ -34,46 +34,59 @@ class ClientEditComponent {
     this.selectedPayment = null;
 
     // set up initial phone
-    if (this.selectedPhone == null
-        && this.client != null
-        && this.client.phoneNumbers != null
-        && this.client.phoneNumbers.length > 0){
+    if (Boolean(this.client)){
+      if (this.selectedPhone == null
+          && this.client != null
+          && this.client.phoneNumbers != null
+          && this.client.phoneNumbers.length > 0){
 
-      this.selectedPhone = this.client.phoneNumbers[0];
-      this.client.phoneNumbers.forEach(function(item){
-        if (item.prefered){
-          _this.selectedPhone = item;
-        }
-      });
+        this.selectedPhone = this.client.phoneNumbers[0];
+        this.client.phoneNumbers.forEach(function(item){
+          if (item.prefered){
+            _this.selectedPhone = item;
+          }
+        });
+      }
+
+      // set up initial address
+      if (this.selectedAddress == null
+          && this.client != null
+          && this.client.addresses != null
+          && this.client.addresses.length > 0){
+
+        this.selectedAddress = this.client.addresses[0];
+        this.client.addresses.forEach(function(item){
+          if (item.prefered ){
+            _this.selectedAddress = item;
+          }
+        });
+      }
+
+      // set up initial payment
+      if (this.selectedPayment == null
+          && this.client != null
+          && this.client.clientPaymentInfos != null
+          && this.client.clientPaymentInfos.length > 0){
+
+        this.selectedPayment = this.client.clientPaymentInfos[0];
+        this.client.clientPaymentInfos.forEach(function(item){
+          if (item.prefered ){
+            _this.selectedPayment = item;
+          }
+        });
+      }
+
+      // facturacion
+      if (Boolean(this.client.rfc) ){
+        this.facturacion = true;
+        this.client.addresses.forEach(function(item){
+          if (item.factura){
+            _this.facturacionAddress = item;
+          }
+        });
+      }
     }
 
-    // set up initial address
-    if (this.selectedAddress == null
-        && this.client != null
-        && this.client.addresses != null
-        && this.client.addresses.length > 0){
-
-      this.selectedAddress = this.client.addresses[0];
-      this.client.addresses.forEach(function(item){
-        if (item.prefered ){
-          _this.selectedAddress = item;
-        }
-      });
-    }
-
-    // set up initial payment
-    if (this.selectedPayment == null
-        && this.client != null
-        && this.client.clientPaymentInfos != null
-        && this.client.clientPaymentInfos.length > 0){
-
-      this.selectedPayment = this.client.clientPaymentInfos[0];
-      this.client.clientPaymentInfos.forEach(function(item){
-        if (item.prefered ){
-          _this.selectedPayment = item;
-        }
-      });
-    }
   }
 
   delete(){
@@ -98,11 +111,11 @@ class ClientEditComponent {
     _this.client.phoneNumbers.forEach(function (item, index, theArray) {
       if (item.idPhoneNumber ==  _this.selectedPhone.idPhoneNumber){
         theArray[index].prefered = true;
-        _this.factoryClients.updatePhoneNumberCallback(theArray[index], _this.getClient);
+        _this.factoryClients.updatePhoneNumberCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
       }else{
         if (theArray[index].prefered){
           theArray[index].prefered = false;
-          _this.factoryClients.updatePhoneNumberCallback(theArray[index], _this.getClient);
+          _this.factoryClients.updatePhoneNumberCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
         }
       }
     });
@@ -114,11 +127,11 @@ class ClientEditComponent {
     _this.client.addresses.forEach(function (item, index, theArray) {
       if (item.idAddress ==  _this.selectedAddress.idAddress){
         theArray[index].prefered = true;
-        _this.factoryClients.updateAddressCallback(theArray[index], _this.getClient);
+        _this.factoryClients.updateAddressCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
       }else{
         if (theArray[index].prefered){
           theArray[index].prefered = false;
-          _this.factoryClients.updateAddressCallback(theArray[index], _this.getClient);
+          _this.factoryClients.updateAddressCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
         }
       }
     });
@@ -126,25 +139,24 @@ class ClientEditComponent {
 
   changeDefaultPayment(){
     var _this = this;
-
     _this.client.clientPaymentInfos.forEach(function (item, index, theArray) {
       if (item.idClientPaymentInfo ==  _this.selectedPayment.idClientPaymentInfo){
         theArray[index].prefered = true;
-        _this.factoryClients.updateClientPaymentInfoCallback(theArray[index], _this.getClient);
+        _this.factoryClients.updateClientPaymentInfoCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
       }else{
         if (theArray[index].prefered){
           theArray[index].prefered = false;
-          _this.factoryClients.updateClientPaymentInfoCallback(theArray[index], _this.getClient);
+          _this.factoryClients.updateClientPaymentInfoCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
         }
       }
     });
   }
 
   getClient(id){
-    var _this = this;
-    _this.factoryClients.getClientById(id).then(function(data){
-      _this.client = data;
-    });
+    // var _this = this;
+    // this.factoryClients.getClientById(id).then(function(data){
+    //   _this.client = data;
+    // });
   }
 
   saveClient(){
@@ -178,17 +190,29 @@ class ClientEditComponent {
     }
   }
 
+  changeDireccionFacturacion(){
+    var _this = this;
+    _this.client.addresses.forEach(function (item, index, theArray) {
+      if (item.idAddress ==  _this.facturacionAddress.idAddress){
+        theArray[index].factura = true;
+        _this.factoryClients.updateAddressCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
+      }else{
+        if (theArray[index].factura){
+          theArray[index].factura = false;
+          _this.factoryClients.updateAddressCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
+        }
+      }
+    });
+  }
+
   saveExistingClient(){
     var _this = this;
     _this.factoryClients.updateClient( _this.client ).then(function(data){ // updating existing
-      console.log("Client updated. " + JSON.stringify(data));
       // _this.$state.go('client', { reload: true });
-
     }),function(error){ // error saving existing
       console.log("Error updating client: " + JSON.stringify(error));
     };
   }
-
 }
 
 angular.module('processAdminApp')

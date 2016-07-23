@@ -53,6 +53,19 @@ angular.module('processAdminApp')
           "value": 7
         }]
       }
+    },{
+      key: 'action',
+      type: 'select',
+      templateOptions: {
+        label: 'Action',
+        options: [{
+          "name": "Pickup",
+          "value": 1
+        }, {
+          "name": "Deliver",
+          "value": 2
+        }]
+      }
     }];
 
     $scope.savePhone = function() {

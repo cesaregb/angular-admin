@@ -1,0 +1,106 @@
+<div id="page-wrapper">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="pull-right" style="padding: 10px;">
+        <a href="#" ui-sref="services.serviceMenu()" class="btn btn-info btn-sm">
+          <span class="glyphicon glyphicon-chevron-left"></span> Back
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Service Types
+        </div>
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+          <div class="dataTable_wrapper">
+            <div id="viewItemsTable" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="pull-right" style="padding: 10px;">
+                    <a href="#" ui-sref="services.serviceTypeForm" class="btn btn-info btn-sm">
+                      <span class="glyphicon glyphicon-plus"></span> Add Service Type
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+
+                  <div loading-container="$cn.tableParams.settings().$loading">
+                    <table ng-table="$cn.tableParams" class="table table-condensed table-bordered table-striped">
+                      <tr ng-repeat="row in $data track by row.idServiceType">
+                        <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'">
+                          <a href="" ng-click="$cn.openServiceTypeForm(row);">
+                            {{row.name}}
+                          </a>
+                        </td>
+                        <td data-title="'Description'" >{{row.description}}</td>
+                        <td data-title="'Price'">{{row.price}}</td>
+                        <td data-title="'Service Category'">{{row.serviceTypeTypeName}}</td>
+                        <td data-title="'Service Category'">{{row.serviceTypeTypeName}}</td>
+
+                        <td data-title="'#'">
+                          <a href="#" ng-click="$cn.delete(row)"
+                              class="btn btn-danger btn-circle">
+                            <span class="glyphicon glyphicon-remove"></span>
+                          </a>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <!-- <table
+                    class="table table-striped table-bordered table-hover dataTable no-footer"
+                      role="grid"
+                      aria-describedby="dataTables-example_info">
+                    <thead>
+                      <tr role="row">
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Service Category</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-show="$cn.serviceTypes.length == 0 || $cn.serviceTypes == null"><td colspan="5">No Items found</td></tr>
+                      <tr class="gradeA" role="row"
+                          ng-class-odd="'odd'" ng-class-even="'even'"
+                          ng-repeat="serviceType in $cn.serviceTypes">
+                          <td>
+                            <a href="" ng-click="$cn.openServiceTypeForm(serviceType);">
+                              {{serviceType.name}}
+                            </a>
+                          </td>
+                          <td>{{serviceType.description}}</td>
+                          <td>{{serviceType.price}}</td>
+                          <td>{{serviceType.serviceTypeTypeName}}</td>
+                          <td class="action-column">
+                            <a href="#" ng-click="$cn.delete(serviceType)"
+                                class="btn btn-danger btn-circle">
+                              <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                          </td>
+                      </tr>
+                    </tbody>
+                  </table> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+      </div>
+      <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+  </div>
+
+</div>

@@ -4,10 +4,10 @@
   class TaskComponent {
     tasks = [];
 
-    constructor($stateParams, $state, noty, factoryGeneral, $confirm, $log, $uibModal) {
+    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal) {
       this.$log = $log;
       this.$confirm = $confirm;
-      this.factoryGeneral = factoryGeneral;
+      this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.noty = noty;
       this.$state = $state;
@@ -17,7 +17,7 @@
 
     getInfo() {
       var _this = this;
-      this.factoryGeneral.getTasks().then(function(response) {
+      this.factoryServices.getResources('task').then(function(response) {
         _this.tasks = response;
 
       });
@@ -45,12 +45,12 @@
       modalInstance.result.then(function(resultItem) {
         var task = resultItem;
         if (task.idTask != null && task.idTask > 0) {
-          _this.factoryGeneral.updateTaskCallback(task, function() {
+          _this.factoryServices.updateResourceCallback('task', task, function() {
             _this.getInfo();
           });
         } else {
 
-          _this.factoryGeneral.saveTaskCallback(task, function() {
+          _this.factoryServices.saveResourceCallback('task', task, function() {
             _this.getInfo();
           });
         }
@@ -63,7 +63,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryGeneral.deleteTask(item).then(function(info){
+        _this.factoryServices.deleteResource('task', item.idTask).then(function(info){
           _this.back();
         });
       });

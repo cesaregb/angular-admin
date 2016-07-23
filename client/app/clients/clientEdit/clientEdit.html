@@ -25,7 +25,7 @@
 
               <!-- Text input-->
               <div class="form-group" ng-class="{ 'has-error' : $cn.clientForm.name.$invalid && !$cn.clientForm.name.$pristine }">
-                <label class="col-md-4 control-label" for="name">Name *</label>
+                <label class="col-md-4 control-label" for="name">Nombre *</label>
                 <div class="col-md-6">
                   <input id="name" name="name" type="text" placeholder="name" class="form-control input-md" required
                     ng-model="$cn.client.name" ng-minlength="3">
@@ -36,7 +36,7 @@
 
               <!-- Text input-->
               <div class="form-group" ng-class="{ 'has-error' : $cn.clientForm.lastName.$invalid && !$cn.clientForm.lastName.$pristine }">
-                <label class="col-md-4 control-label" for="lastName">Last Name*</label>
+                <label class="col-md-4 control-label" for="lastName">Apellido*</label>
                 <div class="col-md-6">
                   <input id="lastName" name="lastName" type="text" class="form-control input-md" required
                     ng-model="$cn.client.lastName" ng-minlength="3">
@@ -48,7 +48,7 @@
               <!-- Text input-->
               <div class="form-group"
                   ng-hide="!$cn.newClient" ng-class="{ 'has-error' : $cn.clientForm.phonenumber.$invalid && !$cn.clientForm.phonenumber.$pristine }">
-                <label class="col-md-4 control-label" for="phonenumber">Phone Number*</label>
+                <label class="col-md-4 control-label" for="phonenumber">Numero Telefonico*</label>
                 <div class="col-md-6">
                   <input id="phonenumber" name="phonenumber" type="text" class="form-control input-md"
                     ng-model="$cn.temporalPhone" ng-minlength="3">
@@ -58,7 +58,7 @@
 
               <!-- Select Basic -->
               <div class="form-group" ng-hide="$cn.newClient">
-                <label class="col-md-4 control-label" for="primaryPhone">Select Primary Phone</label>
+                <label class="col-md-4 control-label" for="primaryPhone">Principal telefono</label>
                 <div class="col-md-6">
                   <select class="form-control"
                       ng-options="phone as phone.number for phone in $cn.client.phoneNumbers"
@@ -69,7 +69,7 @@
 
               <!-- Select Basic -->
               <div class="form-group" ng-hide="$cn.newClient">
-                <label class="col-md-4 control-label" for="primaryAddress">Select Primary Address</label>
+                <label class="col-md-4 control-label" for="primaryAddress">Principal direccion</label>
                 <div class="col-md-6">
                   <select class="form-control"
                       ng-options="addr as addr.address for addr in $cn.client.addresses"
@@ -80,7 +80,7 @@
 
               <!-- Select Basic -->
               <div class="form-group" ng-hide="$cn.newClient">
-                <label class="col-md-4 control-label" for="primaryPayment">Select Primary Payment</label>
+                <label class="col-md-4 control-label" for="primaryPayment">Principal metodo de pago</label>
                 <div class="col-md-6">
                   <select class="form-control"
                       ng-options="payment as payment.token for payment in $cn.client.clientPaymentInfos"
@@ -108,14 +108,52 @@
                 </div>
               </div>
 
+              <!-- Text input-->
+              <div class="form-group" ng-class="{ 'has-error' : $cn.clientForm.name.$invalid && !$cn.clientForm.name.$pristine }">
+                <label class="col-md-4 control-label" for="name">Facturacion</label>
+                <div class="col-md-6">
+                  <input name="facturacion" type="checkbox"
+                    ng-model="$cn.facturacion">
+                </div>
+              </div>
+
+              <!-- Text input-->
+              <div class="form-group" ng-show="$cn.facturacion">
+                <label class="col-md-4 control-label" for="rfc">RFC</label>
+                <div class="col-md-6">
+                  <input id="rfc" name="rfc" type="text" class="form-control input-md"
+                    ng-model="$cn.client.rfc" >
+                  <p ng-show="$cn.clientForm.rfc.$error.minlength" class="help-block">Value too short</p>
+                </div>
+              </div>
+
+              <!-- Text input-->
+              <div class="form-group" ng-show="$cn.facturacion">
+                <label class="col-md-4 control-label" for="razonSocial">Razon Social</label>
+                <div class="col-md-6">
+                  <input id="razonSocial" name="razonSocial" type="text" class="form-control input-md"
+                    ng-model="$cn.client.razonSocial" >
+                  <p ng-show="$cn.clientForm.razonSocial.$error.minlength" class="help-block">Value too short</p>
+                </div>
+              </div>
+
+              <!-- Select Basic -->
+              <div class="form-group" ng-hide="$cn.newClient || !$cn.facturacion">
+                <label class="col-md-4 control-label" for="primaryAddress">Direccion Facturacion</label>
+                <div class="col-md-6">
+                  <select class="form-control"
+                      ng-options="addr as addr.address for addr in $cn.client.addresses"
+                      ng-model="$cn.facturacionAddress" ng-change="$cn.changeDireccionFacturacion()"></select>
+                </div>
+              </div>
+
+
               <!-- Button (Double) -->
               <div class="buttons-footer">
-
                 <button type="submit" class="btn btn-primary" ng-disabled="$cn.clientForm.$invalid">Submit</button>
                 <button type="button" class="btn btn-regular" ng-click="$parent.openAddressForm($cn.client, {idClient: $cn.client.idClient})"
                     ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">
                   Add Addrees</button>
-
                 <button type="button" class="btn btn-danger" ng-click="$cn.delete()"
                     ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">Delete</button>
               </div>
