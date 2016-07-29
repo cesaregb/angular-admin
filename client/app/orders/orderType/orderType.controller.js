@@ -44,7 +44,8 @@
     }
 
     back() {
-      this.getInfo();
+      this.tableParams.reload();
+      // do nothing...
     }
   }
 

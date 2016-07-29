@@ -225,7 +225,7 @@
     }
 
     openClientSearch() {
-      var clientInfo = {};
+      var clientSearchInfo = {};
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
@@ -233,8 +233,8 @@
         controller: 'ClientSearchModalCtrl',
         size: 'lg',
         resolve: {
-          clientInfo: function() {
-            return clientInfo;
+          clientSearchInfo: function() {
+            return clientSearchInfo;
           }
         }
       });

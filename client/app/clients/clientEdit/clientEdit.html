@@ -147,13 +147,15 @@
                 </div>
               </div>
 
-
               <!-- Button (Double) -->
               <div class="buttons-footer">
                 <button type="submit" class="btn btn-primary" ng-disabled="$cn.clientForm.$invalid">Submit</button>
                 <button type="button" class="btn btn-regular" ng-click="$parent.openAddressForm($cn.client, {idClient: $cn.client.idClient})"
                     ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">
-                  Add Addrees</button>
+                  Agregar Direccion</button>
+                <button type="button" class="btn btn-regular"
+                    ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">
+                  Crear Orden</button>
                 <button type="button" class="btn btn-danger" ng-click="$cn.delete()"
                     ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">Delete</button>
               </div>

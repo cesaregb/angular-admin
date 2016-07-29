@@ -1,5 +1,4 @@
-<nav class="navbar navbar-default navbar-static-top"
-    role="navigation" style="margin-bottom: 0">
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 
   <div class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -93,16 +92,17 @@
             <i class="glyphicon glyphicon-plus"></i> Calis
           </a>
         </li>
+         -->
         <li>
-          <a href="" ui-sref="newOrder">
+          <a href="" ui-sref="orders.newOrder">
             <i class="glyphicon glyphicon-plus"></i> New Order
           </a>
-        </li> -->
+        </li>
         <li ng-repeat="item in nav.menu">
-           <a href="" ui-sref="{{item.state}}" >
+          <a href="" ui-sref="{{item.state}}">
             {{item.name}}
             </a>
-         </li>
+        </li>
       </ul>
     </div>
     <!-- /.sidebar-collapse -->

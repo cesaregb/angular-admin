@@ -14,13 +14,13 @@ angular.module('processAdminApp', [
     'angular-noty',
     'formly',
     'formlyBootstrap',
-    // 'formlyMaterial',
     'angular-confirm',
     'ngMaterial',
     'ui.select',
     'ngSanitize',
     'angular-loading-bar',
-    'ngTable'
+    'ngTable',
+    'ui.bootstrap.datetimepicker'
   ])
   .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
     $urlRouterProvider.otherwise('/');

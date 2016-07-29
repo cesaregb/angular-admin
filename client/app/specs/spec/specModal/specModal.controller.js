@@ -57,6 +57,12 @@ angular.module('processAdminApp')
           "value": 1
         }]
       }
+    },{
+      "type": "checkbox",
+      "key": "primarySpec",
+      "templateOptions": {
+        "label": "Precio Base"
+      }
     }];
 
     $scope.okAction = function() {

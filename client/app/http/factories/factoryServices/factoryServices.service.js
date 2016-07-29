@@ -48,6 +48,9 @@ angular.module('processAdminApp')
       orderTypeTask: {
         uri: '/order-type-task'
       },
+      appOrder: {
+        uri: '/app-orders'
+      },
     };
 
     factory.getResources = function(idUri) {
@@ -104,7 +107,6 @@ angular.module('processAdminApp')
       return deferred.promise;
     };
 
-
     // ******* non repetetive...
     factory.getSpecValuesBySpec = function(idSpec) {
       var uri = uris.specsValue.uri;
@@ -114,6 +116,26 @@ angular.module('processAdminApp')
     factory.getTaskByType = function(idTasktype) {
       var uri = uris.task.uri + '/taskType/' + idTasktype;
       return factoryCommon.get(uri);
+    }
+
+    factory.getTaskTypeBySection = function(flag) {
+      var uri = uris.taskType.uri + '/filter/' + flag;
+      return factoryCommon.get(uri);
+    }
+
+    factory.getServiceTypeSpecById = function(id) {
+      var uri = uris.serviceTypeSpec.uri + '/byServiceType/' + id;
+      return factoryCommon.get(uri);
+    }
+
+    factory.getServiceOrderDetails = function() {
+      var uri = uris.appOrder.uri + '/orderTypes';
+      return factoryCommon.get(uri);
+    }
+
+    factory.addOrderServiceType = function(orderType) {
+      var uri = uris.orderType.uri + '/add/serviceType';
+      return factoryCommon.put(orderType, uri);
     }
 
     return factory;

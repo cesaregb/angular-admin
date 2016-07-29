@@ -91,6 +91,30 @@ class OrderTypeFormComponent {
       }
     });
   }
+
+  openManageOrderServiceTypeModal(formItem) {
+    var _this = this;
+    var modalInstance = this.$uibModal.open({
+      animation: false,
+      templateUrl: 'app/orders/orderType/manageOrderServiceTypeModal/manageOrderServiceTypeModal.html',
+      controller: 'ManageOrderServiceTypeModalCtrl',
+      size: 'lg',
+      resolve: {
+        formItem: function() {
+          return formItem;
+        }
+      }
+    });
+
+    modalInstance.result.then(function(resultItem) {
+      var orderType = resultItem;
+      if (orderType.serviceTypes.length > 0){
+        _this.factoryServices.addOrderServiceType(orderType).then(function(response){
+          // do nothing..
+        })
+      }
+    });
+  }
   // end class
 }
 

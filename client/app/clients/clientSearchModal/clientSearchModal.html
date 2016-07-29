@@ -35,7 +35,7 @@
                   ng-class-odd="'odd'" ng-class-even="'even'"
                   ng-repeat="client in clients">
                   <td>
-                    <a href="" ng-click="preSelectItem(client);">
+                    <a href="" ng-click="preSelectItem(client);" ng-dblclick="selectItemAction(client);">
                       {{client.name}}
                     </a>
                   </td>

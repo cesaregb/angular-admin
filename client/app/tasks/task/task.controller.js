@@ -28,7 +28,6 @@
     }
 
     openModal(formItem) {
-
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
@@ -44,13 +43,13 @@
 
       modalInstance.result.then(function(resultItem) {
         var task = resultItem;
+
         if (task.idTask != null && task.idTask > 0) {
-          _this.factoryServices.updateResourceCallback('task', task, function() {
+          _this.factoryServices.updateResource('task', task).then(function(result){
             _this.getInfo();
           });
         } else {
-
-          _this.factoryServices.saveResourceCallback('task', task, function() {
+          _this.factoryServices.saveResource('task', task).then(function(result){
             _this.getInfo();
           });
         }

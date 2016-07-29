@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .factory('formlyForms', function () {
+  .factory('formlyForms', function() {
     var factory = {};
 
-    factory.serviceType = [
-      {
+    factory.serviceType = [{
       key: 'name',
       type: 'input',
       templateOptions: {
@@ -18,15 +17,15 @@ angular.module('processAdminApp')
       type: 'input',
       templateOptions: {
         type: 'text',
-        label: 'Description',
-        required: true
+        label: 'Descipcion',
+        required: false
       }
     }, {
       key: 'price',
       type: 'input',
       templateOptions: {
         type: 'text',
-        label: 'Price',
+        label: 'Precio',
         required: true
       }
     }, {
@@ -34,13 +33,12 @@ angular.module('processAdminApp')
       type: 'input',
       templateOptions: {
         type: 'text',
-        label: 'Time',
+        label: 'Tiempo en minutos',
         required: true
       }
     }];
 
-    factory.orderType = [
-      {
+    factory.orderType = [{
       key: 'name',
       type: 'input',
       templateOptions: {
@@ -56,8 +54,26 @@ angular.module('processAdminApp')
         label: 'Description',
         required: true
       }
+    },{
+      key: 'transportInfo',
+      type: 'select',
+      templateOptions: {
+        label: 'Transporte',
+        options: [{
+          "name": "Ninguno",
+          "value": 0
+        }, {
+          "name": "Recojer",
+          "value": 1
+        }, {
+          "name": "Entregar",
+          "value": 2
+        }, {
+          "name": "Recojer/Entregar",
+          "value": 3
+        }]
+      }
     }];
-
 
     return factory;
   });

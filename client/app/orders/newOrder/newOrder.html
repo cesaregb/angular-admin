@@ -1,0 +1,161 @@
+<div id="page-wrapper">
+  <!-- <div class="row">
+    <div class="col-lg-12">
+      <div class="pull-right" style="padding: 10px;">
+        <a href="#" ui-sref="orders.orderType" class="btn btn-info btn-sm">
+          <span class="glyphicon glyphicon-chevron-left"></span> Back
+        </a>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="row">
+    <div class="col-lg-12">
+      <legend>Orden</legend>
+      <div class="row" style="padding-bottom:20px;">
+        <div class="col-md-12">
+          <div class="col-md-6">
+            <div class="col-md-3">
+              <label class="col-md-4 control-label" for="lastName">Cliente</label>
+            </div>
+            <div class="col-md-9 input-group">
+              <input type="text" class="form-control" ng-model="$cn.order.client.name">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="button" ng-click="$cn.openClientSearch()">
+                  <i class="fa fa-search"></i>
+                </button>
+                <button class="btn btn-default" type="button" ui-sref="client.edit" ng-disabled="$cn.order.client.idClient != null">
+                  <i class="glyphicon glyphicon-plus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="col-md-9 col-md-offset-3" ng-show="$cn.order.client.idClient != null">
+              <span>{{$cn.order.client.email}} </span>
+              <span ng-show="$cn.order.client.phoneNumbers.length > 0">/{{$cn.order.client.phoneNumbers[0].number}}</span>
+              <br />
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div>
+              <div class="col-md-3">
+                <label class="col-md-4 control-label" for="lastName">Orden</label>
+              </div>
+              <div class="col-md-8 input-group">
+                <!-- Select Basic -->
+                <select class="form-control" ng-disabled="$cn.order.client.idClient == null"
+                    ng-options="orderType as orderType.name for orderType in $cn.orderTypes"
+                    ng-model="$cn.selectedOrderType"
+                    ng-change="$cn.validateOrderType()"></select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" ng-show="$cn.pickupShow" style="padding-bottom:20px;">
+        <div class="col-md-12">
+          <div class="col-md-6">
+            <div>
+              <div class="col-md-3">
+                <label class="col-md-4 control-label" for="lastName">Recojer</label>
+              </div>
+              <div class="col-md-8 input-group">
+                <select class="form-control" ng-options="addr as addr.address for addr in $cn.order.client.addresses" ng-model="$cn.order.pickup.address"></select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div>
+              <div class="col-md-3">
+                <label class="col-md-4 control-label" for="lastName">Fecha/Hora</label>
+              </div>
+              <div class="col-md-8 input-group">
+                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.deliverDate" is-open="$cn.deliverOpen">
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"
+                            ng-click="$cn.openCalendar($event, 'deliverDate')">
+                          <i class="fa fa-calendar"></i></button>
+                    </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" ng-show="$cn.showDeliver" style="padding-bottom:20px;">
+        <div class="col-md-12">
+          <div class="col-md-6">
+            <div>
+              <div class="col-md-3">
+                <label class="col-md-4 control-label" for="lastName">Entregar</label>
+              </div>
+              <div class="col-md-8 input-group">
+                <select class="form-control" ng-options="addr as addr.address for addr in $cn.order.client.addresses" ng-model="$cn.order.deliver.address"></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div>
+              <div class="col-md-3">
+                <label class="col-md-4 control-label" for="lastName">Fecha/Hora</label>
+              </div>
+              <div class="col-md-8 input-group">
+                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.pickUpDate" is-open="$cn.pickUpOpen">
+                <span class="input-group-btn">
+                      <button type="button" class="btn btn-default"
+                          ng-click="$cn.openCalendar($event, 'pickUpDate')">
+                        <i class="fa fa-calendar"></i></button>
+                  </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="padding-bottom:20px;">
+        <div class="col-lg-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <i class="glyphicon glyphicon-inbox"></i> Servicios
+              <div class="pull-right">
+                <a href="#" ng-click="$cn.addService()" class="btn btn-default btn-xs">
+                  <span class="glyphicon glyphicon-plus"></span> Agregar
+                </a>
+                <div class="btn-group" uib-dropdown is-open="status.isopen">
+                  <button id="single-button" type="button" class="btn btn-default btn-xs" uib-dropdown-toggle ng-disabled="disabled">
+                    Opciones <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                    <li role="menuitem"><a href="#">N/A</a></li>
+                    <li class="divider"></li>
+                    <li role="menuitem"><a href="#">N/A</a></li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+              <div class="row">
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.panel-body -->
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Button (Double) -->
+      <div class="buttons-footer">
+        <button type="button" class="btn btn-primary" ng-disabled="$cn.orderTypeForm.$invalid" ng-click="$cn.saveOrderType()">Submit</button>
+        <!-- <button type="button" class="btn btn-danger" ng-click="$cn.delete()" ng-disabled="$cn.orderType.idOrderType == null || $cn.orderType.idOrderType == 0">Delete</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.col-lg-12 -->
+</div>
