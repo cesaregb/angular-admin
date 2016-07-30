@@ -11,7 +11,8 @@
 
     status = { isopen: false };
 
-    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, formlyForms) {
+    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, formlyForms, NgTableParams) {
+      this.NgTableParams = NgTableParams;
       this.$log = $log;
       this.factoryServices = factoryServices;
       this.$confirm = $confirm;
@@ -22,8 +23,12 @@
       this.place = null;
       if (Boolean($stateParams.order)) {
         this.order = $stateParams.order;
-      }else{
+      }
+
+      if (!Boolean(this.order.services)){
         this.order.services = [];
+      }
+      if (!Boolean(this.order.client)){
         this.order.client = {};
       }
 
@@ -40,6 +45,10 @@
 
       this.factoryServices.getResources('orderType').then(function(result) {
         _this.orderTypes = result;
+      });
+
+      this.tableParams = new this.NgTableParams({}, {
+        dataset: _this.order.services
       });
     }
 
@@ -75,13 +84,28 @@
         });
     };
 
+    removeService(service){
+      var _this = this;
+      _this.order.services.forEach(function(item, index){
+        if (service.idServiceType == item.idServiceType && service.totalPrice == item.totalPrice){
+          _this.order.services.splice(index, 1);
+          _this.tableParams.reload();
+        }
+      });
+    }
+
+    openService(service){
+      var _this = this;
+      this.addService(service);
+    }
+
     back() {
       this.$state.go('orders.orderType', null, {
         reload: true
       });
     }
 
-    addService(){
+    addService(selectedService){
       var _this = this;
       var orderType = this.selectedOrderType;
       var modalInstance = this.$uibModal.open({
@@ -92,12 +116,16 @@
         resolve: {
           orderType: function() {
             return orderType;
+          },
+          selectedService: function() {
+            return selectedService;
           }
         }
       });
 
       modalInstance.result.then(function(service) {
         _this.order.services.push(service);
+        _this.tableParams.reload();
       });
     }
 

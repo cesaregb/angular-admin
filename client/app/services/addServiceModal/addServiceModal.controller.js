@@ -1,15 +1,38 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('AddServicesModalCtrl', function($scope, factoryServices, $uibModalInstance, orderType, $log) {
+  .controller('AddServicesModalCtrl', function($scope, factoryServices, $uibModalInstance, orderType, $log, selectedService) {
 
     $scope.service = null;
     $scope.serviceCategories = [];
     $scope.specOptionHolder = {};
 
+    if (Boolean(selectedService)) {
+      $scope.service = selectedService;
+    }
+
     this.init = function() {
+
       factoryServices.getServiceOrderDetails().then(function(response) {
         $scope.serviceCategories = response;
+
+        if (Boolean(selectedService)) {
+          $scope.service = selectedService;
+          var indexCat = -1;
+          var indexSt = -1;
+          response.forEach(function(item, index){
+              item.serviceTypes.forEach(function(st, index2){
+                if (st.idServiceType == $scope.service.idServiceType){
+                  indexCat = index;
+                  indexSt = index2;
+                }
+              });
+          });
+
+          $scope.serviceCategorie = response[indexCat];
+          $scope.serviceType = response[indexCat].serviceTypes[indexSt];
+          $scope.service = selectedService;
+        }
       });
     };
 
@@ -61,8 +84,6 @@ angular.module('processAdminApp')
 
             item.specsValue = item.options[item.idSpecs][0];
 
-            $log.info('[preselectValues] item.specsValue: ' + JSON.stringify(item.specsValue, null, 2));
-
             if (item.specsValue.costType === 0){
               item.amt = item.specsValue.serviceIncrement;
               item.type = "%";
@@ -76,6 +97,8 @@ angular.module('processAdminApp')
     }
 
     function calculatePrice(){
+      $scope.service.totalPrice = $scope.service.price;
+      $scope.service.subtotalPrice = $scope.service.price;
 
       // get base price... based on $
       $scope.service.specs.forEach(function(item){
@@ -96,10 +119,11 @@ angular.module('processAdminApp')
 
       // calculate the percentage for the rest of the elements..
       $scope.service.totalPrice = $scope.service.subtotalPrice;
+
       $scope.service.specs.forEach(function(item){
         if (!item.primarySpec && item.type == "%"){
           // calculate line price before adding it to the total.
-          item.price = ((item.amt * item.qty)/100) * $scope.service.price;
+          item.price = ((item.amt * item.qty)/100) * $scope.service.subtotalPrice;
           // add calculated to the total
           $scope.service.totalPrice = $scope.service.totalPrice + item.price;
         }else if (!item.primarySpec && item.type == "$"){
