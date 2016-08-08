@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('AddServicesModalCtrl', function($scope, factoryServices, $uibModalInstance, orderType, $log, selectedService) {
+  .controller('AddServicesModalCtrl', function($scope, factoryServices, $uibModalInstance, orderType, $log, selectedService, noty) {
 
     $scope.service = null;
     $scope.serviceCategories = [];
     $scope.specOptionHolder = {};
+    $scope.serviceId = 0;
 
     if (Boolean(selectedService)) {
       $scope.service = selectedService;
@@ -45,15 +46,29 @@ angular.module('processAdminApp')
       $scope.service.subtotalPrice = $scope.service.price;
       $scope.service.totalPrice = $scope.service.price;
 
-      $scope.service.specs.forEach(function(item){
-        item.price = 0;
-        item.amt = 0;
-        item.qty = 1;
-      });
+      if (Boolean($scope.service.specs)){
+        // sort to ensure consistency
+        $scope.service.specs.sort(function(a, b) {
+            return parseFloat(a.idSpecs) - parseFloat(b.idSpecs);
+        });
 
-      $scope.service.price = parseFloat(serviceType.price);
-      preselectValues();
-      calculatePrice();
+        $scope.service.specs.forEach(function(item){
+          item.price = 0;
+          item.amt = 0;
+          item.qty = 1;
+        });
+
+        $scope.service.price = parseFloat(serviceType.price);
+        preselectValues();
+        calculatePrice();
+      }else{
+        noty.showNoty({
+          text: "Servicio no tiene subproductos.... ",
+          ttl: 1000 * 2,
+          type: "warning"
+        });
+      }
+
     }
 
     $scope.selectSpecOption = function(workingWithSpec, specsValue){
@@ -62,8 +77,6 @@ angular.module('processAdminApp')
 
       $scope.service.specs.forEach(function(item){
         if (item.idSpecs == workingWithSpec.idSpecs){
-          // TOBE used....
-          // item.specsValue = specsValue;
           if (specsValue.costType === 0){
             item.amt = specsValue.serviceIncrement;
             item.type = "%";
@@ -80,7 +93,7 @@ angular.module('processAdminApp')
     function preselectValues(){
       // preselect all the base elements...
       $scope.service.specs.forEach(function(item){
-          if (item.primarySpec && !Boolean(item.type) ){
+          if ( ( item.primarySpec ||  item.optional == 0 ) && !Boolean(item.type) ){
 
             item.specsValue = item.options[item.idSpecs][0];
 

@@ -133,38 +133,6 @@ angular.module('processAdminApp')
       }
     }
 
-    var productURI = "/product";
-    factory.getProducts = function () {
-       return factoryCommon.get(productURI);
-    };
-    factory.getProductById = function (id) {
-       return factoryCommon.get(productURI + "/" + id);
-    };
-    factory.saveProduct = function (data) {
-       return factoryCommon.save(data, productURI);
-    };
-    factory.updateProduct = function (data) {
-       return factoryCommon.put(data, productURI);
-    };
-    factory.deleteProduct = function (data) {
-       return factoryCommon.delete(productURI + "/" + data.idProduct);
-    };
-
-    factory.saveProductCallback = function(dataInput, callback){
-      this.saveProduct(dataInput).then(function(result){
-        callback();
-      }), function(error){
-        callback();
-      }
-    }
-    factory.updateProductCallback = function(dataInput, callback){
-      this.updateProduct(dataInput).then(function(result){
-        callback();
-      }), function(error){
-        callback();
-      }
-    }
-
     var productTypeURI = "/product-type";
     factory.getProductTypes = function () {
        return factoryCommon.get(productTypeURI);

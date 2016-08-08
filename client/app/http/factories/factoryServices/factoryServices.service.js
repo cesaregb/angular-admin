@@ -3,6 +3,9 @@
 angular.module('processAdminApp')
   .factory('factoryServices', function(factoryCommon, noty, $log, $q, $filter) {
 
+    const ACTIVE = 0;
+    const FINISHED = 1;
+
     var factory = {};
 
     var uris = {
@@ -14,6 +17,9 @@ angular.module('processAdminApp')
       },
       orderType: {
         uri: '/order-type'
+      },
+      oder: {
+        uri: '/order'
       },
       serviceCategory: {
         uri: '/service-category'
@@ -107,6 +113,25 @@ angular.module('processAdminApp')
       return deferred.promise;
     };
 
+    // bla bla bla
+    factory.getResourcesForTableSpecific = function(functionPromice, params) {
+      var deferred = $q.defer();
+      functionPromice.then(function(result) {
+        var filterData = params.filter() ?
+          $filter('filter')(result, params.filter()) :
+          result;
+        var orderedData = params.sorting() ?
+          $filter('orderBy')(filterData, params.orderBy()) :
+          filterData;
+
+        var sortOrdResult = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count())
+        deferred.resolve(sortOrdResult);
+      }, function(err) {
+        deferred.reject(err);
+      });
+      return deferred.promise;
+    };
+
     // ******* non repetetive...
     factory.getSpecValuesBySpec = function(idSpec) {
       var uri = uris.specsValue.uri;
@@ -136,6 +161,20 @@ angular.module('processAdminApp')
     factory.addOrderServiceType = function(orderType) {
       var uri = uris.orderType.uri + '/add/serviceType';
       return factoryCommon.put(orderType, uri);
+    }
+
+    factory.saveOrder = function(order) {
+      var uri = uris.appOrder.uri;
+      return factoryCommon.post(order, uri);
+    }
+
+    factory.getOrdersByStatus = function(status) {
+      var uri = uris.oder.uri + '/by/status/' + status;
+      return factoryCommon.get(uri);
+    }
+
+    factory.getActiveOrders = function() {
+      return factory.getOrdersByStatus(ACTIVE);
     }
 
     return factory;

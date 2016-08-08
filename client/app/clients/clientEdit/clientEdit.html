@@ -64,7 +64,7 @@
                       ng-options="phone as phone.number for phone in $cn.client.phoneNumbers"
                       ng-model="$cn.selectedPhone" ng-change="$cn.changeDefaultPhone()"></select>
                 </div>
-                <button type="button" class="btn btn-default glyphicon glyphicon-edit" ui-sref="client.phone({client: $cn.client})"></button>
+                <button type="button" class="btn btn-default glyphicon glyphicon-pencil" ui-sref="client.phone({client: $cn.client})"></button>
               </div>
 
               <!-- Select Basic -->
@@ -75,7 +75,7 @@
                       ng-options="addr as addr.address for addr in $cn.client.addresses"
                       ng-model="$cn.selectedAddress" ng-change="$cn.changeDefaultAddress()"></select>
                 </div>
-                <button type="button" class="btn btn-default glyphicon glyphicon-edit" ui-sref="client.address({client: $cn.client})"></button>
+                <button type="button" class="btn btn-default glyphicon glyphicon-pencil" ui-sref="client.address({client: $cn.client})"></button>
               </div>
 
               <!-- Select Basic -->
@@ -86,7 +86,7 @@
                       ng-options="payment as payment.token for payment in $cn.client.clientPaymentInfos"
                       ng-model="$cn.selectedPayment" ng-change="$cn.changeDefaultPayment()"></select>
                 </div>
-                <button type="button" class="btn btn-default glyphicon glyphicon-edit" ui-sref="client.payment({client: $cn.client})"></button>
+                <button type="button" class="btn btn-default glyphicon glyphicon-pencil" ui-sref="client.payment({client: $cn.client})"></button>
               </div>
 
               <!-- Text input-->
@@ -149,13 +149,15 @@
 
               <!-- Button (Double) -->
               <div class="buttons-footer">
-                <button type="submit" class="btn btn-primary" ng-disabled="$cn.clientForm.$invalid">Submit</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="$cn.clientForm.$invalid">Guardar</button>
                 <button type="button" class="btn btn-regular" ng-click="$parent.openAddressForm($cn.client, {idClient: $cn.client.idClient})"
                     ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">
                   Agregar Direccion</button>
                 <button type="button" class="btn btn-regular"
+                    ng-click="$cn.createOrder()"
                     ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">
-                  Crear Orden</button>
+                  Crear Orden
+                </button>
                 <button type="button" class="btn btn-danger" ng-click="$cn.delete()"
                     ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">Delete</button>
               </div>

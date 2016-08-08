@@ -26,6 +26,12 @@ angular.module('processAdminApp')
         }
       }).state('orders.newOrder', {
         url: '/newOrder',
-        template: '<new-order></new-order>'
+        template: '<new-order></new-order>',
+        params: {
+          order: null
+        }
+      }).state('orders.ordersList', {
+        url: '/ordersList',
+        template: '<orders-list></orders-list>'
       });
   });

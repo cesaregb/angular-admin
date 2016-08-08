@@ -77,16 +77,17 @@ class ClientEditComponent {
       }
 
       // facturacion
-      if (Boolean(this.client.rfc) ){
+      if (Boolean(this.client.rfc)){
         this.facturacion = true;
-        this.client.addresses.forEach(function(item){
-          if (item.factura){
-            _this.facturacionAddress = item;
-          }
-        });
+        if (Boolean(this.client.addresses)){
+          this.client.addresses.forEach(function(item){
+            if (item.factura){
+              _this.facturacionAddress = item;
+            }
+          });
+        }
       }
     }
-
   }
 
   delete(){
@@ -123,7 +124,6 @@ class ClientEditComponent {
 
   changeDefaultAddress(){
     var _this = this;
-
     _this.client.addresses.forEach(function (item, index, theArray) {
       if (item.idAddress ==  _this.selectedAddress.idAddress){
         theArray[index].prefered = true;
@@ -195,11 +195,15 @@ class ClientEditComponent {
     _this.client.addresses.forEach(function (item, index, theArray) {
       if (item.idAddress ==  _this.facturacionAddress.idAddress){
         theArray[index].factura = true;
-        _this.factoryClients.updateAddressCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
+        _this.factoryClients.updateAddress(theArray[index]).then(function(){
+          _this.getClient(_this.client.idClient);
+        });
       }else{
         if (theArray[index].factura){
           theArray[index].factura = false;
-          _this.factoryClients.updateAddressCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
+          _this.factoryClients.updateAddress(theArray[index]).then(function(){
+            _this.getClient(_this.client.idClient);
+          });
         }
       }
     });
@@ -212,6 +216,12 @@ class ClientEditComponent {
     }),function(error){ // error saving existing
       console.log("Error updating client: " + JSON.stringify(error));
     };
+  }
+
+  createOrder(){
+    var order = {};
+    order.client = this.client;
+    this.$state.go('orders.newOrder', {order: order}, { reload: true });
   }
 }
 

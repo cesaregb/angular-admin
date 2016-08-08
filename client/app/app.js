@@ -20,10 +20,9 @@ angular.module('processAdminApp', [
     'ngSanitize',
     'angular-loading-bar',
     'ngTable',
-    'ui.bootstrap.datetimepicker',
-    'highcharts-ng'
+    'ui.bootstrap.datetimepicker'
   ])
-  .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, highchartsNGProvider) {
+  .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
     $urlRouterProvider.otherwise('/');
     $locationProvider.html5Mode(true);
     // configure loading-bar
@@ -31,11 +30,6 @@ angular.module('processAdminApp', [
     // cfpLoadingBarProvider.latencyThreshold = 500;
     cfpLoadingBarProvider.includeSpinner = false;
     // cfpLoadingBarProvider.spinnerTemplate = '<div class="spinning-wheel-container"><div class="spinning-wheel"></div></div>';
-
-
-    highchartsNGProvider.lazyLoad();
-    // highchartsNGProvider.lazyLoad([highchartsNGProvider.HIGHCHART/HIGHSTOCK, "maps/modules/map.js", "mapdata/custom/world.js"]);// you may add any additional modules and they will be loaded in the same sequence
-    // highchartsNGProvider.basePath("/js/"); // change base path for scripts, default is http(s)://code.highcharts.com/
 
   }).run(function($location, $log, constants){
     var url = $location.absUrl();
