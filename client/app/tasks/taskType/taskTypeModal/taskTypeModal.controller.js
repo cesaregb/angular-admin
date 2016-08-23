@@ -6,7 +6,6 @@ angular.module('processAdminApp')
     $scope.formItem = formItem;
 
     this.init = function() {
-
       $scope.title = "Form Task Type";
       if (Boolean($scope.formItem)) {
         // placeholder
@@ -17,7 +16,7 @@ angular.module('processAdminApp')
 
     /*******  FORM  */
     $scope.formItemFields = [
-      {
+    {
       key: 'name',
       type: 'input',
       templateOptions: {
@@ -32,6 +31,12 @@ angular.module('processAdminApp')
         type: 'text',
         label: 'Description',
         required: true
+      }
+    },{
+      "type": "checkbox",
+      "key": "ordersOnly",
+      "templateOptions": {
+        "label": "Solo en Ordenes"
       }
     }];
 

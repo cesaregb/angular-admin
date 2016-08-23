@@ -4,7 +4,8 @@
   class ServiceTypeComponent {
     serviceTypes = [];
 
-    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams) {
+    constructor($q, $stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams) {
+      this.$q = $q;
       this.NgTableParams = NgTableParams;
       this.$log = $log;
       this.$confirm = $confirm;
@@ -21,6 +22,20 @@
         }
       });
     }
+
+    createFilter = function(url) {
+      var deferred = this.$q.defer();
+
+      var filter = [];
+      this.factoryServices.getResources('serviceCategory').then(function(response) {
+        response.forEach(function(item){
+          filter.push({title: item.name, id:item.name});
+        });
+        deferred.resolve(filter);
+      });
+      return deferred.promise;
+    }
+
 
     openNewModal() {
       this.openModal({});

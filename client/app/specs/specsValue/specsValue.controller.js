@@ -2,8 +2,18 @@
 (function() {
 
   class SpecsValueComponent {
-    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal) {
+
+    cols = [
+      { show: false },
+      { show: false },
+      { show: true },
+      { show: true },
+      { show: true }
+    ];
+
+    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams) {
       this.$log = $log;
+      this.NgTableParams = NgTableParams;
       this.$confirm = $confirm;
       this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
@@ -15,6 +25,7 @@
       this.specs = [];
       // this.getInfo();
       var _this = this;
+
       this.factoryServices.getResources('spec').then(function(response) {
         // _this.specs = [{idSpecs: 0, name: 'All'}];
         _this.specs = _this.specs.concat(response);
@@ -39,11 +50,40 @@
           type: "warning"
         });
       }else {
-        this.factoryServices.getSpecValuesBySpec(this.specSelectedFilter.idSpecs).then(function(response) {
+        _this.factoryServices.getSpecValuesBySpec(_this.specSelectedFilter.idSpecs).then(function(response){
           _this.specsValues = response;
         });
+        // this.tableParams = new this.NgTableParams({}, {
+        //   getData: function(params) {
+        //     return _this.factoryServices.getResourcesForTableSpecific(
+        //       _this.factoryServices.getSpecValuesBySpec(_this.specSelectedFilter.idSpecs),
+        //       params);
+        //   }
+        // });
+        // this.calculateColums();
       }
     }
+
+    // calculateColums() {
+    //   var flag1 = false;
+    //   var flag2 = false;
+    //   this.specSelectedFilter.specsValues.forEach(function(it, index){
+    //     if (it.type == 1){
+    //       flag1 = true;
+    //     }
+    //     if (it.type == 2){
+    //       flag2 = true;
+    //     }
+    //   });
+    //
+    //   this.cols = [
+    //     { show: false },
+    //     { show: false },
+    //     { show: false },
+    //     { show: true },
+    //     { show: true }
+    //   ];
+    // }
 
     openNewModal() {
       this.openModal({});

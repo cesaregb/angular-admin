@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('ManageTasksModalCtrl', function($scope, factoryServices, $uibModalInstance, formItem, $log) {
+  .controller('ManageServiceTasksModalCtrl', function($scope, factoryServices, $uibModalInstance, formItem, $log) {
 
     $scope.formItem = formItem;
     $scope.tasks = [];
@@ -13,11 +13,9 @@ angular.module('processAdminApp')
       if (Boolean($scope.formItem)) {
         if (Boolean($scope.formItem.serviceTypeTasks)) {
           $scope.serviceTypeTasks = $scope.formItem.serviceTypeTasks;
-
-          $log.info('[init] $scope.serviceTypeTasks: ' + JSON.stringify($scope.serviceTypeTasks, null, 2));
         }
       }
-      factoryServices.getResources('taskType').then(function(response) {
+      factoryServices.getTaskTypeBySection(false).then(function(response) {
         $scope.taskTypes = response;
       });
     };
@@ -27,6 +25,7 @@ angular.module('processAdminApp')
     $scope.fromSelected = function(item, model) {
       if (indexOfElement(item) == -1) {
         var selectedTask = {};
+        selectedTask.taskTypeName = $scope.selectTaskType.name;
         selectedTask.sortingOrder = $scope.serviceTypeTasks.length + 1;
         selectedTask.task = item;
         selectedTask.idServiceType = $scope.formItem.idServiceType;
@@ -34,7 +33,9 @@ angular.module('processAdminApp')
       }
     }
 
+    $scope.selectTaskType = null;
     $scope.taskTypeSelected = function(item, model) {
+      $scope.selectTaskType = item;
       factoryServices.getTaskByType(item.idTaskType).then(function(response) {
         $scope.tasks = response;
       });

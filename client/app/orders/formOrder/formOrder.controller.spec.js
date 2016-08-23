@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Component: NewOrderComponent', function () {
+describe('Component: FormOrderComponent', function () {
 
   // load the controller's module
   beforeEach(module('processAdminApp'));
 
-  var NewOrderComponent, scope;
+  var FormOrderComponent, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($componentController, $rootScope) {
     scope = $rootScope.$new();
-    NewOrderComponent = $componentController('NewOrderComponent', {
+    FormOrderComponent = $componentController('FormOrderComponent', {
       $scope: scope
     });
   }));

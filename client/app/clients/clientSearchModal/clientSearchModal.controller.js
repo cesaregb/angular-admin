@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('ClientSearchModalCtrl', function ($scope, factoryClients, clientInfo, serviceClients, $uibModalInstance) {
+  .controller('ClientSearchModalCtrl', function ($scope, factoryClients, clientSearchInfo, serviceClients, $uibModalInstance) {
 
     $scope.clientInfo = null;
+    $scope.clientSearchInfo = clientSearchInfo;
 
     $scope.filters = [
         {name:'Name', value:'name'},
@@ -24,13 +25,23 @@ angular.module('processAdminApp')
     $scope.init = function(){
       $scope.searchText = "";
       $scope.clients = [];
-      $scope.clients = serviceClients.query();
       $scope.searchFilter = $scope.filters[0];
+
+      if (Boolean($scope.clientSearchInfo)){
+          $scope.searchText = $scope.clientSearchInfo;
+          $scope.searchClients();
+      }
+
     }
     $scope.init();
 
     $scope.preSelectItem = function(client){
       $scope.clientInfo = client;
+    }
+
+    $scope.selectItemAction = function(client){
+      $scope.clientInfo = client;
+      $scope.selectItem();
     }
 
     $scope.selectItem = function(){

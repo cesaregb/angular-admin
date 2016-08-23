@@ -3,23 +3,45 @@
 
   class ProductComponent {
     products = [];
+    productTypes = [];
+    // productTypes = [{title: 'detergente', id:'detergente'}];
 
-    constructor($stateParams, $state, noty, factoryGeneral, $confirm, $log, $uibModal) {
+    constructor($q, $stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams, $scope) {
+      this.$scope = $scope;
+      this.$q = $q;
+      this.NgTableParams = NgTableParams;
       this.$log = $log;
       this.$confirm = $confirm;
-      this.factoryGeneral = factoryGeneral;
+      this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.noty = noty;
       this.$state = $state;
       this.route = $stateParams.route;
+      var _this = this;
+
       this.getInfo();
+    }
+
+    createFilter = function(url) {
+      var deferred = this.$q.defer();
+
+      var filter = [];
+      this.factoryServices.getResources('productType').then(function(response) {
+        response.forEach(function(item){
+          filter.push({title: item.name, id:item.name});
+        });
+        deferred.resolve(filter);
+      });
+      return deferred.promise;
     }
 
     getInfo() {
       var _this = this;
-      this.factoryGeneral.getProducts().then(function(response) {
-        _this.products = response;
 
+      this.tableParams = new this.NgTableParams({}, {
+        getData: function(params) {
+          return _this.factoryServices.getResourcesForTable('product', params);
+        }
       });
     }
 
@@ -45,12 +67,11 @@
       modalInstance.result.then(function(resultItem) {
         var product = resultItem;
         if (product.idProduct != null && product.idProduct > 0) {
-          _this.factoryGeneral.updateProductCallback(product, function() {
+          _this.factoryServices.updateResource('product', product).then( function(response) {
             _this.getInfo();
           });
         } else {
-
-          _this.factoryGeneral.saveProductCallback(product, function() {
+          _this.factoryServices.saveResource('product', product).then(function(response) {
             _this.getInfo();
           });
         }
@@ -63,7 +84,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryGeneral.deleteProduct(item).then(function(info){
+        _this.factoryServices.deleteResource('product', item.idProduct).then(function(info){
           _this.back();
         });
       });

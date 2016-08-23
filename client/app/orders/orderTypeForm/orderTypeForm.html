@@ -17,8 +17,13 @@
         </div>
         <div class="panel-body">
           <div class="row" ng-show="$cn.editMode">
+            <div class="col-lg-12 pull-right" ng-show="$cn.orderType.orderTypeTasks == null || $cn.orderType.orderTypeTasks.length == 0">
+              <div class="alert alert-warning" role="alert">
+                <span>Es necesario agregar Tareas para que el tipo de orden quede habilitado!!</span>
+              </div>
+            </div>
             <div class="col-lg-12 pull-right">
-              <div class="pull-right" style="padding: 10px;">
+              <div class="pull-right" style="padding: 10px;" >
                 <a href="#" ng-click="$cn.openManageTaskModal($cn.orderType)"
                     class="btn btn-info btn-sm">
                   <span class="glyphicon glyphicon-list-alt"></span>

@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="pull-right" style="padding: 10px;">
-        <a href="#" ui-sref="products.productMenu()" class="btn btn-info btn-sm">
+        <a href="#" ui-sref="orders.orderMenu()" class="btn btn-info btn-sm">
           <span class="glyphicon glyphicon-chevron-left"></span> Back
         </a>
       </div>
@@ -14,7 +14,7 @@
     <div class="col-lg-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-          Products
+          Lista de Ordenes
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">
@@ -23,43 +23,43 @@
               <div class="row">
                 <div class="col-lg-12">
                   <div class="pull-right" style="padding: 10px;">
-                    <a href="#" ng-click="$cn.openNewModal();" class="btn btn-info btn-sm">
-                      <span class="glyphicon glyphicon-plus"></span> Add Product
+                    <a href="#" ui-sref="orders.formOrder" class="btn btn-info btn-sm">
+                      <span class="glyphicon glyphicon-plus"></span> Nueva Orden
                     </a>
                   </div>
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-sm-12">
+
                   <div loading-container="$cn.tableParams.settings().$loading">
-                    <table ng-table="$cn.tableParams" class="table table-condensed table-bordered table-striped">
-                      <tr ng-repeat="row in $data track by row.idProduct">
-                        <td data-title="'Name'" filter="{name: 'text'}" sortable="'value'">
-                          <a href="" ng-click="$cn.openModal(row);">
-                            <span>{{row.name}}</span>
+
+                    <table ng-table="$cn.tableParams"
+                        class="table table-condensed table-bordered table-striped">
+
+                      <tr ng-repeat="row in $data track by row.idOrder">
+                        <!-- <td data-title="'Client'" filter="{name: 'text'}" sortable="'client.name'"> -->
+                        <td data-title="'ID'">
+                          <a href="" ui-sref="orders.formOrder({order: row})">
+                            {{row.idOrder}}
                           </a>
                         </td>
-                        <td data-title="'Tipo Producto'">
-                          {{row.description}}
-                        </td>
-                        <td data-title="'P Type'" filter="{ productTypeName: 'select'}" filter-data="$cn.createFilter()">
-                          {{row.productTypeName}}
-                        </td>
-                        <td data-title="'Increment'">
-                          {{row.serviceIncrement}}
-                        </td>
-                        <td data-title="'Action'" class="action-column">
-                          <a href="#" ng-click="$cn.delete(row)" class="btn btn-danger btn-circle">
+                        <td data-title="'Client'" filter="{clientName: 'text'}" sortable="'clientName'">{{row.clientName}}</td>
+                        <td data-title="'Completed'">{{row.completed}}</td>
+                        <td data-title="'Tipo Orden'" filter="{ orderTypeName: 'select'}" filter-data="$cn.createFilter()">{{row.orderTypeName}}</td>
+                        <td data-title="'Precio'" >{{row.price}}</td>
+                        <td data-title="'#'">
+                          <a href="#" ng-click="$cn.delete(row)"
+                              class="btn btn-danger btn-circle">
                             <span class="glyphicon glyphicon-remove"></span>
                           </a>
                         </td>
                       </tr>
                     </table>
+
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
           <!-- /.table-responsive -->

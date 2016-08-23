@@ -121,8 +121,8 @@ class ServiceTypeFormComponent {
     var _this = this;
     var modalInstance = this.$uibModal.open({
       animation: false,
-      templateUrl: 'app/services/serviceType/manageTasksModal/manageTasksModal.html',
-      controller: 'ManageTasksModalCtrl',
+      templateUrl: 'app/services/serviceType/manageTasksModal/manageServiceTasksModal.html',
+      controller: 'ManageServiceTasksModalCtrl',
       size: 'lg',
       resolve: {
         formItem: function() {
@@ -136,7 +136,7 @@ class ServiceTypeFormComponent {
       if (serviceType.serviceTypeTasks.length > 0){
         serviceType.serviceTypeTasks.forEach(function(serviceTypeTask){
           _this.factoryServices.saveResource('serviceTypeTask', serviceTypeTask).then(function(response){
-            // do nothing.. 
+            // do nothing..
           })
         });
       }

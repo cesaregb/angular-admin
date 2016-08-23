@@ -9,16 +9,22 @@ angular.module('processAdminApp')
     $scope.selected = {};
     $scope.orderTypeTasks = [];
 
-
     this.init = function() {
+      var showAll = false;
+
       if (Boolean($scope.formItem) && Boolean($scope.formItem.orderTypeTasks)) {
           $scope.orderTypeTasks = $scope.formItem.orderTypeTasks;
-          $log.info('[init] $scope.orderTypeTasks: ' + JSON.stringify($scope.orderTypeTasks, null, 2));
       }
 
-      factoryServices.getResources('taskType').then(function(response) {
-        $scope.taskTypes = response;
-      });
+      if (showAll){
+        factoryServices.getResources('taskType').then(function(response) {
+          $scope.taskTypes = response;
+        });
+      }else{
+        factoryServices.getTaskTypeBySection(true).then(function(response) {
+          $scope.taskTypes = response;
+        });
+      }
     };
 
     this.init();
@@ -26,6 +32,7 @@ angular.module('processAdminApp')
     $scope.fromSelected = function(item, model) {
       if (indexOfElement(item) == -1) {
         var selectedTask = {};
+        selectedTask.taskTypeName = $scope.selectTaskType.name;
         selectedTask.sortingOrder = $scope.orderTypeTasks.length + 1;
         selectedTask.task = item;
         selectedTask.idOrderType = $scope.formItem.idOrderType;
@@ -33,7 +40,10 @@ angular.module('processAdminApp')
       }
     }
 
+    $scope.selectTaskType = null;
+
     $scope.taskTypeSelected = function(item, model) {
+      $scope.selectTaskType = item;
       factoryServices.getTaskByType(item.idTaskType).then(function(response) {
         $scope.tasks = response;
       });

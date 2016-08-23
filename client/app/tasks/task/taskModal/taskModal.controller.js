@@ -4,22 +4,14 @@ angular.module('processAdminApp')
   .controller('TaskModalCtrl', function($scope, factoryServices, $uibModalInstance, formItem, $log) {
 
     $scope.formItem = formItem;
-
     this.init = function() {
-
       $scope.title = "Form Task Type";
-      if (Boolean($scope.formItem)) {
-        // placeholder
-      }
-
       factoryServices.getResources('taskType').then(function(response){
         response.forEach(function(item){
           $scope.parentSelect.push({name : item.name, value: item.idTaskType});
         });
         if (!Boolean($scope.formItem.idTaskType) ){
           $scope.formItem.idTaskType = 1;
-        }else{
-
         }
       });
     };

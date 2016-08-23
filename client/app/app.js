@@ -14,13 +14,13 @@ angular.module('processAdminApp', [
     'angular-noty',
     'formly',
     'formlyBootstrap',
-    // 'formlyMaterial',
     'angular-confirm',
     'ngMaterial',
     'ui.select',
     'ngSanitize',
     'angular-loading-bar',
-    'ngTable'
+    'ngTable',
+    'ui.bootstrap.datetimepicker'
   ])
   .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
     $urlRouterProvider.otherwise('/');
@@ -30,6 +30,7 @@ angular.module('processAdminApp', [
     // cfpLoadingBarProvider.latencyThreshold = 500;
     cfpLoadingBarProvider.includeSpinner = false;
     // cfpLoadingBarProvider.spinnerTemplate = '<div class="spinning-wheel-container"><div class="spinning-wheel"></div></div>';
+
   }).run(function($location, $log, constants){
     var url = $location.absUrl();
     if (url.indexOf('localhost') > 0){

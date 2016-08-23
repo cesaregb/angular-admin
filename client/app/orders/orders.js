@@ -12,12 +12,6 @@ angular.module('processAdminApp')
       }).state('orders.orderMenu', {
         url: '/orderMenu',
         template: '<order-menu></order-menu>'
-      }).state('orders.orderCategory', {
-        url: '/orderCategory',
-        template: '<order-category></order-category>',
-        params: {
-          order: null
-        }
       }).state('orders.orderType', {
         url: '/orderType',
         template: '<order-type></order-type>',
@@ -29,6 +23,18 @@ angular.module('processAdminApp')
         template: '<order-type-form></order-type-form>',
         params: {
           orderType: null
+        }
+      }).state('orders.formOrder', {
+        url: '/formOrder',
+        template: '<form-order></form-order>',
+        params: {
+          order: null
+        }
+      }).state('orders.ordersList', {
+        url: '/ordersList',
+        template: '<orders-list></orders-list>',
+        params: {
+          status: null
         }
       });
   });
