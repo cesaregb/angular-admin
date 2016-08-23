@@ -221,7 +221,7 @@ class ClientEditComponent {
   createOrder(){
     var order = {};
     order.client = this.client;
-    this.$state.go('orders.newOrder', {order: order}, { reload: true });
+    this.$state.go('orders.formOrder', {order: order}, { reload: true });
   }
 }
 

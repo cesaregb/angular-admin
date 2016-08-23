@@ -23,7 +23,7 @@
               <div class="row">
                 <div class="col-lg-12">
                   <div class="pull-right" style="padding: 10px;">
-                    <a href="#" ui-sref="orders.newOrder" class="btn btn-info btn-sm">
+                    <a href="#" ui-sref="orders.formOrder" class="btn btn-info btn-sm">
                       <span class="glyphicon glyphicon-plus"></span> Nueva Orden
                     </a>
                   </div>
@@ -40,7 +40,7 @@
                       <tr ng-repeat="row in $data track by row.idOrder">
                         <!-- <td data-title="'Client'" filter="{name: 'text'}" sortable="'client.name'"> -->
                         <td data-title="'ID'">
-                          <a href="" ng-click="$cn.openOrderTypeForm(row);">
+                          <a href="" ui-sref="orders.formOrder({order: row})">
                             {{row.idOrder}}
                           </a>
                         </td>

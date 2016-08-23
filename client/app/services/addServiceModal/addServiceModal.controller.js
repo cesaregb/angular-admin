@@ -3,25 +3,32 @@
 angular.module('processAdminApp')
   .controller('AddServicesModalCtrl', function($scope, factoryServices, $uibModalInstance, orderType, $log, selectedService, noty) {
 
+    // This object should be the response from modal.
+    // should map to whatever is on the database object
     $scope.service = null;
+
     $scope.serviceCategories = [];
-    $scope.specOptionHolder = {};
     $scope.serviceId = 0;
 
     if (Boolean(selectedService)) {
+      // cast object into service.
       $scope.service = selectedService;
     }
 
     this.init = function() {
 
       factoryServices.getServiceOrderDetails().then(function(response) {
+
         $scope.serviceCategories = response;
 
         if (Boolean(selectedService)) {
+          // if open selected service...
           $scope.service = selectedService;
           var indexCat = -1;
           var indexSt = -1;
+
           response.forEach(function(item, index){
+
               item.serviceTypes.forEach(function(st, index2){
                 if (st.idServiceType == $scope.service.idServiceType){
                   indexCat = index;
@@ -32,7 +39,21 @@ angular.module('processAdminApp')
 
           $scope.serviceCategorie = response[indexCat];
           $scope.serviceType = response[indexCat].serviceTypes[indexSt];
-          $scope.service = selectedService;
+
+          if (Boolean(selectedService.idService)){
+              // $scope.selectService($scope.serviceType);
+              // // iterate thru
+              // $scope.service.specs.forEach(function(ss, ind){
+              //   selectedService.serviceSpecs.forEach(function(item){
+              //
+              //   });
+              //   $scope.selectSpecOption(ss)
+              // });
+          }else if(Boolean(selectedService)){
+            $scope.service = selectedService;
+          }else{
+            $scope.service = {};
+          }
         }
       });
     };
@@ -43,7 +64,7 @@ angular.module('processAdminApp')
       $scope.service =  {};
 
       $scope.service = serviceType;
-      $scope.service.subtotalPrice = $scope.service.price;
+      $scope.service.composedPrice = $scope.service.price;
       $scope.service.totalPrice = $scope.service.price;
 
       if (Boolean($scope.service.specs)){
@@ -111,13 +132,13 @@ angular.module('processAdminApp')
 
     function calculatePrice(){
       $scope.service.totalPrice = $scope.service.price;
-      $scope.service.subtotalPrice = $scope.service.price;
+      $scope.service.composedPrice = $scope.service.price;
 
       // get base price... based on $
       $scope.service.specs.forEach(function(item){
           if (item.primarySpec && item.type == "$" ){
             item.price = item.amt * item.qty;
-            $scope.service.subtotalPrice = $scope.service.subtotalPrice + item.price;
+            $scope.service.composedPrice = $scope.service.composedPrice + item.price;
           }
       });
 
@@ -126,17 +147,17 @@ angular.module('processAdminApp')
       $scope.service.specs.forEach(function(item){
           if (item.primarySpec && item.type == "%" ){
               item.price = ((item.amt * item.qty) / 100) * $scope.service.price;
-              $scope.service.subtotalPrice = $scope.service.subtotalPrice + item.price;
+              $scope.service.composedPrice = $scope.service.composedPrice + item.price;
           }
       });
 
       // calculate the percentage for the rest of the elements..
-      $scope.service.totalPrice = $scope.service.subtotalPrice;
+      $scope.service.totalPrice = $scope.service.composedPrice;
 
       $scope.service.specs.forEach(function(item){
         if (!item.primarySpec && item.type == "%"){
           // calculate line price before adding it to the total.
-          item.price = ((item.amt * item.qty)/100) * $scope.service.subtotalPrice;
+          item.price = ((item.amt * item.qty)/100) * $scope.service.composedPrice;
           // add calculated to the total
           $scope.service.totalPrice = $scope.service.totalPrice + item.price;
         }else if (!item.primarySpec && item.type == "$"){

@@ -25,13 +25,13 @@ angular.module('processAdminApp')
     $scope.init = function(){
       $scope.searchText = "";
       $scope.clients = [];
-      $scope.clients = serviceClients.query();
       $scope.searchFilter = $scope.filters[0];
 
       if (Boolean($scope.clientSearchInfo)){
           $scope.searchText = $scope.clientSearchInfo;
           $scope.searchClients();
       }
+
     }
     $scope.init();
 

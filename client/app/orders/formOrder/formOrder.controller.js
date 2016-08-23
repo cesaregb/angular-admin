@@ -1,8 +1,7 @@
 'use strict';
 (function() {
 
-  class NewOrderComponent {
-    parentSelect = [];
+  class FormOrderComponent {
     order = {};
     title = "Nueva Orden.";
     orderTypes = [];
@@ -12,7 +11,7 @@
 
     status = { isopen: false };
 
-    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, formlyForms, NgTableParams) {
+    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, formlyForms, NgTableParams, _) {
       this.NgTableParams = NgTableParams;
       this.$log = $log;
       this.factoryServices = factoryServices;
@@ -22,63 +21,97 @@
       this.noty = noty;
       this.$state = $state;
       this.place = null;
-      if (Boolean($stateParams.order)) {
-        this.order = $stateParams.order;
-      }
+      this.$stateParams = $stateParams;
 
-      if (!Boolean(this.order.services)){
-        this.order.services = [];
-      }
-      if (!Boolean(this.order.client)){
-        this.order.client = {};
-      }
-
-      var _this = this;
       this.init();
     };
 
     init() {
       var _this = this;
-      this.editMode = (Boolean(this.orderType) && Boolean(this.orderType.idOrder));
-      if (Boolean(this.editMode)) {
-        // do nothing
+
+
+      if (Boolean(this.$stateParams.order)) {
+        // load order...
+        this.order = this.$stateParams.order;
+
+        this.factoryServices.getUIOrder(this.$stateParams.order.idOrder).then(function (response) {
+          this.order.savedObject = response;
+        }.bind(this));
+
+      }else{
+        this.order = {};
+        if (!Boolean(this.order.services)){
+          this.order.services = [];
+        }
+
+        if (!Boolean(this.order.client)){
+          this.order.client = {};
+        }
       }
 
+
+      if (Boolean(_this.order.idAddressPickup)){
+        _this.order.pickup = {};
+        _this.order.pickup.address = _.find(_this.order.client.addresses, function(address){
+          return address.idAddress === _this.order.idAddressPickup;
+        });
+      }
+
+      if (Boolean(_this.order.idAddressDeliver)){
+        _this.order.deliver = {};
+        _this.order.deliver.address = _.find(_this.order.client.addresses, function(address){
+          return address.idAddress === _this.order.idAddressDeliver;
+        });
+      }
+
+      // setting order information for existing order
       this.factoryServices.getResources('orderType').then(function(result) {
-        _this.orderTypes = result;
+        _this.orderTypes = _.filter(result, function(ot){ return (Boolean(ot.orderTypeTasks) && ot.orderTypeTasks.length > 0) ; });
+
+        // select item if editing order
+        if (Boolean(_this.order)){
+          _this.selectedOrderType = _.find(result, function(ot){
+            return ot.idOrderType === _this.order.idOrderType
+          });
+          _this.validateOrderType();
+        }
       });
 
       this.tableParams = new this.NgTableParams({}, {
         dataset: _this.order.services
       });
+
+
     }
 
     validateOrderType() {
-      this.pickupShow = false;
-      this.showDeliver = false;
-      var both = false;
-      if (this.selectedOrderType.transportInfo == 3) {
-        both = true;
-      }
-      if (this.selectedOrderType.transportInfo == 1 || both) {
-        this.pickupShow = true;
-      }
-      if (this.selectedOrderType.transportInfo == 2 || both) {
-        this.showDeliver = true;
-      }
-
-      if ((!Boolean(this.order.client.addresses) || this.order.client.addresses.length == 0)
-          && (this.pickupShow || this.showDeliver)){
-
-        this.selectedOrderType = null;
+      if (Boolean(this.selectedOrderType)){
         this.pickupShow = false;
         this.showDeliver = false;
+        var both = false;
+        if (this.selectedOrderType.transportInfo == 3) {
+          both = true;
+        }
+        if (this.selectedOrderType.transportInfo == 1 || both) {
+          this.pickupShow = true;
+        }
+        if (this.selectedOrderType.transportInfo == 2 || both) {
+          this.showDeliver = true;
+        }
 
-        this.noty.showNoty({
-          text: "Cliente no tiene direccion dada de alta, por favor agrega una direccion, o selecciona otro servicio",
-          ttl: 1000 * 4,
-          type: "warning"
-        });
+        if ((!Boolean(this.order.client.addresses) || this.order.client.addresses.length == 0)
+            && (this.pickupShow || this.showDeliver)){
+
+          this.selectedOrderType = null;
+          this.pickupShow = false;
+          this.showDeliver = false;
+
+          this.noty.showNoty({
+            text: "Cliente no tiene direccion dada de alta, por favor agrega una direccion, o selecciona otro servicio",
+            ttl: 1000 * 4,
+            type: "warning"
+          });
+        }
       }
     }
 
@@ -87,6 +120,7 @@
       var orderObj = this.castOrderObject();
       // this.$log.info('[saveOrder] orderObj: ' + JSON.stringify(orderObj, null, 2));
       this.factoryServices.saveOrder(orderObj).then(function(item){
+        _this.back();
         // ORDER SAVED Redirect me to order report...
       });
     };
@@ -94,13 +128,13 @@
     delete() {
       var _this = this;
       this.$confirm({
-          text: 'Are you sure you want to delete?'
-        })
-        .then(function() {
-          _this.factoryServices.deleteResource('orderType', _this.orderType.idOrder).then(function(info) {
-            _this.back();
-          });
+        text: 'Are you sure you want to delete?'
+      })
+      .then(function() {
+        _this.factoryServices.deleteResource('orderType', _this.orderType.idOrder).then(function(info) {
+          _this.back();
         });
+      });
     };
 
     removeService(service, index){
@@ -117,9 +151,7 @@
     }
 
     back() {
-      this.$state.go('orders.orderType', null, {
-        reload: true
-      });
+      this.$state.go('orders.ordersList',{status: 'open'} , { reload: true });
     }
 
     updatingService = -1;
@@ -169,7 +201,7 @@
     calculateTotal(){
       var _this = this;
       var total = 0;
-      this.$log.info('[calculateTotal] this.order.services: ' + this.order.services.length);
+      // this.$log.info('[calculateTotal] this.order.services: ' + this.order.services.length);
       this.order.services.forEach(function(service){
         total += service.totalPrice;
       });
@@ -218,6 +250,8 @@
     };
 
     castOrderObject (){
+      // this logic cast the object from orderType to a new order.
+      // doesnt match the exact structure of the db, save method is a custom object.
       var _this = this;
       var finalOrder = {}
       finalOrder.idClient = this.order.client.idClient;
@@ -226,23 +260,23 @@
       if (this.selectedOrderType.transportInfo == 3 ||  this.selectedOrderType.transportInfo == 1){
         finalOrder.idAddressPickup = this.order.pickup.address.idAddress;
         finalOrder.pickUpDate = this.pickUpDate;
-        finalOrder.pickUpComments = '';
       }
 
       if (this.selectedOrderType.transportInfo == 3 ||  this.selectedOrderType.transportInfo == 2){
         finalOrder.idAddressDeliver = this.order.deliver.address.idAddress;
         finalOrder.deliveryDate = this.deliverDate;
-        finalOrder.deliveryComments = '';
       }
 
       finalOrder.services = [];
-      this.order.services.forEach(function(item, index){
+      this.order.services.forEach(function(item){
         var tmpService = {};
         tmpService.idServiceType = item.idServiceType;
         tmpService.comments = item.comments;
-        tmpService.price = item.totalPrice;
+        tmpService.price = item.price;
+        tmpService.totalPrice = item.totalPrice;
+        tmpService.composedPrice = item.composedPrice;
         tmpService.specs = [];
-        item.specs.forEach(function(spec, specIndex){
+        item.specs.forEach(function(spec){
           if (Boolean(spec.specsValue)){
             var tmpSpec = {};
             tmpSpec.idSpecs = spec.idSpecs;
@@ -251,7 +285,6 @@
             tmpService.specs.push(tmpSpec);
           }
         });
-
         tmpService.paymentInfo = {transactionInfo:'cash', type:0};
 
         finalOrder.services.push(tmpService);
@@ -263,9 +296,9 @@
   }
 
   angular.module('processAdminApp')
-    .component('newOrder', {
-      templateUrl: 'app/orders/newOrder/newOrder.html',
-      controller: NewOrderComponent,
+    .component('formOrder', {
+      templateUrl: 'app/orders/formOrder/formOrder.html',
+      controller: FormOrderComponent,
       controllerAs: '$cn'
     });
 })();

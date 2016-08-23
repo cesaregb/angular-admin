@@ -17,11 +17,11 @@
         <div class="col-md-12">
           <div class="col-md-6">
             <div class="col-md-3">
-              <label class="col-md-4 control-label" for="lastName">Cliente</label>
+              <label class="col-md-4 control-label">Cliente</label>
             </div>
             <div class="col-md-9 input-group">
               <input type="text" class="form-control" ng-model="$cn.order.client.name">
-              <div class="input-group-btn">
+              <div class="input-group-btn" ng-show="$cn.order.idOrder == null || $cn.order.idOrder == 0">
                 <button class="btn btn-default" type="button" ng-click="$cn.openClientSearch()">
                   <i class="fa fa-search"></i>
                 </button>
@@ -80,14 +80,14 @@
                 <label class="col-md-4 control-label" for="lastName">Fecha/Hora</label>
               </div>
               <div class="col-md-8 input-group">
-                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.deliverDate" is-open="$cn.deliverOpen">
+                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.pickUpDate" is-open="$cn.pickUpOpen">
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-default"
-                        ng-click="$cn.openCalendar($event, 'deliverDate')">
-                      <i class="fa fa-calendar"></i>
-                    </button>
+                      <button type="button" class="btn btn-default"
+                          ng-click="$cn.openCalendar($event, 'pickUpDate')">
+                        <i class="fa fa-calendar"></i></button>
                   </span>
               </div>
+
             </div>
           </div>
         </div>
@@ -113,11 +113,12 @@
                 <label class="col-md-4 control-label" for="lastName">Fecha/Hora</label>
               </div>
               <div class="col-md-8 input-group">
-                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.pickUpDate" is-open="$cn.pickUpOpen">
+                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.deliverDate" is-open="$cn.deliverOpen">
                 <span class="input-group-btn">
-                      <button type="button" class="btn btn-default"
-                          ng-click="$cn.openCalendar($event, 'pickUpDate')">
-                        <i class="fa fa-calendar"></i></button>
+                    <button type="button" class="btn btn-default"
+                        ng-click="$cn.openCalendar($event, 'deliverDate')">
+                      <i class="fa fa-calendar"></i>
+                    </button>
                   </span>
               </div>
             </div>

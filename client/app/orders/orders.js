@@ -24,14 +24,17 @@ angular.module('processAdminApp')
         params: {
           orderType: null
         }
-      }).state('orders.newOrder', {
-        url: '/newOrder',
-        template: '<new-order></new-order>',
+      }).state('orders.formOrder', {
+        url: '/formOrder',
+        template: '<form-order></form-order>',
         params: {
           order: null
         }
       }).state('orders.ordersList', {
         url: '/ordersList',
-        template: '<orders-list></orders-list>'
+        template: '<orders-list></orders-list>',
+        params: {
+          status: null
+        }
       });
   });

@@ -173,6 +173,11 @@ angular.module('processAdminApp')
       return factoryCommon.get(uri);
     }
 
+    factory.getUIOrder = function(orderId) {
+      var uri = uris.oder.uri + '/forEdit/' + orderId;
+      return factoryCommon.get(uri);
+    }
+
     factory.getActiveOrders = function() {
       return factory.getOrdersByStatus(ACTIVE);
     }
