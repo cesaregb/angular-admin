@@ -40,22 +40,15 @@ angular.module('processAdminApp')
           $scope.serviceCategorie = response[indexCat];
           $scope.serviceType = response[indexCat].serviceTypes[indexSt];
 
-          if (Boolean(selectedService.idService)){
-              // $scope.selectService($scope.serviceType);
-              // // iterate thru
-              // $scope.service.specs.forEach(function(ss, ind){
-              //   selectedService.serviceSpecs.forEach(function(item){
-              //
-              //   });
-              //   $scope.selectSpecOption(ss)
-              // });
-          }else if(Boolean(selectedService)){
-            $scope.service = selectedService;
+          if (Boolean(selectedService.savedService)){
+            calculatePrice();
+
           }else{
             $scope.service = {};
           }
         }
       });
+
     };
 
     this.init();

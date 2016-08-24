@@ -34,9 +34,56 @@
         // load order...
         this.order = this.$stateParams.order;
 
-        this.factoryServices.getUIOrder(this.$stateParams.order.idOrder).then(function (response) {
-          this.order.savedObject = response;
-        }.bind(this));
+        // this.factoryServices.getUIOrder(this.$stateParams.order.idOrder).then(function (response) {
+        //   this.order.savedObject = response;
+        // }.bind(this));
+
+        _this.factoryServices.getServiceOrderDetails().then(function(response) {
+
+          var serviceCategories = response;
+          var serviceCategoriesHash = {};
+
+          serviceCategories.forEach(function (item) {
+            serviceCategoriesHash[item.idServiceCategory] = item;
+          });
+
+          var servicesHolder = [];
+          _this.order.services.forEach(function(helper){
+            var serviceType = _.find(serviceCategoriesHash[helper.idServiceCategory].serviceTypes, function(search){
+              return search.idServiceType == helper.idServiceCategory;
+            });
+            var item = serviceType;
+            item.price = helper.price;
+            item.composedPrice = helper.composedPrice;
+            item.totalPrice = helper.totalPrice;
+            item.savedService = helper;
+
+            item.specs.forEach(function (item) {
+              var ss = _.find(helper.serviceSpecs, function(specF){ return specF.spec.idSpecs == item.idSpecs; });
+              var specsValue = _.find(item.options[item.idSpecs], function(search){ return search.key == parseInt(ss.selectedValue); });
+
+              item.amt = 0; // this needs to be calculated..
+              item.qty = ss.quantity;
+
+              if (specsValue.costType == 0){
+                item.type = "%";
+              }else{
+                item.type = "$";
+              }
+
+              item.specsValue = specsValue;
+            });
+            servicesHolder.push(item);
+          });
+
+          _this.order.services = servicesHolder;
+
+          _this.tableParams = new _this.NgTableParams({}, {
+            dataset: _this.order.services
+          });
+
+          _this.tableParams.reload();
+        });
 
       }else{
         this.order = {};
@@ -174,6 +221,7 @@
       });
 
       modalInstance.result.then(function(service) {
+
         // validate if is updating an existing service.
         if (_this.updatingService < 0){
           _this.order.services.push(service);
