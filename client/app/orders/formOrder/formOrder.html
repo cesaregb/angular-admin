@@ -47,7 +47,7 @@
           <div class="col-md-6">
             <div>
               <div class="col-md-3">
-                <label class="col-md-4 control-label" for="lastName">Orden</label>
+                <label class="col-md-4 control-label">Orden</label>
               </div>
               <div class="col-md-8 input-group">
                 <!-- Select Basic -->
@@ -66,7 +66,7 @@
           <div class="col-md-6">
             <div>
               <div class="col-md-3">
-                <label class="col-md-4 control-label" for="lastName">Recojer</label>
+                <label class="col-md-4 control-label">Recojer</label>
               </div>
               <div class="col-md-8 input-group">
                 <select class="form-control"
@@ -77,7 +77,7 @@
           <div class="col-md-6">
             <div>
               <div class="col-md-3">
-                <label class="col-md-4 control-label" for="lastName">Fecha/Hora</label>
+                <label class="col-md-4 control-label">Fecha/Hora</label>
               </div>
               <div class="col-md-8 input-group">
                 <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.pickUpDate" is-open="$cn.pickUpOpen">
@@ -98,7 +98,7 @@
           <div class="col-md-6">
             <div>
               <div class="col-md-3">
-                <label class="col-md-4 control-label" for="lastName">Entregar</label>
+                <label class="col-md-4 control-label">Entregar</label>
               </div>
               <div class="col-md-8 input-group">
                 <select class="form-control" ng-options="addr as addr.address for addr in $cn.order.client.addresses"
@@ -110,7 +110,7 @@
           <div class="col-md-6">
             <div>
               <div class="col-md-3">
-                <label class="col-md-4 control-label" for="lastName">Fecha/Hora</label>
+                <label class="col-md-4 control-label">Fecha/Hora</label>
               </div>
               <div class="col-md-8 input-group">
                 <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.deliverDate" is-open="$cn.deliverOpen">
@@ -131,7 +131,7 @@
           <div class="col-md-6">
             <div>
               <div class="col-md-3">
-                <label class="col-md-4 control-label" for="lastName">Total</label>
+                <label class="col-md-4 control-label">Total</label>
               </div>
               <div class="col-md-8 input-group">
                 {{$cn.order.total}}
