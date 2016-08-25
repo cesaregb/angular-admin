@@ -64,11 +64,13 @@
 
               item.amt = 0; // this needs to be calculated..
               item.qty = ss.quantity;
-
+              // price calculation... ??? 
               if (specsValue.costType == 0){
                 item.type = "%";
+                item.amt = specsValue.serviceIncrement;
               }else{
                 item.type = "$";
+                item.amt = specsValue.specPrice;
               }
 
               item.specsValue = specsValue;
@@ -330,6 +332,7 @@
             tmpSpec.idSpecs = spec.idSpecs;
             tmpSpec.value = spec.specsValue.key;
             tmpSpec.quantity = spec.qty;
+            tmpSpec.price = spec.price;
             tmpService.specs.push(tmpSpec);
           }
         });
