@@ -64,7 +64,7 @@
 
               item.amt = 0; // this needs to be calculated..
               item.qty = ss.quantity;
-              // price calculation... ??? 
+              // price calculation... ???
               if (specsValue.costType == 0){
                 item.type = "%";
                 item.amt = specsValue.serviceIncrement;
