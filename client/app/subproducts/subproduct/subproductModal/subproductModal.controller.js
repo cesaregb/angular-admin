@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('SubproductModalCtrl', function($scope, factoryGeneral, $uibModalInstance, formItem, $log) {
+  .controller('SubproductModalCtrl', function($scope, factoryServices, $uibModalInstance, formItem, $log) {
 
     $scope.formItem = formItem;
 
@@ -12,7 +12,7 @@ angular.module('processAdminApp')
         // placeholder
       }
 
-      factoryGeneral.getSubproductTypes().then(function(response){
+      factoryServices.getResources('subproductType').then(function(response){
         response.forEach(function(item){
           $scope.parentSelect.push({name : item.name, value: item.idSubproductType});
         });
@@ -35,29 +35,24 @@ angular.module('processAdminApp')
       type: 'input',
       templateOptions: {
         type: 'text',
-        label: 'Name',
+        label: 'Nombre',
         required: true
       }
     }, {
-      key: 'description',
+      key: 'price',
       type: 'input',
       templateOptions: {
-        type: 'text',
-        label: 'Description',
+        type: 'number',
+        label: 'Precio',
         required: true
       }
     }, {
-      key: 'status',
-      type: 'select',
+      key: 'maxQty',
+      type: 'input',
       templateOptions: {
-        label: 'Status',
-        options: [{
-          "name": "Active",
-          "value": 1
-        }, {
-          "name": "Inactive",
-          "value": 0
-        }]
+        type: 'number',
+        label: 'Cantidad Maxima',
+        required: true
       }
     },{
       key: 'idSubproductType',

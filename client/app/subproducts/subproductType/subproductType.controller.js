@@ -4,10 +4,10 @@
   class SubproductTypeComponent {
     subproductTypes = [];
 
-    constructor($stateParams, $state, noty, factoryGeneral, $confirm, $log, $uibModal) {
+    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal) {
       this.$log = $log;
       this.$confirm = $confirm;
-      this.factoryGeneral = factoryGeneral;
+      this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.noty = noty;
       this.$state = $state;
@@ -17,7 +17,7 @@
 
     getInfo() {
       var _this = this;
-      this.factoryGeneral.getSubproductTypes().then(function(response) {
+      this.factoryServices.getResources('subproductType').then(function(response) {
         _this.subproductTypes = response;
       });
     }
@@ -43,12 +43,12 @@
       modalInstance.result.then(function(resultItem) {
         var subproductType = resultItem;
         if (subproductType.idSubproductType != null && subproductType.idSubproductType > 0) {
-          _this.factoryGeneral.updateSubproductTypeCallback(subproductType, function() {
+          _this.factoryServices.updateResource('subproductType', subproductType).then(function() {
             _this.getInfo();
           });
         } else {
 
-          _this.factoryGeneral.saveSubproductTypeCallback(subproductType, function() {
+          _this.factoryServices.saveResource('subproductType', subproductType).then(function() {
             _this.getInfo();
           });
         }
@@ -61,7 +61,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryGeneral.deleteSubproductType(item).then(function(info){
+        _this.factoryServices.deleteResource('subproductType', item.idSubproductType).then(function(){
           _this.back();
         });
       });

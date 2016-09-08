@@ -1,18 +1,9 @@
 <div id="page-wrapper">
 
-  <!-- <div class="row">
-    <div class="col-lg-12">
-      <div class="pull-right" style="padding: 10px;">
-        <a href="#" ui-sref="orders.orderType" class="btn btn-info btn-sm">
-          <span class="glyphicon glyphicon-chevron-left"></span> Back
-        </a>
-      </div>
-    </div>
-  </div> -->
-
   <div class="row">
     <div class="col-lg-12">
       <legend>Orden</legend>
+      <!--******** Client and order type -->
       <div class="row" style="padding-bottom:20px;">
         <div class="col-md-12">
           <div class="col-md-6">
@@ -60,7 +51,7 @@
           </div>
         </div>
       </div>
-
+      <!--******** pickup and deliver informaiton -->
       <div class="row" ng-show="$cn.pickupShow" style="padding-bottom:20px;">
         <div class="col-md-12">
           <div class="col-md-6">
@@ -141,6 +132,8 @@
         </div>
       </div>
 
+      <!--******** services!!!-->
+
       <div class="row" style="padding-bottom:20px;" ng-show="$cn.selectedOrderType.idOrderType > 0">
         <div class="col-lg-12">
           <div class="panel panel-default">
@@ -175,6 +168,11 @@
                       </a>
                       </td>
                       <td data-title="'Precio'">{{row.totalPrice}}</td>
+                      <td data-title="'Subproductos'">
+                        <a href="#" ng-click="$cn.manageSubproducts(row, $index)" class="btn default btn-circle">
+                          <span class="glyphicon glyphicon-list"></span>
+                        </a>
+                      </td>
                       <td data-title="'Action'">
                         <a href="#" ng-click="$cn.removeService(row, $index)" class="btn btn-danger btn-circle">
                           <span class="glyphicon glyphicon-remove"></span>

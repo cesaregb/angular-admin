@@ -11,7 +11,7 @@
 
     status = { isopen: false };
 
-    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, formlyForms, NgTableParams, _) {
+    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, NgTableParams, _) {
       this.NgTableParams = NgTableParams;
       this.$log = $log;
       this.factoryServices = factoryServices;
@@ -29,63 +29,64 @@
     init() {
       var _this = this;
 
-
       if (Boolean(this.$stateParams.order)) {
         // load order...
         this.order = this.$stateParams.order;
 
+        this.$log.info('[init] this.order: ' + JSON.stringify(this.order, null, 2));
+
         // this.factoryServices.getUIOrder(this.$stateParams.order.idOrder).then(function (response) {
         //   this.order.savedObject = response;
         // }.bind(this));
-
-        _this.factoryServices.getServiceOrderDetails().then(function(response) {
-
-          var serviceCategories = response;
-          var serviceCategoriesHash = {};
-
-          serviceCategories.forEach(function (item) {
-            serviceCategoriesHash[item.idServiceCategory] = item;
-          });
-
-          var servicesHolder = [];
-          _this.order.services.forEach(function(helper){
-            var serviceType = _.find(serviceCategoriesHash[helper.idServiceCategory].serviceTypes, function(search){
-              return search.idServiceType == helper.idServiceCategory;
-            });
-            var item = serviceType;
-            item.price = helper.price;
-            item.composedPrice = helper.composedPrice;
-            item.totalPrice = helper.totalPrice;
-            item.savedService = helper;
-
-            item.specs.forEach(function (item) {
-              var ss = _.find(helper.serviceSpecs, function(specF){ return specF.spec.idSpecs == item.idSpecs; });
-              var specsValue = _.find(item.options[item.idSpecs], function(search){ return search.key == parseInt(ss.selectedValue); });
-
-              item.amt = 0; // this needs to be calculated..
-              item.qty = ss.quantity;
-              // price calculation... ???
-              if (specsValue.costType == 0){
-                item.type = "%";
-                item.amt = specsValue.serviceIncrement;
-              }else{
-                item.type = "$";
-                item.amt = specsValue.specPrice;
-              }
-
-              item.specsValue = specsValue;
-            });
-            servicesHolder.push(item);
-          });
-
-          _this.order.services = servicesHolder;
-
-          _this.tableParams = new _this.NgTableParams({}, {
-            dataset: _this.order.services
-          });
-
-          _this.tableParams.reload();
-        });
+        //
+        // _this.factoryServices.getServiceOrderDetails().then(function(response) {
+        //
+        //   var serviceCategories = response;
+        //   var serviceCategoriesHash = {};
+        //
+        //   serviceCategories.forEach(function (item) {
+        //     serviceCategoriesHash[item.idServiceCategory] = item;
+        //   });
+        //
+        //   var servicesHolder = [];
+        //   _this.order.services.forEach(function(helper){
+        //     var serviceType = _.find(serviceCategoriesHash[helper.idServiceCategory].serviceTypes, function(search){
+        //       return search.idServiceType == helper.idServiceCategory;
+        //     });
+        //     var item = serviceType;
+        //     item.price = helper.price;
+        //     item.composedPrice = helper.composedPrice;
+        //     item.totalPrice = helper.totalPrice;
+        //     item.savedService = helper;
+        //
+        //     item.specs.forEach(function (item) {
+        //       var ss = _.find(helper.serviceSpecs, function(specF){ return specF.spec.idSpecs == item.idSpecs; });
+        //       var specsValue = _.find(item.options[item.idSpecs], function(search){ return search.key == parseInt(ss.selectedValue); });
+        //
+        //       item.amt = 0; // this needs to be calculated..
+        //       item.qty = ss.quantity;
+        //       // price calculation... ???
+        //       if (specsValue.costType == 0){
+        //         item.type = "%";
+        //         item.amt = specsValue.serviceIncrement;
+        //       }else{
+        //         item.type = "$";
+        //         item.amt = specsValue.specPrice;
+        //       }
+        //
+        //       item.specsValue = specsValue;
+        //     });
+        //     servicesHolder.push(item);
+        //   });
+        //
+        //   _this.order.services = servicesHolder;
+        //
+        //   _this.tableParams = new _this.NgTableParams({}, {
+        //     dataset: _this.order.services
+        //   });
+        //
+        //   _this.tableParams.reload();
+        // });
 
       }else{
         this.order = {};
@@ -129,12 +130,11 @@
       this.tableParams = new this.NgTableParams({}, {
         dataset: _this.order.services
       });
-
-
     }
 
     validateOrderType() {
       if (Boolean(this.selectedOrderType)){
+        this.order.idOrderType = this.selectedOrderType.idOrderType;
         this.pickupShow = false;
         this.showDeliver = false;
         var both = false;
@@ -194,9 +194,9 @@
     }
 
     openService(service, index){
-      var _this = this;
-      this.updatingService = index;
-      this.addService(service);
+      // var _this = this;
+      // this.updatingService = index;
+      // this.addService2(service);
     }
 
     back() {
@@ -204,7 +204,7 @@
     }
 
     updatingService = -1;
-    addService(selectedService){
+    addService2(selectedService){
       var _this = this;
       var orderType = this.selectedOrderType;
       var modalInstance = this.$uibModal.open({
@@ -343,7 +343,10 @@
       return finalOrder;
     }
 
-    // end class
+    addService(){
+      this.$state.go('orders.selectService',{order: this.order} , { reload: true });
+    }
+
   }
 
   angular.module('processAdminApp')

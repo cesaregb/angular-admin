@@ -1,0 +1,60 @@
+<div class="modal-header">
+  <h3 class="modal-title">Search Subproduct</h3>
+</div>
+<div class="panel-body">
+  <div class="dataTable_wrapper">
+    <div id="viewItemsTable" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="pull-right">
+            <label>Search:
+              <input type="search" class="form-control input-sm" ng-model="searchText" aria-controls="dataTables-example">
+              <a href="#" ng-click="searchSubproducts()" class="btn btn-info btn-sm">
+                <span class="glyphicon glyphicon-search"></span>
+              </a>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <table class="table table-striped table-bordered table-hover dataTable no-footer"
+                 id="dataTables-example" role="grid" aria-describedby="dataTables-example_info">
+            <thead>
+              <tr role="row">
+                <th>Name</th>
+                <th>Price</th>
+                <th>Max Qty</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-show="subproducts.length == 0">
+                <td colspan="5">No Items found</td>
+              </tr>
+              <tr class="gradeA" role="row"
+                  ng-class-odd="'odd'" ng-class-even="'even'"
+                  ng-repeat="subproduct in subproducts">
+                  <td>
+                    <a href="" ng-click="preSelectItem(subproduct);" ng-dblclick="selectItemAction(subproduct);">
+                      {{subproduct.name}}
+                    </a>
+                  </td>
+                  <td>{{subproduct.price}}</td>
+                  <td>{{subproduct.maxQty}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <strong>Selected: {{subproductInfo.name}}</strong>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="submit" ng-click="selectItem()" ng-disabled="subproductInfo == null">OK</button>
+  <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

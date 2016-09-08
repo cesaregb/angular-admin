@@ -31,36 +31,27 @@
               </div>
               <div class="row">
                 <div class="col-sm-12">
-                  <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info">
-                    <thead>
-                      <tr role="row">
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Subproduct Type</th>
-                        <th>Action</th>
+                  <div loading-container="$cn.tableParams.settings().$loading">
+                    <table ng-table="$cn.tableParams" class="table table-condensed table-bordered table-striped">
+                      <tr ng-repeat="row in $data track by row.idSubproduct">
+
+                        <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'">
+                          <a href="" ng-click="$cn.openModal(row);">
+                            {{row.name}}
+                          </a>
+                        </td>
+                        <td data-title="'Precio'" >{{row.price}}</td>
+                        <td data-title="'Cantidad Maxima'" >{{row.maxQty}}</td>
+                        <td data-title="'#'">
+                          <a href="#" ng-click="$cn.delete(row)"
+                             class="btn btn-danger btn-circle">
+                            <span class="glyphicon glyphicon-remove"></span>
+                          </a>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-show="$cn.subproducts.length == 0 || $cn.subproducts == null"><td colspan="5">No Items found</td></tr>
-                      <tr class="gradeA" role="row"
-                          ng-class-odd="'odd'" ng-class-even="'even'"
-                          ng-repeat="subproduct in $cn.subproducts">
-                          <td>
-                            <a href="" ng-click="$cn.openModal(subproduct);">
-                              {{subproduct.name}}
-                            </a>
-                          </td>
-                          <td>{{subproduct.description}}</td>
-                          <td>{{subproduct.subproductTypeName}}</td>
-                          <td class="action-column">
-                            <a href="#" ng-click="$cn.delete(subproduct)"
-                                class="btn btn-danger btn-circle">
-                              <span class="glyphicon glyphicon-remove"></span>
-                            </a>
-                          </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                    </table>
+                  </div>
+
                 </div>
               </div>
             </div>

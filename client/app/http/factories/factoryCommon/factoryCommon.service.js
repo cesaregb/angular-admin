@@ -26,7 +26,7 @@ angular.module('processAdminApp')
           deferred.reject(response);
         });
       return deferred.promise;
-    }
+    };
 
     factory.save = function( data, url ) {
       var deferred = $q.defer();
@@ -67,10 +67,9 @@ angular.module('processAdminApp')
           deferred.reject(response);
         });
       return deferred.promise;
-    }
+    };
 
     factory.put = function ( data, url ) {
-      var _this = this;
       var deferred = $q.defer();
       url = constants.API_ENDPOINT + url ;
 
@@ -95,10 +94,9 @@ angular.module('processAdminApp')
         });
 
       return deferred.promise;
-    }
+    };
 
     factory.delete = function ( url ) {
-      var _this = this;
       var deferred = $q.defer();
       url = constants.API_ENDPOINT + url ;
 
@@ -123,7 +121,7 @@ angular.module('processAdminApp')
         });
 
       return deferred.promise;
-    }
+    };
 
     return factory;
 
