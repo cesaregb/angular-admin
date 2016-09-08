@@ -7,7 +7,7 @@ class ServiceTypeFormComponent {
   serviceType = {};
   title = "New Service Type";
 
-  constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, formlyForms) {
+  constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, formlyForms, _) {
     this.$log = $log;
     this.factoryServices = factoryServices;
     this.$confirm = $confirm;
@@ -22,14 +22,22 @@ class ServiceTypeFormComponent {
     // assign form
     this.formItemFields = formlyForms.serviceType;
     // manage computed items.
-    this.formItemFields.push({
-      key: 'idServiceCategory',
-      type: 'select',
-      templateOptions: {
-        label: 'Service Category',
-        options: this.parentSelect
-      }
-    });
+
+    var field = _.find(this.formItemFields, function(search){
+      return (search.key === 'idServiceCategory');
+    })
+
+    if (!Boolean(field)){
+      this.formItemFields.push({
+        key: 'idServiceCategory',
+        type: 'select',
+        templateOptions: {
+          label: 'Service Category',
+          options: this.parentSelect
+        }
+      });
+    }
+
 
     var _this = this;
     this.init();

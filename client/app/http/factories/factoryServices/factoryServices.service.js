@@ -57,6 +57,12 @@ angular.module('processAdminApp')
       appOrder: {
         uri: '/app-orders'
       },
+      subproduct: {
+        uri: '/subproduct'
+      },
+      subproductType: {
+        uri: '/subproductType'
+      },
     };
 
     factory.getResources = function(idUri) {
@@ -95,6 +101,8 @@ angular.module('processAdminApp')
         }
     };
 
+    // End General
+
     factory.getResourcesForTable = function(idUri, params) {
       var deferred = $q.defer();
       this.getResources(idUri).then(function(result) {
@@ -113,7 +121,7 @@ angular.module('processAdminApp')
       return deferred.promise;
     };
 
-    // bla bla bla
+    //
     factory.getResourcesForTableSpecific = function(functionPromice, params) {
       var deferred = $q.defer();
       functionPromice.then(function(result) {
@@ -180,6 +188,11 @@ angular.module('processAdminApp')
 
     factory.getActiveOrders = function() {
       return factory.getOrdersByStatus(ACTIVE);
+    }
+
+    factory.getSubproductsByName = function(name){
+      var uri = uris.subproduct.uri + '/name/' + name;
+      return factoryCommon.get(uri);
     }
 
     return factory;

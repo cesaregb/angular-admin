@@ -103,6 +103,11 @@
             <i class="glyphicon glyphicon-th-list"></i> Ordenes Activas
           </a>
         </li>
+        <li>
+          <a href="" ui-sref="orders.selectService({status:'open'})">
+            <i class="glyphicon glyphicon-th-list"></i> select service
+          </a>
+        </li>
         <li ng-repeat="item in nav.menu">
           <a href="" ui-sref="{{item.state}}">
             {{item.name}}
