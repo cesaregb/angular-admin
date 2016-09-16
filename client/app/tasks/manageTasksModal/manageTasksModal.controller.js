@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('ManageOrderTasksModalCtrl', function($scope, factoryServices, $uibModalInstance, formItem, $log) {
+  .controller('ManageOrderTasksModalCtrl', function($scope, factoryServices, $uibModalInstance, formItem, requester, $log) {
 
     $scope.formItem = formItem;
     $scope.tasks = [];
@@ -10,22 +10,22 @@ angular.module('processAdminApp')
     $scope.orderTypeTasks = [];
 
     this.init = function() {
-      var showAll = false;
-
       if (Boolean($scope.formItem) && Boolean($scope.formItem.orderTypeTasks)) {
           $scope.orderTypeTasks = $scope.formItem.orderTypeTasks;
       }
-
-      if (showAll){
+      if (requester == 2){ // orders module
         factoryServices.getResources('taskType').then(function(response) {
           $scope.taskTypes = response;
         });
       }else{
-        factoryServices.getTaskTypeBySection(true).then(function(response) {
+        // send ordersOnly flag, is true if need to be displayed only in orders.
+        factoryServices.getTaskTypeBySection(false).then(function(response) {
           $scope.taskTypes = response;
         });
       }
     };
+
+    $scope.list = [];
 
     this.init();
 
@@ -70,6 +70,11 @@ angular.module('processAdminApp')
 
     // form actions...
     $scope.okAction = function() {
+      $scope.orderTypeTasks.forEach(function (item, index) {
+        item.sortingOrder = index;
+      });
+
+      $log.info('[okAction] $scope.orderTypeTasks: ' + JSON.stringify($scope.orderTypeTasks, null, 2));
       $scope.formItem.orderTypeTasks = $scope.orderTypeTasks;
       $uibModalInstance.close($scope.formItem);
     }

@@ -4,23 +4,43 @@
   class TaskComponent {
     tasks = [];
 
-    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal) {
+    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams, $q) {
+      this.$q = $q;
       this.$log = $log;
+      this.NgTableParams = NgTableParams;
       this.$confirm = $confirm;
       this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.noty = noty;
       this.$state = $state;
       this.route = $stateParams.route;
-      this.getInfo();
+      var _this = this;
+      this.tableParams = new this.NgTableParams({}, {
+        getData: function(params) {
+          return _this.factoryServices.getResourcesForTable('task', params);
+        }
+      });
+    }
+
+    createFilter() {
+      var deferred = this.$q.defer();
+      var filter = [];
+      this.factoryServices.getResources('taskType').then(function(response) {
+        response.forEach(function(item){
+          filter.push({title: item.name, id:item.name});
+        });
+        deferred.resolve(filter);
+      });
+      return deferred.promise;
     }
 
     getInfo() {
-      var _this = this;
-      this.factoryServices.getResources('task').then(function(response) {
-        _this.tasks = response;
-
-      });
+      this.tableParams.reload();
+      // var _this = this;
+      // this.factoryServices.getResources('task').then(function(response) {
+      //   _this.tasks = response;
+      //
+      // });
     }
 
     openNewModal() {

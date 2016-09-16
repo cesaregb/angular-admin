@@ -31,36 +31,28 @@
               </div>
               <div class="row">
                 <div class="col-sm-12">
-                  <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info">
-                    <thead>
-                      <tr role="row">
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Task Type</th>
-                        <th>Action</th>
+                  <div loading-container="$cn.tableParams.settings().$loading">
+                    <table ng-table="$cn.tableParams" class="table table-condensed table-bordered table-striped">
+                      <tr ng-repeat="row in $data track by row.idTask">
+
+                        <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'">
+                          <a href="" ng-click="$cn.openModal(row);">
+                            {{row.name}}
+                          </a>
+                        </td>
+                        <td data-title="'Type'" filter="{ taskTypeName: 'select'}" filter-data="$cn.createFilter()">
+                          {{row.taskTypeName}}
+                        </td>
+                        <td data-title="'Descripcion'" >{{row.description}}</td>
+                        <td data-title="'#'">
+                          <a href="#" ng-click="$cn.delete(row)"
+                             class="btn btn-danger btn-circle">
+                            <span class="glyphicon glyphicon-remove"></span>
+                          </a>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-show="$cn.tasks.length == 0 || $cn.tasks == null"><td colspan="5">No Items found</td></tr>
-                      <tr class="gradeA" role="row"
-                          ng-class-odd="'odd'" ng-class-even="'even'"
-                          ng-repeat="task in $cn.tasks">
-                          <td>
-                            <a href="" ng-click="$cn.openModal(task);">
-                              {{task.name}}
-                            </a>
-                          </td>
-                          <td>{{task.description}}</td>
-                          <td>{{task.taskTypeName}}</td>
-                          <td class="action-column">
-                            <a href="#" ng-click="$cn.delete(task)"
-                                class="btn btn-danger btn-circle">
-                              <span class="glyphicon glyphicon-remove"></span>
-                            </a>
-                          </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>

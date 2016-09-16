@@ -3,9 +3,10 @@
 (function () {
 
   class SelectServiceComponent {
+    COST_TYPE_PERCENTAGE = 0;
+    COST_TYPE_FIXED = 1;
 
     constructor(factoryServices, $log, noty, $uibModal, _, $stateParams, $state) {
-      this.message = 'Hello';
       this.factoryServices = factoryServices;
       this.$log = $log;
       this.noty = noty;
@@ -59,10 +60,11 @@
       var _this = this;
       _this.service = {};
 
-
       _this.service = serviceType;
-      _this.service.composedPrice = _this.service.price;
-      _this.service.totalPrice = _this.service.price;
+      _this.service.specsPrice = 0;
+      _this.service.subproductsPrice = 0;
+      _this.service.totalPrice = 0;
+      this.calculatePrice();
 
       if (Boolean(_this.service.specs)) {
         // sort to ensure consistency
@@ -73,12 +75,12 @@
         _this.service.specs.forEach(function (item) {
           item.price = 0;
           item.amt = 0;
-          item.qty = 1;
+          item.quantity = 1;
         });
 
         _this.service.price = parseFloat(serviceType.price);
         this.preselectValues();
-        this.calculatePrice();
+        this.calculateSpecsPrice();
       } else {
         _this.noty.showNoty({
           text: "Servicio no tiene specs... ",
@@ -89,34 +91,37 @@
     }
 
     selectSpecOption(workingWithSpec, specsValue) {
+      specsValue.quantity = 1;
+      this.preselectValues();
+
       var _this = this;
       // spec price ==
       _this.service.specs.forEach(function (item) {
+        // $log.info('[selectSpecOption] item.idSpecs == workingWithSpec.idSpecs: ' + item.idSpecs + ' -- ' + workingWithSpec.idSpecs);
         if (item.idSpecs == workingWithSpec.idSpecs) {
-          if (specsValue.costType === 0) {
+          if (specsValue.costType === _this.COST_TYPE_PERCENTAGE) {
             item.amt = specsValue.serviceIncrement;
             item.type = "%";
-          } else {
+          } else if (specsValue.costType === _this.COST_TYPE_FIXED) {
             item.amt = specsValue.specPrice;
             item.type = "$";
           }
         }
       });
-      this.calculatePrice();
+      this.calculateSpecsPrice();
     }
 
 
     preselectValues() {
+      var _this = this;
       // preselect all the base elements...
       this.service.specs.forEach(function (item) {
         if (( item.primarySpec || item.optional == 0 ) && !Boolean(item.type)) {
-
           item.specsValue = item.options[item.idSpecs][0];
-
-          if (item.specsValue.costType === 0) {
+          if (item.specsValue.costType === _this.COST_TYPE_PERCENTAGE) {
             item.amt = item.specsValue.serviceIncrement;
             item.type = "%";
-          } else {
+          } else if (item.specsValue.costType === _this.COST_TYPE_FIXED) {
             item.amt = item.specsValue.specPrice;
             item.type = "$";
           }
@@ -125,46 +130,63 @@
       });
     }
 
-    calculatePrice() {
+    calculateSpecsPrice() {
       var _this = this;
       _this.service.totalPrice = _this.service.price;
-      _this.service.composedPrice = _this.service.price;
+      _this.service.specsPrice = 0;
+
+      var specsPrincipalPrice = 0;
 
       // get base price... based on $
       _this.service.specs.forEach(function (item) {
         if (item.primarySpec && item.type == "$") {
-          item.price = item.amt * item.qty;
-          _this.service.composedPrice = _this.service.composedPrice + item.price;
+          item.price = item.amt * item.quantity;
+          specsPrincipalPrice += item.price;
         }
       });
 
       // both base add up to the price... the rest to the totalPrice
       // get base price... based on $
+      var percTot = 0;
       _this.service.specs.forEach(function (item) {
         if (item.primarySpec && item.type == "%") {
-          item.price = ((item.amt * item.qty) / 100) * _this.service.price;
-          _this.service.composedPrice = _this.service.composedPrice + item.price;
+          item.price = ((item.amt * item.quantity) / 100) * (specsPrincipalPrice + _this.service.price);
+          percTot = percTot + item.price;
         }
       });
 
+      specsPrincipalPrice += percTot;
+
       // calculate the percentage for the rest of the elements..
-      _this.service.totalPrice = _this.service.composedPrice;
+      var specsNotPrincipalPrice = 0;
 
       _this.service.specs.forEach(function (item) {
         if (!item.primarySpec && item.type == "%") {
           // calculate line price before adding it to the total.
-          item.price = ((item.amt * item.qty) / 100) * _this.service.composedPrice;
+          item.price = ((item.amt * item.quantity) / 100) * specsPrincipalPrice;
           // add calculated to the total
-          _this.service.totalPrice = _this.service.totalPrice + item.price;
+          specsNotPrincipalPrice += item.price;
         } else if (!item.primarySpec && item.type == "$") {
-          item.price = item.amt * item.qty;
-          _this.service.totalPrice = _this.service.totalPrice + item.price;
+          item.price = item.amt * item.quantity;
+          specsNotPrincipalPrice += item.price;
         }
       });
+
+      _this.service.specsPrice = specsPrincipalPrice + specsNotPrincipalPrice;
+
+      this.calculatePrice();
+
+    }
+
+    calculatePrice(){
+      this.service.totalPrice = this.service.price + this.service.specsPrice + this.service.subproductsPrice;
+    }
+
+    changeQty(){
+      this.calculateSpecsPrice();
     }
 
     manageSubproducts(){
-      var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
         templateUrl: 'app/subproducts/subproductSearchModal/subproductSearchModal.html',
@@ -173,30 +195,49 @@
       });
 
       modalInstance.result.then(function(subproduct) {
-        // _this.$log.info('[manageSubproducts] subproduct: ' + JSON.stringify(subproduct, null, 2));
-
+        subproduct.quantity = 1;
         if (!Boolean(this.service.subproducts)){
           this.service.subproducts = [];
         }
 
-        var found = false;
-
-        this.service.subproducts.forEach(function(item){
+        var found = -1;
+        this.service.subproducts.forEach(function(item, index){
           if (item.idSubproduct == subproduct.idSubproduct){
-            found = true;
-            item = subproduct;
+            found = index;
           }
         });
 
-        if (!found){
-          this.service.subproducts.push(subproduct);
+        if (found >= 0){
+          this.service.subproducts.splice(found);
         }
+
+        this.service.subproducts.push(subproduct);
+
+        this.calculateSubproductTotal(subproduct);
 
       }.bind(this));
     }
 
-    calculateSubproductoTotal(subproduct){
+    deleteSubproduct(subproduct){
+      var index = this._.findIndex(this.service.subproducts, function(element){
+        return (element.idSubproduct == subproduct.idSubproduct);
+      });
+
+      this.service.subproducts.splice(index, 1);
+    }
+
+    calculateSubproductTotal(subproduct){
       subproduct.total = subproduct.price * subproduct.quantity;
+      this.calculateSubproductsTotal();
+    }
+
+    calculateSubproductsTotal(){
+      var subproductsTotal = 0;
+      this.service.subproducts.forEach(function(item){
+        subproductsTotal += item.total;
+      });
+      this.service.subproductsPrice = subproductsTotal;
+      this.calculatePrice()
     }
 
     addService(){

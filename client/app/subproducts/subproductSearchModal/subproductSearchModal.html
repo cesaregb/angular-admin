@@ -4,11 +4,14 @@
 <div class="panel-body">
   <div class="dataTable_wrapper">
     <div id="viewItemsTable" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+
       <div class="row">
         <div class="col-md-12">
           <div class="pull-right">
             <label>Search:
               <input type="search" class="form-control input-sm" ng-model="searchText" aria-controls="dataTables-example">
+              <select class="form-control" ng-model="subproductType"
+                      ng-change="filterByType()" ng-options="filter.name for filter in subproductTypes"></select>
               <a href="#" ng-click="searchSubproducts()" class="btn btn-info btn-sm">
                 <span class="glyphicon glyphicon-search"></span>
               </a>

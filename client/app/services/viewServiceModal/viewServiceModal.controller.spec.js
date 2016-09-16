@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: ManageServiceTasksModalCtrl', function () {
+describe('Controller: ViewServiceModalCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('processAdminApp.manageServiceTasksModal'));
+  beforeEach(module('processAdminApp.manageSpecsModal'));
 
-  var ManageServiceTasksModalCtrl, scope;
+  var ViewServiceModalCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    ManageServiceTasksModalCtrl = $controller('ManageServiceTasksModalCtrl', {
+    ViewServiceModalCtrl = $controller('ViewServiceModalCtrl', {
       $scope: scope
     });
   }));

@@ -33,8 +33,6 @@
         // load order...
         this.order = this.$stateParams.order;
 
-        this.$log.info('[init] this.order: ' + JSON.stringify(this.order, null, 2));
-
         // this.factoryServices.getUIOrder(this.$stateParams.order.idOrder).then(function (response) {
         //   this.order.savedObject = response;
         // }.bind(this));
@@ -204,7 +202,7 @@
     }
 
     updatingService = -1;
-    addService2(selectedService){
+    addService2 (selectedService){
       var _this = this;
       var orderType = this.selectedOrderType;
       var modalInstance = this.$uibModal.open({
@@ -299,10 +297,28 @@
       }
     };
 
+    viewServiceDetails(service){
+      var _this = this;
+      var modalInstance = this.$uibModal.open({
+        animation: false,
+        templateUrl: 'app/services/viewServiceModal/viewServiceModal.html',
+        controller: 'ViewServiceModalCtrl',
+        size: 'lg',
+        resolve: {
+          service: function() {
+            return service;
+          }
+        }
+      });
+
+      modalInstance.result.then(function(client) {
+        _this.order.client = client;
+      });
+    }
+
     castOrderObject (){
       // this logic cast the object from orderType to a new order.
       // doesnt match the exact structure of the db, save method is a custom object.
-      var _this = this;
       var finalOrder = {}
       finalOrder.idClient = this.order.client.idClient;
       finalOrder.price = this.order.total;

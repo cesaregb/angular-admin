@@ -20,7 +20,8 @@ angular.module('processAdminApp', [
     'ngSanitize',
     'angular-loading-bar',
     'ngTable',
-    'ui.bootstrap.datetimepicker'
+    'ui.bootstrap.datetimepicker',
+    'dndLists'
   ])
   .config(function($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
     $urlRouterProvider.otherwise('/');
