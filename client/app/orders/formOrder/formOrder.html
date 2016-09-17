@@ -171,7 +171,7 @@
                           {{row.name}}
                         </a>
                       </td>
-                      <td data-title="'Precio'">{{row.totalPrice}}</td>
+                      <td data-title="'Precio'">{{row.totalPrice | currency}}</td>
                       <td data-title="'Action'">
                         <a href="#" ng-click="$cn.removeService(row, $index)" class="btn btn-danger btn-circle">
                           <span class="glyphicon glyphicon-remove"></span>

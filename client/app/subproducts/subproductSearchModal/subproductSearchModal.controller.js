@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('SubproductSearchModalCtrl', function ($scope, factoryServices, $uibModalInstance, $log) {
+  .controller('SubproductSearchModalCtrl', function ($scope, factoryServices, $uibModalInstance, $log, _, serviceType) {
 
     $scope.subproductInfo = null;
     $scope.subproductType = null;
@@ -21,6 +21,25 @@ angular.module('processAdminApp')
       factoryServices.getResources('subproductType').then(function(result){
         $scope.subproductTypes = result;
       });
+
+      if (Boolean(serviceType)){
+        factoryServices.getResourceById('serviceType', serviceType.idServiceType).then(function (response) {
+          serviceType = response;
+          // TODO fix me remove extra call.
+          var ids = [];
+          if (Boolean(serviceType.subproductTypes) && serviceType.subproductTypes.length > 0){
+            serviceType.subproductTypes.forEach(function(item){
+              ids.push(item.idSubproductType);
+            });
+
+            if (ids.length > 0){
+              factoryServices.getProductsBySubproductTypes(ids).then(function(response){
+                $scope.subproducts = response;
+              });
+            }
+          }
+        });
+      }
 
     };
 

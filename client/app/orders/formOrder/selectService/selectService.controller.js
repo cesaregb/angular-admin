@@ -20,6 +20,8 @@
     $onInit() {
       if (this.$stateParams.order){
         this.order = this.$stateParams.order;
+      }else{
+        // this.$state.go('orders.formOrder', null, { reload: true });
       }
 
       var _this = this;
@@ -187,11 +189,17 @@
     }
 
     manageSubproducts(){
+      var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
         templateUrl: 'app/subproducts/subproductSearchModal/subproductSearchModal.html',
         controller: 'SubproductSearchModalCtrl',
-        size: 'lg'
+        size: 'lg',
+        resolve: {
+          serviceType: function() {
+            return _this.serviceType;
+          }
+        }
       });
 
       modalInstance.result.then(function(subproduct) {
@@ -208,7 +216,7 @@
         });
 
         if (found >= 0){
-          this.service.subproducts.splice(found);
+          this.service.subproducts.splice(found, 1);
         }
 
         this.service.subproducts.push(subproduct);

@@ -18,7 +18,7 @@
           <div class="form-group">
             <label class="col-md-4 control-label">Precio Servicio:</label>
             <div class="col-md-6">
-              {{service.price}}
+              {{service.price | currency}}
             </div>
           </div>
         </div>
@@ -26,7 +26,7 @@
           <div class="form-group">
             <label class="col-md-4 control-label">Precio Specs:</label>
             <div class="col-md-6">
-              {{service.specsPrice}}
+              {{service.specsPrice | currency}}
             </div>
           </div>
         </div>
@@ -34,7 +34,7 @@
           <div class="form-group">
             <label class="col-md-4 control-label">Precio Subproductos:</label>
             <div class="col-md-6">
-              {{service.subproductsPrice}}
+              {{service.subproductsPrice | currency}}
             </div>
           </div>
         </div>
@@ -42,7 +42,7 @@
           <div class="form-group">
             <label class="col-md-4 control-label">Total:</label>
             <div class="col-md-6">
-              {{service.totalPrice}}
+              {{service.totalPrice | currency}}
             </div>
           </div>
         </div>
@@ -73,7 +73,7 @@
                   <td>{{row.name}}</td>
                   <td>{{row.type}}</td>
                   <td>{{row.quantity}}</td>
-                  <td>{{row.price}}</td>
+                  <td>{{row.price | currency}}</td>
 
                 </tr>
                 </tbody>
@@ -108,7 +108,7 @@
                   <td>{{row.name}}</td>
                   <td>{{row.typeName}}</td>
                   <td>{{row.quantity}}</td>
-                  <td>{{row.price}}</td>
+                  <td>{{row.price | currency}}</td>
 
                 </tr>
                 </tbody>

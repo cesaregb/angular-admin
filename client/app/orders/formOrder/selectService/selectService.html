@@ -34,7 +34,7 @@
               <div class="form-group">
                 <label class="col-md-4 control-label">Precio Servicio:</label>
                 <div class="col-md-6">
-                  <span>{{$cn.service.price}}</span>
+                  <span>{{$cn.service.price | currency}}</span>
                 </div>
               </div>
             </div>
@@ -43,7 +43,7 @@
               <div class="form-group">
                 <label class="col-md-4 control-label">Precio Specs:</label>
                 <div class="col-md-6">
-                  <span>{{$cn.service.specsPrice}}</span>
+                  <span>{{$cn.service.specsPrice | currency}}</span>
                 </div>
               </div>
             </div>
@@ -52,7 +52,7 @@
               <div class="form-group">
                 <label class="col-md-4 control-label">Precio Subproductos:</label>
                 <div class="col-md-6">
-                  <span>{{$cn.service.subproductsPrice}}</span>
+                  <span>{{$cn.service.subproductsPrice | currency}}</span>
                 </div>
               </div>
             </div>
@@ -61,7 +61,7 @@
               <div class="form-group">
                 <label class="col-md-4 control-label">Total:</label>
                 <div class="col-md-6">
-                  <span>{{$cn.service.totalPrice}}</span>
+                  <span>{{$cn.service.totalPrice | currency}}</span>
                 </div>
               </div>
             </div>
@@ -82,8 +82,8 @@
                         <th>Nombre</th>
                         <th>Opciones</th>
                         <th>Cantidad</th>
-                        <th>Incr.</th>
-                        <th>Qty</th>
+                        <th>Tipo incremento.</th>
+                        <th>Precio Unitario</th>
                         <th>Tot</th>
                       </tr>
                       </thead>
@@ -108,8 +108,8 @@
                                  ng-change="$cn.changeQty()"/>
                         </td>
                         <td>{{spec.type}}</td>
-                        <td>{{spec.amt}}</td>
-                        <td>{{spec.price}}</td>
+                        <td>{{spec.amt | currency}}</td>
+                        <td>{{spec.price | currency}}</td>
                       </tr>
                       </tbody>
                     </table>
@@ -162,8 +162,8 @@
                                  ng-model="subproduct.quantity"
                                  placeholder="1" min="1" max="{{subproduct.maxQty}}" ng-change="$cn.calculateSubproductTotal(subproduct)"/>
                           </td>
-                        <td>{{subproduct.price}}</td>
-                        <td>{{subproduct.total}}</td>
+                        <td>{{subproduct.price | currency}}</td>
+                        <td>{{subproduct.total | currency}}</td>
                         <td class="action-column">
                           <a href="#" ng-click="$cn.deleteSubproduct(subproduct)"
                              class="btn btn-danger btn-circle">

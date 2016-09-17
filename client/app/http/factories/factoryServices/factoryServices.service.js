@@ -70,7 +70,7 @@ angular.module('processAdminApp')
     };
 
     factory.getResourceById = function(idUri, idResource) {
-      return factoryCommon.get(uris[idUri].uri + '/' + idResource);
+      return factoryCommon.get(uris[idUri].uri + '/byId/' + idResource);
     };
 
     factory.saveResource = function(idUri, data) {
@@ -199,6 +199,17 @@ angular.module('processAdminApp')
       var uri = uris.subproduct.uri + '/type/' + idSubproductType;
       return factoryCommon.get(uri);
     };
+
+    factory.addSubproducts = function(idServiceType, subproductTypes){
+      var uri = uris.serviceType.uri + '/addSubproducts/' + idServiceType;
+      return factoryCommon.post(subproductTypes, uri);
+    };
+
+    factory.getProductsBySubproductTypes = function(ids){
+      var uri = uris.subproduct.uri + '/bySubproductTypes';
+      // sending ids as post ...
+      return factoryCommon.post(ids, uri);
+    }
 
     return factory;
 
