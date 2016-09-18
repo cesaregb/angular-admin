@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .factory('factoryCommon', function ($http, $q, constants, messageHandlerService) {
+  .factory('factoryCommon', function ($http, $q, constants, messageHandler) {
 
     var factory = {};
 
@@ -11,7 +11,7 @@ angular.module('processAdminApp')
 
       $http.post( url, data )
         .success(function(data, status, headers, config) {
-          messageHandlerService.showSuccess('Action succesful!');
+          messageHandler.showSuccess('Action succesful!');
           deferred.resolve(data);
         }).error(function(response){
           factory.showError('Error in action ');
@@ -26,7 +26,7 @@ angular.module('processAdminApp')
 
       $http.post( url, data )
         .success(function(data, status, headers, config) {
-          messageHandlerService.showSuccess('Item saved succesful ');
+          messageHandler.showSuccess('Item saved succesful ');
           deferred.resolve(data);
         }).error(function(response){
           factory.showError('Error saving item... ');
@@ -55,7 +55,7 @@ angular.module('processAdminApp')
 
       $http.put(url, data)
         .success(function(data, status, headers, config) {
-          messageHandlerService.showSuccess('Item updated ');
+          messageHandler.showSuccess('Item updated ');
           deferred.resolve(data);
 
         }).error(function(error){
@@ -72,7 +72,7 @@ angular.module('processAdminApp')
 
       $http.delete(url)
         .success(function(data, status, headers, config) {
-          messageHandlerService.showSuccess('Item deleted');
+          messageHandler.showSuccess('Item deleted');
           deferred.resolve(data);
         }).error(function(error){
         factory.showError('"Error deleting... ' + error.message);
