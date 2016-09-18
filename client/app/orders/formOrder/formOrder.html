@@ -60,10 +60,13 @@
               <div class="col-md-3">
                 <label class="col-md-4 control-label">Recojer</label>
               </div>
+
               <div class="col-md-8 input-group">
                 <select class="form-control"
                         ng-options="addr as addr.address for addr in $cn.order.client.addresses"
-                        ng-model="$cn.order.pickup.address"></select>
+                        ng-model="$cn.order.pickup.address"
+                        ng-change="$cn.selectAddress(1, $cn.order.pickup.address)"></select>
+                <span class="input-group-addon">{{$cn.order.pickupPrice | currency}}</span>
               </div>
             </div>
           </div>
@@ -73,7 +76,7 @@
                 <label class="col-md-4 control-label">Fecha/Hora</label>
               </div>
               <div class="col-md-8 input-group">
-                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.pickUpDate"
+                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.order.pickUpDate"
                        is-open="$cn.pickUpOpen">
                 <span class="input-group-btn">
                       <button type="button" class="btn btn-default"
@@ -96,7 +99,9 @@
               </div>
               <div class="col-md-8 input-group">
                 <select class="form-control" ng-options="addr as addr.address for addr in $cn.order.client.addresses"
-                        ng-model="$cn.order.deliver.address"></select>
+                        ng-model="$cn.order.deliver.address"
+                        ng-change="$cn.selectAddress(2, $cn.order.deliver.address)"></select>
+                <span class="input-group-addon" >{{$cn.order.deliverPrice | currency}}</span>
               </div>
             </div>
           </div>
@@ -107,7 +112,7 @@
                 <label class="col-md-4 control-label">Fecha/Hora</label>
               </div>
               <div class="col-md-8 input-group">
-                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.deliverDate"
+                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.order.deliverDate"
                        is-open="$cn.deliverOpen">
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default"
@@ -115,21 +120,6 @@
                       <i class="fa fa-calendar"></i>
                     </button>
                   </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row" style="padding-bottom:20px;" ng-show="$cn.selectedOrderType.idOrderType > 0">
-        <div class="col-md-12">
-          <div class="col-md-6">
-            <div>
-              <div class="col-md-3">
-                <label class="col-md-4 control-label">Total</label>
-              </div>
-              <div class="col-md-8 input-group">
-                {{$cn.order.total}}
               </div>
             </div>
           </div>
@@ -172,7 +162,7 @@
                         </a>
                       </td>
                       <td data-title="'Precio'">{{row.totalPrice | currency}}</td>
-                      <td data-title="'Action'">
+                      <td data-title="'Action'" align="center">
                         <a href="#" ng-click="$cn.removeService(row, $index)" class="btn btn-danger btn-circle">
                           <span class="glyphicon glyphicon-remove"></span>
                         </a>
@@ -186,6 +176,43 @@
             </div>
             <!-- /.panel-body -->
           </div>
+        </div>
+      </div>
+
+      <div class="row" style="padding-bottom:20px;" ng-show="$cn.selectedOrderType.idOrderType > 0">
+        <div class="col-md-12">
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="col-md-6 offset-md-6">
+                <div>
+                  <div class="col-md-3">
+                    <label class="col-md-4 control-label">Total Services</label>
+                  </div>
+                  <div class="col-md-8 input-group">
+                    {{$cn.order.totalServices | currency}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="col-md-6 offset-md-6">
+                <div>
+                  <div class="col-md-3">
+                    <label class="col-md-4 control-label">Total</label>
+                  </div>
+                  <div class="col-md-8 input-group">
+                    {{$cn.order.total | currency}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
       </div>
 

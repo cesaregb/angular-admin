@@ -11,8 +11,9 @@
 
     status = { isopen: false };
 
-    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, NgTableParams, _) {
+    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, NgTableParams, _, googleMapsDirections, constants) {
       this.NgTableParams = NgTableParams;
+      this.googleMapsDirections = googleMapsDirections;
       this.$log = $log;
       this.factoryServices = factoryServices;
       this.$confirm = $confirm;
@@ -23,12 +24,22 @@
       this.place = null;
       this.$stateParams = $stateParams;
       this._ = _;
+      this.store = constants.store;
+      this.storeInfo = null;
 
       this.init();
     };
 
     init() {
       var _this = this;
+
+      this.factoryServices.getResourceById('store', this.store).then(function (result) {
+        _this.storeInfo = result;
+
+      }, function (err) {
+        // error getting store info...
+      });
+
 
       if (Boolean(this.$stateParams.order)) {
         // load order...
@@ -89,7 +100,14 @@
         // });
 
       }else{
+        // initialize values...
         this.order = {};
+        this.order.pickupPrice = 0;
+        this.order.deliverPrice = 0;
+        this.order.pickUpDate = new Date();
+        this.order.deliverDate = new Date();
+        this.order.pickup = {address:null};
+        this.order.deliver = {address:null};
         if (!Boolean(this.order.services)){
           this.order.services = [];
         }
@@ -132,6 +150,7 @@
     }
 
     validateOrderType() {
+      var _this = this;
       if (Boolean(this.selectedOrderType)){
         this.order.idOrderType = this.selectedOrderType.idOrderType;
         this.pickupShow = false;
@@ -160,16 +179,22 @@
             type: 'warning'
           });
         }
+
+        this.calculateTotal();
       }
     }
 
     saveOrder() {
       var _this = this;
       var orderObj = this.castOrderObject();
-      this.factoryServices.saveOrder(orderObj).then(function(item){
-        _this.back();
-        // ORDER SAVED Redirect me to order report...
-      });
+      if (Boolean(orderObj)){
+        this.factoryServices.saveOrder(orderObj).then(function(item){
+          _this.back();
+          // ORDER SAVED Redirect me to order report...
+        });
+      }else{
+        // wtf!!!
+      }
     };
 
     removeService(service, index){
@@ -179,51 +204,9 @@
       _this.validateOrder();
     }
 
-    // openService(service, index){
-    //   var _this = this;
-    //   this.updatingService = index;
-    //   this.addService2(service);
-    // }
-
     back() {
       this.$state.go('orders.ordersList',{status: 'open'} , { reload: true });
     }
-
-    // updatingService = -1;
-    // addService2 (selectedService){
-    //   var _this = this;
-    //   var orderType = this.selectedOrderType;
-    //   var modalInstance = this.$uibModal.open({
-    //     animation: false,
-    //     templateUrl: 'app/services/addServiceModal/addServiceModal.html',
-    //     controller: 'AddServicesModalCtrl',
-    //     size: 'lg',
-    //     resolve: {
-    //       orderType: function() {
-    //         return orderType;
-    //       },
-    //       selectedService: function() {
-    //         return selectedService;
-    //       }
-    //     }
-    //   });
-    //
-    //   modalInstance.result.then(function(service) {
-    //
-    //     // validate if is updating an existing service.
-    //     if (_this.updatingService < 0){
-    //       _this.order.services.push(service);
-    //     }else{
-    //       _this.order.services[_this.updatingService] = service;
-    //     }
-    //
-    //     _this.tableParams.reload();
-    //     _this.calculateTotal();
-    //   }, function () {
-    //     _this.updatingService = -1;
-    //   });
-    //
-    // }
 
     validateOrder(){
       var _this = this;
@@ -234,12 +217,15 @@
 
     calculateTotal(){
       var _this = this;
-      var total = 0;
-      // this.$log.info('[calculateTotal] this.order.services: ' + this.order.services.length);
+      var total = _this.order.pickupPrice + _this.order.deliverPrice;
+
+      var totalServices = 0;
       this.order.services.forEach(function(service){
-        total += service.totalPrice;
+        totalServices += service.totalPrice;
       });
-      this.order.total = total;
+
+      this.order.totalServices = totalServices;
+      this.order.total = totalServices + total;
     }
 
     openClientSearch() {
@@ -261,12 +247,40 @@
       });
 
       modalInstance.result.then(function(client) {
+        _this.calculateTotal();
         _this.order.client = client;
       });
     }
 
-    pickUpDate = new Date();
-    deliverDate = new Date();
+    selectAddress(type, address){
+      var _this = this;
+      var start = this.googleMapsDirections.getLatLng(this.storeInfo.lat, this.storeInfo.lng);
+      var end = this.googleMapsDirections.getLatLng(address.lat, address.lng);
+      var request =  this.googleMapsDirections.getRequestObject(start, end);
+      this.googleMapsDirections.getDistance(request).then(function (distance) {
+        var kmDistance = distance/1000;
+        var price = 0;
+        var distanceInfoSorted = _this._.sortBy(_this.storeInfo.distanceInfos, 'distance');
+        distanceInfoSorted.forEach(function (item) {
+          if (item.distance > kmDistance && price === 0){
+            price = item.price;
+          }
+        });
+        // get the last price if is not covered ...
+        if (price == 0 && distanceInfoSorted.length > 0){
+          price = distanceInfoSorted[distanceInfoSorted.length -1].price;
+        }
+
+        if (type == 1){
+          _this.order.pickupPrice = price;
+        }else{
+          _this.order.deliverPrice = price;
+        }
+
+        _this.calculateTotal();
+
+      });
+    }
 
     pickUpOpen = false;
     deliverOpen = false;
@@ -308,26 +322,28 @@
       var finalOrder = {}
       var errors = [];
       finalOrder.idClient = this.order.client.idClient;
-      finalOrder.price = this.order.total;
+      finalOrder.total = this.order.total;
+      finalOrder.totalServices = this.order.totalServices;
       finalOrder.comments = '';
 
       if (this.selectedOrderType.transportInfo == 3 ||  this.selectedOrderType.transportInfo == 1){
-        finalOrder.idAddressPickup = this.order.pickup.address.idAddress;
-        finalOrder.pickUpDate = this.pickUpDate;
-
-        if (!Boolean(finalOrder.idAddressPickup) || !Boolean(finalOrder.pickUpDate)){
+        try{
+          finalOrder.idAddressPickup = this.order.pickup.address.idAddress;
+          finalOrder.pickUpDate = this.order.pickUpDate;
+        }catch(ex){
           errors.push('Seleccionar Direccion y Fecha de recoleccion');
         }
       }
 
       if (this.selectedOrderType.transportInfo == 3 ||  this.selectedOrderType.transportInfo == 2){
-        finalOrder.idAddressDeliver = this.order.deliver.address.idAddress;
-        finalOrder.deliveryDate = this.deliverDate;
-
-        if (!Boolean(finalOrder.idAddressDeliver) || !Boolean(finalOrder.deliveryDate)){
+        try{
+          finalOrder.idAddressDeliver = this.order.deliver.address.idAddress;
+          finalOrder.deliveryDate = this.order.deliverDate;
+        }catch(ex){
           errors.push('Seleccionar Direccion y Fecha de entrega');
         }
       }
+
 
       finalOrder.paymentInfo = {transactionInfo:'cash', type:0 };
 
@@ -371,12 +387,15 @@
 
       if(errors.length > 0){
         this.noty.showNoty({
-          text: 'Error: <br>' + errors.join('\t\n '),
+          text: 'Error:' + errors.join(', '),
           ttl: 1000 * 4,
           type: 'warning'
         });
+        return null;
+      }else{
+        return finalOrder;
       }
-      return finalOrder;
+
     }
 
     addService(){

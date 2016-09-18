@@ -2,6 +2,7 @@
 
 class NavbarController {
   menu = [];
+
   employee = {
     name: 'Cesar'
   };
@@ -10,22 +11,28 @@ class NavbarController {
 
   isCollapsed = true;
 
-  myEventListener = function () {
-    console.log("this is being fired!!!");
-    $interval(function() {
-        aler("alert!!!!!");
-    }, 1000);
-  };
+  searchOrder(){
+    if (!Boolean(this.orderSearch)){
+      this.messageHandlerService.showError('Plese enter the order number to search')
+    }else{
+      // search...
+    }
+  }
 
-  constructor(Auth, factoryUtils) {
+  constructor(Auth, factoryUtils, $log, messageHandlerService) {
     this.factoryUtils = factoryUtils;
+    this.messageHandlerService = messageHandlerService;
+    $log.info('[constructor] Auth: ' + JSON.stringify(Auth, null, 2));
     this.isLoggedIn = Auth.isLoggedIn;
     this.isAdmin = Auth.isAdmin;
     this.getCurrentUser = Auth.getCurrentUser;
     var _this = this;
-    this.factoryUtils.getMenu().then(function(result){
-      _this.menu = result;
-    });
+    // if (this.isLoggedIn){
+      this.factoryUtils.getMenu().then(function(result){
+        _this.menu = result;
+      });
+    // }
+
   }
 }
 

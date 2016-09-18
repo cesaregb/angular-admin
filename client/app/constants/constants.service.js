@@ -12,5 +12,7 @@ angular.module('processAdminApp.constants')
     // creation of services.
     factory.ORDER = {};
 
+    factory.store = 1;
+
     return factory;
   });

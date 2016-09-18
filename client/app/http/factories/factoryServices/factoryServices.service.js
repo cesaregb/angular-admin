@@ -63,6 +63,12 @@ angular.module('processAdminApp')
       subproductType: {
         uri: '/subproductType'
       },
+      store: {
+        uri: '/store'
+      },
+      clientBag: {
+        uri: '/client-bag'
+      },
     };
 
     factory.getResources = function(idUri) {
