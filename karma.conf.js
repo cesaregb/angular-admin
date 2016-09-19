@@ -37,6 +37,7 @@ module.exports = function(config) {
       'client/bower_components/ng-table/dist/ng-table.js',
       'client/bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js',
       'client/bower_components/underscore/underscore.js',
+      'client/bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'node_modules/socket.io-client/socket.io.js',
