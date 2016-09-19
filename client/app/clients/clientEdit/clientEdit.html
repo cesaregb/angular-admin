@@ -17,6 +17,31 @@
           Client Form
         </div>
         <div class="panel-body">
+          <div class="row" ng-show="$cn.editMode">
+
+
+            <div class="col-lg-12 pull-right">
+              <div class="pull-right" style="padding: 10px;">
+                <a href="#" ng-click="$cn.openManageSpecsModal($cn.serviceType)"
+                   class="btn btn-info btn-sm">
+                  <span class="glyphicon glyphicon-list-alt"></span>
+                  Specs
+                </a>
+                <a href="#" ng-click="$cn.openManageTaskModal($cn.serviceType)"
+                   class="btn btn-info btn-sm">
+                  <span class="glyphicon glyphicon-tasks"></span>
+                  Tareas
+                </a>
+                <a href="#" ng-click="$cn.openManageSubproductTypes($cn.serviceType)"
+                   class="btn btn-info btn-sm">
+                  <span class="glyphicon glyphicon-list-alt"></span>
+                  Subproducts
+                </a>
+              </div>
+            </div>
+          </div>
+
+
           <form class="form-horizontal" name="$cn.clientForm" ng-submit="$cn.saveClient()" novalidate>
             <fieldset>
 
@@ -58,7 +83,7 @@
 
               <!-- Select Basic -->
               <div class="form-group" ng-hide="$cn.newClient">
-                <label class="col-md-4 control-label" for="primaryPhone">Principal telefono</label>
+                <label class="col-md-4 control-label">Principal telefono</label>
                 <div class="col-md-6">
                   <select class="form-control"
                       ng-options="phone as phone.number for phone in $cn.client.phoneNumbers"
@@ -69,7 +94,7 @@
 
               <!-- Select Basic -->
               <div class="form-group" ng-hide="$cn.newClient">
-                <label class="col-md-4 control-label" for="primaryAddress">Principal direccion</label>
+                <label class="col-md-4 control-label">Principal direccion</label>
                 <div class="col-md-6">
                   <select class="form-control"
                       ng-options="addr as addr.address for addr in $cn.client.addresses"
@@ -80,7 +105,7 @@
 
               <!-- Select Basic -->
               <div class="form-group" ng-hide="$cn.newClient">
-                <label class="col-md-4 control-label" for="primaryPayment">Principal metodo de pago</label>
+                <label class="col-md-4 control-label">Principal metodo de pago</label>
                 <div class="col-md-6">
                   <select class="form-control"
                       ng-options="payment as payment.token for payment in $cn.client.clientPaymentInfos"
@@ -139,7 +164,7 @@
 
               <!-- Select Basic -->
               <div class="form-group" ng-hide="$cn.newClient || !$cn.facturacion">
-                <label class="col-md-4 control-label" for="primaryAddress">Direccion Facturacion</label>
+                <label class="col-md-4 control-label">Direccion Facturacion</label>
                 <div class="col-md-6">
                   <select class="form-control"
                       ng-options="addr as addr.address for addr in $cn.client.addresses"

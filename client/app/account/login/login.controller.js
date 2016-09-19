@@ -1,13 +1,15 @@
 'use strict';
 
 class LoginController {
-  constructor(Auth, $state) {
+  constructor(Auth, $state, $location, $window) {
     this.user = {};
     this.errors = {};
     this.submitted = false;
 
     this.Auth = Auth;
     this.$state = $state;
+    this.$window = $window;
+    this.$location = $location;
   }
 
   login(form) {
@@ -20,7 +22,9 @@ class LoginController {
       })
       .then(() => {
         // Logged in, redirect to home
-        this.$state.go('main');
+        this.$location.path('/');
+        this.$window.location.reload();
+        // this.$state.go('main', null , { reload: true });
       })
       .catch(err => {
         this.errors.other = err.message;

@@ -4,7 +4,8 @@
   class SubproductComponent {
     subproducts = [];
 
-    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams) {
+    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams, $q) {
+      this.$q = $q;
       this.$log = $log;
       this.NgTableParams = NgTableParams;
       this.$confirm = $confirm;
@@ -20,6 +21,18 @@
         }
       });
 
+    }
+
+    createFilter() {
+      var deferred = this.$q.defer();
+      var filter = [];
+      this.factoryServices.getResources('subproductType').then(function(response) {
+        response.forEach(function(item){
+          filter.push({title: item.name, id:item.name});
+        });
+        deferred.resolve(filter);
+      });
+      return deferred.promise;
     }
 
     getInfo() {

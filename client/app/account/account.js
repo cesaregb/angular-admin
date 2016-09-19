@@ -13,12 +13,15 @@ angular.module('processAdminApp')
         url: '/logout?referrer',
         referrer: 'main',
         template: '',
-        controller: function($state, Auth) {
+        controller: function($state, Auth, $location, $window) {
           var referrer = $state.params.referrer ||
                           $state.current.referrer ||
                           'main';
           Auth.logout();
-          $state.go(referrer);
+          // $state.go(referrer);
+          // $location.path('/login');
+          $location.path('/');
+          $window.location.reload();
         }
       })
       .state('signup', {

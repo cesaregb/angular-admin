@@ -9,7 +9,7 @@ angular.module('processAdminApp')
     $scope.serviceTypeSpecs = [];
 
     this.init = function() {
-      $scope.title = "Asignar Subproductos";
+      $scope.title = "Asignar Specs";
       if (Boolean($scope.formItem)) {
         if (Boolean($scope.formItem.serviceTypeSpecs)){
             $scope.serviceTypeSpecs = $scope.formItem.serviceTypeSpecs;

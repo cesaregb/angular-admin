@@ -63,6 +63,12 @@ angular.module('processAdminApp')
       subproductType: {
         uri: '/subproductType'
       },
+      store: {
+        uri: '/store'
+      },
+      clientBag: {
+        uri: '/client-bag'
+      },
     };
 
     factory.getResources = function(idUri) {
@@ -70,7 +76,7 @@ angular.module('processAdminApp')
     };
 
     factory.getResourceById = function(idUri, idResource) {
-      return factoryCommon.get(uris[idUri].uri + '/' + idResource);
+      return factoryCommon.get(uris[idUri].uri + '/byId/' + idResource);
     };
 
     factory.saveResource = function(idUri, data) {
@@ -90,7 +96,7 @@ angular.module('processAdminApp')
         function(error) {
           callback();
         }
-    }
+    };
 
     factory.updateResourceCallback = function(idUri, dataInput, callback) {
       this.updateResource(idUri, dataInput).then(function(result) {
@@ -149,50 +155,66 @@ angular.module('processAdminApp')
     factory.getTaskByType = function(idTasktype) {
       var uri = uris.task.uri + '/taskType/' + idTasktype;
       return factoryCommon.get(uri);
-    }
+    };
 
     factory.getTaskTypeBySection = function(flag) {
       var uri = uris.taskType.uri + '/filter/' + flag;
       return factoryCommon.get(uri);
-    }
+    };
 
     factory.getServiceTypeSpecById = function(id) {
       var uri = uris.serviceTypeSpec.uri + '/byServiceType/' + id;
       return factoryCommon.get(uri);
-    }
+    };
 
     factory.getServiceOrderDetails = function() {
       var uri = uris.appOrder.uri + '/orderTypes';
       return factoryCommon.get(uri);
-    }
+    };
 
     factory.addOrderServiceType = function(orderType) {
       var uri = uris.orderType.uri + '/add/serviceType';
       return factoryCommon.put(orderType, uri);
-    }
+    };
 
     factory.saveOrder = function(order) {
       var uri = uris.appOrder.uri;
       return factoryCommon.post(order, uri);
-    }
+    };
 
     factory.getOrdersByStatus = function(status) {
       var uri = uris.oder.uri + '/by/status/' + status;
       return factoryCommon.get(uri);
-    }
+    };
 
     factory.getUIOrder = function(orderId) {
       var uri = uris.oder.uri + '/forEdit/' + orderId;
       return factoryCommon.get(uri);
-    }
+    };
 
     factory.getActiveOrders = function() {
       return factory.getOrdersByStatus(ACTIVE);
-    }
+    };
 
     factory.getSubproductsByName = function(name){
       var uri = uris.subproduct.uri + '/name/' + name;
       return factoryCommon.get(uri);
+    };
+
+    factory.getSubproductsByType = function(idSubproductType){
+      var uri = uris.subproduct.uri + '/type/' + idSubproductType;
+      return factoryCommon.get(uri);
+    };
+
+    factory.addSubproducts = function(idServiceType, subproductTypes){
+      var uri = uris.serviceType.uri + '/addSubproducts/' + idServiceType;
+      return factoryCommon.post(subproductTypes, uri);
+    };
+
+    factory.getProductsBySubproductTypes = function(ids){
+      var uri = uris.subproduct.uri + '/bySubproductTypes';
+      // sending ids as post ...
+      return factoryCommon.post(ids, uri);
     }
 
     return factory;

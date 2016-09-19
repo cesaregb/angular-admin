@@ -40,6 +40,9 @@
                             {{row.name}}
                           </a>
                         </td>
+                        <td data-title="'Type'" filter="{ typeName: 'select'}" filter-data="$cn.createFilter()">
+                          {{row.typeName}}
+                        </td>
                         <td data-title="'Precio'" >{{row.price}}</td>
                         <td data-title="'Cantidad Maxima'" >{{row.maxQty}}</td>
                         <td data-title="'#'">

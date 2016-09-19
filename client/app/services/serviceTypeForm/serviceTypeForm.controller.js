@@ -102,7 +102,7 @@ class ServiceTypeFormComponent {
     var _this = this;
     var modalInstance = this.$uibModal.open({
       animation: false,
-      templateUrl: 'app/services/serviceType/manageSpecsModal/manageSpecsModal.html',
+      templateUrl: 'app/specs/manageSpecsModal/manageSpecsModal.html',
       controller: 'ManageSpecsModalCtrl',
       size: 'lg',
       resolve: {
@@ -129,12 +129,15 @@ class ServiceTypeFormComponent {
     var _this = this;
     var modalInstance = this.$uibModal.open({
       animation: false,
-      templateUrl: 'app/services/serviceType/manageTasksModal/manageServiceTasksModal.html',
-      controller: 'ManageServiceTasksModalCtrl',
+      templateUrl: 'app/tasks/manageTasksModal/manageTasksModal.html',
+      controller: 'ManageOrderTasksModalCtrl',
       size: 'lg',
       resolve: {
         formItem: function() {
           return formItem;
+        },
+        requester: function () {
+          return 1;
         }
       }
     });
@@ -150,6 +153,37 @@ class ServiceTypeFormComponent {
       }
     });
   }
+
+  openManageSubproductTypes(formItem) {
+    var _this = this;
+    var modalInstance = this.$uibModal.open({
+      animation: false,
+      templateUrl: 'app/subproducts/manageSubproductTypeModal/manageSubproductTypeModal.html',
+      controller: 'ManageSubproductTypeModalCtrl',
+      size: 'lg',
+      resolve: {
+        formItem: function() {
+          return formItem;
+        },
+        requester: function () {
+          return 1;
+        }
+      }
+    });
+
+    modalInstance.result.then(function(resultItem) {
+      var serviceType = resultItem;
+      if (serviceType.subproductTypes.length > 0){
+        _this.factoryServices.addSubproducts(serviceType.idServiceType, serviceType.subproductTypes).then(function(result){
+          _this.serviceType = result;
+        });
+
+      }
+    });
+  }
+
+
+
   // end class
 }
 

@@ -24,7 +24,7 @@ angular.module('processAdminApp')
       key: 'price',
       type: 'input',
       templateOptions: {
-        type: 'text',
+        type: 'number',
         label: 'Precio',
         required: true
       }
@@ -32,9 +32,15 @@ angular.module('processAdminApp')
       key: 'time',
       type: 'input',
       templateOptions: {
-        type: 'text',
-        label: 'Tiempo en minutos',
+        type: 'number',
+        label: 'Tiempo aproximado minutos',
         required: true
+      }
+    }, {
+      key: 'calculator',
+      type: 'checkbox',
+      templateOptions: {
+        label: 'Visble en sitio web.'
       }
     }];
 

@@ -7,15 +7,15 @@
       <div class="row">
         <!-- Text input-->
         <div class="form-group" ng-class="{ 'has-error' : $cn.clientForm.name.$invalid && !$cn.clientForm.name.$pristine }">
-          <label class="col-md-4 control-label" for="name">Subproductos:</label>
+          <label class="col-md-4 control-label">Specs:</label>
           <div class="col-md-6">
             <ui-select ng-model="selected.value" on-select="fromSelected($item, $model)">
               <ui-select-match>
                 <span ng-bind="$select.selected.name"></span>
               </ui-select-match>
-              <ui-select-choices repeat="spec in specs | propsFilter: {name: $select.search, idSpecs: $select.search}">
-                <span ng-bind="spec.idSpecs"></span>
-                <span ng-bind="spec.name"></span>
+              <ui-select-choices repeat="subproductType in subproductTypesSource | propsFilter: {name: $select.search, idSpecs: $select.search}">
+                <span ng-bind="subproductType.idSubproductType"></span>
+                <span ng-bind="subproductType.name"></span>
               </ui-select-choices>
             </ui-select>
           </div>
@@ -32,16 +32,16 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-show="serviceTypeSpecs.length == 0 || serviceTypeSpecs == null"><td colspan="5">No Items found</td></tr>
+              <tr ng-show="subproductTypes.length == 0 || subproductTypes == null"><td colspan="5">No Items found</td></tr>
               <tr class="gradeA" role="row"
                   ng-class-odd="'odd'" ng-class-even="'even'"
-                  ng-repeat="selectedSpec in serviceTypeSpecs">
+                  ng-repeat="subproductType in subproductTypes">
                   <td>
-                    {{selectedSpec.spec.name}}
+                    {{subproductType.name}}
                   </td>
-                  <td>{{selectedSpec.spec.description}}</td>
+                  <td>{{subproductType.description}}</td>
                   <td class="action-column">
-                    <a href="#" ng-click="deleteItem(selectedSpec)"
+                    <a href="#" ng-click="deleteItem(subproductType)"
                         class="btn btn-danger btn-circle">
                       <span class="glyphicon glyphicon-remove"></span>
                     </a>

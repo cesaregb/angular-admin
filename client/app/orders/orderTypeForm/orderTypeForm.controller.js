@@ -70,12 +70,15 @@ class OrderTypeFormComponent {
     var _this = this;
     var modalInstance = this.$uibModal.open({
       animation: false,
-      templateUrl: 'app/orders/orderType/manageTasksModal/manageTasksModal.html',
+      templateUrl: 'app/tasks/manageTasksModal/manageTasksModal.html',
       controller: 'ManageOrderTasksModalCtrl',
       size: 'lg',
       resolve: {
         formItem: function() {
           return formItem;
+        },
+        requester: function () {
+          return 2;
         }
       }
     });

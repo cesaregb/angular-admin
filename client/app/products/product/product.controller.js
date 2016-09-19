@@ -22,7 +22,7 @@
       this.getInfo();
     }
 
-    createFilter = function(url) {
+    createFilter = function() {
       var deferred = this.$q.defer();
 
       var filter = [];

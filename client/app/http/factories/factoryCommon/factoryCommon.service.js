@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .factory('factoryCommon', function ($http, $q, constants, noty) {
+  .factory('factoryCommon', function ($http, $q, constants, messageHandler) {
 
     var factory = {};
 
@@ -11,18 +11,10 @@ angular.module('processAdminApp')
 
       $http.post( url, data )
         .success(function(data, status, headers, config) {
-          noty.showNoty({
-            text: "Action succesful!",
-            ttl: 1000 * 2,
-            type: "success"
-          });
+          messageHandler.showSuccess('Action succesful!');
           deferred.resolve(data);
         }).error(function(response){
-          noty.showNoty({
-            text: "Error in action ",
-            ttl: 1000 * 2,
-            type: "warning"
-          });
+          messageHandler.showError('Error in action ');
           deferred.reject(response);
         });
       return deferred.promise;
@@ -34,18 +26,10 @@ angular.module('processAdminApp')
 
       $http.post( url, data )
         .success(function(data, status, headers, config) {
-          noty.showNoty({
-            text: "Item saved succesful ",
-            ttl: 1000 * 2,
-            type: "success"
-          });
+          messageHandler.showSuccess('Item saved succesful ');
           deferred.resolve(data);
         }).error(function(response){
-          noty.showNoty({
-            text: "Error saving item... ",
-            ttl: 1000 * 2,
-            type: "warning"
-          });
+          messageHandler.showError('Error saving item... ');
           deferred.reject(response);
         });
       return deferred.promise;
@@ -59,11 +43,7 @@ angular.module('processAdminApp')
         .success(function(data, status, headers, config) {
           deferred.resolve(data);
         }).error(function(response){
-          noty.showNoty({
-            text: "Error getting data ",
-            ttl: 1000 * 2,
-            type: "warning"
-          });
+          messageHandler.showError('Error getting data ');
           deferred.reject(response);
         });
       return deferred.promise;
@@ -75,21 +55,11 @@ angular.module('processAdminApp')
 
       $http.put(url, data)
         .success(function(data, status, headers, config) {
-          noty.showNoty({
-            text: "Item updated ",
-            ttl: 1000 * 2,
-            type: "success" // warning
-          });
-
+          messageHandler.showSuccess('Item updated ');
           deferred.resolve(data);
 
         }).error(function(error){
-          noty.showNoty({
-            text: "Error updating... ",
-            ttl: 1000 * 2,
-            type: "warning"
-          });
-
+        messageHandler.showError('Error udating item... ');
           deferred.reject(error);
         });
 
@@ -102,21 +72,10 @@ angular.module('processAdminApp')
 
       $http.delete(url)
         .success(function(data, status, headers, config) {
-          noty.showNoty({
-            text: "Item deleted ",
-            ttl: 1000 * 2,
-            type: "success" // warning
-          });
-
+          messageHandler.showSuccess('Item deleted');
           deferred.resolve(data);
-
         }).error(function(error){
-          noty.showNoty({
-            text: "Error deleting... " + error.message,
-            ttl: 1000 * 2,
-            type: "warning"
-          });
-
+        messageHandler.showError('"Error deleting... ' + error.message);
           deferred.reject(error);
         });
 
