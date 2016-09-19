@@ -36,6 +36,12 @@ angular.module('processAdminApp')
         label: 'Tiempo aproximado minutos',
         required: true
       }
+    }, {
+      key: 'calculator',
+      type: 'checkbox',
+      templateOptions: {
+        label: 'Visble en sitio web.'
+      }
     }];
 
     factory.orderType = [{

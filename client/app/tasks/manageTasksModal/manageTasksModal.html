@@ -49,10 +49,10 @@
           <div class="panel-heading">
             <h3 class="panel-title ng-binding">Selected </h3>
           </div>
-          <ul dnd-list="list">
-            <li ng-repeat="item in orderTypeTasks"
+          <ul dnd-list="itemTypeTasks">
+            <li ng-repeat="item in itemTypeTasks"
                 dnd-draggable="item"
-                dnd-moved="orderTypeTasks.people.splice($index, 1)"
+                dnd-moved="itemTypeTasks.splice($index, 1)"
                 dnd-effect-allowed="move"
                 dnd-selected="models.selected = item"
 
@@ -89,11 +89,11 @@
         <!--</tr>-->
         <!--</thead>-->
         <!--<tbody>-->
-        <!--<tr ng-show="orderTypeTasks.length == 0 || orderTypeTasks == null">-->
+        <!--<tr ng-show="itemTypeTasks.length == 0 || itemTypeTasks == null">-->
           <!--<td colspan="5">No Items found</td>-->
         <!--</tr>-->
         <!--<tr class="gradeA" role="row" ng-class-odd="'odd'" ng-class-even="'even'"-->
-            <!--ng-repeat="currentRow in orderTypeTasks| orderBy:'-sortingOrder'">-->
+            <!--ng-repeat="currentRow in itemTypeTasks| orderBy:'-sortingOrder'">-->
           <!--<td>-->
             <!--{{currentRow.taskTypeName}}-->
           <!--</td>-->

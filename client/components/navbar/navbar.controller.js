@@ -29,11 +29,13 @@ class NavbarController {
     Auth.isLoggedIn(function(result){
       this.isLogged = result;
       if (Auth.isAdmin()){
-        this.factoryUtils.getMenu().then(function(result){
+        this.factoryUtils.getMenuByAccessLevel(1).then(function(result){
           _this.menu = result;
         });
       }else{
-        // if we require more roles...
+        this.factoryUtils.getMenuByAccessLevel(2).then(function(result){
+          _this.menu = result;
+        });
       }
     }.bind(this));
 

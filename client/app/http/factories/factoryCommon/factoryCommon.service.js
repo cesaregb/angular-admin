@@ -14,7 +14,7 @@ angular.module('processAdminApp')
           messageHandler.showSuccess('Action succesful!');
           deferred.resolve(data);
         }).error(function(response){
-          factory.showError('Error in action ');
+          messageHandler.showError('Error in action ');
           deferred.reject(response);
         });
       return deferred.promise;
@@ -29,7 +29,7 @@ angular.module('processAdminApp')
           messageHandler.showSuccess('Item saved succesful ');
           deferred.resolve(data);
         }).error(function(response){
-          factory.showError('Error saving item... ');
+          messageHandler.showError('Error saving item... ');
           deferred.reject(response);
         });
       return deferred.promise;
@@ -43,7 +43,7 @@ angular.module('processAdminApp')
         .success(function(data, status, headers, config) {
           deferred.resolve(data);
         }).error(function(response){
-          factory.showError('Error getting data ');
+          messageHandler.showError('Error getting data ');
           deferred.reject(response);
         });
       return deferred.promise;
@@ -59,7 +59,7 @@ angular.module('processAdminApp')
           deferred.resolve(data);
 
         }).error(function(error){
-        factory.showError('Error udating item... ');
+        messageHandler.showError('Error udating item... ');
           deferred.reject(error);
         });
 
@@ -75,7 +75,7 @@ angular.module('processAdminApp')
           messageHandler.showSuccess('Item deleted');
           deferred.resolve(data);
         }).error(function(error){
-        factory.showError('"Error deleting... ' + error.message);
+        messageHandler.showError('"Error deleting... ' + error.message);
           deferred.reject(error);
         });
 
