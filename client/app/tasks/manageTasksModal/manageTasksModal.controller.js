@@ -39,7 +39,11 @@ angular.module('processAdminApp')
         selectedTask.taskTypeName = $scope.selectTaskType.name;
         selectedTask.sortingOrder = $scope.itemTypeTasks.length + 1;
         selectedTask.task = item;
-        selectedTask.idOrderType = $scope.formItem.idOrderType;
+        if (requester == 2) {
+          selectedTask.idOrderType = $scope.formItem.idOrderType;
+        }else{
+          selectedTask.idServiceType = $scope.formItem.idServiceType;
+        }
         $scope.itemTypeTasks.push(selectedTask);
       }
     };
