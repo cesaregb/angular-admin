@@ -133,32 +133,32 @@ angular.module('processAdminApp')
       }
     }
 
-    var productTypeURI = "/product-type";
-    factory.getProductTypes = function () {
-       return factoryCommon.get(productTypeURI);
+    var supplyTypeURI = "/supply-type";
+    factory.getSupplyTypes = function () {
+       return factoryCommon.get(supplyTypeURI);
     };
-    factory.getProductTypeById = function (id) {
-       return factoryCommon.get(productTypeURI + "/" + id);
+    factory.getSupplyTypeById = function (id) {
+       return factoryCommon.get(supplyTypeURI + "/" + id);
     };
-    factory.saveProductType = function (data) {
-       return factoryCommon.save(data, productTypeURI);
+    factory.saveSupplyType = function (data) {
+       return factoryCommon.save(data, supplyTypeURI);
     };
-    factory.updateProductType = function (data) {
-       return factoryCommon.put(data, productTypeURI);
+    factory.updateSupplyType = function (data) {
+       return factoryCommon.put(data, supplyTypeURI);
     };
-    factory.deleteProductType = function (data) {
-       return factoryCommon.delete(productTypeURI + "/" + data.idProductType);
+    factory.deleteSupplyType = function (data) {
+       return factoryCommon.delete(supplyTypeURI + "/" + data.idSupplyType);
     };
 
-    factory.saveProductTypeCallback = function(dataInput, callback){
-      this.saveProductType(dataInput).then(function(result){
+    factory.saveSupplyTypeCallback = function(dataInput, callback){
+      this.saveSupplyType(dataInput).then(function(result){
         callback();
       }), function(error){
         callback();
       }
     }
-    factory.updateProductTypeCallback = function(dataInput, callback){
-      this.updateProductType(dataInput).then(function(result){
+    factory.updateSupplyTypeCallback = function(dataInput, callback){
+      this.updateSupplyType(dataInput).then(function(result){
         callback();
       }), function(error){
         callback();

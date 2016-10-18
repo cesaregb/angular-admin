@@ -32,9 +32,9 @@
         </div>
         <div class="col-md-12">
           <div class="form-group">
-            <label class="col-md-4 control-label">Precio Subproductos:</label>
+            <label class="col-md-4 control-label">Precio Productos:</label>
             <div class="col-md-6">
-              {{service.subproductsPrice | currency}}
+              {{service.productsPrice | currency}}
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@
       </div>
 
       <div class="panel panel-default">
-        <div class="panel-heading">Subproducts:</div>
+        <div class="panel-heading">Products:</div>
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-12">
@@ -100,10 +100,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-show="service.subproducts.length == 0 || service.subproducts == null"><td colspan="5">No Items found</td></tr>
+                <tr ng-show="service.products.length == 0 || service.products == null"><td colspan="5">No Items found</td></tr>
                 <tr role="row"
                     ng-class-odd="'odd'" ng-class-even="'even'"
-                    ng-repeat="row in service.subproducts">
+                    ng-repeat="row in service.products">
 
                   <td>{{row.name}}</td>
                   <td>{{row.typeName}}</td>

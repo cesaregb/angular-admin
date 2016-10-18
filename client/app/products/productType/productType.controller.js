@@ -4,10 +4,10 @@
   class ProductTypeComponent {
     productTypes = [];
 
-    constructor($stateParams, $state, noty, factoryGeneral, $confirm, $log, $uibModal) {
+    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal) {
       this.$log = $log;
       this.$confirm = $confirm;
-      this.factoryGeneral = factoryGeneral;
+      this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.noty = noty;
       this.$state = $state;
@@ -17,7 +17,7 @@
 
     getInfo() {
       var _this = this;
-      this.factoryGeneral.getProductTypes().then(function(response) {
+      this.factoryServices.getResources('productType').then(function(response) {
         _this.productTypes = response;
       });
     }
@@ -43,12 +43,12 @@
       modalInstance.result.then(function(resultItem) {
         var productType = resultItem;
         if (productType.idProductType != null && productType.idProductType > 0) {
-          _this.factoryGeneral.updateProductTypeCallback(productType, function() {
+          _this.factoryServices.updateResource('productType', productType).then(function() {
             _this.getInfo();
           });
         } else {
 
-          _this.factoryGeneral.saveProductTypeCallback(productType, function() {
+          _this.factoryServices.saveResource('productType', productType).then(function() {
             _this.getInfo();
           });
         }
@@ -61,7 +61,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryGeneral.deleteProductType(item).then(function(info){
+        _this.factoryServices.deleteResource('productType', item.idProductType).then(function(){
           _this.back();
         });
       });

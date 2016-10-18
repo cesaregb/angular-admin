@@ -36,11 +36,11 @@ angular.module('processAdminApp')
       specsValue: {
         uri: '/specs-value'
       },
-      product: {
-        uri: '/product'
+      supply: {
+        uri: '/supply'
       },
-      productType: {
-        uri: '/product-type'
+      supplyType: {
+        uri: '/supply-type'
       },
       distanceInfo: {
         uri: '/distance-info'
@@ -57,11 +57,11 @@ angular.module('processAdminApp')
       appOrder: {
         uri: '/app-orders'
       },
-      subproduct: {
-        uri: '/subproduct'
+      product: {
+        uri: '/product'
       },
-      subproductType: {
-        uri: '/subproductType'
+      productType: {
+        uri: '/productType'
       },
       store: {
         uri: '/store'
@@ -196,23 +196,23 @@ angular.module('processAdminApp')
       return factory.getOrdersByStatus(ACTIVE);
     };
 
-    factory.getSubproductsByName = function(name){
-      var uri = uris.subproduct.uri + '/name/' + name;
+    factory.getProductsByName = function(name){
+      var uri = uris.product.uri + '/name/' + name;
       return factoryCommon.get(uri);
     };
 
-    factory.getSubproductsByType = function(idSubproductType){
-      var uri = uris.subproduct.uri + '/type/' + idSubproductType;
+    factory.getProductsByType = function(idProductType){
+      var uri = uris.product.uri + '/type/' + idProductType;
       return factoryCommon.get(uri);
     };
 
-    factory.addSubproducts = function(idServiceType, subproductTypes){
-      var uri = uris.serviceType.uri + '/addSubproducts/' + idServiceType;
-      return factoryCommon.post(subproductTypes, uri);
+    factory.addProducts = function(idServiceType, productTypes){
+      var uri = uris.serviceType.uri + '/addProducts/' + idServiceType;
+      return factoryCommon.post(productTypes, uri);
     };
 
-    factory.getProductsBySubproductTypes = function(ids){
-      var uri = uris.subproduct.uri + '/bySubproductTypes';
+    factory.getProductsByProductTypes = function(ids){
+      var uri = uris.product.uri + '/byProductTypes';
       // sending ids as post ...
       return factoryCommon.post(ids, uri);
     }
