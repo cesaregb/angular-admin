@@ -1,23 +1,23 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('SubproductModalCtrl', function($scope, factoryServices, $uibModalInstance, formItem, $log) {
+  .controller('SupplyModalCtrl', function($scope, factoryGeneral, $uibModalInstance, formItem, $log) {
 
     $scope.formItem = formItem;
 
     this.init = function() {
 
-      $scope.title = "Form Subproduct Type";
+      $scope.title = "Form Supply Type";
       if (Boolean($scope.formItem)) {
         // placeholder
       }
 
-      factoryServices.getResources('subproductType').then(function(response){
+      factoryGeneral.getSupplyTypes().then(function(response){
         response.forEach(function(item){
-          $scope.parentSelect.push({name : item.name, value: item.idSubproductType});
+          $scope.parentSelect.push({name : item.name, value: item.idSupplyType});
         });
-        if (!Boolean($scope.formItem.idSubproductType) ){
-          $scope.formItem.idSubproductType = 1;
+        if (!Boolean($scope.formItem.idSupplyType) ){
+          $scope.formItem.idSupplyType = 1;
         }else{
 
         }
@@ -35,7 +35,15 @@ angular.module('processAdminApp')
       type: 'input',
       templateOptions: {
         type: 'text',
-        label: 'Nombre',
+        label: 'Name',
+        required: true
+      }
+    }, {
+      key: 'description',
+      type: 'input',
+      templateOptions: {
+        type: 'text',
+        label: 'Description',
         required: true
       }
     }, {
@@ -43,19 +51,32 @@ angular.module('processAdminApp')
       type: 'input',
       templateOptions: {
         type: 'number',
-        label: 'Precio',
-        required: true
-      }
-    }, {
-      key: 'maxQty',
-      type: 'input',
-      templateOptions: {
-        type: 'number',
-        label: 'Cantidad Maxima',
+        label: 'Price',
         required: true
       }
     },{
-      key: 'idSubproductType',
+      key: 'status',
+      type: 'select',
+      templateOptions: {
+        label: 'Status',
+        options: [{
+          "name": "Active",
+          "value": 1
+        }, {
+          "name": "Inactive",
+          "value": 0
+        }]
+      }
+    },{
+      key: 'serviceIncrement',
+      type: 'input',
+      templateOptions: {
+        type: 'number',
+        label: 'Increment',
+        required: true
+      }
+    },{
+      key: 'idSupplyType',
       type: 'select',
       templateOptions: {
         label: 'Type',

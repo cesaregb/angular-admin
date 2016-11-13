@@ -154,12 +154,12 @@ class ServiceTypeFormComponent {
     });
   }
 
-  openManageSubproductTypes(formItem) {
+  openManageProductTypes(formItem) {
     var _this = this;
     var modalInstance = this.$uibModal.open({
       animation: false,
-      templateUrl: 'app/subproducts/manageSubproductTypeModal/manageSubproductTypeModal.html',
-      controller: 'ManageSubproductTypeModalCtrl',
+      templateUrl: 'app/products/manageProductTypeModal/manageProductTypeModal.html',
+      controller: 'ManageProductTypeModalCtrl',
       size: 'lg',
       resolve: {
         formItem: function() {
@@ -173,8 +173,8 @@ class ServiceTypeFormComponent {
 
     modalInstance.result.then(function(resultItem) {
       var serviceType = resultItem;
-      if (serviceType.subproductTypes.length > 0){
-        _this.factoryServices.addSubproducts(serviceType.idServiceType, serviceType.subproductTypes).then(function(result){
+      if (serviceType.productTypes.length > 0){
+        _this.factoryServices.addProducts(serviceType.idServiceType, serviceType.productTypes).then(function(result){
           _this.serviceType = result;
         });
 

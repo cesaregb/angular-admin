@@ -50,9 +50,9 @@
 
             <div class="row" ng-show="$cn.serviceCategorie.idServiceCategory > 0" style="padding-bottom:10px;">
               <div class="form-group">
-                <label class="col-md-4 control-label">Precio Subproductos:</label>
+                <label class="col-md-4 control-label">Precio Productos:</label>
                 <div class="col-md-6">
-                  <span>{{$cn.service.subproductsPrice | currency}}</span>
+                  <span>{{$cn.service.productsPrice | currency}}</span>
                 </div>
               </div>
             </div>
@@ -118,17 +118,17 @@
               </div>
             </div>
 
-            <!--Subproducts-->
+            <!--Products-->
             <div class="panel panel-default" ng-show="$cn.serviceType.idServiceType > 0">
               <div class="panel-heading">
                 <div class="row">
                   <div class="col-lg-6">
-                    Subproducts
+                    Products
                   </div>
                   <div class="col-lg-6">
                     <div class="pull-right">
-                      <a href="#" ng-click="$cn.manageSubproducts()" class="btn btn-info btn-sm">
-                        <span class="glyphicon glyphicon-plus"></span> Agregar subproducto
+                      <a href="#" ng-click="$cn.manageProducts()" class="btn btn-info btn-sm">
+                        <span class="glyphicon glyphicon-plus"></span> Agregar producto
                       </a>
                     </div>
                   </div>
@@ -150,22 +150,22 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <tr ng-show="$cn.service.subproducts.length == 0 || $cn.service.subproducts == null">
+                      <tr ng-show="$cn.service.products.length == 0 || $cn.service.products == null">
                         <td colspan="8">Ningun producto seleccionado!</td>
                       </tr>
                       <tr role="row"
                           ng-class-odd="'odd'" ng-class-even="'even'"
-                          ng-repeat="subproduct in $cn.service.subproducts">
-                        <td>{{subproduct.name}}</td>
+                          ng-repeat="product in $cn.service.products">
+                        <td>{{product.name}}</td>
                         <td>
                           <input type="number" class="form-control"
-                                 ng-model="subproduct.quantity"
-                                 placeholder="1" min="1" max="{{subproduct.maxQty}}" ng-change="$cn.calculateSubproductTotal(subproduct)"/>
+                                 ng-model="product.quantity"
+                                 placeholder="1" min="1" max="{{product.maxQty}}" ng-change="$cn.calculateProductTotal(product)"/>
                           </td>
-                        <td>{{subproduct.price | currency}}</td>
-                        <td>{{subproduct.total | currency}}</td>
+                        <td>{{product.price | currency}}</td>
+                        <td>{{product.total | currency}}</td>
                         <td class="action-column">
-                          <a href="#" ng-click="$cn.deleteSubproduct(subproduct)"
+                          <a href="#" ng-click="$cn.deleteProduct(product)"
                              class="btn btn-danger btn-circle">
                             <span class="glyphicon glyphicon-remove"></span>
                           </a>

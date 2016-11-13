@@ -1,13 +1,13 @@
 'use strict';
 (function() {
 
-  class SubproductTypeComponent {
-    subproductTypes = [];
+  class SupplyTypeComponent {
+    supplyTypes = [];
 
-    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal) {
+    constructor($stateParams, $state, noty, factoryGeneral, $confirm, $log, $uibModal) {
       this.$log = $log;
       this.$confirm = $confirm;
-      this.factoryServices = factoryServices;
+      this.factoryGeneral = factoryGeneral;
       this.$uibModal = $uibModal;
       this.noty = noty;
       this.$state = $state;
@@ -17,8 +17,8 @@
 
     getInfo() {
       var _this = this;
-      this.factoryServices.getResources('subproductType').then(function(response) {
-        _this.subproductTypes = response;
+      this.factoryGeneral.getSupplyTypes().then(function(response) {
+        _this.supplyTypes = response;
       });
     }
 
@@ -30,8 +30,8 @@
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
-        templateUrl: 'app/subproducts/subproductType/subproductTypeModal/subproductTypeModal.html',
-        controller: 'SubproductTypeModalCtrl',
+        templateUrl: 'app/supplies/supplyType/supplyTypeModal/supplyTypeModal.html',
+        controller: 'SupplyTypeModalCtrl',
         size: 'md',
         resolve: {
           formItem: function() {
@@ -41,14 +41,14 @@
       });
 
       modalInstance.result.then(function(resultItem) {
-        var subproductType = resultItem;
-        if (subproductType.idSubproductType != null && subproductType.idSubproductType > 0) {
-          _this.factoryServices.updateResource('subproductType', subproductType).then(function() {
+        var supplyType = resultItem;
+        if (supplyType.idSupplyType != null && supplyType.idSupplyType > 0) {
+          _this.factoryGeneral.updateSupplyTypeCallback(supplyType, function() {
             _this.getInfo();
           });
         } else {
 
-          _this.factoryServices.saveResource('subproductType', subproductType).then(function() {
+          _this.factoryGeneral.saveSupplyTypeCallback(supplyType, function() {
             _this.getInfo();
           });
         }
@@ -61,7 +61,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteResource('subproductType', item.idSubproductType).then(function(){
+        _this.factoryGeneral.deleteSupplyType(item).then(function(info){
           _this.back();
         });
       });
@@ -73,9 +73,9 @@
   }
 
   angular.module('processAdminApp')
-    .component('subproductType', {
-      templateUrl: 'app/subproducts/subproductType/subproductType.html',
-      controller: SubproductTypeComponent,
+    .component('supplyType', {
+      templateUrl: 'app/supplies/supplyType/supplyType.html',
+      controller: SupplyTypeComponent,
       controllerAs: '$cn'
     });
 

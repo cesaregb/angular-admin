@@ -66,7 +66,7 @@
       }
     }];
 
-    constructor($scope, $stateParams, factoryClients, $timeout, $state, noty, AddressHandler, $log, $confirm, factoryServices) {
+    constructor($scope, $stateParams, factoryClients, $timeout, $state, noty, AddressHandler, $log, $confirm, factoryServices, googleMapsDirections, constants) {
       this.$confirm = $confirm;
       this.factoryServices = factoryServices;
       this.$log = $log;

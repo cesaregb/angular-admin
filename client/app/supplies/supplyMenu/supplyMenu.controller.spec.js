@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Component: SubproductComponent', function () {
+describe('Component: SupplyMenuComponent', function () {
 
   // load the controller's module
   beforeEach(module('processAdminApp'));
 
-  var SubproductComponent, scope;
+  var SupplyMenuComponent, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($componentController, $rootScope) {
     scope = $rootScope.$new();
-    SubproductComponent = $componentController('SubproductComponent', {
+    SupplyMenuComponent = $componentController('SupplyMenuComponent', {
       $scope: scope
     });
   }));

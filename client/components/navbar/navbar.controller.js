@@ -15,6 +15,7 @@ class NavbarController {
     if (!Boolean(this.orderSearch)){
       this.messageHandler.showError('Plese enter the order number to search')
     }else{
+
       // search...
     }
   }

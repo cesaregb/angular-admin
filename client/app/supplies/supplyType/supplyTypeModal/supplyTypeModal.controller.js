@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('SubproductTypeModalCtrl', function($scope, $uibModalInstance, formItem, $log) {
+  .controller('SupplyTypeModalCtrl', function($scope, $uibModalInstance, formItem, $log) {
 
     $scope.formItem = formItem;
 
     this.init = function() {
 
-      $scope.title = "Form Subproduct Type";
+      $scope.title = "Form Supply Type";
       if (Boolean($scope.formItem)) {
         // placeholder
       }

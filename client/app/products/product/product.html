@@ -29,37 +29,34 @@
                   </div>
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-sm-12">
                   <div loading-container="$cn.tableParams.settings().$loading">
                     <table ng-table="$cn.tableParams" class="table table-condensed table-bordered table-striped">
                       <tr ng-repeat="row in $data track by row.idProduct">
-                        <td data-title="'Name'" filter="{name: 'text'}" sortable="'value'">
+
+                        <td data-title="'Name'" filter="{name: 'text'}" sortable="'name'">
                           <a href="" ng-click="$cn.openModal(row);">
-                            <span>{{row.name}}</span>
+                            {{row.name}}
                           </a>
                         </td>
-                        <td data-title="'Tipo Producto'">
-                          {{row.description}}
+                        <td data-title="'Type'" filter="{ typeName: 'select'}" filter-data="$cn.createFilter()">
+                          {{row.typeName}}
                         </td>
-                        <td data-title="'P Type'" filter="{ productTypeName: 'select'}" filter-data="$cn.createFilter()">
-                          {{row.productTypeName}}
-                        </td>
-                        <td data-title="'Increment'">
-                          {{row.serviceIncrement}}
-                        </td>
-                        <td data-title="'Action'" class="action-column">
-                          <a href="#" ng-click="$cn.delete(row)" class="btn btn-danger btn-circle">
+                        <td data-title="'Precio'" >{{row.price}}</td>
+                        <td data-title="'Cantidad Maxima'" >{{row.maxQty}}</td>
+                        <td data-title="'#'">
+                          <a href="#" ng-click="$cn.delete(row)"
+                             class="btn btn-danger btn-circle">
                             <span class="glyphicon glyphicon-remove"></span>
                           </a>
                         </td>
                       </tr>
                     </table>
                   </div>
+
                 </div>
               </div>
-
             </div>
           </div>
           <!-- /.table-responsive -->

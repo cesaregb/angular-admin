@@ -3,14 +3,11 @@
 
   class ProductComponent {
     products = [];
-    productTypes = [];
-    // productTypes = [{title: 'detergente', id:'detergente'}];
 
-    constructor($q, $stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams, $scope) {
-      this.$scope = $scope;
+    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams, $q) {
       this.$q = $q;
-      this.NgTableParams = NgTableParams;
       this.$log = $log;
+      this.NgTableParams = NgTableParams;
       this.$confirm = $confirm;
       this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
@@ -18,13 +15,16 @@
       this.$state = $state;
       this.route = $stateParams.route;
       var _this = this;
+      this.tableParams = new this.NgTableParams({}, {
+        getData: function(params) {
+          return _this.factoryServices.getResourcesForTable('product', params);
+        }
+      });
 
-      this.getInfo();
     }
 
-    createFilter = function() {
+    createFilter() {
       var deferred = this.$q.defer();
-
       var filter = [];
       this.factoryServices.getResources('productType').then(function(response) {
         response.forEach(function(item){
@@ -36,13 +36,11 @@
     }
 
     getInfo() {
-      var _this = this;
-
-      this.tableParams = new this.NgTableParams({}, {
-        getData: function(params) {
-          return _this.factoryServices.getResourcesForTable('product', params);
-        }
-      });
+      this.tableParams.reload();
+      // var _this = this;
+      // this.factoryServices.getResources('product').then(function(response) {
+      //   _this.products = response;
+      // });
     }
 
     openNewModal() {
@@ -50,7 +48,6 @@
     }
 
     openModal(formItem) {
-
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
@@ -67,11 +64,11 @@
       modalInstance.result.then(function(resultItem) {
         var product = resultItem;
         if (product.idProduct != null && product.idProduct > 0) {
-          _this.factoryServices.updateResource('product', product).then( function(response) {
+          _this.factoryServices.updateResource('product', product).then(function() {
             _this.getInfo();
           });
         } else {
-          _this.factoryServices.saveResource('product', product).then(function(response) {
+          _this.factoryServices.saveResource('product', product).then(function() {
             _this.getInfo();
           });
         }

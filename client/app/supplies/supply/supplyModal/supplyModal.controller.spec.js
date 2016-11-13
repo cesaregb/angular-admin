@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: SubproductModalCtrl', function () {
+describe('Controller: SupplyModalCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('processAdminApp.subproductModal'));
+  beforeEach(module('processAdminApp.supplyModal'));
 
-  var SubproductModalCtrl, scope;
+  var SupplyModalCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    SubproductModalCtrl = $controller('SubproductModalCtrl', {
+    SupplyModalCtrl = $controller('SupplyModalCtrl', {
       $scope: scope
     });
   }));

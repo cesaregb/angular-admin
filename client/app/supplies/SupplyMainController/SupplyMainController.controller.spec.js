@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: ManageSubproductTypeModalCtrl', function () {
+describe('Controller: SupplyMainControllerCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('processAdminApp.manageSubproductTypeModal'));
+  beforeEach(module('processAdminApp.SupplyMainController'));
 
-  var ManageSubproductTypeModalCtrl, scope;
+  var SupplyMainControllerCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    ManageSubproductTypeModalCtrl = $controller('ManageSubproductTypeModalCtrl', {
+    SupplyMainControllerCtrl = $controller('SupplyMainControllerCtrl', {
       $scope: scope
     });
   }));
