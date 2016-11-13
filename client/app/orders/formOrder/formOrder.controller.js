@@ -133,6 +133,7 @@
 
       // setting order information for existing order
       this.factoryServices.getResources('orderType').then(function(result) {
+
         _this.orderTypes = _this._.filter(result, function(ot){ return (Boolean(ot.orderTypeTasks) && ot.orderTypeTasks.length > 0) ; });
 
         // select item if editing order
@@ -152,6 +153,7 @@
     validateOrderType() {
       var _this = this;
       if (Boolean(this.selectedOrderType)){
+
         this.order.idOrderType = this.selectedOrderType.idOrderType;
         this.pickupShow = false;
         this.showDeliver = false;
@@ -179,7 +181,6 @@
             type: 'warning'
           });
         }
-
         this.calculateTotal();
       }
     }
@@ -367,15 +368,15 @@
           }
         });
 
-        tmpService.subproducts = [];
+        tmpService.products = [];
 
-        if (Boolean(item.subproducts) && item.subproducts.length > 0){
-          item.subproducts.forEach(function(subproducts){
-            var subproductItem = {};
-            subproductItem.idSubproduct = subproducts.idSubproduct;
-            subproductItem.quantity = subproducts.quantity;
-            subproductItem.price = subproducts.price;
-            tmpService.subproducts.push(subproductItem);
+        if (Boolean(item.products) && item.products.length > 0){
+          item.products.forEach(function(products){
+            var productItem = {};
+            productItem.idProduct = products.idProduct;
+            productItem.quantity = products.quantity;
+            productItem.price = products.price;
+            tmpService.products.push(productItem);
           });
         }
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('ProductModalCtrl', function($scope, factoryGeneral, $uibModalInstance, formItem, $log) {
+  .controller('ProductModalCtrl', function($scope, factoryServices, $uibModalInstance, formItem, $log) {
 
     $scope.formItem = formItem;
 
@@ -12,7 +12,7 @@ angular.module('processAdminApp')
         // placeholder
       }
 
-      factoryGeneral.getProductTypes().then(function(response){
+      factoryServices.getResources('productType').then(function(response){
         response.forEach(function(item){
           $scope.parentSelect.push({name : item.name, value: item.idProductType});
         });
@@ -35,44 +35,23 @@ angular.module('processAdminApp')
       type: 'input',
       templateOptions: {
         type: 'text',
-        label: 'Name',
-        required: true
-      }
-    }, {
-      key: 'description',
-      type: 'input',
-      templateOptions: {
-        type: 'text',
-        label: 'Description',
+        label: 'Nombre',
         required: true
       }
     }, {
       key: 'price',
       type: 'input',
       templateOptions: {
-        type: 'text',
-        label: 'Price',
+        type: 'number',
+        label: 'Precio',
         required: true
       }
-    },{
-      key: 'status',
-      type: 'select',
-      templateOptions: {
-        label: 'Status',
-        options: [{
-          "name": "Active",
-          "value": 1
-        }, {
-          "name": "Inactive",
-          "value": 0
-        }]
-      }
-    },{
-      key: 'serviceIncrement',
+    }, {
+      key: 'maxQty',
       type: 'input',
       templateOptions: {
-        type: 'text',
-        label: 'Increment',
+        type: 'number',
+        label: 'Cantidad Maxima',
         required: true
       }
     },{

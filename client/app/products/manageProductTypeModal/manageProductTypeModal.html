@@ -13,9 +13,9 @@
               <ui-select-match>
                 <span ng-bind="$select.selected.name"></span>
               </ui-select-match>
-              <ui-select-choices repeat="subproductType in subproductTypesSource | propsFilter: {name: $select.search, idSpecs: $select.search}">
-                <span ng-bind="subproductType.idSubproductType"></span>
-                <span ng-bind="subproductType.name"></span>
+              <ui-select-choices repeat="productType in productTypesSource | propsFilter: {name: $select.search, idSpecs: $select.search}">
+                <span ng-bind="productType.idProductType"></span>
+                <span ng-bind="productType.name"></span>
               </ui-select-choices>
             </ui-select>
           </div>
@@ -32,16 +32,16 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-show="subproductTypes.length == 0 || subproductTypes == null"><td colspan="5">No Items found</td></tr>
+              <tr ng-show="productTypes.length == 0 || productTypes == null"><td colspan="5">No Items found</td></tr>
               <tr class="gradeA" role="row"
                   ng-class-odd="'odd'" ng-class-even="'even'"
-                  ng-repeat="subproductType in subproductTypes">
+                  ng-repeat="productType in productTypes">
                   <td>
-                    {{subproductType.name}}
+                    {{productType.name}}
                   </td>
-                  <td>{{subproductType.description}}</td>
+                  <td>{{productType.description}}</td>
                   <td class="action-column">
-                    <a href="#" ng-click="deleteItem(subproductType)"
+                    <a href="#" ng-click="deleteItem(productType)"
                         class="btn btn-danger btn-circle">
                       <span class="glyphicon glyphicon-remove"></span>
                     </a>

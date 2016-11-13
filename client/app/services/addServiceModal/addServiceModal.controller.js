@@ -77,7 +77,7 @@ angular.module('processAdminApp')
         calculatePrice();
       }else{
         noty.showNoty({
-          text: "Servicio no tiene subproductos.... ",
+          text: "Servicio no tiene productos.... ",
           ttl: 1000 * 2,
           type: "warning"
         });

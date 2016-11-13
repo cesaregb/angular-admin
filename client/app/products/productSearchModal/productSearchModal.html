@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h3 class="modal-title">Search Subproduct</h3>
+  <h3 class="modal-title">Search Product</h3>
 </div>
 <div class="panel-body">
   <div class="dataTable_wrapper">
@@ -10,9 +10,9 @@
           <div class="pull-right">
             <label>Search:
               <input type="search" class="form-control input-sm" ng-model="searchText" aria-controls="dataTables-example">
-              <select class="form-control" ng-model="subproductType"
-                      ng-change="filterByType()" ng-options="filter.name for filter in subproductTypes"></select>
-              <a href="#" ng-click="searchSubproducts()" class="btn btn-info btn-sm">
+              <select class="form-control" ng-model="productType"
+                      ng-change="filterByType()" ng-options="filter.name for filter in productTypes"></select>
+              <a href="#" ng-click="searchProducts()" class="btn btn-info btn-sm">
                 <span class="glyphicon glyphicon-search"></span>
               </a>
             </label>
@@ -31,19 +31,19 @@
               </tr>
             </thead>
             <tbody>
-              <tr ng-show="subproducts.length == 0">
+              <tr ng-show="products.length == 0">
                 <td colspan="5">No Items found</td>
               </tr>
               <tr class="gradeA" role="row"
                   ng-class-odd="'odd'" ng-class-even="'even'"
-                  ng-repeat="subproduct in subproducts">
+                  ng-repeat="product in products">
                   <td>
-                    <a href="" ng-click="preSelectItem(subproduct);" ng-dblclick="selectItemAction(subproduct);">
-                      {{subproduct.name}}
+                    <a href="" ng-click="preSelectItem(product);" ng-dblclick="selectItemAction(product);">
+                      {{product.name}}
                     </a>
                   </td>
-                  <td>{{subproduct.price}}</td>
-                  <td>{{subproduct.maxQty}}</td>
+                  <td>{{product.price}}</td>
+                  <td>{{product.maxQty}}</td>
               </tr>
             </tbody>
           </table>
@@ -53,11 +53,11 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <strong>Selected: {{subproductInfo.name}}</strong>
+      <strong>Selected: {{productInfo.name}}</strong>
     </div>
   </div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" type="submit" ng-click="selectItem()" ng-disabled="subproductInfo == null">OK</button>
+  <button class="btn btn-primary" type="submit" ng-click="selectItem()" ng-disabled="productInfo == null">OK</button>
   <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
 </div>

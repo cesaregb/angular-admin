@@ -14,7 +14,6 @@
       this.$state = $state;
       this._ = _;
       this.$uibModal = $uibModal;
-      this.selectedService = false;
     }
 
     $onInit() {
@@ -64,7 +63,7 @@
 
       _this.service = serviceType;
       _this.service.specsPrice = 0;
-      _this.service.subproductsPrice = 0;
+      _this.service.productsPrice = 0;
       _this.service.totalPrice = 0;
       this.calculatePrice();
 
@@ -181,19 +180,19 @@
     }
 
     calculatePrice(){
-      this.service.totalPrice = this.service.price + this.service.specsPrice + this.service.subproductsPrice;
+      this.service.totalPrice = this.service.price + this.service.specsPrice + this.service.productsPrice;
     }
 
     changeQty(){
       this.calculateSpecsPrice();
     }
 
-    manageSubproducts(){
+    manageProducts(){
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
-        templateUrl: 'app/subproducts/subproductSearchModal/subproductSearchModal.html',
-        controller: 'SubproductSearchModalCtrl',
+        templateUrl: 'app/products/productSearchModal/productSearchModal.html',
+        controller: 'ProductSearchModalCtrl',
         size: 'lg',
         resolve: {
           serviceType: function() {
@@ -202,49 +201,49 @@
         }
       });
 
-      modalInstance.result.then(function(subproduct) {
-        subproduct.quantity = 1;
-        if (!Boolean(this.service.subproducts)){
-          this.service.subproducts = [];
+      modalInstance.result.then(function(product) {
+        product.quantity = 1;
+        if (!Boolean(this.service.products)){
+          this.service.products = [];
         }
 
         var found = -1;
-        this.service.subproducts.forEach(function(item, index){
-          if (item.idSubproduct == subproduct.idSubproduct){
+        this.service.products.forEach(function(item, index){
+          if (item.idProduct == product.idProduct){
             found = index;
           }
         });
 
         if (found >= 0){
-          this.service.subproducts.splice(found, 1);
+          this.service.products.splice(found, 1);
         }
 
-        this.service.subproducts.push(subproduct);
+        this.service.products.push(product);
 
-        this.calculateSubproductTotal(subproduct);
+        this.calculateProductTotal(product);
 
       }.bind(this));
     }
 
-    deleteSubproduct(subproduct){
-      var index = this._.findIndex(this.service.subproducts, function(element){
-        return (element.idSubproduct == subproduct.idSubproduct);
+    deleteProduct(product){
+      var index = this._.findIndex(this.service.products, function(element){
+        return (element.idProduct == product.idProduct);
       });
 
-      this.service.subproducts.splice(index, 1);
+      this.service.products.splice(index, 1);
     }
 
-    calculateSubproductTotal(subproduct){
-      subproduct.total = subproduct.price * subproduct.quantity;
-      this.calculateSubproductsTotal();
+    calculateProductTotal(product){
+      product.total = product.price * product.quantity;
+      this.calculateProductsTotal();
     }
 
-    calculateSubproductsTotal(){
-      var subproductsTotal = 0;
-      this.service.subproducts.forEach(function(item){
-        subproductsTotal += item.total;
+    calculateProductsTotal(){
+      var productsTotal = 0;
+      this.service.products.forEach(function(item){
+        productsTotal += item.total;
       });
-      this.service.subproductsPrice = subproductsTotal;
+      this.service.productsPrice = productsTotal;
       this.calculatePrice()
     }
 

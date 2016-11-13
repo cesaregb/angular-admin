@@ -1,13 +1,16 @@
 'use strict';
 (function() {
 
-  class SubproductComponent {
-    subproducts = [];
+  class SupplyComponent {
+    supplies = [];
+    supplyTypes = [];
+    // supplyTypes = [{title: 'detergente', id:'detergente'}];
 
-    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams, $q) {
+    constructor($q, $stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams, $scope) {
+      this.$scope = $scope;
       this.$q = $q;
-      this.$log = $log;
       this.NgTableParams = NgTableParams;
+      this.$log = $log;
       this.$confirm = $confirm;
       this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
@@ -15,18 +18,15 @@
       this.$state = $state;
       this.route = $stateParams.route;
       var _this = this;
-      this.tableParams = new this.NgTableParams({}, {
-        getData: function(params) {
-          return _this.factoryServices.getResourcesForTable('subproduct', params);
-        }
-      });
 
+      this.getInfo();
     }
 
-    createFilter() {
+    createFilter = function() {
       var deferred = this.$q.defer();
+
       var filter = [];
-      this.factoryServices.getResources('subproductType').then(function(response) {
+      this.factoryServices.getResources('supplyType').then(function(response) {
         response.forEach(function(item){
           filter.push({title: item.name, id:item.name});
         });
@@ -36,11 +36,13 @@
     }
 
     getInfo() {
-      this.tableParams.reload();
-      // var _this = this;
-      // this.factoryServices.getResources('subproduct').then(function(response) {
-      //   _this.subproducts = response;
-      // });
+      var _this = this;
+
+      this.tableParams = new this.NgTableParams({}, {
+        getData: function(params) {
+          return _this.factoryServices.getResourcesForTable('supply', params);
+        }
+      });
     }
 
     openNewModal() {
@@ -48,11 +50,12 @@
     }
 
     openModal(formItem) {
+
       var _this = this;
       var modalInstance = this.$uibModal.open({
         animation: false,
-        templateUrl: 'app/subproducts/subproduct/subproductModal/subproductModal.html',
-        controller: 'SubproductModalCtrl',
+        templateUrl: 'app/supplies/supply/supplyModal/supplyModal.html',
+        controller: 'SupplyModalCtrl',
         size: 'md',
         resolve: {
           formItem: function() {
@@ -62,13 +65,13 @@
       });
 
       modalInstance.result.then(function(resultItem) {
-        var subproduct = resultItem;
-        if (subproduct.idSubproduct != null && subproduct.idSubproduct > 0) {
-          _this.factoryServices.updateResource('subproduct', subproduct).then(function() {
+        var supply = resultItem;
+        if (supply.idSupply != null && supply.idSupply > 0) {
+          _this.factoryServices.updateResource('supply', supply).then( function(response) {
             _this.getInfo();
           });
         } else {
-          _this.factoryServices.saveResource('subproduct', subproduct).then(function() {
+          _this.factoryServices.saveResource('supply', supply).then(function(response) {
             _this.getInfo();
           });
         }
@@ -81,7 +84,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteResource('subproduct', item.idSubproduct).then(function(info){
+        _this.factoryServices.deleteResource('supply', item.idSupply).then(function(info){
           _this.back();
         });
       });
@@ -93,9 +96,9 @@
   }
 
   angular.module('processAdminApp')
-    .component('subproduct', {
-      templateUrl: 'app/subproducts/subproduct/subproduct.html',
-      controller: SubproductComponent,
+    .component('supply', {
+      templateUrl: 'app/supplies/supply/supply.html',
+      controller: SupplyComponent,
       controllerAs: '$cn'
     });
 
