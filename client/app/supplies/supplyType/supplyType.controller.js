@@ -4,10 +4,10 @@
   class SupplyTypeComponent {
     supplyTypes = [];
 
-    constructor($stateParams, $state, noty, factoryGeneral, $confirm, $log, $uibModal) {
+    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal) {
       this.$log = $log;
       this.$confirm = $confirm;
-      this.factoryGeneral = factoryGeneral;
+      this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.noty = noty;
       this.$state = $state;
@@ -17,7 +17,7 @@
 
     getInfo() {
       var _this = this;
-      this.factoryGeneral.getSupplyTypes().then(function(response) {
+      this.factoryServices.getSupplyTypes().then(function(response) {
         _this.supplyTypes = response;
       });
     }
@@ -43,12 +43,12 @@
       modalInstance.result.then(function(resultItem) {
         var supplyType = resultItem;
         if (supplyType.idSupplyType != null && supplyType.idSupplyType > 0) {
-          _this.factoryGeneral.updateSupplyTypeCallback(supplyType, function() {
+          _this.factoryServices.updateSupplyTypeCallback(supplyType, function() {
             _this.getInfo();
           });
         } else {
 
-          _this.factoryGeneral.saveSupplyTypeCallback(supplyType, function() {
+          _this.factoryServices.saveSupplyTypeCallback(supplyType, function() {
             _this.getInfo();
           });
         }
@@ -61,7 +61,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryGeneral.deleteSupplyType(item).then(function(info){
+        _this.factoryServices.deleteSupplyType(item).then(function(info){
           _this.back();
         });
       });

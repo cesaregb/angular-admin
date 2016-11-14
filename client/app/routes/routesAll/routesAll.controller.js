@@ -5,16 +5,16 @@ class RoutesAllComponent {
 
   title = "Routes";
 
-  constructor( factoryRoutes, $state, $stateParams ) {
+  constructor( factoryServices, $state, $stateParams ) {
     this.$state = $state;
-    this.factoryRoutes = factoryRoutes;
+    this.factoryServices = factoryServices;
     this.route = null;
     this.gatherRoutes();
   }
 
   gatherRoutes(){
     var _this = this;
-    this.factoryRoutes.getAllRoutes().then(function(response) {
+    this.factoryServices.getAllRoutes().then(function(response) {
       _this.appRoutes = response;
     }), function(err) {}
   }

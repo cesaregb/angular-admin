@@ -107,10 +107,10 @@
       value: 1
     }];
 
-    constructor($scope, $stateParams, factoryRoutes, factoryClients, $timeout, $state, noty, AddressHandler, $log, $uibModal, $confirm) {
+    constructor($scope, $stateParams, factoryServices, factoryServices, $timeout, $state, noty, AddressHandler, $log, $uibModal, $confirm) {
       this.$log = $log;
       this.$confirm = $confirm;
-      this.factoryClients = factoryClients;
+      this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.$scope = $scope;
       this.$timeout = $timeout;
@@ -120,7 +120,7 @@
       this.$state = $state;
       this.place = null;
       this.stop = $stateParams.stop;
-      this.factoryRoutes = factoryRoutes;
+      this.factoryServices = factoryServices;
 
       var _this = this;
       if (this.route == null) {
@@ -132,11 +132,11 @@
           this.newAddress = false;
           this.title = "Edit stop";
           // load address
-          this.factoryRoutes.getAddressByStop(this.stop.type, this.stop.idAddress).then(function(response) {
+          this.factoryServices.getAddressByStop(this.stop.type, this.stop.idAddress).then(function(response) {
             _this.stop.address = response;
 
             if (_this.stop.type == 1) { // get the client in case of client type
-              _this.factoryClients.getClientByIdAddress(_this.stop.idAddress).then(function(result) {
+              _this.factoryServices.getClientByIdAddress(_this.stop.idAddress).then(function(result) {
                 _this.stop.client = result[0];
                 _this.stop.client.addresses.forEach(function(item) {
                   if (item.idAddress == _this.stop.idAddress) {
@@ -214,11 +214,11 @@
       _this.stop.idAddress = _this.stop.address.idAddress;
 
       if (_this.stop.idStops != null && _this.stop.idStops > 0) {
-        _this.factoryRoutes.updateStopCallback(_this.stop, function() {
+        _this.factoryServices.updateStopCallback(_this.stop, function() {
           _this.back();
         });
       } else {
-        _this.factoryRoutes.saveStopCallback(_this.stop, function() {
+        _this.factoryServices.saveStopCallback(_this.stop, function() {
           _this.back();
         });
       }
@@ -251,7 +251,7 @@
           text: 'Are you sure you want to delete?'
         })
         .then(function() {
-          _this.factoryRoutes.deleteStop(_this.stop).then(function(info) {
+          _this.factoryServices.deleteStop(_this.stop).then(function(info) {
             _this.back();
           });
         });

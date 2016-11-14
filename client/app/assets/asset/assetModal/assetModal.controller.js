@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('AssetModalCtrl', function($scope, factoryGeneral, $uibModalInstance, formItem, $log) {
+  .controller('AssetModalCtrl', function($scope, factoryServices, $uibModalInstance, formItem, $log) {
 
     $scope.formItem = formItem;
 
@@ -12,7 +12,7 @@ angular.module('processAdminApp')
         // placeholder
       }
 
-      factoryGeneral.getAssetTypes().then(function(response){
+      factoryServices.getAssetTypes().then(function(response){
         response.forEach(function(item){
           $scope.parentSelect.push({name : item.name, value: item.idAssetType});
         });

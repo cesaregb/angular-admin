@@ -4,12 +4,12 @@
 class ClientEditComponent {
   selectedPhone = null;
 
-  constructor($stateParams, $state, noty, serviceClients, factoryClients, $confirm, $log) {
+  constructor($stateParams, $state, noty, serviceClients, factoryServices, $confirm, $log) {
     this.$log = $log;
     var _this = this;
     this.$confirm = $confirm;
     this.serviceClients = serviceClients;
-    this.factoryClients = factoryClients;
+    this.factoryServices = factoryServices;
     this.noty = noty;
     this.newClient = true;
     this.$state = $state;
@@ -96,7 +96,7 @@ class ClientEditComponent {
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryClients.deleteClient(_this.client).then(function(info){
+        _this.factoryServices.deleteClient(_this.client).then(function(info){
           _this.back();
         });
       });
@@ -112,11 +112,11 @@ class ClientEditComponent {
     _this.client.phoneNumbers.forEach(function (item, index, theArray) {
       if (item.idPhoneNumber ==  _this.selectedPhone.idPhoneNumber){
         theArray[index].prefered = true;
-        _this.factoryClients.updatePhoneNumberCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
+        _this.factoryServices.updatePhoneNumberCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
       }else{
         if (theArray[index].prefered){
           theArray[index].prefered = false;
-          _this.factoryClients.updatePhoneNumberCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
+          _this.factoryServices.updatePhoneNumberCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
         }
       }
     });
@@ -127,11 +127,11 @@ class ClientEditComponent {
     _this.client.addresses.forEach(function (item, index, theArray) {
       if (item.idAddress ==  _this.selectedAddress.idAddress){
         theArray[index].prefered = true;
-        _this.factoryClients.updateAddressCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
+        _this.factoryServices.updateAddressCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
       }else{
         if (theArray[index].prefered){
           theArray[index].prefered = false;
-          _this.factoryClients.updateAddressCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
+          _this.factoryServices.updateAddressCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
         }
       }
     });
@@ -142,11 +142,11 @@ class ClientEditComponent {
     _this.client.clientPaymentInfos.forEach(function (item, index, theArray) {
       if (item.idClientPaymentInfo ==  _this.selectedPayment.idClientPaymentInfo){
         theArray[index].prefered = true;
-        _this.factoryClients.updateClientPaymentInfoCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
+        _this.factoryServices.updateClientPaymentInfoCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
       }else{
         if (theArray[index].prefered){
           theArray[index].prefered = false;
-          _this.factoryClients.updateClientPaymentInfoCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
+          _this.factoryServices.updateClientPaymentInfoCallback(theArray[index], function(){_this.getClient(_this.client.idClient);});
         }
       }
     });
@@ -154,7 +154,7 @@ class ClientEditComponent {
 
   getClient(id){
     // var _this = this;
-    // this.factoryClients.getClientById(id).then(function(data){
+    // this.factoryServices.getClientById(id).then(function(data){
     //   _this.client = data;
     // });
   }
@@ -176,7 +176,7 @@ class ClientEditComponent {
         myClient.phoneNumbers.push(phoneNumberTmp);
 
         // not abstracting this piece cuz its only used here.
-        _this.factoryClients.saveClient( myClient ).then( function(data){ // saving new
+        _this.factoryServices.saveClient( myClient ).then( function(data){ // saving new
           _this.client = data;
           _this.settupClient();
           // _this.$state.go('client', { reload: true });
@@ -195,13 +195,13 @@ class ClientEditComponent {
     _this.client.addresses.forEach(function (item, index, theArray) {
       if (item.idAddress ==  _this.facturacionAddress.idAddress){
         theArray[index].factura = true;
-        _this.factoryClients.updateAddress(theArray[index]).then(function(){
+        _this.factoryServices.updateAddress(theArray[index]).then(function(){
           _this.getClient(_this.client.idClient);
         });
       }else{
         if (theArray[index].factura){
           theArray[index].factura = false;
-          _this.factoryClients.updateAddress(theArray[index]).then(function(){
+          _this.factoryServices.updateAddress(theArray[index]).then(function(){
             _this.getClient(_this.client.idClient);
           });
         }
@@ -211,7 +211,7 @@ class ClientEditComponent {
 
   saveExistingClient(){
     var _this = this;
-    _this.factoryClients.updateClient( _this.client ).then(function(data){ // updating existing
+    _this.factoryServices.updateClient( _this.client ).then(function(data){ // updating existing
       // _this.$state.go('client', { reload: true });
     }),function(error){ // error saving existing
       console.log("Error updating client: " + JSON.stringify(error));

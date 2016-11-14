@@ -9,9 +9,9 @@ class RoutesComponent {
       {name:'Clients (Business)', value:3}
     ];
 
-  constructor($stateParams, $state, noty, factoryRoutes, $log, $confirm) {
+  constructor($stateParams, $state, noty, factoryServices, $log, $confirm) {
     this.$confirm = $confirm;
-    this.factoryRoutes = factoryRoutes;
+    this.factoryServices = factoryServices;
     this.noty = noty;
     this.$log = $log;
     this.newRoute = true;
@@ -29,7 +29,7 @@ class RoutesComponent {
       this.newRoute = false;
       this.title = "Edit: " + this.route.name;
       // reloead route ...
-      this.factoryRoutes.getRouteById(this.route.idRoutes).then(function(result){
+      this.factoryServices.getRouteById(this.route.idRoutes).then(function(result){
         _this.route = result;
       });
     }else{
@@ -44,7 +44,7 @@ class RoutesComponent {
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryRoutes.deleteRoute(_this.route).then(function(info){
+        _this.factoryServices.deleteRoute(_this.route).then(function(info){
           _this.back();
         });
       });
@@ -60,7 +60,7 @@ class RoutesComponent {
       if (this.newRoute){
         var myRoute = this.route;
         // not abstracting this piece cuz its only used here.
-        _this.factoryRoutes.saveRoute( myRoute ).then( function( data ){ // saving new
+        _this.factoryServices.saveRoute( myRoute ).then( function( data ){ // saving new
           _this.route = data;
           _this.setupRoute();
         }),function(error){ // error saving new
@@ -81,7 +81,7 @@ class RoutesComponent {
 
   saveExistingRoute(){
     var _this = this;
-    _this.factoryRoutes.updateRoute( _this.route ).then(function(data){ // updating existing
+    _this.factoryServices.updateRoute( _this.route ).then(function(data){ // updating existing
       _this.setupRoute();
     }),function(error){ // error saving existing
       console.log("Error updating route: " + JSON.stringify(error));

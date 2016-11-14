@@ -66,7 +66,7 @@
       }
     }];
 
-    constructor($scope, $stateParams, factoryClients, $timeout, $state, noty, AddressHandler, $log, $confirm, factoryServices, googleMapsDirections, constants) {
+    constructor($scope, $stateParams, factoryServices, $timeout, $state, noty, AddressHandler, $log, $confirm, factoryServices, googleMapsDirections, constants) {
       this.$confirm = $confirm;
       this.factoryServices = factoryServices;
       this.$log = $log;
@@ -85,7 +85,7 @@
       this.place = null;
 
       this.address = $stateParams.address;
-      this.factoryClients = factoryClients;
+      this.factoryServices = factoryServices;
       if (this.client == null) {
         this.$state.go('client.all', null, {
           reload: true
@@ -152,7 +152,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryClients.deleteAddress(_this.address).then(function(info){
+        _this.factoryServices.deleteAddress(_this.address).then(function(info){
           _this.back();
         });
       });
@@ -170,7 +170,7 @@
       var _this = this;
       if (_this.address.idAddress != null && _this.address.idAddress > 0) {
         // update address
-        _this.factoryClients.updateAddressCallback(_this.address, function() {
+        _this.factoryServices.updateAddressCallback(_this.address, function() {
           _this.$state.go('client.address', {
             client: _this.client
           }, {
@@ -179,7 +179,7 @@
         });
       } else {
         // save new address
-        _this.factoryClients.saveAddressCallback(_this.address, function() {
+        _this.factoryServices.saveAddressCallback(_this.address, function() {
           _this.$state.go('client.address', {
             client: _this.client
           }, {
