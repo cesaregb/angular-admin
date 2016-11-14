@@ -22,7 +22,7 @@ class CalendarRouteComponent {
 
   getRouteInfo() {
     var _this = this;
-    _this.factoryServices.getRouteById(this.route.idRoutes).then(function(response) {
+    _this.factoryServices.getResourceById('routes', this.route.idRoutes).then(function(response) {
         _this.route = response;
       }),
       function(err) {}
@@ -53,12 +53,12 @@ class CalendarRouteComponent {
       var calendarRoute = selectedItem;
       if (calendarRoute.idCalendarRoute != null && calendarRoute.idCalendarRoute > 0) {
         // update calendarRoute
-        _this.factoryServices.updateCalendarRouteCallback(calendarRoute, function() {
+        _this.factoryServices.updateResourceCallback('calendarRoute', calendarRoute, function() {
           _this.getRouteInfo();
         });
       } else {
         // save new calendarRoute
-        _this.factoryServices.saveCalendarRouteCallback(calendarRoute, function() {
+        _this.factoryServices.saveResourceCallback('calendarRoute', calendarRoute, function() {
           _this.getRouteInfo();
         });
       }
@@ -71,7 +71,7 @@ class CalendarRouteComponent {
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteCalendarRoute(calendarRoute).then(function(info){
+        _this.factoryServices.deleteResource('calendarRoute', calendarRoute).then(function(info){
           _this.back();
         });
     });

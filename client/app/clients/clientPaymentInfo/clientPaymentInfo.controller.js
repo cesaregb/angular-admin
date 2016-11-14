@@ -21,7 +21,7 @@
 
     getClientInfo() {
       var _this = this;
-      _this.factoryServices.getClientById(this.client.idClient).then(function(response) {
+      _this.factoryServices.getResourceById('client', this.client.idClient).then(function(response) {
           _this.client = response;
         }),
         function(err) {}
@@ -53,12 +53,12 @@
         var clientPaymentInfo = selectedItem;
         if (clientPaymentInfo.idClientPaymentInfo != null && clientPaymentInfo.idClientPaymentInfo > 0) {
           // update clientPaymentInfo
-          _this.factoryServices.updateClientPaymentInfoCallback(clientPaymentInfo, function() {
+          _this.factoryServices.updateResourceCallback('clientPaymentInfo', clientPaymentInfo, function() {
             _this.getClientInfo();
           });
         } else {
           // save new clientPaymentInfo
-          _this.factoryServices.saveClientPaymentInfoCallback(clientPaymentInfo, function() {
+          _this.factoryServices.updateResourceCallback('clientPaymentInfo', clientPaymentInfo, function() {
             _this.getClientInfo();
           });
         }
@@ -71,7 +71,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteClientPaymentInfo(clientPayment).then(function(info){
+        _this.factoryServices.deleteResource('clientPayment', clientPayment).then(function(info){
           _this.back();
         });
       });

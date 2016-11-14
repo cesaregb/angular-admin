@@ -244,7 +244,13 @@ angular.module('processAdminApp')
       var uri = uris.product.uri + '/byProductTypes';
       // sending ids as post ...
       return factoryCommon.post(ids, uri);
-    }
+    };
+
+    factory.getClientByFilter = function (object) {
+      var uri = uris.client.uri + '/clients/byFilters';
+      return factoryCommon.post(object, uri);
+    };
+
 
     return factory;
 
