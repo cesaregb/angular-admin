@@ -2,8 +2,6 @@
 (function(){
 
 class ClientEditComponent {
-  selectedPhone = null;
-
   constructor($stateParams, $state, noty, serviceClients, factoryServices, $confirm, $log) {
     this.$log = $log;
     this.$confirm = $confirm;
@@ -15,38 +13,35 @@ class ClientEditComponent {
     this.client = $stateParams.client;
 
     this.title = "New Client"
-    this.validClient = null;
-    this.settupClient();
+    this.setupClient();
+    this.clientTypes = [];
   }
 
   // load initial client if any...
-  settupClient(){
-    var _this = this;
-    if (this.client != null) {
-      this.newClient = false;
-      this.title = "Edit: " + this.client.name;
+  setupClient(){
+    var t = this;
+    if (t.client != null) {
+      t.newClient = false;
+      t.title = "Edit: " + t.client.name;
     }
 
-
-    this.selectedPhone = null;
-    this.selectedAddress = null;
-    this.selectedPayment = null;
-
-    // set up initial phone
-    if (Boolean(this.client)){
-      if (this.selectedPhone == null
-          && this.client != null
-          && this.client.phoneNumbers != null
-          && this.client.phoneNumbers.length > 0){
-
-        this.selectedPhone = this.client.phoneNumbers[0];
-        this.client.phoneNumbers.forEach(function(item){
-          if (item.prefered){
-            _this.selectedPhone = item;
+    t.factoryServices.getResources('clientType').then(function(result){
+      t.clientTypes = result;
+      if (Boolean(t.client)){
+        t.clientTypes.forEach(function(ct){
+          if (ct.idClientType == t.client.idClientType){
+            t.clientType = ct;
           }
         });
       }
+    });
 
+
+    t.selectedAddress = null;
+    t.selectedPayment = null;
+
+    // set up initial phone
+    if (Boolean(t.client)){
       // set up initial address
       if (this.selectedAddress == null
           && this.client != null
@@ -56,7 +51,7 @@ class ClientEditComponent {
         this.selectedAddress = this.client.addresses[0];
         this.client.addresses.forEach(function(item){
           if (item.prefered ){
-            _this.selectedAddress = item;
+            t.selectedAddress = item;
           }
         });
       }
@@ -70,7 +65,7 @@ class ClientEditComponent {
         this.selectedPayment = this.client.clientPaymentInfos[0];
         this.client.clientPaymentInfos.forEach(function(item){
           if (item.prefered ){
-            _this.selectedPayment = item;
+            t.selectedPayment = item;
           }
         });
       }
@@ -81,12 +76,15 @@ class ClientEditComponent {
         if (Boolean(this.client.addresses)){
           this.client.addresses.forEach(function(item){
             if (item.factura){
-              _this.facturacionAddress = item;
+              t.facturacionAddress = item;
             }
           });
         }
       }
     }
+  }
+  selectClientType(){
+    this.client.idClientType = this.clientType.idClientType;
   }
 
   delete(){
@@ -103,22 +101,6 @@ class ClientEditComponent {
 
   back() {
     this.$state.go('client.all',null , { reload: true });
-  }
-
-  changeDefaultPhone(){
-    var _this = this;
-
-    _this.client.phoneNumbers.forEach(function (item, index, theArray) {
-      if (item.idPhoneNumber ==  _this.selectedPhone.idPhoneNumber){
-        theArray[index].prefered = true;
-        _this.factoryServices.updateResourceCallback('phone', theArray[index], function(){_this.getClient(_this.client.idClient);});
-      }else{
-        if (theArray[index].prefered){
-          theArray[index].prefered = false;
-          _this.factoryServices.updateResourceCallback('phone', theArray[index], function(){_this.getClient(_this.client.idClient);});
-        }
-      }
-    });
   }
 
   changeDefaultAddress(){
@@ -162,26 +144,11 @@ class ClientEditComponent {
     var _this = this;
 
     if (this.clientForm.$valid) {
-
       if (this.newClient){
-
-        // add phone on new client
-        var myClient = this.client;
-        myClient.phoneNumbers = [];
-
-        var phoneNumberTmp = {};
-        phoneNumberTmp.number = this.temporalPhone;
-        phoneNumberTmp.prefered = true;
-        myClient.phoneNumbers.push(phoneNumberTmp);
-
-        // not abstracting this piece cuz its only used here.
-        _this.factoryServices.saveResource('client', myClient ).then( function(data){ // saving new
+        _this.factoryServices.saveResource('clients', this.client ).then( function(data){
           _this.client = data;
-          _this.settupClient();
-          // _this.$state.go('client', { reload: true });
-        }),function(error){ // error saving new
-          console.log("Error saving client " + JSON.stringify(error));
-        };
+          _this.setupClient();
+        });
 
       }else{
         _this.saveExistingClient();
@@ -210,11 +177,8 @@ class ClientEditComponent {
 
   saveExistingClient(){
     var _this = this;
-    _this.factoryServices.updateResource('client', _this.client ).then(function(data){ // updating existing
-      // _this.$state.go('client', { reload: true });
-    }),function(error){ // error saving existing
-      console.log("Error updating client: " + JSON.stringify(error));
-    };
+    _this.factoryServices.updateResource('client', _this.client ).then(function(data){
+    });
   }
 
   createOrder(){

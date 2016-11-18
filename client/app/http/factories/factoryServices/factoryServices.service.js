@@ -4,101 +4,138 @@ angular.module('processAdminApp')
   .factory('factoryServices', function (factoryCommon, noty, $log, $q, $filter) {
     const ACTIVE = 0;
     var factory = {};
+
     var uris = {
-      services: {
-        uri: '/services'
-      },
-      serviceType: {
-        uri: '/services/service-type'
-      },
-      serviceTypeSpec: {
-        uri: '/services/service-type/service-type-specs'
-      },
-      serviceTypeTask: {
-        uri: '/services/service-type/service-type-task'
-      },
-      serviceCategory: {
-        uri: '/service-category'
-      },
-      orderType: {
-        uri: '/order/order-type'
-      },
-      orderTypeTask: {
-        uri: '/order/order-type/order-type-task'
-      },
-      orders: {
-        uri: '/orders'
-      },
-      taskType: {
-        uri: '/tasks/task-type'
-      },
-      tasks: {
-        uri: '/tasks'
-      },
-      specs: {
-        uri: '/specs'
-      },
-      specsValue: {
-        uri: '/spec/specs-value'
-      },
-      supplies: {
-        uri: '/supplies'
-      },
-      supplyType: {
-        uri: '/supplies/supply-type'
-      },
-      distanceInfo: {
-        uri: '/distance-info'
-      },
-      appOrder: {
-        uri: '/app-orders'
-      },
-      products: {
-        uri: '/products'
-      },
-      productType: {
-        uri: '/products/productType'
-      },
-      store: {
-        uri: '/store'
-      },
       clients:{
+        name:'clients',
         uri:'/clients'
       },
+      clientType:{
+        name:'clientType',
+        uri:'/clients/client-type'
+      },
       phoneNumber:{
+        name:'phoneNumber',
         uri:'/clients/phone-number'
       },
       address:{
+        name:'adadadadadadadasd',
         uri:'/clients/address'
       },
       clientPaymentInfo:{
+        name:'adadadadadadadasd',
         uri:'/clients/client-payment-info'
       },
       clientBag: {
+        name:'adadadadadadadasd',
         uri: '/client-bag'
       },
+      services: {
+        name:'services',
+        uri: '/services'
+      },
+      serviceType: {
+        name:'adadadadadadadasd',
+        uri: '/services/service-type'
+      },
+      serviceTypeSpec: {
+        name:'adadadadadadadasd',
+        uri: '/services/service-type/service-type-specs'
+      },
+      serviceTypeTask: {
+        name:'adadadadadadadasd',
+        uri: '/services/service-type/service-type-task'
+      },
+      serviceCategory: {
+        name:'adadadadadadadasd',
+        uri: '/service-category'
+      },
+      orderType: {
+        name:'adadadadadadadasd',
+        uri: '/order/order-type'
+      },
+      orderTypeTask: {
+        name:'adadadadadadadasd',
+        uri: '/order/order-type/order-type-task'
+      },
+      orders: {
+        name:'adadadadadadadasd',
+        uri: '/orders'
+      },
+      taskType: {
+        name:'adadadadadadadasd',
+        uri: '/tasks/task-type'
+      },
+      tasks: {
+        name:'adadadadadadadasd',
+        uri: '/tasks'
+      },
+      specs: {
+        name:'adadadadadadadasd',
+        uri: '/specs'
+      },
+      specsValue: {
+        name:'adadadadadadadasd',
+        uri: '/spec/specs-value'
+      },
+      supplies: {
+        name:'adadadadadadadasd',
+        uri: '/supplies'
+      },
+      supplyType: {
+        name:'adadadadadadadasd',
+        uri: '/supplies/supply-type'
+      },
+      distanceInfo: {
+        name:'adadadadadadadasd',
+        uri: '/distance-info'
+      },
+      appOrder: {
+        name:'adadadadadadadasd',
+        uri: '/app-orders'
+      },
+      products: {
+        name:'adadadadadadadasd',
+        uri: '/products'
+      },
+      productType: {
+        name:'adadadadadadadasd',
+        uri: '/products/productType'
+      },
+      store: {
+        name:'adadadadadadadasd',
+        uri: '/store'
+      },
       routes: {
+        name:'adadadadadadadasd',
         uri: '/routes'
       },
       calendarRoutes: {
+        name:'adadadadadadadasd',
         uri: '/calendarRoutes'
       },
       stops: {
+        name:'adadadadadadadasd',
         uri: '/stops'
       },
       employees: {
+        name:'adadadadadadadasd',
         uri: '/employees'
       },
       employeeType: {
+        name:'adadadadadadadasd',
         uri: '/employees/employee-type'
       },
       assetType: {
+        name:'adadadadadadadasd',
         uri: '/asset-type'
       },
       assets: {
+        name:'adadadadadadadasd',
         uri: '/assets'
       }
     };
+    factory.uris = uris;
 
     factory.getResources = function (idUri) {
       return factoryCommon.get(uris[idUri].uri);
@@ -249,6 +286,13 @@ angular.module('processAdminApp')
     factory.getClientByFilter = function (object) {
       var uri = uris.client.uri + '/clients/byFilters';
       return factoryCommon.post(object, uri);
+    };
+    factory.getClientByIdAddress = function (idAddress) {
+      return factoryCommon.get(uris.clients.uri + '/addressId/' + idAddress);
+    };
+
+    factory.getAddressByStop = function (type, id) {
+      return factoryCommon.get(uris.stops.uri + '/address/' + type + '/' + id);
     };
 
 

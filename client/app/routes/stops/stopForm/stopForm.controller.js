@@ -107,10 +107,9 @@
       value: 1
     }];
 
-    constructor($scope, $stateParams, factoryServices, factoryServices, $timeout, $state, noty, AddressHandler, $log, $uibModal, $confirm) {
+    constructor($scope, $stateParams, factoryServices, $timeout, $state, noty, AddressHandler, $log, $uibModal, $confirm) {
       this.$log = $log;
       this.$confirm = $confirm;
-      this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.$scope = $scope;
       this.$timeout = $timeout;
@@ -214,11 +213,11 @@
       _this.stop.idAddress = _this.stop.address.idAddress;
 
       if (_this.stop.idStops != null && _this.stop.idStops > 0) {
-        _this.factoryServices.updateStopCallback(_this.stop, function() {
+        _this.factoryServices.updateResourceCallback('stop', _this.stop, function() {
           _this.back();
         });
       } else {
-        _this.factoryServices.saveStopCallback(_this.stop, function() {
+        _this.factoryServices.saveResourceCallback('stop', _this.stop, function() {
           _this.back();
         });
       }
@@ -251,7 +250,7 @@
           text: 'Are you sure you want to delete?'
         })
         .then(function() {
-          _this.factoryServices.deleteStop(_this.stop).then(function(info) {
+          _this.factoryServices.deleteResource('stop', _this.stop).then(function(info) {
             _this.back();
           });
         });
