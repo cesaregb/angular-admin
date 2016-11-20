@@ -19,7 +19,7 @@ angular.module('processAdminApp')
         uri:'/clients/phone-number'
       },
       address:{
-        name:'adadadadadadadasd',
+        name:'address',
         uri:'/clients/address'
       },
       clientPaymentInfo:{

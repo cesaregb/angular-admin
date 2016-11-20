@@ -4,7 +4,8 @@ angular.module('processAdminApp')
   .factory('formlyForms', function() {
     var factory = {};
 
-    factory.serviceType = [{
+    factory.serviceType = [
+      {
       key: 'name',
       type: 'input',
       templateOptions: {
@@ -44,7 +45,8 @@ angular.module('processAdminApp')
       }
     }];
 
-    factory.orderType = [{
+    factory.orderType = [
+      {
       key: 'name',
       type: 'input',
       templateOptions: {
@@ -78,6 +80,64 @@ angular.module('processAdminApp')
           "name": "Recojer/Entregar",
           "value": 3
         }]
+      }
+    }];
+
+    factory.addressFields = [
+      {
+      key: 'country',
+      type: 'horizontalInput',
+      defaultValue: 'Mexico',
+      templateOptions: {
+        type: 'text',
+        label: 'Pais'
+      }
+    }, {
+      key: 'state',
+      type: 'horizontalInput',
+      defaultValue: 'Jalisco',
+      templateOptions: {
+        type: 'text',
+        label: 'Estado'
+      }
+    }, {
+      key: 'zipcode',
+      type: 'horizontalInput',
+      templateOptions: {
+        type: 'text',
+        label: 'Codigo Postal'
+      }
+    }, {
+      key: 'city',
+      type: 'horizontalInput',
+      defaultValue: 'Guadalajara',
+      templateOptions: {
+        type: 'text',
+        label: 'Ciudad',
+        required: true
+      }
+    }, {
+      key: 'address',
+      type: 'horizontalInput',
+      templateOptions: {
+        type: 'text',
+        label: 'Calle y Numero',
+        required: true
+      }
+    }, {
+      key: 'address2',
+      type: 'horizontalInput',
+      templateOptions: {
+        type: 'text',
+        label: 'Colonia',
+        required: true
+      }
+    }, {
+      key: 'comments',
+      type: 'horizontalInput',
+      templateOptions: {
+        type: 'text',
+        label: 'Commentarios'
       }
     }];
 

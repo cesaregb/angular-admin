@@ -23,7 +23,7 @@
 
     getClientInfo() {
       var _this = this;
-      _this.factoryServices.getResourceById('client', this.client.idClient).then(function(response) {
+      _this.factoryServices.getResourceById('clients', this.client.idClient).then(function(response) {
           _this.client = response;
         }),
         function(err) {}
@@ -45,7 +45,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteResource('address', address).then(function(info){
+        _this.factoryServices.deleteResource('address', address.idAddress).then(function(){
           _this.back();
         });
       });

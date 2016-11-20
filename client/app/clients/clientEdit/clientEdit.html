@@ -69,8 +69,7 @@
                 <label class="col-md-4 control-label" for="lastName">Apellido *</label>
                 <div class="col-md-6">
                   <input id="lastName" name="lastName" type="text" class="form-control input-md" required
-                    ng-model="$cn.client.lastName" ng-minlength="3">
-                  <p ng-show="$cn.clientForm.lastName.$error.minlength" class="help-block">Value too short</p>
+                    ng-model="$cn.client.lastName">
                 </div>
               </div>
 
@@ -79,7 +78,7 @@
                 <label class="col-md-4 control-label" for="mobilePhone">Celular</label>
                 <div class="col-md-6">
                   <input id="mobilePhone" name="mobilePhone"
-                         type="text" class="form-control input-md" ng-model="$cn.mobilePhone">
+                         type="text" class="form-control input-md" ng-model="$cn.client.mobilePhone">
                 </div>
               </div>
 
@@ -88,7 +87,7 @@
                 <label class="col-md-4 control-label" for="homePhone">Tel Casa</label>
                 <div class="col-md-6">
                   <input id="homePhone" name="homePhone"
-                         type="text" class="form-control input-md" ng-model="$cn.homePhone">
+                         type="text" class="form-control input-md" ng-model="$cn.client.homePhone">
                 </div>
               </div>
 

@@ -93,7 +93,7 @@ class ClientEditComponent {
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteResource('client', _this.client).then(function(info){
+        _this.factoryServices.deleteResource('clients', _this.client).then(function(info){
           _this.back();
         });
       });
@@ -177,7 +177,7 @@ class ClientEditComponent {
 
   saveExistingClient(){
     var _this = this;
-    _this.factoryServices.updateResource('client', _this.client ).then(function(data){
+    _this.factoryServices.updateResource('clients', _this.client ).then(function(data){
     });
   }
 

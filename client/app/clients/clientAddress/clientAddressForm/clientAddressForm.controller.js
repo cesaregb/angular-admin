@@ -3,114 +3,64 @@
 
   class ClientAddressFormComponent {
 
-    formOptions = {
-      formState: {
-        disabled: true
-      }
-    };
+    constructor($scope, $stateParams, $timeout, $state, noty, AddressHandler, $log, $confirm, factoryServices, googleMapsDirections, formlyForms) {
+      var t = this;
+      // form options, to be updated if the form is new
+      t.formOptions = {};
 
-    addressFields = [{
-      key: 'country',
-      type: 'input',
-      defaultValue: 'Mexico',
-      templateOptions: {
-        type: 'text',
-        label: 'Country'
-      }
-    }, {
-      key: 'state',
-      type: 'input',
-      defaultValue: 'Jalisco',
-      templateOptions: {
-        type: 'text',
-        label: 'State'
-      }
-    }, {
-      key: 'zipcode',
-      type: 'input',
-      templateOptions: {
-        type: 'text',
-        label: 'Zipcode'
-      }
-    }, {
-      key: 'city',
-      type: 'input',
-      defaultValue: 'Guadalajara',
-      templateOptions: {
-        type: 'text',
-        label: 'City',
-        required: true
-      }
-    }, {
-      key: 'address',
-      type: 'input',
-      templateOptions: {
-        type: 'text',
-        label: 'Street and number',
-        required: true
-      }
-    }, {
-      key: 'address2',
-      type: 'input',
-      templateOptions: {
-        type: 'text',
-        label: 'Neigh',
-        required: true
-      }
-    }, {
-      key: 'comments',
-      type: 'input',
-      templateOptions: {
-        type: 'text',
-        label: 'Comments'
-      }
-    }];
+      t.$confirm = $confirm;
+      t.$timeout = $timeout;
+      t.factoryServices = factoryServices;
+      t.$log = $log;
+      t.$scope = $scope;
+      t.AddressHandler = AddressHandler;
+      t.noty = noty;
+      t.addressFields = formlyForms.addressFields;
 
-    constructor($scope, $stateParams, $timeout, $state, noty, AddressHandler, $log, $confirm, factoryServices, googleMapsDirections, constants) {
-      this.$confirm = $confirm;
-      this.factoryServices = factoryServices;
-      this.$log = $log;
-      this.$scope = $scope;
-      this.AddressHandler = AddressHandler;
-      var _this = this;
-      this.noty = noty;
+      // get information from "context"
+      t.client = $stateParams.client;
+      t.$state = $state;
+      t.place = null;
 
-
-      this.factoryServices.getResources('distanceInfo').then(function(response){
-        _this.distanceInfo = response;
-      });
-
-      this.client = $stateParams.client;
-      this.$state = $state;
-      this.place = null;
-
-      this.address = $stateParams.address;
-      this.factoryServices = factoryServices;
-      if (this.client == null) {
-        this.$state.go('client.all', null, {
-          reload: true
-        });
+      t.address = $stateParams.address;
+      t.factoryServices = factoryServices;
+      if (t.client == null) { // redirect
+        t.$state.go('client.all', null, { reload: true });
       } else {
-        this.title = "New address";
-        this.newAddress = true;
-        if (this.address != null && this.address.address != null) {
-          this.newAddress = false;
-          this.title = "Edit address";
+        t.showMap = false;
+        if (t.address != null && t.address.address != null) {
+          t.title = "Direccion Existente";
+          t.calculateDistancePrice();
+        }else{
+          t.formOptions.formState = { disabled: true };
+          t.title = "Nueva Direccion";
+          t.fnShowMap();
+          t.updateFormStatus();
         }
-        this.title = this.title + " Client: " + this.client.name
-
-        $timeout(function() {
-          _this.AddressHandler.initMap();
-          _this.AddressHandler.setAddress(_this.address);
-
-          if (_this.address != null && _this.address.idAddress != null) {
-            _this.calculateDistancePrice();
-            _this.AddressHandler.addExistingMarker();
-          }
-
-        }, 100);
+        t.title = t.title + " Client: " + t.client.name;
       }
-      this.updateFormStatus();
+
+      t.getAsyncDep();
+    }
+
+    getAsyncDep(){
+      this.factoryServices.getResources('distanceInfo').then(function(response){
+        this.distanceInfo = response;
+      }.bind(this));
+    }
+
+    fnShowMap(){
+      var t = this;
+      t.showMap = !t.showMap;
+
+      t.$timeout(function() {
+        t.AddressHandler.initMap();
+        t.AddressHandler.setAddress(t.address);
+        if (t.address != null && t.address.idAddress != null) {
+          t.calculateDistancePrice();
+          t.AddressHandler.addExistingMarker();
+        }
+      }, 100);
     }
 
     updateFormStatus() {
@@ -118,8 +68,8 @@
         field.expressionProperties = field.expressionProperties || {};
         field.expressionProperties['templateOptions.disabled'] = 'formState.disabled';
       });
-    }
 
+    }
 
     createCircles() {
       this.AddressHandler.createCircles();
@@ -143,14 +93,11 @@
           }
         });
       }
-      // this.distancePrice = this.AddressHandler.distancePrice;
     }
 
     delete(){
       var _this = this;
-      this.$confirm({
-        text: 'Are you sure you want to delete?'
-      })
+      this.$confirm({ text: 'Are you sure you want to delete?'})
       .then(function() {
         _this.factoryServices.deleteResource('address', _this.address).then(function(info){
           _this.back();
@@ -159,32 +106,22 @@
     }
 
     back() {
-      this.$state.go('client.address', {
-        client: this.client
-      }, {
-        reload: true
-      });
+      this.$state.go('client.address', { client: this.client }, { reload: true });
     }
 
     saveAddress() {
       var _this = this;
       if (_this.address.idAddress != null && _this.address.idAddress > 0) {
-        // update address
-        _this.factoryServices.updateResourceCallback('address', _this.address, function() {
+        _this.factoryServices.updateResource('address', _this.address).then(function() {
           _this.$state.go('client.address', {
             client: _this.client
-          }, {
-            reload: true
-          });
+          }, { reload: true });
         });
       } else {
-        // save new address
-        _this.factoryServices.saveResourceCallback('address' ,_this.address, function() {
+        _this.factoryServices.saveResource('address' ,_this.address).then(function() {
           _this.$state.go('client.address', {
             client: _this.client
-          }, {
-            reload: true
-          });
+          }, { reload: true });
         });
       }
     }
