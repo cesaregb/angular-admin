@@ -4,10 +4,10 @@
   class EmployeeTypeComponent {
     employeeTypes = [];
 
-    constructor($stateParams, $state, noty, factoryGeneral, $confirm, $log, $uibModal) {
+    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal) {
       this.$log = $log;
       this.$confirm = $confirm;
-      this.factoryGeneral = factoryGeneral;
+      this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.noty = noty;
       this.$state = $state;
@@ -17,7 +17,7 @@
 
     getInfo() {
       var _this = this;
-      this.factoryGeneral.getEmployeeTypes().then(function(response) {
+      this.factoryServices.getEmployeeTypes().then(function(response) {
         _this.employeeTypes = response;
       });
     }
@@ -43,12 +43,12 @@
       modalInstance.result.then(function(resultItem) {
         var employeeType = resultItem;
         if (employeeType.idEmployeeType != null && employeeType.idEmployeeType > 0) {
-          _this.factoryGeneral.updateEmployeeTypeCallback(employeeType, function() {
+          _this.factoryServices.updateEmployeeTypeCallback(employeeType, function() {
             _this.getInfo();
           });
         } else {
 
-          _this.factoryGeneral.saveEmployeeTypeCallback(employeeType, function() {
+          _this.factoryServices.saveEmployeeTypeCallback(employeeType, function() {
             _this.getInfo();
           });
         }
@@ -61,7 +61,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryGeneral.deleteEmployeeType(item).then(function(info){
+        _this.factoryServices.deleteEmployeeType(item).then(function(info){
           _this.back();
         });
       });

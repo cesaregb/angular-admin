@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('SupplyModalCtrl', function($scope, factoryGeneral, $uibModalInstance, formItem, $log) {
+  .controller('SupplyModalCtrl', function($scope, factoryServices, $uibModalInstance, formItem, $log) {
 
     $scope.formItem = formItem;
 
@@ -12,7 +12,7 @@ angular.module('processAdminApp')
         // placeholder
       }
 
-      factoryGeneral.getSupplyTypes().then(function(response){
+      factoryServices.getSupplyTypes().then(function(response){
         response.forEach(function(item){
           $scope.parentSelect.push({name : item.name, value: item.idSupplyType});
         });

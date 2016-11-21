@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .factory('AddressHandler', function (noty, $log, factoryServices) {
+  .factory('AddressHandler', function (noty, $log, factoryServices, $timeout) {
     var factory = {};
 
     //********** Routes CRUD
-    factory.circlesTemplates = [{
+    factory.circlesTemplates = [
+      {
       id: 4,
       center: {
         lat: 20.621335,
@@ -76,25 +77,37 @@ angular.module('processAdminApp')
     }];
     factory.circles = [];
 
+    factory.setStore = function(store){
+      // select store for map calcs.
+      factory.tersusLatLng = new google.maps.LatLng(store.lat, store.lng);
+
+      let center = { lat: store.lat, lng: store.lng };
+      factory.circlesTemplates.forEach((it) => {
+        it.center = center;
+      });
+
+    };
+
     factory.resetValues = function(){
       factory.tersusLatLng = new google.maps.LatLng(20.621335, -103.418127);
       factory.circlesVisible = false;
       factory.address = {};
       factory.place = null;
-      factory.map = null;
       factory.markers = [];
       factory.existingMarker = false;
       factory.addressParsed = false;
       factory.distance = 0;
       factory.distancePrice = 0;
-    }
+
+      // these variables settup the env.
+      factory.map = null;
+      factory.initialized = false;
+    };
 
     var distanceInfo = [];
 
-    factory.initMap = function() {
-
-      factory.resetValues();
-
+    factory.initMap = function(address) {
+      // get distanceInfo
       factoryServices.getResources('distanceInfo').then(function(response){
         distanceInfo = response;
         var i = 0;
@@ -104,10 +117,25 @@ angular.module('processAdminApp')
           circleTemplate.radius = 1000 * item.distance;
           factory.circles.push(circleTemplate);
         });
-        $log.info('[initMap] complete fill circleTemplate');
-
       });
 
+      // initialize the component only once, after that only showing and hiding the component is enough
+      if (!factory.initialized){
+        $timeout(function() {
+          initGMaps();
+          if (address != null && address.idAddress != null) {
+            factory.setAddress(address);
+            factory.addExistingMarker();
+          }
+        }, 100);
+      }else{
+        $("#map").show();
+      }
+
+      factory.initialized = true;
+    };
+
+    function initGMaps(){
       // google provided code...
       var map = new google.maps.Map(document.getElementById('map'), {
         center: {
@@ -199,14 +227,15 @@ angular.module('processAdminApp')
 
       factory.map = map;
 
-      google.maps.event.addListener(map, 'click', function(event) {
+      google.maps.event.addListener(factory.map, 'click', function(event) {
         factory.placeMarker(event.latLng);
       });
-    };
+
+    }
 
     factory.setAddress = function(address){
       factory.address = address;
-    }
+    };
 
     factory.addExistingMarker = function () {
       if (factory.address != null && factory.address.lat != null && factory.address.lng != null) {
@@ -225,7 +254,6 @@ angular.module('processAdminApp')
 
 
     factory.placeMarker = function (location) {
-      // console.log("location: " + JSON.stringify(location));
       if (factory.addressParsed) {
         noty.showNoty({
           text: "Please make a search before creating marker.",
@@ -260,7 +288,7 @@ angular.module('processAdminApp')
         factory.address.lat = location.lat();
         factory.address.lng = location.lng();
       }
-    }
+    };
 
     var circleObj = [];
     factory.createCircles = function() {
@@ -289,13 +317,11 @@ angular.module('processAdminApp')
       }
     };
 
-    var addressParsed = false;
-
-
+    // requires to have initialized the tersus address
+    // require to have the endpoint address
     factory.calculateDistancePrice = function(){
       var selectedPlaceLatLng = new google.maps.LatLng(factory.address.lat, factory.address.lng);
       factory.distance = google.maps.geometry.spherical.computeDistanceBetween(factory.tersusLatLng, selectedPlaceLatLng);
-
       if (factory.distance < 2000) {
         factory.distancePrice = 20;
       } else if (factory.distance > 2000 && factory.distance < 4000) {
@@ -305,11 +331,10 @@ angular.module('processAdminApp')
       }
       factory.distance = factory.distance/1000;
       factory.distance = Math.round(factory.distance);
+      return factory.distance; // helper to avoid other call..
+    };
 
-
-    }
-
-    factory.parseAddress = function(callback) {
+    factory.parseAddress = function() {
       var selectedPlaceLatLng = new google.maps.LatLng(factory.address.lat, factory.address.lng);
       factory.distance = google.maps.geometry.spherical.computeDistanceBetween(factory.tersusLatLng, selectedPlaceLatLng);
 
@@ -353,7 +378,7 @@ angular.module('processAdminApp')
           }
         });
       }
-      // callback(factory.address);
+
     };
 
 

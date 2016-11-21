@@ -3,10 +3,10 @@
 
   class ClientAddressComponent {
 
-    constructor($uibModal, $stateParams, $state, noty, factoryClients, $scope, $log, $confirm) {
+    constructor($uibModal, $stateParams, $state, noty, factoryServices, $scope, $log, $confirm) {
       this.$confirm = $confirm;
       this.$log = $log;
-      this.factoryClients = factoryClients;
+      this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.$scope = $scope;
       this.noty = noty;
@@ -23,7 +23,7 @@
 
     getClientInfo() {
       var _this = this;
-      _this.factoryClients.getClientById(this.client.idClient).then(function(response) {
+      _this.factoryServices.getResourceById('clients', this.client.idClient).then(function(response) {
           _this.client = response;
         }),
         function(err) {}
@@ -45,13 +45,13 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryClients.deleteAddress(address).then(function(info){
+        _this.factoryServices.deleteResource('address', address.idAddress).then(function(){
           _this.back();
         });
       });
     }
 
-    back() { 
+    back() {
       this.$state.go('client.address', {
         client: this.client
       }, {

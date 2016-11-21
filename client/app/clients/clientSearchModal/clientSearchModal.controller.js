@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('ClientSearchModalCtrl', function ($scope, factoryClients, clientSearchInfo, serviceClients, $uibModalInstance) {
+  .controller('ClientSearchModalCtrl', function ($scope, factoryServices, clientSearchInfo, serviceClients, $uibModalInstance) {
 
     $scope.clientInfo = null;
     $scope.clientSearchInfo = clientSearchInfo;
@@ -17,7 +17,7 @@ angular.module('processAdminApp')
       var text = $scope.searchText;
       var filter = $scope.searchFilter;
       filterArray.push({'key':filter.value, 'value':text})
-      factoryClients.getClientByFilter(filterArray).then(function(response){
+      factoryServices.getClientByFilter(filterArray).then(function(response){
           $scope.clients = response;
       });
     };

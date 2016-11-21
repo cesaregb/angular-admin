@@ -17,34 +17,30 @@
           Client Form
         </div>
         <div class="panel-body">
-          <div class="row" ng-show="$cn.editMode">
-
-
-            <div class="col-lg-12 pull-right">
-              <div class="pull-right" style="padding: 10px;">
-                <a href="#" ng-click="$cn.openManageSpecsModal($cn.serviceType)"
-                   class="btn btn-info btn-sm">
-                  <span class="glyphicon glyphicon-list-alt"></span>
-                  Specs
-                </a>
-                <a href="#" ng-click="$cn.openManageTaskModal($cn.serviceType)"
-                   class="btn btn-info btn-sm">
-                  <span class="glyphicon glyphicon-tasks"></span>
-                  Tareas
-                </a>
-                <a href="#" ng-click="$cn.openManageProductTypes($cn.serviceType)"
-                   class="btn btn-info btn-sm">
-                  <span class="glyphicon glyphicon-list-alt"></span>
-                  Products
-                </a>
-              </div>
-            </div>
-          </div>
-
+          <!--<div class="row" ng-show="$cn.editMode">-->
+            <!--<div class="col-lg-12 pull-right">-->
+              <!--<div class="pull-right" style="padding: 10px;">-->
+                <!--<a href="#" ng-click="$cn.openManageSpecsModal($cn.serviceType)"-->
+                   <!--class="btn btn-info btn-sm">-->
+                  <!--<span class="glyphicon glyphicon-list-alt"></span>-->
+                  <!--Specs-->
+                <!--</a>-->
+                <!--<a href="#" ng-click="$cn.openManageTaskModal($cn.serviceType)"-->
+                   <!--class="btn btn-info btn-sm">-->
+                  <!--<span class="glyphicon glyphicon-tasks"></span>-->
+                  <!--Tareas-->
+                <!--</a>-->
+                <!--<a href="#" ng-click="$cn.openManageProductTypes($cn.serviceType)"-->
+                   <!--class="btn btn-info btn-sm">-->
+                  <!--<span class="glyphicon glyphicon-list-alt"></span>-->
+                  <!--Products-->
+                <!--</a>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
 
           <form class="form-horizontal" name="$cn.clientForm" ng-submit="$cn.saveClient()" novalidate>
             <fieldset>
-
               <!-- Form Name -->
               <legend>{{$cn.title}}</legend>
 
@@ -55,46 +51,49 @@
                   <input id="name" name="name" type="text" placeholder="name" class="form-control input-md" required
                     ng-model="$cn.client.name" ng-minlength="3">
                   <p ng-show="$cn.clientForm.name.$error.minlength" class="help-block">Value too short</p>
-                  <span class="help-block">Enter user first name</span>
+                </div>
+              </div>
+
+              <!-- Select Basic -->
+              <div class="form-group">
+                <label class="col-md-4 control-label">Tipo de client</label>
+                <div class="col-md-6">
+                  <select class="form-control"
+                          ng-options="ct as ct.name for ct in $cn.clientTypes"
+                          ng-model="$cn.clientType" ng-change="$cn.selectClientType()"></select>
                 </div>
               </div>
 
               <!-- Text input-->
               <div class="form-group" ng-class="{ 'has-error' : $cn.clientForm.lastName.$invalid && !$cn.clientForm.lastName.$pristine }">
-                <label class="col-md-4 control-label" for="lastName">Apellido*</label>
+                <label class="col-md-4 control-label" for="lastName">Apellido *</label>
                 <div class="col-md-6">
                   <input id="lastName" name="lastName" type="text" class="form-control input-md" required
-                    ng-model="$cn.client.lastName" ng-minlength="3">
-                  <p ng-show="$cn.clientForm.lastName.$error.minlength" class="help-block">Value too short</p>
-                  <span class="help-block">Enter user last name</span>
+                    ng-model="$cn.client.lastName">
                 </div>
               </div>
 
               <!-- Text input-->
-              <div class="form-group"
-                  ng-hide="!$cn.newClient" ng-class="{ 'has-error' : $cn.clientForm.phonenumber.$invalid && !$cn.clientForm.phonenumber.$pristine }">
-                <label class="col-md-4 control-label" for="phonenumber">Numero Telefonico*</label>
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="mobilePhone">Celular</label>
                 <div class="col-md-6">
-                  <input id="phonenumber" name="phonenumber" type="text" class="form-control input-md"
-                    ng-model="$cn.temporalPhone" ng-minlength="3">
-                  <p ng-show="$cn.clientForm.phonenumber.$error.minlength" class="help-block">Value too short</p>
+                  <input id="mobilePhone" name="mobilePhone"
+                         type="text" class="form-control input-md" ng-model="$cn.client.mobilePhone">
+                </div>
+              </div>
+
+              <!-- Text input-->
+              <div class="form-group">
+                <label class="col-md-4 control-label" for="homePhone">Tel Casa</label>
+                <div class="col-md-6">
+                  <input id="homePhone" name="homePhone"
+                         type="text" class="form-control input-md" ng-model="$cn.client.homePhone">
                 </div>
               </div>
 
               <!-- Select Basic -->
               <div class="form-group" ng-hide="$cn.newClient">
-                <label class="col-md-4 control-label">Principal telefono</label>
-                <div class="col-md-6">
-                  <select class="form-control"
-                      ng-options="phone as phone.number for phone in $cn.client.phoneNumbers"
-                      ng-model="$cn.selectedPhone" ng-change="$cn.changeDefaultPhone()"></select>
-                </div>
-                <button type="button" class="btn btn-default glyphicon glyphicon-pencil" ui-sref="client.phone({client: $cn.client})"></button>
-              </div>
-
-              <!-- Select Basic -->
-              <div class="form-group" ng-hide="$cn.newClient">
-                <label class="col-md-4 control-label">Principal direccion</label>
+                <label class="col-md-4 control-label">Direccion Principal</label>
                 <div class="col-md-6">
                   <select class="form-control"
                       ng-options="addr as addr.address for addr in $cn.client.addresses"

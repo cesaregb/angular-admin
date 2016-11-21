@@ -3,9 +3,9 @@
 
   class ClientPhoneComponent {
 
-    constructor($uibModal, $stateParams, $state, noty, factoryClients, $confirm) {
+    constructor($uibModal, $stateParams, $state, noty, factoryServices, $confirm) {
       this.$confirm = $confirm;
-      this.factoryClients = factoryClients;
+      this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.noty = noty;
       this.$state = $state;
@@ -21,7 +21,7 @@
 
     getClientInfo() {
       var _this = this;
-      _this.factoryClients.getClientById(this.client.idClient).then(function(response) {
+      _this.factoryServices.getResourceById('client', this.client.idClient).then(function(response) {
           _this.client = response;
         }),
         function(err) {}
@@ -49,26 +49,15 @@
       });
 
       modalInstance.result.then(function(selectedItem) {
-
         var phone = selectedItem;
-        // if (phone.prefered){
-        //
-        //   _this.client.phoneNumbers.forEach(function (item, index, theArray) {
-        //     if( theArray[index].prefered ){
-        //         theArray[index].prefered = false;
-        //         _this.updatePhone(theArray[index], function(){ });
-        //     }
-        //   });
-        // }
-
         if (phone.idPhoneNumber != null && phone.idPhoneNumber > 0) {
           // update phone
-          _this.factoryClients.updatePhoneNumberCallback(phone, function() {
+          _this.factoryServices.updateResourceCallback('phone', phone, function() {
             _this.getClientInfo();
           });
         } else {
           // save new phone
-          _this.factoryClients.savePhoneNumberCallback(phone, function() {
+          _this.factoryServices.updateResourceCallback('phone', phone, function() {
             _this.getClientInfo();
           });
         }
@@ -82,7 +71,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryClients.deletePhoneNumber(phoneNumber).then(function(info){
+        _this.factoryServices.deleteResource('phone', phoneNumber).then(function(info){
           _this.back();
         });
       });

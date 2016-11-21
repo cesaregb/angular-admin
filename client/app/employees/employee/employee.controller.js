@@ -4,10 +4,10 @@
   class EmployeeComponent {
     employees = [];
 
-    constructor($stateParams, $state, noty, factoryGeneral, $confirm, $log, $uibModal) {
+    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal) {
       this.$log = $log;
       this.$confirm = $confirm;
-      this.factoryGeneral = factoryGeneral;
+      this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.noty = noty;
       this.$state = $state;
@@ -17,7 +17,7 @@
 
     getInfo() {
       var _this = this;
-      this.factoryGeneral.getEmployees().then(function(response) {
+      this.factoryServices.getEmployees().then(function(response) {
         _this.employees = response;
 
       });
@@ -45,12 +45,12 @@
       modalInstance.result.then(function(resultItem) {
         var employee = resultItem;
         if (employee.idEmployee != null && employee.idEmployee > 0) {
-          _this.factoryGeneral.updateEmployeeCallback(employee, function() {
+          _this.factoryServices.updateEmployeeCallback(employee, function() {
             _this.getInfo();
           });
         } else {
 
-          _this.factoryGeneral.saveEmployeeCallback(employee, function() {
+          _this.factoryServices.saveEmployeeCallback(employee, function() {
             _this.getInfo();
           });
         }
@@ -63,7 +63,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryGeneral.deleteEmployee(item).then(function(info){
+        _this.factoryServices.deleteEmployee(item).then(function(info){
           _this.back();
         });
       });
