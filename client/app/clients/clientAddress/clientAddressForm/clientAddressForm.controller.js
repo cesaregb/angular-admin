@@ -3,17 +3,22 @@
 
   class ClientAddressFormComponent {
 
-    constructor($scope, $stateParams, $timeout, $state, noty, AddressHandler, $log, $confirm, factoryServices, googleMapsDirections, formlyForms) {
+    constructor($scope, $stateParams, $timeout, $state, noty, AddressHandler, $log,
+                $confirm, factoryServices, formlyForms, $q, constants) {
       var t = this;
       // form options, to be updated if the form is new
       t.formOptions = {};
-
+      t.$q = $q;
+      t.constants = constants;
       t.$confirm = $confirm;
       t.$timeout = $timeout;
       t.factoryServices = factoryServices;
       t.$log = $log;
       t.$scope = $scope;
       t.AddressHandler = AddressHandler;
+      t.AddressHandler.setStore(constants.store);
+      t.AddressHandler.resetValues();
+
       t.noty = noty;
       t.addressFields = formlyForms.addressFields;
 
@@ -30,37 +35,38 @@
         t.showMap = false;
         if (t.address != null && t.address.address != null) {
           t.title = "Direccion Existente";
-          t.calculateDistancePrice();
         }else{
-          t.formOptions.formState = { disabled: true };
+          t.showMap = true;
+          // t.formOptions.formState = { disabled: true };
           t.title = "Nueva Direccion";
           t.fnShowMap();
           t.updateFormStatus();
         }
-        t.title = t.title + " Client: " + t.client.name;
+        t.title += " Client: " + t.client.name;
+
       }
 
       t.getAsyncDep();
     }
 
     getAsyncDep(){
-      this.factoryServices.getResources('distanceInfo').then(function(response){
-        this.distanceInfo = response;
-      }.bind(this));
+      var t = this;
+      let promises = [t.factoryServices.getResources('distanceInfo'), t.factoryServices.getResources('stores')];
+      t.$q.all(promises).then((values) => {
+        t.distanceInfo = values[0];
+        t.stores = values[1];
+        // TODO get Correct Store.
+        t.calculateDistancePrice();
+      });
     }
 
     fnShowMap(){
       var t = this;
-      t.showMap = !t.showMap;
-
-      t.$timeout(function() {
-        t.AddressHandler.initMap();
-        t.AddressHandler.setAddress(t.address);
-        if (t.address != null && t.address.idAddress != null) {
-          t.calculateDistancePrice();
-          t.AddressHandler.addExistingMarker();
-        }
-      }, 100);
+      if (t.showMap){
+        t.AddressHandler.initMap(t.address);
+      }else{
+        $("#map").hide();
+      }
     }
 
     updateFormStatus() {
@@ -68,7 +74,6 @@
         field.expressionProperties = field.expressionProperties || {};
         field.expressionProperties['templateOptions.disabled'] = 'formState.disabled';
       });
-
     }
 
     createCircles() {
@@ -76,22 +81,35 @@
     }
 
     parseAddress() {
-      this.formOptions.formState.disabled = false;
+      // this.formOptions.formState.disabled = false;
       this.AddressHandler.parseAddress();
       this.address = this.AddressHandler.address;
       this.calculateDistancePrice();
     }
 
+    getMarker() {
+      this.AddressHandler.parseAddress();
+      this.address.lat = this.AddressHandler.address.lat;
+      this.address.lng = this.AddressHandler.address.lng;
+      this.calculateDistancePrice();
+    }
+
+    // called by async get distance info method.
     calculateDistancePrice(){
-      var _this = this;
-      this.AddressHandler.calculateDistancePrice();
-      this.distance = this.AddressHandler.distance;
-      if (Boolean(this.distanceInfo)){
-        this.distanceInfo.forEach(function(item){
-          if (_this.distance < item.distance ){
-            _this.distancePrice = item.price;
-          }
-        });
+      var t = this;
+      if(Boolean(t.address) && t.address.idAddress > 0){
+        // probably repeated, but we can be here without init.
+        t.AddressHandler.setAddress(t.address);
+        t.distance = this.AddressHandler.calculateDistancePrice();
+        if (Boolean(this.distanceInfo)){
+          // the more expensive or.. other..
+          t.distancePrice = this.distanceInfo[0].price;
+          this.distanceInfo.forEach(function(item){
+            if (t.distance < item.distance ){
+              t.distancePrice = item.price;
+            }
+          });
+        }
       }
     }
 
@@ -99,7 +117,7 @@
       var _this = this;
       this.$confirm({ text: 'Are you sure you want to delete?'})
       .then(function() {
-        _this.factoryServices.deleteResource('address', _this.address).then(function(info){
+        _this.factoryServices.deleteResource('address', _this.address).then(function(){
           _this.back();
         });
       });
@@ -118,6 +136,12 @@
           }, { reload: true });
         });
       } else {
+        // set store information in case of not provided.
+        if (!Boolean(_this.address.lat)){
+          _this.address.lat = _this.constants.store.lat;
+          _this.address.lng = _this.constants.store.lng;
+        }
+
         _this.factoryServices.saveResource('address' ,_this.address).then(function() {
           _this.$state.go('client.address', {
             client: _this.client

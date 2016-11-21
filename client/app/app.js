@@ -67,7 +67,7 @@ angular.module('processAdminApp', [
       wrapper: ['horizontalBootstrapCheckbox', 'bootstrapHasError']
     });
 
-  }).run(function ($location, $log, constants, $rootScope, Auth) {
+  }).run(function ($location, $log, constants, $rootScope, Auth, factoryServices) {
   var url = $location.absUrl();
   if (url.indexOf('localhost') > 0) {
     constants.API_ENDPOINT = constants.LOCAL_API_ENDPOINT;
@@ -76,6 +76,13 @@ angular.module('processAdminApp', [
   } else {
     constants.API_ENDPOINT = constants.PROD_API_ENDPOINT;
   }
+  factoryServices.getResources('stores').then((stores) => {
+    // select the valid store.
+    constants.store = stores[0];
+    $log.info('[run] constants.store.idStore: ' + constants.store.idStore);
+  });
+
+
   $log.info('[run] Services URI: ' + constants.API_ENDPOINT);
 
   $rootScope.$on('$stateChangeStart', function (event, next) {
@@ -86,5 +93,7 @@ angular.module('processAdminApp', [
       }
     });
   });
+
+
 
 });

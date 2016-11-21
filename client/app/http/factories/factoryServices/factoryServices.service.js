@@ -102,9 +102,9 @@ angular.module('processAdminApp')
         name:'adadadadadadadasd',
         uri: '/products/productType'
       },
-      store: {
+      stores: {
         name:'adadadadadadadasd',
-        uri: '/store'
+        uri: '/stores'
       },
       routes: {
         name:'adadadadadadadasd',

@@ -169,9 +169,7 @@
       var _this = this;
       if (!this.mapInitialized) {
         this.mapInitialized = true;
-
         this.$timeout(function() {
-
           _this.AddressHandler.initMap();
           _this.AddressHandler.setAddress(_this.stop.address);
           if (_this.stop.address != null) {
