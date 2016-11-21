@@ -23,7 +23,7 @@ angular.module('processAdminApp', [
   'ui.bootstrap.datetimepicker',
   'dndLists'
 ])
-  .config(function ($urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
+  .config(function ($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, formlyConfigProvider) {
     $urlRouterProvider.otherwise('/');
     $locationProvider.html5Mode(true);
     // configure loading-bar
@@ -32,7 +32,42 @@ angular.module('processAdminApp', [
     cfpLoadingBarProvider.includeSpinner = false;
     // cfpLoadingBarProvider.spinnerTemplate = '<div class="spinning-wheel-container"><div class="spinning-wheel"></div></div>';
 
-  }).run(function ($location, $log, constants, $rootScope, Auth) {
+
+    // set templates here
+    formlyConfigProvider.setWrapper({
+      name: 'horizontalBootstrapLabel',
+      template: [
+        '<label for="{{::id}}" class="col-sm-2 control-label">',
+        '{{to.label}} {{to.required ? "*" : ""}}',
+        '</label>',
+        '<div class="col-sm-8">',
+        '<formly-transclude></formly-transclude>',
+        '</div>'
+      ].join(' ')
+    });
+
+    formlyConfigProvider.setWrapper({
+      name: 'horizontalBootstrapCheckbox',
+      template: [
+        '<div class="col-sm-offset-2 col-sm-8">',
+        '<formly-transclude></formly-transclude>',
+        '</div>'
+      ].join(' ')
+    });
+
+    formlyConfigProvider.setType({
+      name: 'horizontalInput',
+      extends: 'input',
+      wrapper: ['horizontalBootstrapLabel', 'bootstrapHasError']
+    });
+
+    formlyConfigProvider.setType({
+      name: 'horizontalCheckbox',
+      extends: 'checkbox',
+      wrapper: ['horizontalBootstrapCheckbox', 'bootstrapHasError']
+    });
+
+  }).run(function ($location, $log, constants, $rootScope, Auth, factoryServices) {
   var url = $location.absUrl();
   if (url.indexOf('localhost') > 0) {
     constants.API_ENDPOINT = constants.LOCAL_API_ENDPOINT;
@@ -41,15 +76,24 @@ angular.module('processAdminApp', [
   } else {
     constants.API_ENDPOINT = constants.PROD_API_ENDPOINT;
   }
+  factoryServices.getResources('stores').then((stores) => {
+    // select the valid store.
+    constants.store = stores[0];
+    $log.info('[run] constants.store.idStore: ' + constants.store.idStore);
+  });
+
+
   $log.info('[run] Services URI: ' + constants.API_ENDPOINT);
 
   $rootScope.$on('$stateChangeStart', function (event, next) {
     Auth.isLoggedIn(function (loggedIn) {
       if (next.authenticate && !loggedIn) {
-        $log.info('[Accress not granted]' );
+        $log.info('[Accress not granted]');
         $location.path('/login');
       }
     });
   });
+
+
 
 });

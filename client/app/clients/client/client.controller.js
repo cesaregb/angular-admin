@@ -11,10 +11,10 @@ class ClientComponent {
       {name:'Phone Number', value:'phone'}
     ];
 
-  constructor( factoryClients, serviceClients, $state, $log ) {
+  constructor( factoryServices, serviceClients, $state, $log ) {
     this.$state = $state;
     this.$log = $log;
-    this.factoryClients = factoryClients;
+    this.factoryServices = factoryServices;
     this.serviceClients = serviceClients;
     this.client = null;
     this.gatherClients();
@@ -39,7 +39,7 @@ class ClientComponent {
     var applyFilter = {'key':filter.value, 'value':text};
     filterArray.push(applyFilter);
 
-    this.factoryClients.getClientByFilter(filterArray).then(function(response){
+    this.factoryServices.getClientByFilter(filterArray).then(function(response){
         _this.clients = response;
     });
 

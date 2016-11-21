@@ -3,10 +3,10 @@
 
 class CalendarRouteComponent {
 
-  constructor($uibModal, $stateParams, $state, noty, factoryRoutes, $confirm, $log) {
+  constructor($uibModal, $stateParams, $state, noty, factoryServices, $confirm, $log) {
     this.$log = $log;
     this.$confirm = $confirm;
-    this.factoryRoutes = factoryRoutes;
+    this.factoryServices = factoryServices;
     this.$uibModal = $uibModal;
     this.noty = noty;
     this.$state = $state;
@@ -22,7 +22,7 @@ class CalendarRouteComponent {
 
   getRouteInfo() {
     var _this = this;
-    _this.factoryRoutes.getRouteById(this.route.idRoutes).then(function(response) {
+    _this.factoryServices.getResourceById('routes', this.route.idRoutes).then(function(response) {
         _this.route = response;
       }),
       function(err) {}
@@ -53,12 +53,12 @@ class CalendarRouteComponent {
       var calendarRoute = selectedItem;
       if (calendarRoute.idCalendarRoute != null && calendarRoute.idCalendarRoute > 0) {
         // update calendarRoute
-        _this.factoryRoutes.updateCalendarRouteCallback(calendarRoute, function() {
+        _this.factoryServices.updateResourceCallback('calendarRoute', calendarRoute, function() {
           _this.getRouteInfo();
         });
       } else {
         // save new calendarRoute
-        _this.factoryRoutes.saveCalendarRouteCallback(calendarRoute, function() {
+        _this.factoryServices.saveResourceCallback('calendarRoute', calendarRoute, function() {
           _this.getRouteInfo();
         });
       }
@@ -71,7 +71,7 @@ class CalendarRouteComponent {
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryRoutes.deleteCalendarRoute(calendarRoute).then(function(info){
+        _this.factoryServices.deleteResource('calendarRoute', calendarRoute).then(function(info){
           _this.back();
         });
     });

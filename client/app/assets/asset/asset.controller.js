@@ -4,10 +4,10 @@
   class AssetComponent {
     assets = [];
 
-    constructor($stateParams, $state, noty, factoryGeneral, $confirm, $log, $uibModal) {
+    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal) {
       this.$log = $log;
       this.$confirm = $confirm;
-      this.factoryGeneral = factoryGeneral;
+      this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
       this.noty = noty;
       this.$state = $state;
@@ -17,7 +17,7 @@
 
     getInfo() {
       var _this = this;
-      this.factoryGeneral.getAssets().then(function(response) {
+      this.factoryServices.getAssets().then(function(response) {
         _this.assets = response;
 
       });
@@ -45,12 +45,12 @@
       modalInstance.result.then(function(resultItem) {
         var asset = resultItem;
         if (asset.idAsset != null && asset.idAsset > 0) {
-          _this.factoryGeneral.updateAssetCallback(asset, function() {
+          _this.factoryServices.updateAssetCallback(asset, function() {
             _this.getInfo();
           });
         } else {
 
-          _this.factoryGeneral.saveAssetCallback(asset, function() {
+          _this.factoryServices.saveAssetCallback(asset, function() {
             _this.getInfo();
           });
         }
@@ -63,7 +63,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryGeneral.deleteAsset(item).then(function(info){
+        _this.factoryServices.deleteAsset(item).then(function(info){
           _this.back();
         });
       });

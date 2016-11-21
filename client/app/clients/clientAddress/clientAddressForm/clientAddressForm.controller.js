@@ -3,114 +3,73 @@
 
   class ClientAddressFormComponent {
 
-    formOptions = {
-      formState: {
-        disabled: true
-      }
-    };
+    constructor($scope, $stateParams, $timeout, $state, noty, AddressHandler, $log,
+                $confirm, factoryServices, formlyForms, $q, constants) {
+      var t = this;
+      // form options, to be updated if the form is new
+      t.formOptions = {};
+      t.$q = $q;
+      t.constants = constants;
+      t.$confirm = $confirm;
+      t.$timeout = $timeout;
+      t.factoryServices = factoryServices;
+      t.$log = $log;
+      t.$scope = $scope;
+      t.AddressHandler = AddressHandler;
+      t.AddressHandler.setStore(constants.store);
+      t.AddressHandler.resetValues();
 
-    addressFields = [{
-      key: 'country',
-      type: 'input',
-      defaultValue: 'Mexico',
-      templateOptions: {
-        type: 'text',
-        label: 'Country'
-      }
-    }, {
-      key: 'state',
-      type: 'input',
-      defaultValue: 'Jalisco',
-      templateOptions: {
-        type: 'text',
-        label: 'State'
-      }
-    }, {
-      key: 'zipcode',
-      type: 'input',
-      templateOptions: {
-        type: 'text',
-        label: 'Zipcode'
-      }
-    }, {
-      key: 'city',
-      type: 'input',
-      defaultValue: 'Guadalajara',
-      templateOptions: {
-        type: 'text',
-        label: 'City',
-        required: true
-      }
-    }, {
-      key: 'address',
-      type: 'input',
-      templateOptions: {
-        type: 'text',
-        label: 'Street and number',
-        required: true
-      }
-    }, {
-      key: 'address2',
-      type: 'input',
-      templateOptions: {
-        type: 'text',
-        label: 'Neigh',
-        required: true
-      }
-    }, {
-      key: 'comments',
-      type: 'input',
-      templateOptions: {
-        type: 'text',
-        label: 'Comments'
-      }
-    }];
+      t.noty = noty;
+      t.addressFields = formlyForms.addressFields;
 
-    constructor($scope, $stateParams, factoryClients, $timeout, $state, noty, AddressHandler, $log, $confirm, factoryServices, googleMapsDirections, constants) {
-      this.$confirm = $confirm;
-      this.factoryServices = factoryServices;
-      this.$log = $log;
-      this.$scope = $scope;
-      this.AddressHandler = AddressHandler;
-      var _this = this;
-      this.noty = noty;
+      // get information from "context"
+      t.client = $stateParams.client;
+      t.$state = $state;
+      t.place = null;
 
-
-      this.factoryServices.getResources('distanceInfo').then(function(response){
-        _this.distanceInfo = response;
-      });
-
-      this.client = $stateParams.client;
-      this.$state = $state;
-      this.place = null;
-
-      this.address = $stateParams.address;
-      this.factoryClients = factoryClients;
-      if (this.client == null) {
-        this.$state.go('client.all', null, {
-          reload: true
-        });
+      t.address = $stateParams.address;
+      t.factoryServices = factoryServices;
+      if (t.client == null) { // redirect
+        t.$state.go('client.all', null, { reload: true });
       } else {
-        this.title = "New address";
-        this.newAddress = true;
-        if (this.address != null && this.address.address != null) {
-          this.newAddress = false;
-          this.title = "Edit address";
+        // set parent information..
+        t.address.idClient = t.client.idClient;
+
+        t.showMap = false;
+        if (t.address != null && t.address.address != null) {
+          t.title = "Direccion Existente";
+        }else{
+          t.showMap = true;
+          // t.formOptions.formState = { disabled: true };
+          t.title = "Nueva Direccion";
+          t.fnShowMap();
+          t.updateFormStatus();
         }
-        this.title = this.title + " Client: " + this.client.name
+        t.title += " Client: " + t.client.name;
 
-        $timeout(function() {
-          _this.AddressHandler.initMap();
-          _this.AddressHandler.setAddress(_this.address);
-
-          if (_this.address != null && _this.address.idAddress != null) {
-            _this.calculateDistancePrice();
-            _this.AddressHandler.addExistingMarker();
-          }
-
-        }, 100);
       }
-      this.updateFormStatus();
+
+      t.getAsyncDep();
+    }
+
+    getAsyncDep(){
+      var t = this;
+      let promises = [t.factoryServices.getResources('distanceInfo'), t.factoryServices.getResources('stores')];
+      t.$q.all(promises).then((values) => {
+        t.distanceInfo = values[0];
+        t.stores = values[1];
+        // TODO get Correct Store.
+        t.calculateDistancePrice();
+      });
+    }
+
+    fnShowMap(){
+      var t = this;
+      if (t.showMap){
+        t.AddressHandler.initMap(t.address);
+      }else{
+        $("#map").hide();
+      }
     }
 
     updateFormStatus() {
@@ -120,71 +79,76 @@
       });
     }
 
-
     createCircles() {
       this.AddressHandler.createCircles();
     }
 
     parseAddress() {
-      this.formOptions.formState.disabled = false;
+      // this.formOptions.formState.disabled = false;
       this.AddressHandler.parseAddress();
       this.address = this.AddressHandler.address;
       this.calculateDistancePrice();
     }
 
+    getMarker() {
+      this.AddressHandler.parseAddress();
+      this.address.lat = this.AddressHandler.address.lat;
+      this.address.lng = this.AddressHandler.address.lng;
+      this.calculateDistancePrice();
+    }
+
+    // called by async get distance info method.
     calculateDistancePrice(){
-      var _this = this;
-      this.AddressHandler.calculateDistancePrice();
-      this.distance = this.AddressHandler.distance;
-      if (Boolean(this.distanceInfo)){
-        this.distanceInfo.forEach(function(item){
-          if (_this.distance < item.distance ){
-            _this.distancePrice = item.price;
-          }
-        });
+      var t = this;
+      if(Boolean(t.address) && t.address.idAddress > 0){
+        // probably repeated, but we can be here without init.
+        t.AddressHandler.setAddress(t.address);
+        t.distance = this.AddressHandler.calculateDistancePrice();
+        if (Boolean(this.distanceInfo)){
+          // the more expensive or.. other..
+          t.distancePrice = this.distanceInfo[0].price;
+          this.distanceInfo.forEach(function(item){
+            if (t.distance < item.distance ){
+              t.distancePrice = item.price;
+            }
+          });
+        }
       }
-      // this.distancePrice = this.AddressHandler.distancePrice;
     }
 
     delete(){
       var _this = this;
-      this.$confirm({
-        text: 'Are you sure you want to delete?'
-      })
+      this.$confirm({ text: 'Are you sure you want to delete?'})
       .then(function() {
-        _this.factoryClients.deleteAddress(_this.address).then(function(info){
+        _this.factoryServices.deleteResource('address', _this.address).then(function(){
           _this.back();
         });
       });
     }
 
     back() {
-      this.$state.go('client.address', {
-        client: this.client
-      }, {
-        reload: true
-      });
+      this.$state.go('client.address', { client: this.client }, { reload: true });
     }
 
     saveAddress() {
       var _this = this;
       if (_this.address.idAddress != null && _this.address.idAddress > 0) {
-        // update address
-        _this.factoryClients.updateAddressCallback(_this.address, function() {
+        _this.factoryServices.updateResource('address', _this.address).then(function() {
           _this.$state.go('client.address', {
             client: _this.client
-          }, {
-            reload: true
-          });
+          }, { reload: true });
         });
       } else {
-        // save new address
-        _this.factoryClients.saveAddressCallback(_this.address, function() {
+        // set store information in case of not provided.
+        if (!Boolean(_this.address.lat)){
+          _this.address.lat = _this.constants.store.lat;
+          _this.address.lng = _this.constants.store.lng;
+        }
+
+        _this.factoryServices.saveResource('address' ,_this.address).then(function() {
           _this.$state.go('client.address', {
             client: _this.client
-          }, {
-            reload: true
-          });
+          }, { reload: true });
         });
       }
     }

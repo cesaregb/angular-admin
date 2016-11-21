@@ -16,7 +16,7 @@ angular.module('processAdminApp')
 
     $scope.getRoute = function( id ){
       var _this = this;
-      this.factoryRoutes.getRouteById(id).then(function(data){
+      this.factoryServices.getRouteById(id).then(function(data){
         _this.route = data;
       });
     }
