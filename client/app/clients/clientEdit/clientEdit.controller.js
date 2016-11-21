@@ -93,9 +93,8 @@ class ClientEditComponent {
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteResource('clients', _this.client).then(function(info){
-          _this.back();
-        });
+        _this.factoryServices.deleteResource('clients', _this.client.idClient)
+          .then(function(){ _this.back(); });
       });
   }
 
@@ -133,19 +132,14 @@ class ClientEditComponent {
     });
   }
 
-  getClient(id){
-    // var _this = this;
-    // this.factoryServices.getClientById(id).then(function(data){
-    //   _this.client = data;
-    // });
-  }
+  getClient(id){ }
 
   saveClient(){
     var _this = this;
 
     if (this.clientForm.$valid) {
       if (this.newClient){
-        _this.factoryServices.saveResource('clients', this.client ).then( function(data){
+        _this.factoryServices.saveResource('clients', this.client).then( (data) => {
           _this.client = data;
           _this.setupClient();
         });

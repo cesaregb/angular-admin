@@ -32,6 +32,9 @@
       if (t.client == null) { // redirect
         t.$state.go('client.all', null, { reload: true });
       } else {
+        // set parent information..
+        t.address.idClient = t.client.idClient;
+
         t.showMap = false;
         if (t.address != null && t.address.address != null) {
           t.title = "Direccion Existente";
