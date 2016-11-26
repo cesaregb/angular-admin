@@ -86,6 +86,7 @@ angular.module('processAdminApp', [
   $log.info('[run] Services URI: ' + constants.API_ENDPOINT);
 
   $rootScope.$on('$stateChangeStart', function (event, next) {
+
     Auth.isLoggedIn(function (loggedIn) {
       if (next.authenticate && !loggedIn) {
         $log.info('[Accress not granted]');
