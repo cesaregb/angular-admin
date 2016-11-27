@@ -36,6 +36,7 @@ class MainController {
 angular.module('processAdminApp')
   .component('main', {
     templateUrl: 'app/main/main.html',
+    authenticate: true,
     controller: MainController
   });
 

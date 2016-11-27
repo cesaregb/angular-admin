@@ -43,9 +43,10 @@ User.find({}).remove()
   .then(() => {
     User.create({
       provider: 'local',
-      name: 'Test User',
-      email: 'test@example.com',
-      password: 'test'
+      role: 'admin',
+      name: 'Cesar Gonzalez',
+      email: 'cesar@tersuslavanderia.com',
+      password: 'ABCD123'
     }, {
       provider: 'local',
       role: 'admin',
@@ -55,9 +56,21 @@ User.find({}).remove()
     }, {
       provider: 'local',
       role: 'user',
-      name: 'User',
+      name: 'Lety',
+      email: 'lety@tersuslavanderia.com',
+      password: '123abc'
+    }, {
+      provider: 'local',
+      role: 'user',
+      name: 'user',
       email: 'user@tersuslavanderia.com',
-      password: 'user'
+      password: 'tersuss'
+    }, {
+      provider: 'local',
+      role: 'user',
+      name: 'Blanca',
+      email: 'blanca@tersuslavanderia.com',
+      password: 'abc123'
     })
     .then(() => {
       console.log('finished populating users');

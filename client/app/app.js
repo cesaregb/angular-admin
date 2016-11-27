@@ -69,31 +69,41 @@ angular.module('processAdminApp', [
 
   }).run(function ($location, $log, constants, $rootScope, Auth, factoryServices) {
   var url = $location.absUrl();
+  $log.info('[info] url: ' + url);
   if (url.indexOf('localhost') > 0) {
     constants.API_ENDPOINT = constants.LOCAL_API_ENDPOINT;
+
   } else if (url.indexOf('52.6.82.228') > 0) { // dev elastic ip "52.6.82.228"
     constants.API_ENDPOINT = constants.DEV_API_ENDPOINT;
+
   } else {
     constants.API_ENDPOINT = constants.PROD_API_ENDPOINT;
+
   }
+
   factoryServices.getResources('stores').then((stores) => {
     // select the valid store.
     constants.store = stores[0];
     $log.info('[run] constants.store.idStore: ' + constants.store.idStore);
   });
 
-
-  $log.info('[run] Services URI: ' + constants.API_ENDPOINT);
-
   $rootScope.$on('$stateChangeStart', function (event, next) {
+    // SET AUTH FOR ALL THE APP
+    // we may require to skip some screens.
+    var flag = true || (next.authenticate);
+
     Auth.isLoggedIn(function (loggedIn) {
-      if (next.authenticate && !loggedIn) {
-        $log.info('[Accress not granted]');
+
+      if (flag && !loggedIn) {
+        $log.info('[run] Accress not granted');
         $location.path('/login');
+      }else{
+        if (url.includes('login')){
+          $location.path('/main');
+        }
       }
+
     });
   });
-
-
 
 });

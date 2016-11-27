@@ -10,6 +10,8 @@ class LoginController {
     this.$state = $state;
     this.$window = $window;
     this.$location = $location;
+
+    this.user.email = "user@tersuslavanderia.com";
   }
 
   login(form) {
