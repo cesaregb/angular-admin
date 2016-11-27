@@ -51,6 +51,7 @@ angular.module('processAdminApp')
   .component('client', {
     templateUrl: 'app/clients/client/client.html',
     controller: ClientComponent,
+    authenticate: true,
     controllerAs: '$cn'
   });
 
