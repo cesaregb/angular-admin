@@ -14,5 +14,7 @@ angular.module('processAdminApp.constants')
 
     factory.store = {};
 
+    factory.sodAuthToken = "";
+
     return factory;
   });

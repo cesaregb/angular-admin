@@ -27,6 +27,7 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
       })
         .then(res => {
           $cookies.put('token', res.data.token);
+          $cookies.put('sodAuthToken', res.data.sodAuthToken);
           currentUser = User.get();
           return currentUser.$promise;
         })
@@ -46,6 +47,7 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
      */
     logout() {
       $cookies.remove('token');
+      $cookies.remove('sodAuthToken');
       currentUser = {};
     },
 

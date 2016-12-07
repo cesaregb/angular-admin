@@ -13,7 +13,7 @@ class NavbarController {
 
   searchOrder(){
     if (!Boolean(this.orderSearch)){
-      this.messageHandler.showError('Plese enter the order number to search')
+      this.messageHandler.showError('Please enter the order number to search')
     }else{
 
       // search...
@@ -29,15 +29,18 @@ class NavbarController {
     var _this = this;
     Auth.isLoggedIn(function(result){
       this.isLogged = result;
-      if (Auth.isAdmin()){
-        this.factoryUtils.getMenuByAccessLevel(1).then(function(result){
-          _this.menu = result;
-        });
-      }else{
-        this.factoryUtils.getMenuByAccessLevel(2).then(function(result){
-          _this.menu = result;
-        });
+      if (this.isLogged){
+        if (Auth.isAdmin()){
+          this.factoryUtils.getMenuByAccessLevel(1).then(function(result){
+            _this.menu = result;
+          });
+        }else{
+          this.factoryUtils.getMenuByAccessLevel(2).then(function(result){
+            _this.menu = result;
+          });
+        }
       }
+
     }.bind(this));
 
   }
