@@ -4,6 +4,7 @@ import express from 'express';
 import passport from 'passport';
 import {signToken} from '../auth.service';
 
+import config from '../../config/environment';
 import http from 'http';
 
 
@@ -21,17 +22,14 @@ router.post('/', function(req, res, next) {
 
     var token = signToken(user._id, user.role);
 
-    //BE token
-    var sodServiceUrl = process.env.SOD_SERVICES_URL = process.env.SOD_SERVICES_URL || '127.0.0.1';
-    var sodServicePort = process.env.SOD_SERVICES_PORT = process.env.SOD_SERVICES_PORT || '8080';
-    var sodServiceUser = process.env.SOD_SERVICES_USER = process.env.SOD_SERVICES_USER || 'user';
-    var sodServicePassword = process.env.SOD_SERVICES_PASSWORD = process.env.SOD_SERVICES_PASSWORD || 'user';
+    var sodServicesEndpoint = 'http://' + config.sodInfo.serviceDomain + ':' + config.sodInfo.servicePort + '/api';
 
+    // TODO how should we create the process_admin????
     var options = {
-      host: sodServiceUrl,
+      host: config.sodInfo.serviceDomain,
       path: '/api/auth/app/process_admin',
-      port: sodServicePort,
-      auth: sodServiceUser + ':' + sodServicePassword,
+      port: config.sodInfo.servicePort,
+      auth: config.sodInfo.serviceUser + ':' + config.sodInfo.servicePassword,
       method: 'POST'
     };
 
@@ -42,15 +40,23 @@ router.post('/', function(req, res, next) {
       });
 
       response.on('end', function () {
-        var jsonCnt = JSON.parse(str);
+        let jsonCnt = JSON.parse(str);
         console.log('[BE Server auth] jsonCnt: ' + JSON.stringify(jsonCnt.token, null, 2));
-        var sodAuthToken = jsonCnt.token;
+        let sodAuthToken = jsonCnt.token;
+
+        // set token in config, to be used on sod calls.
+        config.sodInfo.token = sodAuthToken;
+
         res.json({
           token,
-          sodAuthToken: sodAuthToken
+          sodAuthToken: sodAuthToken,
+          sodServicesEndpoint: sodServicesEndpoint
         });
       });
+
+
     };
+
 
     var ask4Token = http.request(options, callback);
     //This is the data we are posting, it needs to be a string or a buffer

@@ -21,9 +21,10 @@ angular.module('processAdminApp', [
   'angular-loading-bar',
   'ngTable',
   'ui.bootstrap.datetimepicker',
-  'dndLists'
+  'dndLists',
+  'LocalStorageModule'
 ])
-  .config(function ($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, formlyConfigProvider, $httpProvider) {
+  .config(function ($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, formlyConfigProvider) {
     $urlRouterProvider.otherwise('/');
     $locationProvider.html5Mode(true);
     // configure loading-bar
@@ -67,23 +68,12 @@ angular.module('processAdminApp', [
       wrapper: ['horizontalBootstrapCheckbox', 'bootstrapHasError']
     });
 
-    // auth configuration
-    // $httpProvider.defaults.headers.common['Authorization'] = 'Basic ' + auth;
+  })
+  .run(function ($location, $log, appContext, $rootScope, Auth, constants) {
 
-  }).run(function ($location, $log, constants, $rootScope, Auth) {
     var url = $location.absUrl();
-    $log.info('[info] url: ' + url);
-    if (url.indexOf('localhost') > 0) {
-      constants.API_ENDPOINT = constants.LOCAL_API_ENDPOINT;
 
-    } else if (url.indexOf('52.6.82.228') > 0) { // dev elastic ip "52.6.82.228"
-      constants.API_ENDPOINT = constants.DEV_API_ENDPOINT;
-
-    } else {
-      constants.API_ENDPOINT = constants.PROD_API_ENDPOINT;
-
-    }
-
+    $log.info('[info] API_ENDPOINT: ' + constants.API_ENDPOINT);
     $rootScope.$on('$stateChangeStart', function (event, next) {
       // SET AUTH FOR ALL THE APP
       // we may require to skip some screens.
@@ -92,26 +82,18 @@ angular.module('processAdminApp', [
       Auth.isLoggedIn(function (loggedIn) {
 
         if (flag && !loggedIn) {
-
           $log.info('[run] Access not granted');
           $location.path('/login');
 
         }else{
-
           // once is logged...
-          this.factoryServices.getResources('stores').then((stores) => {
-            // select the valid store.
-            this.constants.store = stores[0];
-            this.$log.info('[run] constants.store.idStore: ' + this.constants.store.idStore);
-          });
 
+          appContext.initializeStore();
 
           if (url.includes('login')){
             $location.path('/main');
           }
-
         }
-
       });
 
     });

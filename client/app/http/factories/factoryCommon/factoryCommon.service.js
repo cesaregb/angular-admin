@@ -1,13 +1,9 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .factory('factoryCommon', function ($http, $q, constants, messageHandler, $httpProvider) {
+  .factory('factoryCommon', function ($http, $q, constants, messageHandler, $log) {
 
     var factory = {};
-
-    factory.authenticateRequests = function(){
-      $httpProvider.defaults.headers.common['Authorization'] = 'Bearer ' + constants.sodAuthToken;
-    }
 
     factory.post = function( data, url ) {
       var deferred = $q.defer();

@@ -1,19 +1,17 @@
 'use strict';
 
 class LoginController {
-  constructor(Auth, $state, $location, $window, factoryServices, constants, $log, processAdminApp) {
+  constructor(Auth, $state, factoryServices, constants, $log, factoryCommon, appContext) {
     this.user = {};
     this.errors = {};
     this.submitted = false;
-
     this.Auth = Auth;
     this.$state = $state;
-    this.$window = $window;
-    this.$location = $location;
-
     this.constants = constants;
     this.factoryServices = factoryServices;
     this.$log = $log;
+    this.factoryCommon = factoryCommon;
+    this.appContext = appContext;
 
     this.user.email = "user@tersuslavanderia.com";
   }
@@ -26,19 +24,15 @@ class LoginController {
         password: this.user.password
       })
       .then((result) => {
-
-        this.$log.info('[abc] result: ' + JSON.stringify(result, null, 2));
-
-        // set auth token
-        var sodAuthToken = $cookies.get('sodAuthToken');
-        if (Boolean(sodAuthToken)){
-          constants.sodAuthToken = sodAuthToken;
-          processAdminApp.authenticateRequests(constants.sodAuthToken);
-        }
+        this.$log.info('[abc] result: ' + result);
 
         // Logged in, redirect to home
-        this.$location.path('/');
-        this.$window.location.reload();
+        var redirect = true;
+        if ( redirect ){
+          this.appContext.initializeAppMenu();
+          this.$state.go('main', null , { reload: true });
+        }
+
         // this.$state.go('main', null , { reload: true });
       })
       .catch(err => {
