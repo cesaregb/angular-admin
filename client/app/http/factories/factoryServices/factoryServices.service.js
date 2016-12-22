@@ -23,11 +23,9 @@ angular.module('processAdminApp')
         uri:'/clients/address'
       },
       clientPaymentInfo:{
-        name:'adadadadadadadasd',
         uri:'/clients/client-payment-info'
       },
       clientBag: {
-        name:'adadadadadadadasd',
         uri: '/client-bag'
       },
       services: {
@@ -35,103 +33,78 @@ angular.module('processAdminApp')
         uri: '/services'
       },
       serviceType: {
-        name:'adadadadadadadasd',
         uri: '/services/service-type'
       },
       serviceTypeSpec: {
-        name:'adadadadadadadasd',
         uri: '/services/service-type/service-type-specs'
       },
       serviceTypeTask: {
-        name:'adadadadadadadasd',
         uri: '/services/service-type/service-type-task'
       },
       serviceCategory: {
-        name:'adadadadadadadasd',
         uri: '/service-category'
       },
       orderType: {
-        name:'adadadadadadadasd',
         uri: '/order/order-type'
       },
       orderTypeTask: {
-        name:'adadadadadadadasd',
         uri: '/order/order-type/order-type-task'
       },
       orders: {
-        name:'adadadadadadadasd',
         uri: '/orders'
       },
       taskType: {
-        name:'adadadadadadadasd',
         uri: '/tasks/task-type'
       },
       tasks: {
-        name:'adadadadadadadasd',
         uri: '/tasks'
       },
       specs: {
-        name:'adadadadadadadasd',
         uri: '/specs'
       },
       specsValue: {
-        name:'adadadadadadadasd',
         uri: '/spec/specs-value'
       },
       supplies: {
-        name:'adadadadadadadasd',
         uri: '/supplies'
       },
       supplyType: {
-        name:'adadadadadadadasd',
         uri: '/supplies/supply-type'
       },
       distanceInfo: {
-        name:'adadadadadadadasd',
         uri: '/distance-info'
       },
       appOrder: {
-        name:'adadadadadadadasd',
         uri: '/app-orders'
       },
       products: {
-        name:'adadadadadadadasd',
         uri: '/products'
       },
       productType: {
-        name:'adadadadadadadasd',
         uri: '/products/productType'
       },
       stores: {
-        name:'adadadadadadadasd',
         uri: '/stores'
       },
       routes: {
-        name:'adadadadadadadasd',
         uri: '/routes'
       },
       calendarRoutes: {
-        name:'adadadadadadadasd',
         uri: '/calendarRoutes'
       },
       stops: {
-        name:'adadadadadadadasd',
         uri: '/stops'
       },
       employees: {
-        name:'adadadadadadadasd',
         uri: '/employees'
       },
       employeeType: {
-        name:'adadadadadadadasd',
         uri: '/employees/employee-type'
       },
       assetType: {
-        name:'adadadadadadadasd',
         uri: '/asset-type'
       },
       assets: {
-        name:'adadadadadadadasd',
         uri: '/assets'
       }
     };
@@ -153,24 +126,6 @@ angular.module('processAdminApp')
     };
     factory.deleteResource = function (idUri, idResource) {
       return factoryCommon.delete(uris[idUri].uri + '/' + idResource);
-    };
-
-    factory.saveResourceCallback = function (idUri, dataInput, callback) {
-      this.saveResource(idUri, dataInput).then(function (result) {
-        callback();
-      }),
-        function (error) {
-          callback();
-        }
-    };
-
-    factory.updateResourceCallback = function (idUri, dataInput, callback) {
-      this.updateResource(idUri, dataInput).then(function (result) {
-        callback();
-      }),
-        function (error) {
-          callback();
-        }
     };
 
     // End General

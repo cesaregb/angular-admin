@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .factory('factoryCommon', function ($http, $q, constants, messageHandler) {
+  .factory('factoryCommon', function ($http, $q, constants, messageHandler, $log) {
 
     var factory = {};
 

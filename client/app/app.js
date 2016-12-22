@@ -21,17 +21,18 @@ angular.module('processAdminApp', [
   'angular-loading-bar',
   'ngTable',
   'ui.bootstrap.datetimepicker',
-  'dndLists'
+  'dndLists',
+  'LocalStorageModule'
 ])
-  .config(function ($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, formlyConfigProvider) {
+  .config(function ($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, formlyConfigProvider, localStorageServiceProvider) {
     $urlRouterProvider.otherwise('/');
     $locationProvider.html5Mode(true);
     // configure loading-bar
     // cfpLoadingBarProvider.parentSelector = '#loadingContainer';
     // cfpLoadingBarProvider.latencyThreshold = 500;
     cfpLoadingBarProvider.includeSpinner = false;
-    // cfpLoadingBarProvider.spinnerTemplate = '<div class="spinning-wheel-container"><div class="spinning-wheel"></div></div>';
 
+    // cfpLoadingBarProvider.spinnerTemplate = '<div class="spinning-wheel-container"><div class="spinning-wheel"></div></div>';
 
     // set templates here
     formlyConfigProvider.setWrapper({
@@ -67,43 +68,48 @@ angular.module('processAdminApp', [
       wrapper: ['horizontalBootstrapCheckbox', 'bootstrapHasError']
     });
 
-  }).run(function ($location, $log, constants, $rootScope, Auth, factoryServices) {
-  var url = $location.absUrl();
-  $log.info('[info] url: ' + url);
-  if (url.indexOf('localhost') > 0) {
-    constants.API_ENDPOINT = constants.LOCAL_API_ENDPOINT;
+    // set prefix for local storege, best practice
+    localStorageServiceProvider
+      .setPrefix('processAdmin');
 
-  } else if (url.indexOf('52.6.82.228') > 0) { // dev elastic ip "52.6.82.228"
-    constants.API_ENDPOINT = constants.DEV_API_ENDPOINT;
+    // storage last as much as the session
+    localStorageServiceProvider
+      .setStorageType('sessionStorage');
 
-  } else {
-    constants.API_ENDPOINT = constants.PROD_API_ENDPOINT;
+    // avoid storing the info in the cookie, security concern
+    localStorageServiceProvider
+      .setDefaultToCookie(false)
 
-  }
+  })
+  .run(function ($location, $log, $rootScope, Auth, constants, appContext) {
 
-  factoryServices.getResources('stores').then((stores) => {
-    // select the valid store.
-    constants.store = stores[0];
-    $log.info('[run] constants.store.idStore: ' + constants.store.idStore);
-  });
+    var url = $location.absUrl();
 
-  $rootScope.$on('$stateChangeStart', function (event, next) {
-    // SET AUTH FOR ALL THE APP
-    // we may require to skip some screens.
-    var flag = true || (next.authenticate);
+    $log.info('[info] API_ENDPOINT: ' + constants.API_ENDPOINT);
+    $rootScope.$on('$stateChangeStart', function (event, next) {
+      // SET AUTH FOR ALL THE APP
+      // we may require to skip some screens.
+      var flag = true || (next.authenticate);
 
-    Auth.isLoggedIn(function (loggedIn) {
+      Auth.isLoggedIn(function (loggedIn) {
 
-      if (flag && !loggedIn) {
-        $log.info('[run] Accress not granted');
-        $location.path('/login');
-      }else{
-        if (url.includes('login')){
-          $location.path('/main');
+        if (flag && !loggedIn) {
+          $log.info('[run] Access not granted');
+          $location.path('/login');
+
+        }else{
+          // once is logged...
+
+          appContext.getAppContext().then((appContext) => {
+            $log.info('[run] appContext configured! ');
+          });
+
+          if (url.includes('login')){
+            $location.path('/main');
+          }
         }
-      }
+      });
 
     });
-  });
 
 });

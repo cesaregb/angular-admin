@@ -2,7 +2,7 @@
 
 (function() {
 
-function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
+function AuthService($location, $http, $cookies, $q, appConfig, Util, User, constants, $log, appContext) {
   var safeCb = Util.safeCb;
   var currentUser = {};
   var userRoles = appConfig.userRoles || [];
@@ -26,7 +26,11 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
         password: password
       })
         .then(res => {
+          $log.info('[login] res.data: ' + JSON.stringify(res.data, null, 2));
           $cookies.put('token', res.data.token);
+          $cookies.put('sodAuthToken', res.data.sodAuthToken);
+          constants.API_ENDPOINT = res.data.sodServicesEndpoint;
+          constants.sodAuthToken = res.data.sodAuthToken;
           currentUser = User.get();
           return currentUser.$promise;
         })
@@ -46,7 +50,10 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User) {
      */
     logout() {
       $cookies.remove('token');
+      $cookies.remove('sodAuthToken');
       currentUser = {};
+
+      return appContext.distroy();
     },
 
     /**
