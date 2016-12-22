@@ -90,9 +90,10 @@ export function getSODToken(){
         "Authorization" : auth
       }
     }, function (error, response, body) {
-      console.log('[request] response.statusCode : ' + response.statusCode );
+
 
       if (!error && response.statusCode >= 200 && response.statusCode < 300 ) {
+        console.log('[request] response.statusCode : ' + response.statusCode );
         let jsonCnt = JSON.parse(body);
         // set token in config, to be used on sod calls.
         config.sodInfo.token = jsonCnt.token;

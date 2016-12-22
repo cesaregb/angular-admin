@@ -67,16 +67,19 @@ function getStore() {
 
 export function getAppContext(){
   let deferred = Q.defer();
+
   console.log('[getAppContext] init ');
 
   let result = {
     sodEndpoint : config.sodInfo.serviceUrl
   };
 
+  // if token exist...
   Q.fcall(sodServices.getSODToken)
     .then(getMenu)
     .then(function(menu){
         console.log('[getAppContext] getMenu completed ');
+        result.sodToken = config.sodInfo.token;
         result.menu = menu;
         return getStore();
       })
@@ -97,12 +100,25 @@ export function getAppContext(){
 
 // Gets a single AppContext from the DB
 export function show(req, res) {
-  console.log('[show] init ');
-  return getAppContext()
-    .then(handleEntityNotFound(res))
-    .then(respondWithResult(res))
-    .catch(handleError(res));
+  console.log('[show] init');
 
+  // validate if user is logged...
+  console.log('[show] config.token: ' + config.token);
+  if (config.token === 'NA'){
+    console.error('[show] Token non existing, reject request ');
+    return res.status(401).end();
+  }else{
+    return getAppContext()
+      .then(handleEntityNotFound(res))
+      .then(respondWithResult(res))
+      .catch(handleError(res));
+  }
 }
 
+export function logout(req, res) {
+  console.log('[logout] init');
+  config.token = 'NA';
+  config.sodInfo.token = 'NA';
+  return res.status(200).end();
+}
 

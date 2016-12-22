@@ -2,7 +2,7 @@
 
 (function() {
 
-function AuthService($location, $http, $cookies, $q, appConfig, Util, User, constants, $log) {
+function AuthService($location, $http, $cookies, $q, appConfig, Util, User, constants, $log, appContext) {
   var safeCb = Util.safeCb;
   var currentUser = {};
   var userRoles = appConfig.userRoles || [];
@@ -52,6 +52,8 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User, cons
       $cookies.remove('token');
       $cookies.remove('sodAuthToken');
       currentUser = {};
+
+      return appContext.distroy();
     },
 
     /**

@@ -71,7 +71,8 @@ let all = {
     servicePassword: process.env.SOD_SERVICES_PASSWORD = process.env.SOD_SERVICES_PASSWORD || 'user',
     token: 'NA',
     serviceUrl: process.env.SOD_SERVICES_URL = process.env.SOD_SERVICES_URL || 'http://127.0.0.1:8080/api',
-  }
+  },
+  token: 'NA'
 
 };
 

@@ -1,7 +1,7 @@
 'use strict';
 
 class LoginController {
-  constructor(Auth, $state, factoryServices, constants, $log, factoryCommon, appContext) {
+  constructor(Auth, $state, factoryServices, constants, $log, factoryCommon, appContext, $location, $window) {
     this.user = {};
     this.errors = {};
     this.submitted = false;
@@ -12,13 +12,16 @@ class LoginController {
     this.$log = $log;
     this.factoryCommon = factoryCommon;
     this.appContext = appContext;
-
+    this.$location = $location;
+    this.$window = $window;
     this.user.email = "user@tersuslavanderia.com";
   }
 
   login(form) {
     this.submitted = true;
+    var t = this;
     if (form.$valid) {
+
       this.Auth.login({
         email: this.user.email,
         password: this.user.password
@@ -26,11 +29,18 @@ class LoginController {
       .then((result) => {
         this.$log.info('[abc] result: ' + result);
 
+        let reloadFn = function(){
+          // $state.go(referrer);
+          // $location.path('/login');
+          // this.$state.go('main', null , { reload: true });
+          t.$location.path('/');
+          t.$window.location.reload();
+        };
+
         // Logged in, redirect to home
         var redirect = true;
         if ( redirect ){
-          this.appContext.initializeAppMenu();
-          this.$state.go('main', null , { reload: true });
+          reloadFn();
         }
 
         // this.$state.go('main', null , { reload: true });

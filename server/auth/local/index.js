@@ -7,7 +7,6 @@ import {signToken} from '../auth.service';
 import config from '../../config/environment';
 import http from 'http';
 
-
 var router = express.Router();
 
 router.post('/', function(req, res, next) {
@@ -21,6 +20,8 @@ router.post('/', function(req, res, next) {
     }
 
     var token = signToken(user._id, user.role);
+    // set process_admin token in config.
+    config.token = token;
 
     var sodServicesEndpoint = 'http://' + config.sodInfo.serviceDomain + ':' + config.sodInfo.servicePort + '/api';
 
@@ -33,8 +34,8 @@ router.post('/', function(req, res, next) {
       method: 'POST'
     };
 
-    var callback = function(response) {
-      var str = '';
+    let callback = function(response) {
+      let str = '';
       response.on('data', function (chunk) {
         str += chunk;
       });
@@ -43,8 +44,7 @@ router.post('/', function(req, res, next) {
         let jsonCnt = JSON.parse(str);
         console.log('[BE Server auth] jsonCnt: ' + JSON.stringify(jsonCnt.token, null, 2));
         let sodAuthToken = jsonCnt.token;
-
-        // set token in config, to be used on sod calls.
+        // set sod token
         config.sodInfo.token = sodAuthToken;
 
         res.json({
@@ -53,17 +53,12 @@ router.post('/', function(req, res, next) {
           sodServicesEndpoint: sodServicesEndpoint
         });
       });
-
-
     };
-
 
     var ask4Token = http.request(options, callback);
     //This is the data we are posting, it needs to be a string or a buffer
     ask4Token.write("no content expected");
     ask4Token.end();
-
-
 
   })(req, res, next)
 });

@@ -24,7 +24,7 @@ angular.module('processAdminApp', [
   'dndLists',
   'LocalStorageModule'
 ])
-  .config(function ($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, formlyConfigProvider) {
+  .config(function ($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, formlyConfigProvider, localStorageServiceProvider) {
     $urlRouterProvider.otherwise('/');
     $locationProvider.html5Mode(true);
     // configure loading-bar
@@ -68,8 +68,20 @@ angular.module('processAdminApp', [
       wrapper: ['horizontalBootstrapCheckbox', 'bootstrapHasError']
     });
 
+    // set prefix for local storege, best practice
+    localStorageServiceProvider
+      .setPrefix('processAdmin');
+
+    // storage last as much as the session
+    localStorageServiceProvider
+      .setStorageType('sessionStorage');
+
+    // avoid storing the info in the cookie, security concern
+    localStorageServiceProvider
+      .setDefaultToCookie(false)
+
   })
-  .run(function ($location, $log, appContext, $rootScope, Auth, constants) {
+  .run(function ($location, $log, $rootScope, Auth, constants, appContext) {
 
     var url = $location.absUrl();
 
@@ -88,7 +100,9 @@ angular.module('processAdminApp', [
         }else{
           // once is logged...
 
-          appContext.initializeStore();
+          appContext.getAppContext().then((appContext) => {
+            $log.info('[run] appContext configured! ');
+          });
 
           if (url.includes('login')){
             $location.path('/main');
