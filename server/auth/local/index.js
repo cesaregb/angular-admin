@@ -21,7 +21,10 @@ router.post('/', function(req, res, next) {
 
     var token = signToken(user._id, user.role);
     // set process_admin token in config.
-    config.token = token;
+
+    // TODO handle perms by token and the role.
+    config.authUserInfo.token = token;
+    config.authUserInfo.role = user.role;
 
     var sodServicesEndpoint = 'http://' + config.sodInfo.serviceDomain + ':' + config.sodInfo.servicePort + '/api';
 
@@ -45,7 +48,7 @@ router.post('/', function(req, res, next) {
         console.log('[BE Server auth] jsonCnt: ' + JSON.stringify(jsonCnt.token, null, 2));
         let sodAuthToken = jsonCnt.token;
         // set sod token
-        config.sodInfo.token = sodAuthToken;
+        config.authUserInfo.sodToken = sodAuthToken;
 
         res.json({
           token,

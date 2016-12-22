@@ -69,10 +69,14 @@ let all = {
     servicePort: process.env.SOD_SERVICES_PORT = process.env.SOD_SERVICES_PORT || '8080',
     serviceUser: process.env.SOD_SERVICES_USER = process.env.SOD_SERVICES_USER || 'user',
     servicePassword: process.env.SOD_SERVICES_PASSWORD = process.env.SOD_SERVICES_PASSWORD || 'user',
-    token: 'NA',
     serviceUrl: process.env.SOD_SERVICES_URL = process.env.SOD_SERVICES_URL || 'http://127.0.0.1:8080/api',
   },
-  token: 'NA'
+
+  authUserInfo: {
+    token: 'NA',
+    sodToken: 'NA',
+    role: 'NA'
+  }
 
 };
 
