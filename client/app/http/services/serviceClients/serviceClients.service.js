@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .service('serviceClients', function ($resource, constants) {
-     return $resource(constants.API_ENDPOINT + '/clients/:client',{client: "@client"});
+  .service('serviceClients', function ($resource, appContext) {
+     return $resource(appContext.appContextObject.sodEndpoint + '/clients/:client',{client: "@client"});
   });

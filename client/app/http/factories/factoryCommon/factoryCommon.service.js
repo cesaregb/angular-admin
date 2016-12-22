@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .factory('factoryCommon', function ($http, $q, constants, messageHandler, $log) {
+  .factory('factoryCommon', function ($http, $q, messageHandler, $log, appContext) {
 
     var factory = {};
 
     factory.post = function( data, url ) {
       var deferred = $q.defer();
-      url = constants.API_ENDPOINT + url ;
+      url = appContext.appContextObject.sodEndpoint + url ;
 
       $http.post( url, data )
         .success(function(data, status, headers, config) {
@@ -22,7 +22,7 @@ angular.module('processAdminApp')
 
     factory.save = function( data, url ) {
       var deferred = $q.defer();
-      url = constants.API_ENDPOINT + url ;
+      url = appContext.appContextObject.sodEndpoint + url ;
 
       $http.post( url, data )
         .success(function(data, status, headers, config) {
@@ -37,7 +37,7 @@ angular.module('processAdminApp')
 
     factory.get = function(url) {
       var deferred = $q.defer();
-      url = constants.API_ENDPOINT + url ;
+      url = appContext.appContextObject.sodEndpoint + url ;
 
       $http.get( url )
         .success(function(data, status, headers, config) {
@@ -51,7 +51,7 @@ angular.module('processAdminApp')
 
     factory.put = function ( data, url ) {
       var deferred = $q.defer();
-      url = constants.API_ENDPOINT + url ;
+      url = appContext.appContextObject.sodEndpoint + url ;
 
       $http.put(url, data)
         .success(function(data, status, headers, config) {
@@ -68,7 +68,7 @@ angular.module('processAdminApp')
 
     factory.delete = function ( url ) {
       var deferred = $q.defer();
-      url = constants.API_ENDPOINT + url ;
+      url = appContext.appContextObject.sodEndpoint + url ;
 
       $http.delete(url)
         .success(function(data, status, headers, config) {
