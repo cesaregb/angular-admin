@@ -81,11 +81,9 @@ angular.module('processAdminApp', [
       .setDefaultToCookie(false)
 
   })
-  .run(function ($location, $log, $rootScope, Auth, constants, appContext) {
+  .run(function ($location, $log, $rootScope, Auth, appContext) {
 
     var url = $location.absUrl();
-
-    $log.info('[info] API_ENDPOINT: ' + constants.API_ENDPOINT);
     $rootScope.$on('$stateChangeStart', function (event, next) {
       // SET AUTH FOR ALL THE APP
       // we may require to skip some screens.
@@ -99,11 +97,7 @@ angular.module('processAdminApp', [
 
         }else{
           // once is logged...
-
-          appContext.getAppContext().then((appContext) => {
-            $log.info('[run] appContext configured! ');
-          });
-
+          // appContext.getAppContext().then((appContext) => { });
           if (url.includes('login')){
             $location.path('/main');
           }

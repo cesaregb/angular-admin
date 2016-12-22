@@ -12,7 +12,6 @@ let sodServices = require('../../components/restHelper/sodServices.js');
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
-  console.log("[respondWithResult] init");
   return function(entity) {
     console.log("[respondWithResult.function] entity: " + JSON.stringify(entity, null, 2));
     if (entity) {
@@ -22,8 +21,6 @@ function respondWithResult(res, statusCode) {
 }
 
 function handleEntityNotFound(res) {
-  console.log("[handleEntityNotFound] init" );
-
   return function(entity) {
     if (!entity) {
       console.log("[handleEntityNotFound.function] entity not found returning 404!" );
@@ -36,22 +33,21 @@ function handleEntityNotFound(res) {
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
-  console.log("[handleError] init ");
-
   return function(err) {
     console.log("[handleError.function] err: " + JSON.stringify(err, null, 2));
     res.status(statusCode).send(err);
   };
 }
 
-function getMenu(){
-  return sodServices.sodGet('/app-utils/menu');
+function getMenu(role){
+  return function(){
+    console.log('[getMenu] getting: > /app-utils/menu/' + role + ' < ')
+    return sodServices.sodGet('/app-utils/menu/' + role);
+  }
 }
 
 function getStore() {
   let deferred = Q.defer();
-  console.log("[getStore] init ");
-
   sodServices.sodGet('/stores').then( (stores) => {
     console.log("[getStore] response from sodServices.sodGet completed ");
     deferred.resolve(stores[0]);
@@ -67,19 +63,17 @@ function getStore() {
 
 export function getAppContext(){
   let deferred = Q.defer();
-
   console.log('[getAppContext] init ');
-
   let result = {
     sodEndpoint : config.sodInfo.serviceUrl
   };
 
   // if token exist...
   Q.fcall(sodServices.getSODToken)
-    .then(getMenu)
+    .then(getMenu(config.authUserInfo.role))
     .then(function(menu){
         console.log('[getAppContext] getMenu completed ');
-        result.sodToken = config.sodInfo.token;
+        result.sodToken = config.authUserInfo.sodToken;
         result.menu = menu;
         return getStore();
       })
@@ -103,8 +97,7 @@ export function show(req, res) {
   console.log('[show] init');
 
   // validate if user is logged...
-  console.log('[show] config.token: ' + config.token);
-  if (config.token === 'NA'){
+  if (config.authUserInfo.token === 'NA'){
     console.error('[show] Token non existing, reject request ');
     return res.status(401).json({message:"Please login"}).end();
   }else{
@@ -117,8 +110,9 @@ export function show(req, res) {
 
 export function logout(req, res) {
   console.log('[logout] init');
-  config.token = 'NA';
-  config.sodInfo.token = 'NA';
+  config.authUserInfo.token = 'NA';
+  config.authUserInfo.role = 'NA';
+  config.authUserInfo.sodToken = 'NA';
   return res.status(200).end();
 }
 
