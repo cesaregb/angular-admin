@@ -14,14 +14,22 @@ angular.module('processAdminApp')
         referrer: 'main',
         template: '',
         controller: function($state, Auth, $location, $window) {
-          var referrer = $state.params.referrer ||
+          let referrer = $state.params.referrer ||
                           $state.current.referrer ||
                           'main';
-          Auth.logout();
-          // $state.go(referrer);
-          // $location.path('/login');
-          $location.path('/');
-          $window.location.reload();
+          let reloadFn = function(){
+            // $state.go(referrer);
+            // $location.path('/login');
+            $location.path('/');
+            $window.location.reload();
+          };
+
+          Auth.logout().then(()=>{
+            reloadFn();
+          },(err)=>{
+            reloadFn();
+          });
+
         }
       })
       .state('signup', {

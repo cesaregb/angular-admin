@@ -1,7 +1,7 @@
 'use strict';
 
-var path = require('path');
-var _ = require('lodash');
+let path = require('path');
+let _ = require('lodash');
 
 function requiredProcessEnv(name) {
   if (!process.env[name]) {
@@ -12,7 +12,7 @@ function requiredProcessEnv(name) {
 
 // All configurations will extend these options
 // ============================================
-var all = {
+let all = {
   env: process.env.NODE_ENV,
 
   // Root path of server
@@ -61,12 +61,26 @@ var all = {
     clientID:     process.env.GOOGLE_ID || 'id',
     clientSecret: process.env.GOOGLE_SECRET || 'secret',
     callbackURL:  (process.env.DOMAIN || '') + '/auth/google/callback'
-  }
+  },
+
+  //SOD (Java) service information.
+  sodInfo: {
+    serviceDomain: process.env.SOD_SERVICES_DOMAIN = process.env.SOD_SERVICES_DOMAIN || '127.0.0.1',
+    servicePort: process.env.SOD_SERVICES_PORT = process.env.SOD_SERVICES_PORT || '8080',
+    serviceUser: process.env.SOD_SERVICES_USER = process.env.SOD_SERVICES_USER || 'user',
+    servicePassword: process.env.SOD_SERVICES_PASSWORD = process.env.SOD_SERVICES_PASSWORD || 'user',
+    token: 'NA',
+    serviceUrl: process.env.SOD_SERVICES_URL = process.env.SOD_SERVICES_URL || 'http://127.0.0.1:8080/api',
+  },
+  token: 'NA'
+
 };
 
 // Export the config object based on the NODE_ENV
 // ==============================================
-var exportInfo = _.merge(
+// Local declared values will be replaced by the "environment" one.
+
+let exportInfo = _.merge(
   all,
   require('./shared'),
   require('./' + process.env.NODE_ENV + '.js') || {});

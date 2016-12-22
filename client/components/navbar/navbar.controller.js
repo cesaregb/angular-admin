@@ -9,38 +9,36 @@ class NavbarController {
 
   selectedOption = 'home';
   isCollapsed = true;
-  isLogged = false;
+  isLogged = true;
 
   searchOrder(){
     if (!Boolean(this.orderSearch)){
-      this.messageHandler.showError('Plese enter the order number to search')
+      this.messageHandler.showError('Please enter the order number to search')
     }else{
-
       // search...
     }
   }
 
-  constructor(Auth, factoryUtils, $log, messageHandler) {
+  constructor(Auth, factoryUtils, $log, messageHandler, appContext) {
     this.factoryUtils = factoryUtils;
     this.messageHandler = messageHandler;
     this.isLoggedIn = Auth.isLoggedIn;
     this.isAdmin = Auth.isAdmin;
     this.getCurrentUser = Auth.getCurrentUser;
-    var _this = this;
-    Auth.isLoggedIn(function(result){
-      this.isLogged = result;
-      if (Auth.isAdmin()){
-        this.factoryUtils.getMenuByAccessLevel(1).then(function(result){
-          _this.menu = result;
-        });
-      }else{
-        this.factoryUtils.getMenuByAccessLevel(2).then(function(result){
-          _this.menu = result;
-        });
-      }
-    }.bind(this));
+    this.appContext = appContext;
+    this.$log = $log;
+    this.loadMenu();
 
   }
+
+  loadMenu(){
+    var t = this;
+    this.appContext.getAppContext().then((appContextObject) => {
+      t.menu = appContextObject.menu;
+      this.$log.info('[loadMenu] t.menu: ' + JSON.stringify(t.menu, null, 2));
+    });
+  }
+
 }
 
 angular.module('processAdminApp').controller('NavbarController', NavbarController);
