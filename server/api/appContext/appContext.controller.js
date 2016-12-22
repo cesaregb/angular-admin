@@ -106,7 +106,7 @@ export function show(req, res) {
   console.log('[show] config.token: ' + config.token);
   if (config.token === 'NA'){
     console.error('[show] Token non existing, reject request ');
-    return res.status(401).end();
+    return res.status(401).json({message:"Please login"}).end();
   }else{
     return getAppContext()
       .then(handleEntityNotFound(res))

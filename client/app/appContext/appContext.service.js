@@ -1,11 +1,18 @@
 'use strict';
 
 angular.module('processAdminApp.constants')
-  .factory('appContext', function (factoryServices, factoryUtils, $log, $http, $q, localStorageService) {
+  .factory('appContext', function ($log, localServices, $q, localStorageService) {
 
     let factory = {};
+    // Main app context object
+    factory.appContextObject = {validate: false};
 
+    /**
+     * init method
+     * body of the object
+     */
     factory.init = function(){
+
       factory.appContextObject = {
         validate: false,
         sodToken: '',
@@ -31,14 +38,19 @@ angular.module('processAdminApp.constants')
 
       }else{
         // fetch it from
-        $http.get('/api/appContext/id').then(response => {
-          factory.appContextObject = response.data;
-          factory.appContextObject.validate = true;
-          localStorageService.set('appContextObject', factory.appContextObject);
-          $log.info('[getAppContext] factory.appContextObject.sodEndpoint: ' + factory.appContextObject.sodEndpoint);
-          deferred.resolve(factory.appContextObject);
+        localServices.getAppContext()
+          .then((response) => {
+            factory.appContextObject = response;
+            factory.appContextObject.validate = true;
+            localStorageService.set('appContextObject', factory.appContextObject);
+            $log.info('[getAppContext] factory.appContextObject.sodEndpoint: ' + factory.appContextObject.sodEndpoint);
+            deferred.resolve(factory.appContextObject);
 
-        });
+          }).catch((err) => {
+            deferred.reject();
+            $log.info('[logout] Error ');
+          });
+
       }
       return deferred.promise;
     };
@@ -53,27 +65,14 @@ angular.module('processAdminApp.constants')
       localStorageService.remove('appContextObject');
 
       // remove from services.
-      $http.delete('/api/appContext').then(res => {
-        $log.info('[logout] res.data: ' + JSON.stringify(res.data, null, 2));
+      localServices.deleteAppContext().then(res => {
         deferred.resolve(factory.appContextObject);
-      })
-      .catch(err => {
+      }).catch((err) => {
         deferred.reject();
-        $log.info('[logout] Error ');
       });
 
       return deferred.promise;
     };
 
-    factory.sodEndpoint = "";
-    factory.sodToken = "";
-    factory.appMenu = [];
-    factory.store = null;
-
-    factory.store = {};
-    factory.sodAuthToken = "";
-    factory.siteMenu = [];
-
     return factory;
-
   });

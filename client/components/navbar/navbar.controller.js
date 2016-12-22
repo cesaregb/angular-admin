@@ -9,7 +9,7 @@ class NavbarController {
 
   selectedOption = 'home';
   isCollapsed = true;
-  isLogged = true;
+  isLogged = false;
 
   searchOrder(){
     if (!Boolean(this.orderSearch)){
@@ -32,10 +32,10 @@ class NavbarController {
   }
 
   loadMenu(){
-    var t = this;
-    this.appContext.getAppContext().then((appContextObject) => {
+    let t = this;
+    this.appContext.getAppContext().then( (appContextObject) => {
       t.menu = appContextObject.menu;
-      this.$log.info('[loadMenu] t.menu: ' + JSON.stringify(t.menu, null, 2));
+      t.isLogged = true;
     });
   }
 
