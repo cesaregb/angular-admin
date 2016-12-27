@@ -67,6 +67,7 @@ angular.module('processAdminApp')
       type: 'select',
       templateOptions: {
         label: 'Transporte',
+        placeholder: 'Ninguno',
         options: [{
           "name": "Ninguno",
           "value": 0

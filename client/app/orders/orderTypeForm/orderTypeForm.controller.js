@@ -21,8 +21,6 @@ class OrderTypeFormComponent {
 
     // assign form
     this.formItemFields = formlyForms.orderType;
-
-    var _this = this;
     this.init();
   };
 
@@ -67,8 +65,9 @@ class OrderTypeFormComponent {
   }
 
   openManageTaskModal(formItem) {
+    this.$log.info('[openManageTaskModal] formItem: ' + JSON.stringify(formItem, null, 2));
     var _this = this;
-    var modalInstance = this.$uibModal.open({
+    let modalInstance = this.$uibModal.open({
       animation: false,
       templateUrl: 'app/tasks/manageTasksModal/manageTasksModal.html',
       controller: 'ManageOrderTasksModalCtrl',
@@ -84,12 +83,11 @@ class OrderTypeFormComponent {
     });
 
     modalInstance.result.then(function(resultItem) {
-      var orderType = resultItem;
+      let orderType = resultItem;
+      // delete all tasks.
       if (orderType.orderTypeTasks.length > 0){
-        orderType.orderTypeTasks.forEach(function(orderTypeTask){
-          _this.factoryServices.saveResource('orderTypeTask', orderTypeTask).then(function(response){
-            // do nothing..
-          })
+        _this.factoryServices.patchResource('orderType', orderType).then(()=>{
+          // do nothing
         });
       }
     });

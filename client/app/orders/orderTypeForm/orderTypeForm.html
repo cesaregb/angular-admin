@@ -17,7 +17,7 @@
         </div>
         <div class="panel-body">
           <div class="row" ng-show="$cn.editMode">
-            <div class="col-lg-12 pull-right" ng-show="$cn.orderType.orderTypeTasks == null || $cn.orderType.orderTypeTasks.length == 0">
+            <div class="col-lg-12 pull-right" ng-show="$cn.orderType.orderTypeTask == null || $cn.orderType.orderTypeTask.length == 0">
               <div class="alert alert-warning" role="alert">
                 <span>Es necesario agregar Tareas para que el tipo de orden quede habilitado!!</span>
               </div>
@@ -38,6 +38,7 @@
               fields="$cn.formItemFields"
               form="$cn.orderTypeForm"
               ng-submit="$cn.saveOrderType()"></formly-form>
+
           <!-- Button (Double) -->
           <div class="buttons-footer">
             <button type="button" class="btn btn-primary"

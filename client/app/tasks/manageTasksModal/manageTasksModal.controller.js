@@ -12,15 +12,15 @@ angular.module('processAdminApp')
     this.init = function () {
 
       if (requester == 2) { // orders module
-        if (Boolean($scope.formItem) && Boolean($scope.formItem.orderTypeTasks)) {
-          $scope.itemTypeTasks = $scope.formItem.orderTypeTasks;
+        if (Boolean($scope.formItem) && Boolean($scope.formItem.orderTypeTask)) {
+          $scope.itemTypeTasks = $scope.formItem.orderTypeTask;
         }
         factoryServices.getResources('taskType').then(function (response) {
           $scope.taskTypes = response;
         });
       } else {
         if (Boolean($scope.formItem) && Boolean($scope.formItem.serviceTypeTasks)) {
-          $scope.itemTypeTasks = $scope.formItem.serviceTypeTasks;
+          $scope.itemTypeTasks = $scope.formItem.serviceTypeTask;
         }
 
         // send ordersOnly flag, is true if need to be displayed only in orders.
@@ -87,8 +87,10 @@ angular.module('processAdminApp')
       }else{
         $scope.formItem.serviceTypeTasks = $scope.itemTypeTasks;
       }
+
       $uibModalInstance.close($scope.formItem);
-    }
+
+    };
 
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
