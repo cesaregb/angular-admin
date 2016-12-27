@@ -17,7 +17,7 @@
       var _this = this;
       this.tableParams = new this.NgTableParams({}, {
         getData: function(params) {
-          return _this.factoryServices.getResourcesForTable('task', params);
+          return _this.factoryServices.getResourcesForTable('tasks', params);
         }
       });
     }
@@ -65,11 +65,11 @@
         var task = resultItem;
 
         if (task.idTask != null && task.idTask > 0) {
-          _this.factoryServices.updateResource('task', task).then(function(result){
+          _this.factoryServices.updateResource('tasks', task).then(function(result){
             _this.getInfo();
           });
         } else {
-          _this.factoryServices.saveResource('task', task).then(function(result){
+          _this.factoryServices.saveResource('tasks', task).then(function(result){
             _this.getInfo();
           });
         }
@@ -82,7 +82,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteResource('task', item.idTask).then(function(info){
+        _this.factoryServices.deleteResource('tasks', item.idTask).then(function(info){
           _this.back();
         });
       });

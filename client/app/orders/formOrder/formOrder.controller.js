@@ -408,6 +408,7 @@
   angular.module('processAdminApp')
     .component('formOrder', {
       templateUrl: 'app/orders/formOrder/formOrder.html',
+      authenticate: true,
       controller: FormOrderComponent,
       controllerAs: '$cn'
     });

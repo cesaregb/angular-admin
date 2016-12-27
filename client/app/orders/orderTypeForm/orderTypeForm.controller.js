@@ -124,6 +124,7 @@ class OrderTypeFormComponent {
 angular.module('processAdminApp')
   .component('orderTypeForm', {
     templateUrl: 'app/orders/orderTypeForm/orderTypeForm.html',
+    authenticate: true,
     controller: OrderTypeFormComponent,
     controllerAs: '$cn'
   });

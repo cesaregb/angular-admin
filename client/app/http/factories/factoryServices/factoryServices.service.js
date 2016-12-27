@@ -111,20 +111,25 @@ angular.module('processAdminApp')
     factory.uris = uris;
 
     factory.getResources = function (idUri) {
+      $log.debug('[getResources] idUri: ' + idUri);
       return factoryCommon.get(uris[idUri].uri);
     };
 
     factory.getResourceById = function (idUri, idResource) {
+      $log.debug('[getResourceById] idUri: ' + idUri);
       return factoryCommon.get(uris[idUri].uri + '/byId/' + idResource);
     };
 
     factory.saveResource = function (idUri, data) {
+      $log.debug('[saveResource] idUri: ' + idUri);
       return factoryCommon.save(data, uris[idUri].uri);
     };
     factory.updateResource = function (idUri, data) {
+      $log.debug('[updateResource] idUri: ' + idUri);
       return factoryCommon.put(data, uris[idUri].uri);
     };
     factory.deleteResource = function (idUri, idResource) {
+      $log.debug('[deleteResource] idUri: ' + idUri);
       return factoryCommon.delete(uris[idUri].uri + '/' + idResource);
     };
 
