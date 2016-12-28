@@ -3,14 +3,6 @@
 
   class SpecsValueComponent {
 
-    cols = [
-      { show: false },
-      { show: false },
-      { show: true },
-      { show: true },
-      { show: true }
-    ];
-
     constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams) {
       this.$log = $log;
       this.NgTableParams = NgTableParams;
@@ -26,7 +18,7 @@
       // this.getInfo();
       var _this = this;
 
-      this.factoryServices.getResources('spec').then(function(response) {
+      this.factoryServices.getResources('specs').then(function(response) {
         // _this.specs = [{idSpecs: 0, name: 'All'}];
         _this.specs = _this.specs.concat(response);
         if (!Boolean(_this.specSelectedFilter)){
@@ -37,12 +29,12 @@
     }
 
     getInfo() {
-      var _this = this;
+      let _this = this;
       _this.filterList();
     }
 
     filterList(){
-      var _this = this;
+      let _this = this;
       if (!Boolean(this.specSelectedFilter) || this.specSelectedFilter.name == 'All'){
         this.noty.showNoty({
           text: "Please select a Category ",
@@ -53,37 +45,9 @@
         _this.factoryServices.getSpecValuesBySpec(_this.specSelectedFilter.idSpecs).then(function(response){
           _this.specsValues = response;
         });
-        // this.tableParams = new this.NgTableParams({}, {
-        //   getData: function(params) {
-        //     return _this.factoryServices.getResourcesForTableSpecific(
-        //       _this.factoryServices.getSpecValuesBySpec(_this.specSelectedFilter.idSpecs),
-        //       params);
-        //   }
-        // });
-        // this.calculateColums();
       }
     }
 
-    // calculateColums() {
-    //   var flag1 = false;
-    //   var flag2 = false;
-    //   this.specSelectedFilter.specsValues.forEach(function(it, index){
-    //     if (it.type == 1){
-    //       flag1 = true;
-    //     }
-    //     if (it.type == 2){
-    //       flag2 = true;
-    //     }
-    //   });
-    //
-    //   this.cols = [
-    //     { show: false },
-    //     { show: false },
-    //     { show: false },
-    //     { show: true },
-    //     { show: true }
-    //   ];
-    // }
 
     openNewModal() {
       this.openModal({});
@@ -106,11 +70,11 @@
       modalInstance.result.then(function(resultItem) {
         var specsValue = resultItem;
         if (Boolean(specsValue.idSpecsValues) && specsValue.idSpecsValues > 0) {
-          _this.factoryServices.updateResource('specsValue', specsValue).then(function(result) {
+          _this.factoryServices.updateResource('specsValue', specsValue).then(()=>{
             _this.back();
           });
         } else {
-          _this.factoryServices.saveResource('specsValue', specsValue).then(function(result) {
+          _this.factoryServices.saveResource('specsValue', specsValue).then(()=>{
             _this.back();
           });
         }
@@ -118,12 +82,13 @@
     }
 
     delete(item){
+      this.$log.info('[delete] item: ' + JSON.stringify(item, null, 2));
       var _this = this;
       this.$confirm({
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteResource('specsValue', item.idSpecsValue).then(function(info){
+        _this.factoryServices.deleteResource('specsValue', item.idSpecsValues).then(() => {
           _this.back();
         });
       });

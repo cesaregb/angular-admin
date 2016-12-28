@@ -63,7 +63,7 @@ angular.module('processAdminApp')
         uri: '/specs'
       },
       specsValue: {
-        uri: '/spec/specs-value'
+        uri: '/specs/specs-values'
       },
       supplies: {
         uri: '/supplies'
@@ -180,8 +180,8 @@ angular.module('processAdminApp')
 
     // ******* non repetetive...
     factory.getSpecValuesBySpec = function (idSpec) {
-      let uri = uris.specsValue.uri;
-      return factoryCommon.get(uri + "/spec/" + idSpec);
+      let uri = uris.specs.uri + '/' + idSpec + '/specs-values';
+      return factoryCommon.get(uri);
     };
 
     factory.getTaskByType = function (idTasktype) {

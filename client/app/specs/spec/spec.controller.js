@@ -17,7 +17,7 @@
 
     getInfo() {
       var _this = this;
-      this.factoryServices.getResources('spec').then(function(response) {
+      this.factoryServices.getResources('specs').then(function(response) {
         _this.specs = response;
       });
     }
@@ -43,12 +43,11 @@
       modalInstance.result.then(function(resultItem) {
         var spec = resultItem;
         if (spec.idSpecs != null && spec.idSpecs > 0) {
-          _this.factoryServices.updateResourceCallback('spec', spec, function() {
+          _this.factoryServices.updateResource('specs', spec).then(()=>{
             _this.getInfo();
           });
         } else {
-
-          _this.factoryServices.saveResourceCallback('spec', spec, function() {
+          _this.factoryServices.saveResource('specs', spec).then(()=>{
             _this.getInfo();
           });
         }
@@ -61,7 +60,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteResource('spec', item.idSpecs).then(function(info){
+        _this.factoryServices.deleteResource('specs', item.idSpecs).then(function(info){
           _this.back();
         });
       });

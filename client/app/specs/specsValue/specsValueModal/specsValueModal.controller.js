@@ -6,9 +6,9 @@ angular.module('processAdminApp')
     $scope.formItem = formItem;
 
     this.init = function() {
-      $scope.title = "Form Specs Value";
+      $scope.title = "Valores de Specs";
 
-      factoryServices.getResources('spec').then(function(response){
+      factoryServices.getResources('specs').then(function(response){
         $scope.specs = response;
         if (Boolean($scope.formItem.idSpecsValues)) {
           $scope.changeSpecValueType();
@@ -20,13 +20,13 @@ angular.module('processAdminApp')
     };
 
     $scope.specs = [];
-    $scope.productTypes = [];
+    $scope.supplyTypes = [];
 
     $scope.types = [{
       name: 'Valor',
       value: 1
     },{
-      name: 'Tipo Producto',
+      name: 'Tipo Consumible',
       value: 2
     }];
 
@@ -42,9 +42,9 @@ angular.module('processAdminApp')
 
     $scope.invalidForm = function(){
       if ($scope.formItem.type == 2){
-        return !Boolean($scope.formItem.idProductType) || $scope.formItem.idProductType == 0;
+        return !Boolean($scope.formItem.idSupplyType) || $scope.formItem.idSupplyType == 0;
       }else{
-        var result = Boolean($scope.formItem.value)
+        let result = Boolean($scope.formItem.value)
             && (
                 ($scope.formItem.costType  == 0 && Boolean($scope.formItem.serviceIncrement) )
                   ||
@@ -53,19 +53,19 @@ angular.module('processAdminApp')
 
         return !result;
       }
-    }
+    };
 
     $scope.changeSpecValueType = function(){
       if ($scope.formItem.type == 2){
-        factoryServices.getResources('productType').then(function(response){
-          $scope.productTypes = response;
+        factoryServices.getResources('supplyType').then((response)=>{
+          $scope.supplyTypes = response;
         });
       }
-    }
+    };
 
     $scope.okAction = function() {
       $uibModalInstance.close($scope.formItem);
-    }
+    };
 
     $scope.cancel = function() {
       $uibModalInstance.dismiss('cancel');

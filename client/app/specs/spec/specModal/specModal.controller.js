@@ -40,7 +40,7 @@ angular.module('processAdminApp')
       key: 'max_qty',
       type: 'input',
       templateOptions: {
-        type: 'text',
+        type: 'number',
         label: 'Cuantes se pueden agregar? (0 = infinito)',
         required: true
       }
