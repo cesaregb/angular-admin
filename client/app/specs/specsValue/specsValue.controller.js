@@ -82,7 +82,6 @@
     }
 
     delete(item){
-      this.$log.info('[delete] item: ' + JSON.stringify(item, null, 2));
       var _this = this;
       this.$confirm({
         text: 'Are you sure you want to delete?'
