@@ -12,7 +12,7 @@ angular.module('processAdminApp')
         // placeholder
       }
 
-      factoryServices.getSupplyTypes().then(function(response){
+      factoryServices.getResources('supplyType').then(function(response){
         response.forEach(function(item){
           $scope.parentSelect.push({name : item.name, value: item.idSupplyType});
         });
@@ -35,7 +35,7 @@ angular.module('processAdminApp')
       type: 'input',
       templateOptions: {
         type: 'text',
-        label: 'Name',
+        label: 'Nombre',
         required: true
       }
     }, {
@@ -43,7 +43,7 @@ angular.module('processAdminApp')
       type: 'input',
       templateOptions: {
         type: 'text',
-        label: 'Description',
+        label: 'Descripcion',
         required: true
       }
     }, {
@@ -51,7 +51,7 @@ angular.module('processAdminApp')
       type: 'input',
       templateOptions: {
         type: 'number',
-        label: 'Price',
+        label: 'Precio',
         required: true
       }
     },{
