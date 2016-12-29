@@ -25,7 +25,7 @@ class ServiceTypeFormComponent {
 
     var field = _.find(this.formItemFields, function(search){
       return (search.key === 'idServiceCategory');
-    })
+    });
 
     if (!Boolean(field)){
       this.formItemFields.push({
@@ -38,8 +38,6 @@ class ServiceTypeFormComponent {
       });
     }
 
-
-    var _this = this;
     this.init();
   };
 
@@ -143,7 +141,7 @@ class ServiceTypeFormComponent {
     });
 
     modalInstance.result.then(function(resultItem) {
-      var serviceType = resultItem;
+      let serviceType = resultItem;
       if (serviceType.serviceTypeTasks.length > 0){
         serviceType.serviceTypeTasks.forEach(function(serviceTypeTask){
           _this.factoryServices.saveResource('serviceTypeTask', serviceTypeTask).then(function(response){

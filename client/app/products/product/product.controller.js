@@ -17,7 +17,7 @@
       var _this = this;
       this.tableParams = new this.NgTableParams({}, {
         getData: function(params) {
-          return _this.factoryServices.getResourcesForTable('product', params);
+          return _this.factoryServices.getResourcesForTable('products', params);
         }
       });
 
@@ -64,11 +64,11 @@
       modalInstance.result.then(function(resultItem) {
         var product = resultItem;
         if (product.idProduct != null && product.idProduct > 0) {
-          _this.factoryServices.updateResource('product', product).then(function() {
+          _this.factoryServices.updateResource('products', product).then(function() {
             _this.getInfo();
           });
         } else {
-          _this.factoryServices.saveResource('product', product).then(function() {
+          _this.factoryServices.saveResource('products', product).then(function() {
             _this.getInfo();
           });
         }
@@ -81,7 +81,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteResource('product', item.idProduct).then(function(info){
+        _this.factoryServices.deleteResource('products', item.idProduct).then(function(info){
           _this.back();
         });
       });

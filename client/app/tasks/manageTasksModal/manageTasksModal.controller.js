@@ -20,7 +20,7 @@ angular.module('processAdminApp')
         });
       } else {
         if (Boolean($scope.formItem) && Boolean($scope.formItem.serviceTypeTasks)) {
-          $scope.itemTypeTasks = $scope.formItem.serviceTypeTask;
+          $scope.itemTypeTasks = $scope.formItem.serviceTypeTasks;
         }
 
         // send ordersOnly flag, is true if need to be displayed only in orders.

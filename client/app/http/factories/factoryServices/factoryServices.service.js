@@ -42,7 +42,7 @@ angular.module('processAdminApp')
         uri: '/services/service-type/service-type-task'
       },
       serviceCategory: {
-        uri: '/service-category'
+        uri: '/services/service-category'
       },
       orderType: {
         uri: '/orders/order-type'
@@ -81,7 +81,7 @@ angular.module('processAdminApp')
         uri: '/products'
       },
       productType: {
-        uri: '/products/productType'
+        uri: '/products/product-type'
       },
       stores: {
         uri: '/stores'
@@ -190,8 +190,8 @@ angular.module('processAdminApp')
     };
 
     factory.getTaskTypeBySection = function (flag) {
-      let uri = uris.taskType.uri + '/filter/' + flag;
-      return factoryCommon.get(uri);
+      let params = {filterBy: flag};
+      return factoryCommon.get(uris.taskType.uri, params);
     };
 
     factory.getServiceTypeSpecById = function (id) {
