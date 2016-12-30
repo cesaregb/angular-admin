@@ -142,5 +142,38 @@ angular.module('processAdminApp')
       }
     }];
 
+    factory.specFields = [
+      {
+        key: 'name',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'Name',
+          required: true
+        }
+      }, {
+        key: 'description',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'Description',
+          required: true
+        }
+      }, {
+        key: 'max_qty',
+        type: 'input',
+        templateOptions: {
+          type: 'number',
+          label: 'Cuantes se pueden agregar? (0 = infinito)',
+          required: true
+        }
+      },{
+        type: "checkbox",
+        key: "optional",
+        templateOptions: {
+          "label": "Opcional"
+        }
+      }];
+
     return factory;
   });

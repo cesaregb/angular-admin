@@ -11,7 +11,7 @@
 
     status = { isopen: false };
 
-    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, NgTableParams, _, googleMapsDirections, constants) {
+    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, NgTableParams, _, googleMapsDirections, constants, appContext) {
       this.NgTableParams = NgTableParams;
       this.googleMapsDirections = googleMapsDirections;
       this.$log = $log;
@@ -26,78 +26,19 @@
       this._ = _;
       this.store = constants.store;
       this.storeInfo = null;
-
+      this.appContext = appContext;
       this.init();
+
     };
 
     init() {
-      var _this = this;
-
-      this.factoryServices.getResourceById('store', this.store).then(function (result) {
-        _this.storeInfo = result;
-
-      }, function (err) {
-        // error getting store info...
-      });
-
+      let _this = this;
+      _this.storeInfo = this.appContext.appContextObject.store;
 
       if (Boolean(this.$stateParams.order)) {
         // load order...
         this.order = this.$stateParams.order;
         _this.validateOrder();
-
-        // this.factoryServices.getUIOrder(this.$stateParams.order.idOrder).then(function (response) {
-        //   this.order.savedObject = response;
-        // }.bind(this));
-        //
-        // _this.factoryServices.getServiceOrderDetails().then(function(response) {
-        //
-        //   var serviceCategories = response;
-        //   var serviceCategoriesHash = {};
-        //
-        //   serviceCategories.forEach(function (item) {
-        //     serviceCategoriesHash[item.idServiceCategory] = item;
-        //   });
-        //
-        //   var servicesHolder = [];
-        //   _this.order.services.forEach(function(helper){
-        //     var serviceType = _.find(serviceCategoriesHash[helper.idServiceCategory].serviceTypes, function(search){
-        //       return search.idServiceType == helper.idServiceCategory;
-        //     });
-        //     var item = serviceType;
-        //     item.price = helper.price;
-        //     item.composedPrice = helper.composedPrice;
-        //     item.totalPrice = helper.totalPrice;
-        //     item.savedService = helper;
-        //
-        //     item.specs.forEach(function (item) {
-        //       var ss = _.find(helper.serviceSpecs, function(specF){ return specF.spec.idSpecs == item.idSpecs; });
-        //       var specsValue = _.find(item.options[item.idSpecs], function(search){ return search.key == parseInt(ss.selectedValue); });
-        //
-        //       item.amt = 0; // this needs to be calculated..
-        //       item.qty = ss.quantity;
-        //       // price calculation... ???
-        //       if (specsValue.costType == 0){
-        //         item.type = '%';
-        //         item.amt = specsValue.serviceIncrement;
-        //       }else{
-        //         item.type = '$';
-        //         item.amt = specsValue.specPrice;
-        //       }
-        //
-        //       item.specsValue = specsValue;
-        //     });
-        //     servicesHolder.push(item);
-        //   });
-        //
-        //   _this.order.services = servicesHolder;
-        //
-        //   _this.tableParams = new _this.NgTableParams({}, {
-        //     dataset: _this.order.services
-        //   });
-        //
-        //   _this.tableParams.reload();
-        // });
 
       }else{
         // initialize values...
@@ -108,7 +49,7 @@
         this.order.deliverDate = new Date();
         this.order.pickup = {address:null};
         this.order.deliver = {address:null};
-        if (!Boolean(this.order.services)){
+        if ( !Boolean( this.order.services ) ){
           this.order.services = [];
         }
 
@@ -134,7 +75,9 @@
       // setting order information for existing order
       this.factoryServices.getResources('orderType').then(function(result) {
 
-        _this.orderTypes = _this._.filter(result, function(ot){ return (Boolean(ot.orderTypeTasks) && ot.orderTypeTasks.length > 0) ; });
+        _this.orderTypes = _this._.filter(result, function(ot){
+          return (Boolean(ot.orderTypeTask) && ot.orderTypeTask.length > 0) ;
+        });
 
         // select item if editing order
         if (Boolean(_this.order)){

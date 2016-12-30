@@ -250,8 +250,7 @@ angular.module('processAdminApp')
     };
 
     factory.getClientByFilter = function (object) {
-      let uri = uris.client.uri + '/clients/byFilters';
-      return factoryCommon.post(object, uri);
+      return factoryCommon.get(uris.clients.uri, object);
     };
     factory.getClientByIdAddress = function (idAddress) {
       return factoryCommon.get(uris.clients.uri + '/addressId/' + idAddress);

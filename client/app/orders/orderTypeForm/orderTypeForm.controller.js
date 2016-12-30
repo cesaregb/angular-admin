@@ -32,8 +32,9 @@ class OrderTypeFormComponent {
   }
 
   saveOrderType() {
-    var _this = this;
-    if (this.orderType.idOrderType != null && this.orderType.idOrderType > 0) {
+    let _this = this;
+    if (this.orderType.idOrderType != null
+        && this.orderType.idOrderType > 0) {
       _this.factoryServices.updateResource('orderType', this.orderType).then(function(result) {
         _this.orderType = result;
         _this.init();
@@ -65,7 +66,6 @@ class OrderTypeFormComponent {
   }
 
   openManageTaskModal(formItem) {
-    this.$log.info('[openManageTaskModal] formItem: ' + JSON.stringify(formItem, null, 2));
     var _this = this;
     let modalInstance = this.$uibModal.open({
       animation: false,
