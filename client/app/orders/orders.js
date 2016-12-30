@@ -6,6 +6,7 @@ angular.module('processAdminApp')
       .state('orders', {
         cache: false,
         abstract: true,
+        authenticate: true,
         controller: 'OrderMainControllerCtrl',
         url: '/orders',
         template: '<ui-view/>'

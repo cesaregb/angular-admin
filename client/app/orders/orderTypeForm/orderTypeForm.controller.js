@@ -21,8 +21,6 @@ class OrderTypeFormComponent {
 
     // assign form
     this.formItemFields = formlyForms.orderType;
-
-    var _this = this;
     this.init();
   };
 
@@ -34,8 +32,9 @@ class OrderTypeFormComponent {
   }
 
   saveOrderType() {
-    var _this = this;
-    if (this.orderType.idOrderType != null && this.orderType.idOrderType > 0) {
+    let _this = this;
+    if (this.orderType.idOrderType != null
+        && this.orderType.idOrderType > 0) {
       _this.factoryServices.updateResource('orderType', this.orderType).then(function(result) {
         _this.orderType = result;
         _this.init();
@@ -68,7 +67,7 @@ class OrderTypeFormComponent {
 
   openManageTaskModal(formItem) {
     var _this = this;
-    var modalInstance = this.$uibModal.open({
+    let modalInstance = this.$uibModal.open({
       animation: false,
       templateUrl: 'app/tasks/manageTasksModal/manageTasksModal.html',
       controller: 'ManageOrderTasksModalCtrl',
@@ -84,12 +83,11 @@ class OrderTypeFormComponent {
     });
 
     modalInstance.result.then(function(resultItem) {
-      var orderType = resultItem;
+      let orderType = resultItem;
+      // delete all tasks.
       if (orderType.orderTypeTasks.length > 0){
-        orderType.orderTypeTasks.forEach(function(orderTypeTask){
-          _this.factoryServices.saveResource('orderTypeTask', orderTypeTask).then(function(response){
-            // do nothing..
-          })
+        _this.factoryServices.patchResource('orderType', orderType).then(()=>{
+          // do nothing
         });
       }
     });
@@ -124,6 +122,7 @@ class OrderTypeFormComponent {
 angular.module('processAdminApp')
   .component('orderTypeForm', {
     templateUrl: 'app/orders/orderTypeForm/orderTypeForm.html',
+    authenticate: true,
     controller: OrderTypeFormComponent,
     controllerAs: '$cn'
   });

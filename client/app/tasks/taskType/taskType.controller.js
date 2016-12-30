@@ -4,12 +4,11 @@
   class TaskTypeComponent {
     taskTypes = [];
 
-    constructor($stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal) {
+    constructor($stateParams, $state, factoryServices, $confirm, $log, $uibModal) {
       this.$log = $log;
       this.$confirm = $confirm;
       this.factoryServices = factoryServices;
       this.$uibModal = $uibModal;
-      this.noty = noty;
       this.$state = $state;
       this.route = $stateParams.route;
       this.getInfo();
@@ -43,12 +42,12 @@
       modalInstance.result.then(function(resultItem) {
         var taskType = resultItem;
         if (taskType.idTaskType != null && taskType.idTaskType > 0) {
-          _this.factoryServices.updateResourceCallback('taskType', taskType, function() {
+          _this.factoryServices.updateResource('taskType', taskType).then(()=>{
             _this.getInfo();
           });
         } else {
 
-          _this.factoryServices.saveResourceCallback('taskType', taskType, function() {
+          _this.factoryServices.saveResource('taskType', taskType).then(()=>{
             _this.getInfo();
           });
         }

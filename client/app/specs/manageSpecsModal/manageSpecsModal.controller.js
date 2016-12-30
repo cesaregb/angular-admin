@@ -14,10 +14,9 @@ angular.module('processAdminApp')
         if (Boolean($scope.formItem.serviceTypeSpecs)){
             $scope.serviceTypeSpecs = $scope.formItem.serviceTypeSpecs;
         }
-
-        // placeholder
       }
-      factoryServices.getResources('spec').then(function(response) {
+
+      factoryServices.getResources('specs').then(function(response) {
         $scope.specs = response;
       });
     };

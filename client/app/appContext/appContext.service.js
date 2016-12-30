@@ -55,7 +55,7 @@ angular.module('processAdminApp.constants')
       return deferred.promise;
     };
 
-    factory.distroy = function(){
+    factory.destroy = function(){
       let deferred = $q.defer();
 
       // remove from local

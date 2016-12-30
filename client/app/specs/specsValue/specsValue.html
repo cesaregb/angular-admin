@@ -36,44 +36,6 @@
                 </div>
               </div>
 
-              <!-- <div class="row">
-                <div class="col-sm-12">
-                  <div loading-container="$cn.tableParams.settings().$loading">
-                    <table ng-table="$cn.tableParams"
-                        class="table table-condensed table-bordered table-striped"
-                        ng-table-columns-binding="$cn.cols">
-                      <tr ng-repeat="row in $data track by row.idSpecsValues">
-                        <td data-title="'Valor'"
-                            filter="{value: 'text'}"
-                            ng-if="true"
-                            sortable="'value'">
-                          <a href="" ng-click="$cn.openModal(row);">
-                            <span>{{row.value}}</span>
-                          </a>
-                        </td>
-                        <td data-title="'Tipo Producto'"
-                            filter="{productName: 'text'}"
-                            ng-if="true"
-                            sortable="'productName'">
-                          <a href="" ng-click="$cn.openModal(row);">
-                            <span>{{row.productName}}</span>
-                          </a>
-                        </td>
-                        <td data-title="'Type'" sortable="'name'">
-                          <span ng-show="row.type == 1">Valor</span>
-                          <span ng-show="row.type == 2">Product</span>
-                        </td>
-                        <td data-title="'Categoria'" >{{row.specName}}</td>
-                        <td data-title="'Tipo de Precio'">
-                          <span ng-show="row.costType == 0">Increment Percentage</span>
-                          <span ng-show="row.costType == 1">Fixed Price</span>
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-              </div> -->
-
               <div class="row">
                 <div class="col-sm-12">
                   <table class="table table-striped table-bordered table-hover dataTable no-footer"
@@ -84,6 +46,7 @@
                         <th>Type</th>
                         <th>Categoria</th>
                         <th>Tipo de Precio</th>
+                        <th>Accion</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -94,7 +57,7 @@
                           <td>
                             <a href="" ng-click="$cn.openModal(specsValue);">
                               <span ng-show="specsValue.type == 1">{{specsValue.value}}</span>
-                              <span ng-show="specsValue.type == 2">{{specsValue.productName}}</span>
+                              <span ng-show="specsValue.type == 2">{{specsValue.supplyName}}</span>
                             </a>
                           </td>
                           <td>
@@ -104,6 +67,12 @@
                           <td>{{specsValue.specName}}</td>
                           <td ng-show="specsValue.costType == 0">Increment Percentage</td>
                           <td ng-show="specsValue.costType == 1">Fixed Price</td>
+                          <td class="action-column">
+                            <a href="#" ng-click="$cn.delete(specsValue)"
+                               class="btn btn-danger btn-circle">
+                              <span class="glyphicon glyphicon-remove"></span>
+                            </a>
+                          </td>
                       </tr>
                     </tbody>
                   </table>

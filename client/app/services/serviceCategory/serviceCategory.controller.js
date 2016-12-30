@@ -43,12 +43,12 @@
       modalInstance.result.then(function(resultItem) {
         var serviceCategory = resultItem;
         if (serviceCategory.idServiceCategory != null && serviceCategory.idServiceCategory > 0) {
-          _this.factoryServices.updateResourceCallback('serviceCategory', serviceCategory, function() {
+          _this.factoryServices.updateResource('serviceCategory', serviceCategory).then(function() {
             _this.getInfo();
           });
         } else {
 
-          _this.factoryServices.saveResourceCallback('serviceCategory', serviceCategory, function() {
+          _this.factoryServices.saveResource('serviceCategory', serviceCategory).then(function() {
             _this.getInfo();
           });
         }
