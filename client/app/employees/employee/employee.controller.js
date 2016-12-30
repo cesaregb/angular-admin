@@ -16,10 +16,9 @@
     }
 
     getInfo() {
-      var _this = this;
-      this.factoryServices.getEmployees().then(function(response) {
+      let _this = this;
+      this.factoryServices.getResources('employees').then((response)=>{
         _this.employees = response;
-
       });
     }
 
@@ -28,9 +27,8 @@
     }
 
     openModal(formItem) {
-
-      var _this = this;
-      var modalInstance = this.$uibModal.open({
+      let _this = this;
+      let modalInstance = this.$uibModal.open({
         animation: false,
         templateUrl: 'app/employees/employee/employeeModal/employeeModal.html',
         controller: 'EmployeeModalCtrl',
@@ -43,14 +41,14 @@
       });
 
       modalInstance.result.then(function(resultItem) {
-        var employee = resultItem;
+        let employee = resultItem;
         if (employee.idEmployee != null && employee.idEmployee > 0) {
-          _this.factoryServices.updateEmployeeCallback(employee, function() {
+          _this.factoryServices.updateResource('employees', employee).then(()=>{
             _this.getInfo();
           });
         } else {
 
-          _this.factoryServices.saveEmployeeCallback(employee, function() {
+          _this.factoryServices.saveResource('employees', employee).then(()=>{
             _this.getInfo();
           });
         }
@@ -58,12 +56,12 @@
     }
 
     delete(item){
-      var _this = this;
+      let _this = this;
       this.$confirm({
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteEmployee(item).then(function(info){
+        _this.factoryServices.deleteResource('employees', item.idEmployee).then(function(info){
           _this.back();
         });
       });

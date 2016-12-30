@@ -16,8 +16,8 @@
     }
 
     getInfo() {
-      var _this = this;
-      this.factoryServices.getSupplyTypes().then(function(response) {
+      let _this = this;
+      this.factoryServices.getResources('supplyType').then(function(response) {
         _this.supplyTypes = response;
       });
     }
@@ -43,12 +43,12 @@
       modalInstance.result.then(function(resultItem) {
         var supplyType = resultItem;
         if (supplyType.idSupplyType != null && supplyType.idSupplyType > 0) {
-          _this.factoryServices.updateSupplyTypeCallback(supplyType, function() {
+          _this.factoryServices.updateResource('supplyType', supplyType).then(function() {
             _this.getInfo();
           });
         } else {
 
-          _this.factoryServices.saveSupplyTypeCallback(supplyType, function() {
+          _this.factoryServices.saveResource('supplyType', supplyType).then(function() {
             _this.getInfo();
           });
         }
@@ -61,7 +61,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteSupplyType(item).then(function(info){
+        _this.factoryServices.deleteResource('supplyType', item.idSupplyType).then(function(info){
           _this.back();
         });
       });

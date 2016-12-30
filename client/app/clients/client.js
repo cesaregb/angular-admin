@@ -6,7 +6,6 @@ angular.module('processAdminApp')
       .state('client', {
         cache: false,
         abstract: true,
-        authenticate: true,
         controller: 'ClientMainControllerCtrl',
         url: '/client',
         template: '<ui-view/>'

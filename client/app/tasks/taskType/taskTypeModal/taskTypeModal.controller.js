@@ -36,7 +36,7 @@ angular.module('processAdminApp')
       "type": "checkbox",
       "key": "ordersOnly",
       "templateOptions": {
-        "label": "Solo en Ordenes"
+        "label": "Ordenes [Aplica solo en nivel de orden, NO servicios]"
       }
     }];
 

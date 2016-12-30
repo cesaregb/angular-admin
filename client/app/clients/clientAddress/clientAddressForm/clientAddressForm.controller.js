@@ -4,19 +4,19 @@
   class ClientAddressFormComponent {
 
     constructor($scope, $stateParams, $timeout, $state, noty, AddressHandler, $log,
-                $confirm, factoryServices, formlyForms, $q, constants) {
+                $confirm, factoryServices, formlyForms, $q, appContext) {
       var t = this;
       // form options, to be updated if the form is new
       t.formOptions = {};
       t.$q = $q;
-      t.constants = constants;
+      t.appContext = appContext;
       t.$confirm = $confirm;
       t.$timeout = $timeout;
       t.factoryServices = factoryServices;
       t.$log = $log;
       t.$scope = $scope;
       t.AddressHandler = AddressHandler;
-      t.AddressHandler.setStore(constants.store);
+      t.AddressHandler.setStore(appContext.appContextObject.store);
       t.AddressHandler.resetValues();
 
       t.noty = noty;
@@ -87,6 +87,7 @@
       // this.formOptions.formState.disabled = false;
       this.AddressHandler.parseAddress();
       this.address = this.AddressHandler.address;
+      this.address.idClient = this.client.idClient;
       this.calculateDistancePrice();
     }
 
@@ -99,7 +100,7 @@
 
     // called by async get distance info method.
     calculateDistancePrice(){
-      var t = this;
+      let t = this;
       if(Boolean(t.address) && t.address.idAddress > 0){
         // probably repeated, but we can be here without init.
         t.AddressHandler.setAddress(t.address);
@@ -117,7 +118,7 @@
     }
 
     delete(){
-      var _this = this;
+      let _this = this;
       this.$confirm({ text: 'Are you sure you want to delete?'})
       .then(function() {
         _this.factoryServices.deleteResource('address', _this.address).then(function(){
@@ -131,9 +132,11 @@
     }
 
     saveAddress() {
-      var _this = this;
+      this.$log.info('[saveAddress] _this.address: ' + JSON.stringify(this.address, null, 2));
+
+      let _this = this;
       if (_this.address.idAddress != null && _this.address.idAddress > 0) {
-        _this.factoryServices.updateResource('address', _this.address).then(function() {
+        _this.factoryServices.updateResource('address', _this.address).then(()=>{
           _this.$state.go('client.address', {
             client: _this.client
           }, { reload: true });
@@ -141,8 +144,8 @@
       } else {
         // set store information in case of not provided.
         if (!Boolean(_this.address.lat)){
-          _this.address.lat = _this.constants.store.lat;
-          _this.address.lng = _this.constants.store.lng;
+          _this.address.lat = _this.appContext.appContextObject.store.lat;
+          _this.address.lng = _this.appContext.appContextObject.store.lng;
         }
 
         _this.factoryServices.saveResource('address' ,_this.address).then(function() {

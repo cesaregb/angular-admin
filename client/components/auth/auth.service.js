@@ -53,7 +53,7 @@ function AuthService($location, $http, $cookies, $q, appConfig, Util, User, cons
       $cookies.remove('sodAuthToken');
       currentUser = {};
 
-      return appContext.distroy();
+      return appContext.destroy();
     },
 
     /**

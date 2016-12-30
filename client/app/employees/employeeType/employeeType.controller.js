@@ -16,8 +16,8 @@
     }
 
     getInfo() {
-      var _this = this;
-      this.factoryServices.getEmployeeTypes().then(function(response) {
+      let _this = this;
+      this.factoryServices.getResources('employeeType').then(function(response) {
         _this.employeeTypes = response;
       });
     }
@@ -27,8 +27,8 @@
     }
 
     openModal(formItem) {
-      var _this = this;
-      var modalInstance = this.$uibModal.open({
+      let _this = this;
+      let modalInstance = this.$uibModal.open({
         animation: false,
         templateUrl: 'app/employees/employeeType/employeeTypeModal/employeeTypeModal.html',
         controller: 'EmployeeTypeModalCtrl',
@@ -43,12 +43,12 @@
       modalInstance.result.then(function(resultItem) {
         var employeeType = resultItem;
         if (employeeType.idEmployeeType != null && employeeType.idEmployeeType > 0) {
-          _this.factoryServices.updateEmployeeTypeCallback(employeeType, function() {
+          _this.factoryServices.updateResource('employeeType',employeeType).then(()=>{
             _this.getInfo();
           });
         } else {
 
-          _this.factoryServices.saveEmployeeTypeCallback(employeeType, function() {
+          _this.factoryServices.saveResource('employeeType', employeeType).then(()=>{
             _this.getInfo();
           });
         }
@@ -61,7 +61,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteEmployeeType(item).then(function(info){
+        _this.factoryServices.deleteResource('employeeType', item.idEmployeeType).then(function(info){
           _this.back();
         });
       });

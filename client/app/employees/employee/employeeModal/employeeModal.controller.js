@@ -12,7 +12,7 @@ angular.module('processAdminApp')
         // placeholder
       }
 
-      factoryServices.getEmployeeTypes().then(function(response){
+      factoryServices.getResources('employeeType').then((response) => {
         response.forEach(function(item){
           $scope.parentSelect.push({name : item.name, value: item.idEmployeeType});
         });
@@ -65,7 +65,7 @@ angular.module('processAdminApp')
 
     $scope.okAction = function() {
       $uibModalInstance.close($scope.formItem);
-    }
+    };
 
     $scope.cancel = function() {
       $uibModalInstance.dismiss('cancel');

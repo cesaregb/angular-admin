@@ -11,6 +11,7 @@ angular.module('processAdminApp')
         template: '<ui-view/>'
       }).state('tasks.taskMenu', {
         url: '/taskMenu',
+        authenticate: true,
         template: '<task-menu></task-menu>'
       }).state('tasks.taskType', {
         url: '/taskType',

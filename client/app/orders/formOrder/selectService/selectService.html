@@ -66,58 +66,6 @@
               </div>
             </div>
 
-
-            <!--Specs-->
-            <div class="panel panel-default" ng-show="$cn.serviceType.idServiceType > 0">
-              <div class="panel-heading">
-                Specs
-              </div>
-              <div class="panel-body">
-                <div class="row" style="padding-top:10px;">
-                  <div class="col-sm-12">
-                    <table class="table table-striped table-bordered table-hover dataTable no-footer"
-                           role="grid" aria-describedby="dataTables-example_info">
-                      <thead>
-                      <tr role="row">
-                        <th>Nombre</th>
-                        <th>Opciones</th>
-                        <th>Cantidad</th>
-                        <th>Tipo incremento.</th>
-                        <th>Precio Unitario</th>
-                        <th>Tot</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr ng-show="$cn.service.specs.length == 0 || $cn.service.specs == null">
-                        <td colspan="8">Selecciona un tipo de servicio.</td>
-                      </tr>
-                      <tr role="row"
-                          ng-class-odd="'odd'" ng-class-even="'even'"
-                          ng-repeat="spec in $cn.service.specs">
-                        <td>{{spec.name}}</td>
-                        <td>
-                          <select class="form-control"
-                                  ng-options="specsValue as specsValue.value for specsValue in spec.options[spec.idSpecs]"
-                                  ng-model="spec.specsValue"
-                                  ng-change="$cn.selectSpecOption(spec, spec.specsValue)"></select>
-                        </td>
-                        <td>
-                          <input type="number" class="form-control"
-                                 ng-model="spec.quantity"
-                                 placeholder="1" min="1" max="{{spec.max_qty}}"
-                                 ng-change="$cn.changeQty()"/>
-                        </td>
-                        <td>{{spec.type}}</td>
-                        <td>{{spec.amt | currency}}</td>
-                        <td>{{spec.price | currency}}</td>
-                      </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <!--Products-->
             <div class="panel panel-default" ng-show="$cn.serviceType.idServiceType > 0">
               <div class="panel-heading">
@@ -177,6 +125,59 @@
                 </div>
               </div>
             </div>
+
+            <!--Specs-->
+            <div class="panel panel-default" ng-show="$cn.serviceType.idServiceType > 0">
+              <div class="panel-heading">
+                Specs
+              </div>
+              <div class="panel-body">
+                <div class="row" style="padding-top:10px;">
+                  <div class="col-sm-12">
+                    <table class="table table-striped table-bordered table-hover dataTable no-footer"
+                           role="grid" aria-describedby="dataTables-example_info">
+                      <thead>
+                      <tr role="row">
+                        <th>Nombre</th>
+                        <th>Opciones</th>
+                        <th>Cantidad</th>
+                        <th>Tipo incremento.</th>
+                        <th>Precio Unitario</th>
+                        <th>Tot</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr ng-show="$cn.service.specs.length == 0 || $cn.service.specs == null">
+                        <td colspan="8">Selecciona un tipo de servicio.</td>
+                      </tr>
+                      <tr role="row"
+                          ng-class-odd="'odd'" ng-class-even="'even'"
+                          ng-repeat="spec in $cn.service.specs">
+                        <td>{{spec.name}}</td>
+                        <td>
+                          <select class="form-control"
+                                  ng-options="specsValue as specsValue.value for specsValue in spec.options[spec.idSpecs]"
+                                  ng-model="spec.specsValue"
+                                  ng-change="$cn.selectSpecOption(spec, spec.specsValue)"></select>
+                        </td>
+                        <td>
+                          <input type="number" class="form-control"
+                                 ng-model="spec.quantity"
+                                 placeholder="1" min="1" max="{{spec.max_qty}}"
+                                 ng-change="$cn.changeQty()"/>
+                        </td>
+                        <td>{{spec.type}}</td>
+                        <td>{{spec.amt | currency}}</td>
+                        <td>{{spec.price | currency}}</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
           </div>
 
           <div class="modal-footer">

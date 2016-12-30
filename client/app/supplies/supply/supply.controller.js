@@ -40,7 +40,7 @@
 
       this.tableParams = new this.NgTableParams({}, {
         getData: function(params) {
-          return _this.factoryServices.getResourcesForTable('supply', params);
+          return _this.factoryServices.getResourcesForTable('supplies', params);
         }
       });
     }
@@ -67,11 +67,11 @@
       modalInstance.result.then(function(resultItem) {
         var supply = resultItem;
         if (supply.idSupply != null && supply.idSupply > 0) {
-          _this.factoryServices.updateResource('supply', supply).then( function(response) {
+          _this.factoryServices.updateResource('supplies', supply).then( function(response) {
             _this.getInfo();
           });
         } else {
-          _this.factoryServices.saveResource('supply', supply).then(function(response) {
+          _this.factoryServices.saveResource('supplies', supply).then(function(response) {
             _this.getInfo();
           });
         }
@@ -84,7 +84,7 @@
         text: 'Are you sure you want to delete?'
       })
       .then(function() {
-        _this.factoryServices.deleteResource('supply', item.idSupply).then(function(info){
+        _this.factoryServices.deleteResource('supplies', item.idSupply).then(function(info){
           _this.back();
         });
       });

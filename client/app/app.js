@@ -94,6 +94,11 @@ angular.module('processAdminApp', [
         if (flag && !loggedIn) {
           $log.info('[run] Access not granted');
           $location.path('/login');
+          if (!Boolean(appContext.appContextObject.sodToken)){
+            appContext.destroy().then(()=>{
+              // redirect...
+            });
+          }
 
         }else{
           // once is logged...

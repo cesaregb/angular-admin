@@ -13,12 +13,15 @@ angular.module('processAdminApp')
     ];
 
     $scope.searchClients = function(){
-      var filterArray = [];
+
       var text = $scope.searchText;
       var filter = $scope.searchFilter;
-      filterArray.push({'key':filter.value, 'value':text})
+
+      var filterArray = {};
+      filterArray[filter.value] = text;
+
       factoryServices.getClientByFilter(filterArray).then(function(response){
-          $scope.clients = response;
+        $scope.clients = response;
       });
     };
 
@@ -28,25 +31,25 @@ angular.module('processAdminApp')
       $scope.searchFilter = $scope.filters[0];
 
       if (Boolean($scope.clientSearchInfo)){
-          $scope.searchText = $scope.clientSearchInfo;
-          $scope.searchClients();
+        $scope.searchText = $scope.clientSearchInfo;
+        $scope.searchClients();
       }
+    };
 
-    }
     $scope.init();
 
     $scope.preSelectItem = function(client){
       $scope.clientInfo = client;
-    }
+    };
 
     $scope.selectItemAction = function(client){
       $scope.clientInfo = client;
       $scope.selectItem();
-    }
+    };
 
     $scope.selectItem = function(){
       $uibModalInstance.close($scope.clientInfo);
-    }
+    };
 
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
