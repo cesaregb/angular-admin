@@ -89,7 +89,9 @@ let exportInfo = _.merge(
   require('./shared'),
   require('./' + process.env.NODE_ENV + '.js') || {});
 
-if (process.env.DOCKER){
+console.log('[environment] exportInfo: ' + exportInfo.port );
+
+if (Boolean(process.env.DOCKER)){
   console.log("****** " + process.env.NODE_ENV +  " - Changing the MONGO uri.... exportInfo: " + exportInfo.mongoDocker.uri);
   exportInfo.mongo.uri = exportInfo.mongoDocker.uri;
 }else{
