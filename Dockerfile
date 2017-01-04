@@ -35,8 +35,6 @@ ADD . /app
 
 RUN grunt build --force
 WORKDIR /app/dist
-ENV NODE_ENV development
-ENV DOCKER useDockerDb
 
 # Define default command.
 ENTRYPOINT ["npm", "start"]
