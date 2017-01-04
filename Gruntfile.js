@@ -1,7 +1,7 @@
 // Generated on 2016-05-04 using generator-angular-fullstack 3.5.0
 'use strict';
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
   var localConfig;
   try {
     localConfig = require('./server/config/local.env');
@@ -26,13 +26,13 @@ module.exports = function (grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
-
     // Project settings
     pkg: grunt.file.readJSON('package.json'),
     yeoman: {
       // configurable paths
       client: require('./bower.json').appPath || 'client',
       server: 'server',
+      root: '',
       dist: 'dist'
     },
     express: {
@@ -207,14 +207,14 @@ module.exports = function (grunt) {
           env: {
             PORT: process.env.PORT || 9000
           },
-          callback: function (nodemon) {
-            nodemon.on('log', function (event) {
+          callback: function(nodemon) {
+            nodemon.on('log', function(event) {
               console.log(event.colour);
             });
 
             // opens browser on initial server start
-            nodemon.on('config:update', function () {
-              setTimeout(function () {
+            nodemon.on('config:update', function() {
+              setTimeout(function() {
                 require('open')('http://localhost:8080/debug?port=5858');
               }, 500);
             });
@@ -576,6 +576,10 @@ module.exports = function (grunt) {
 
     // Compiles Less to CSS
     less: {
+      options: {
+        sourceMap: true,
+        sourceMapFileInline: true
+      },
       server: {
         files: {
           '.tmp/app/app.css' : '<%= yeoman.client %>/app/app.less'
@@ -656,12 +660,12 @@ module.exports = function (grunt) {
   });
 
   // Used for delaying livereload until after server has restarted
-  grunt.registerTask('wait', function () {
+  grunt.registerTask('wait', function() {
     grunt.log.ok('Waiting for server reload...');
 
     var done = this.async();
 
-    setTimeout(function () {
+    setTimeout(function() {
       grunt.log.writeln('Done waiting!');
       done();
     }, 1500);
@@ -671,12 +675,12 @@ module.exports = function (grunt) {
     this.async();
   });
 
-  grunt.registerTask('serve', function (target) {
-    if (target === 'dist') {
+  grunt.registerTask('serve', function(target) {
+    if(target === 'dist') {
       return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'open', 'express-keepalive']);
     }
 
-    if (target === 'debug') {
+    if(target === 'debug') {
       return grunt.task.run([
         'clean:server',
         'env:all',
@@ -704,22 +708,20 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('server', function () {
+  grunt.registerTask('server', function() {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve']);
   });
 
   grunt.registerTask('test', function(target, option) {
-    if (target === 'server') {
+    if(target === 'server') {
       return grunt.task.run([
         'env:all',
         'env:test',
         'mochaTest:unit',
         'mochaTest:integration'
       ]);
-    }
-
-    else if (target === 'client') {
+    } else if(target === 'client') {
       return grunt.task.run([
         'clean:server',
         'env:all',
@@ -730,11 +732,8 @@ module.exports = function (grunt) {
         'wiredep:test',
         'karma'
       ]);
-    }
-
-    else if (target === 'e2e') {
-
-      if (option === 'prod') {
+    } else if(target === 'e2e') {
+      if(option === 'prod') {
         return grunt.task.run([
           'build',
           'env:all',
@@ -742,9 +741,7 @@ module.exports = function (grunt) {
           'express:prod',
           'protractor'
         ]);
-      }
-
-      else {
+      } else {
         return grunt.task.run([
           'clean:server',
           'env:all',
@@ -758,33 +755,24 @@ module.exports = function (grunt) {
           'protractor'
         ]);
       }
-    }
-
-    else if (target === 'coverage') {
-
-      if (option === 'unit') {
+    } else if(target === 'coverage') {
+      if(option === 'unit') {
         return grunt.task.run([
           'env:all',
           'env:test',
           'mocha_istanbul:unit'
         ]);
-      }
-
-      else if (option === 'integration') {
+      } else if(option === 'integration') {
         return grunt.task.run([
           'env:all',
           'env:test',
           'mocha_istanbul:integration'
         ]);
-      }
-
-      else if (option === 'check') {
+      } else if(option === 'check') {
         return grunt.task.run([
           'istanbul_check_coverage'
         ]);
-      }
-
-      else {
+      } else {
         return grunt.task.run([
           'env:all',
           'env:test',
@@ -792,13 +780,12 @@ module.exports = function (grunt) {
           'istanbul_check_coverage'
         ]);
       }
-
+    } else {
+      grunt.task.run([
+        'test:server',
+        'test:client'
+      ]);
     }
-
-    else grunt.task.run([
-      'test:server',
-      'test:client'
-    ]);
   });
 
   grunt.registerTask('build', [

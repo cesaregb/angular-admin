@@ -81,25 +81,21 @@ angular.module('processAdminApp', [
       .setDefaultToCookie(false)
 
   })
-  .run(function ($location, $log, $rootScope, Auth, appContext) {
+  .run(function ($location, $log, $rootScope, Auth, appContext, factoryCommon) {
 
-    var url = $location.absUrl();
+    let url = $location.absUrl();
+
     $rootScope.$on('$stateChangeStart', function (event, next) {
+
       // SET AUTH FOR ALL THE APP
       // we may require to skip some screens.
-      var flag = true || (next.authenticate);
+      let flag = true || (next.authenticate);
 
       Auth.isLoggedIn(function (loggedIn) {
 
         if (flag && !loggedIn) {
-          $log.info('[run] Access not granted');
+          appContext.destroy();
           $location.path('/login');
-          if (!Boolean(appContext.appContextObject.sodToken)){
-            appContext.destroy().then(()=>{
-              // redirect...
-            });
-          }
-
         }else{
           // once is logged...
           // appContext.getAppContext().then((appContext) => { });
