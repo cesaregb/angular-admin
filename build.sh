@@ -10,4 +10,8 @@ export SOD_SERVICES_USER=user
 export SOD_SERVICES_PASSWORD=user
 export SOD_SERVICES_URL="http://${SOD_SERVICES_DOMAIN}:${SOD_SERVICES_PORT}/api"
 
+export NODE_ENV=production
+#export DOCKER=useDockerDb
+export PORT=9000
+
 grunt serve
