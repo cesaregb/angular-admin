@@ -1,14 +1,12 @@
 'use strict';
 
-// Services utils!!! 
-
 angular.module('processAdminApp')
   .factory('factoryUtils', function (factoryCommon, noty) {
 
     var factory = {};
 
     var utilsURI = '/app-utils';
-    var menuUri = '/menu'
+    var menuUri = '/menu';
     factory.getMenu = function () {
        return factoryCommon.get(utilsURI + menuUri);
     };
