@@ -87,15 +87,16 @@ let all = {
 let exportInfo = _.merge(
   all,
   require('./shared'),
-  require('./' + process.env.NODE_ENV + '.js') || {});
+  require('./' + process.env.NODE_ENV + '.js') || {}
+);
 
-console.log('[environment] exportInfo: ' + exportInfo.port );
+console.log('[environment] exportInfo: ' + JSON.stringify(exportInfo, null, 2));
 
 if (Boolean(process.env.DOCKER)){
-  console.log("****** " + process.env.NODE_ENV +  " - Changing the MONGO uri.... exportInfo: " + exportInfo.mongoDocker.uri);
+  console.log("[environment] ****** env: [" + process.env.NODE_ENV + "] - Changing the MONGO uri.... exportInfo: " + exportInfo.mongoDocker.uri);
   exportInfo.mongo.uri = exportInfo.mongoDocker.uri;
 }else{
-  console.log("****** SAME OLD MONGO!!");
+  console.log("[environment] ****** SAME OLD MONGO!!");
 }
 
 
