@@ -65,11 +65,10 @@ let all = {
 
   //SOD (Java) service information.
   sodInfo: {
-    serviceDomain: process.env.SOD_SERVICES_DOMAIN = process.env.SOD_SERVICES_DOMAIN || '127.0.0.1',
-    servicePort: process.env.SOD_SERVICES_PORT = process.env.SOD_SERVICES_PORT || '8080',
     serviceUser: process.env.SOD_SERVICES_USER = process.env.SOD_SERVICES_USER || 'user',
     servicePassword: process.env.SOD_SERVICES_PASSWORD = process.env.SOD_SERVICES_PASSWORD || 'user',
     serviceUrl: process.env.SOD_SERVICES_URL = process.env.SOD_SERVICES_URL || 'http://127.0.0.1:8080/api',
+    serviceInternalUrl: process.env.SOD_INTERNAL_SERVICES_URL = process.env.SOD_INTERNAL_SERVICES_URL || 'http://127.0.0.1:8080/api',
   },
 
   authUserInfo: {
