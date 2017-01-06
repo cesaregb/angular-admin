@@ -1,5 +1,5 @@
 # To build:
-# docker build -t interactivelabs/process-admin -f Dockerfile .
+# docker build -t interactivelabs/process-admin:dev -f Dockerfile .
 # docker push interactivelabs/process-admin:v1
 #
 # To run:

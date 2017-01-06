@@ -11,7 +11,7 @@ import config from '../../config/environment';
 export function sodGet(endpoint){
 
   let deferred = Q.defer();
-  let url = config.sodInfo.serviceUrl + endpoint;
+  let url = config.sodInfo.serviceInternalUrl + endpoint;
 
   console.log('[sodGet] url: ' + url);
   console.log('[sodGet] config.authUserInfo.sodToken: ' + config.authUserInfo.sodToken);
@@ -46,7 +46,7 @@ export function sodGet(endpoint){
 
 export function post(endpoint){
   let deferred = Q.defer();
-  let url = config.sodInfo.serviceUrl + endpoint;
+  let url = config.sodInfo.serviceInternalUrl + endpoint;
   console.log('[post] url: ' + url);
   console.log('[post] config.sodInfo: ' + JSON.stringify(config.sodInfo, null, 2));
   request.post(url, {
@@ -80,14 +80,12 @@ export function getSODToken(){
     return Q.when(config.authUserInfo.sodToken);
   }else{
 
-    let url = config.sodInfo.serviceUrl + '/auth/app/process_admin';
+    let url = config.sodInfo.serviceInternalUrl + '/auth/app/process_admin';
     console.log('[getSODToken] config: ' + JSON.stringify(config.sodInfo, null, 2));
 
     let auth = "Basic " + new Buffer(config.sodInfo.serviceUser + ":" + config.sodInfo.servicePassword).toString("base64");
     request.post(url, {
-      headers : {
-        "Authorization" : auth
-      }
+      headers : { "Authorization" : auth }
     }, function (error, response, body) {
       if (!error && response.statusCode >= 200 && response.statusCode < 300 ) {
         console.log('[request] response.statusCode : ' + response.statusCode );
@@ -99,7 +97,6 @@ export function getSODToken(){
 
       }else{
         deferred.reject('NA');
-
       }
     });
   }
