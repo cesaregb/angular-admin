@@ -27,13 +27,16 @@ router.post('/', function(req, res, next) {
     config.authUserInfo.token = token;
     config.authUserInfo.role = user.role;
 
-    sodServices.getSODToken().then(function (sodAuthToken) {
+    sodServices.getSODToken().then( (sodAuthToken)=>{
       config.authUserInfo.sodToken = sodAuthToken;
       res.json({
         token,
         sodAuthToken: sodAuthToken,
         sodServicesEndpoint: config.sodInfo.serviceUrl
       });
+    }, (err) => {
+      config.authUserInfo.sodToken = sodAuthToken;
+      return res.status(401).json({message:'Error authenticationg with SOD Services. '});
     });
 
 

@@ -255,6 +255,13 @@
       this.$state.go('orders.formOrder',{order: this.order} , { reload: true });
     }
 
+    cancel(){
+      if (!Boolean(this.order.services)){
+        this.order.services = [];
+      }
+      this.$state.go('orders.formOrder',{order: this.order} , { reload: true });
+    }
+
   }
 
   angular.module('processAdminApp')

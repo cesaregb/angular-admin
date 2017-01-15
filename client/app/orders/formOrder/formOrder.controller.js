@@ -94,8 +94,23 @@
     }
 
     validateOrderType() {
-      var _this = this;
       if (Boolean(this.selectedOrderType)){
+
+        if ((!Boolean(this.order.client.addresses) || this.order.client.addresses.length == 0)
+          && (this.selectedOrderType.transportInfo > 0)){
+
+          this.selectedOrderType = null; // clear order selection ..
+          this.pickupShow = false;
+          this.showDeliver = false;
+
+          this.noty.showNoty({
+            text: 'Cliente no tiene direccion dada de alta, por favor agrega una direccion, o selecciona otro servicio',
+            ttl: 1000 * 4,
+            type: 'warning'
+          });
+
+          return;
+        }
 
         this.order.idOrderType = this.selectedOrderType.idOrderType;
         this.pickupShow = false;
@@ -111,19 +126,7 @@
           this.showDeliver = true;
         }
 
-        if ((!Boolean(this.order.client.addresses) || this.order.client.addresses.length == 0)
-            && (this.pickupShow || this.showDeliver)){
 
-          this.selectedOrderType = null;
-          this.pickupShow = false;
-          this.showDeliver = false;
-
-          this.noty.showNoty({
-            text: 'Cliente no tiene direccion dada de alta, por favor agrega una direccion, o selecciona otro servicio',
-            ttl: 1000 * 4,
-            type: 'warning'
-          });
-        }
         this.calculateTotal();
       }
     }
@@ -270,7 +273,7 @@
       finalOrder.totalServices = this.order.totalServices;
       finalOrder.comments = '';
 
-      if (this.selectedOrderType.transportInfo == 3 ||  this.selectedOrderType.transportInfo == 1){
+      if (this.selectedOrderType.transportInfo === 3 ||  this.selectedOrderType.transportInfo === 1){
         try{
           finalOrder.idAddressPickup = this.order.pickup.address.idAddress;
           finalOrder.pickUpDate = this.order.pickUpDate;
@@ -279,7 +282,7 @@
         }
       }
 
-      if (this.selectedOrderType.transportInfo == 3 ||  this.selectedOrderType.transportInfo == 2){
+      if (this.selectedOrderType.transportInfo === 3 ||  this.selectedOrderType.transportInfo === 2){
         try{
           finalOrder.idAddressDeliver = this.order.deliver.address.idAddress;
           finalOrder.deliveryDate = this.order.deliverDate;
