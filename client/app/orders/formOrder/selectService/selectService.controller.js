@@ -27,8 +27,9 @@
       this.service = null;
       this.serviceCategories = [];
 
-      this.factoryServices.getServiceOrderDetails().then(function (response) {
+      this.factoryServices.getServiceOrderDetails().then(function ( response ) {
         _this.serviceCategories = response;
+
         if (Boolean(_this.selectedService)) {
           // if open selected service...
           _this.service = selectedService;
@@ -54,17 +55,18 @@
             _this.service = {};
           }
         }
+
       });
     }
 
     selectService(serviceType) {
-      var _this = this;
+      let _this = this;
       _this.service = {};
 
       _this.service = serviceType;
       _this.service.specsPrice = 0;
       _this.service.productsPrice = 0;
-      _this.service.totalPrice = 0;
+      _this.service.servicePrice = 0;
       this.calculatePrice();
 
       if (Boolean(_this.service.specs)) {
@@ -82,6 +84,7 @@
         _this.service.price = parseFloat(serviceType.price);
         this.preselectValues();
         this.calculateSpecsPrice();
+
       } else {
         _this.noty.showNoty({
           text: "Servicio no tiene specs... ",
@@ -91,15 +94,12 @@
       }
     }
 
-    selectSpecOption(workingWithSpec, specsValue) {
+    selectSpecOption(selectedSpec, specsValue) {
       specsValue.quantity = 1;
-      this.preselectValues();
+      let _this = this;
+      this.service.specs.forEach( (item)=>{
+        if (item.idSpecs == selectedSpec.idSpecs) {
 
-      var _this = this;
-      // spec price ==
-      _this.service.specs.forEach(function (item) {
-        // $log.info('[selectSpecOption] item.idSpecs == workingWithSpec.idSpecs: ' + item.idSpecs + ' -- ' + workingWithSpec.idSpecs);
-        if (item.idSpecs == workingWithSpec.idSpecs) {
           if (specsValue.costType === _this.COST_TYPE_PERCENTAGE) {
             item.amt = specsValue.serviceIncrement;
             item.type = "%";
@@ -107,14 +107,16 @@
             item.amt = specsValue.specPrice;
             item.type = "$";
           }
+
         }
       });
+
       this.calculateSpecsPrice();
     }
 
 
     preselectValues() {
-      var _this = this;
+      let _this = this;
       // preselect all the base elements...
       this.service.specs.forEach(function (item) {
         if (( item.primarySpec || item.optional == 0 ) && !Boolean(item.type)) {
@@ -132,55 +134,41 @@
     }
 
     calculateSpecsPrice() {
-      var _this = this;
-      _this.service.totalPrice = _this.service.price;
-      _this.service.specsPrice = 0;
+      let _this = this;
+      if (!Boolean(this.service.products) || this.service.products.length < 1){
+        this.noty.showNoty({
+          text: 'Tenemos que seleccionar cuandomenos 1 producto',
+          ttl: 1000 * 4,
+          type: 'warning'
+        });
+        return;
+      }
 
-      var specsPrincipalPrice = 0;
+      let basePrice = this.service.productsPrice + this.service.price;
+      let specsPrice = 0;
 
-      // get base price... based on $
+      // calculate based on $
       _this.service.specs.forEach(function (item) {
-        if (item.primarySpec && item.type == "$") {
+        if (item.type == "$") {
           item.price = item.amt * item.quantity;
-          specsPrincipalPrice += item.price;
+          specsPrice += item.price;
         }
       });
 
-      // both base add up to the price... the rest to the totalPrice
-      // get base price... based on $
-      var percTot = 0;
+      // calculate based on % of basePrice
       _this.service.specs.forEach(function (item) {
-        if (item.primarySpec && item.type == "%") {
-          item.price = ((item.amt * item.quantity) / 100) * (specsPrincipalPrice + _this.service.price);
-          percTot = percTot + item.price;
+        if (item.type == "%") {
+          item.price = ((item.amt / 100) * basePrice) * item.quantity;
+          specsPrice += item.price;
         }
       });
 
-      specsPrincipalPrice += percTot;
-
-      // calculate the percentage for the rest of the elements..
-      var specsNotPrincipalPrice = 0;
-
-      _this.service.specs.forEach(function (item) {
-        if (!item.primarySpec && item.type == "%") {
-          // calculate line price before adding it to the total.
-          item.price = ((item.amt * item.quantity) / 100) * specsPrincipalPrice;
-          // add calculated to the total
-          specsNotPrincipalPrice += item.price;
-        } else if (!item.primarySpec && item.type == "$") {
-          item.price = item.amt * item.quantity;
-          specsNotPrincipalPrice += item.price;
-        }
-      });
-
-      _this.service.specsPrice = specsPrincipalPrice + specsNotPrincipalPrice;
-
+      _this.service.specsPrice = specsPrice;
       this.calculatePrice();
-
     }
 
     calculatePrice(){
-      this.service.totalPrice = this.service.price + this.service.specsPrice + this.service.productsPrice;
+      this.service.servicePrice = this.service.price + this.service.specsPrice + this.service.productsPrice;
     }
 
     changeQty(){
@@ -188,8 +176,8 @@
     }
 
     manageProducts(){
-      var _this = this;
-      var modalInstance = this.$uibModal.open({
+      let _this = this;
+      let modalInstance = this.$uibModal.open({
         animation: false,
         templateUrl: 'app/products/productSearchModal/productSearchModal.html',
         controller: 'ProductSearchModalCtrl',
@@ -203,46 +191,26 @@
 
       modalInstance.result.then(function(product) {
         product.quantity = 1;
-        if (!Boolean(this.service.products)){
-          this.service.products = [];
-        }
-
-        var found = -1;
-        this.service.products.forEach(function(item, index){
-          if (item.idProduct == product.idProduct){
-            found = index;
-          }
-        });
-
-        if (found >= 0){
-          this.service.products.splice(found, 1);
-        }
-
+        this.service.products = (Boolean(this.service.products))?this.service.products:[];
+        this.service.products = this._.filter(this.service.products, (p)=>{ return p.idProduct == product.idProduct;});
         this.service.products.push(product);
 
-        this.calculateProductTotal(product);
-
+        this.calculateProductsTotal();
       }.bind(this));
     }
 
     deleteProduct(product){
-      var index = this._.findIndex(this.service.products, function(element){
-        return (element.idProduct == product.idProduct);
-      });
-
-      this.service.products.splice(index, 1);
-    }
-
-    calculateProductTotal(product){
-      product.total = product.price * product.quantity;
-      this.calculateProductsTotal();
+      this.service.products = this._.filter(this.service.products, (p)=>{ return p.idProduct == product.idProduct;});
+      this.calculateProductsTotal()
     }
 
     calculateProductsTotal(){
       var productsTotal = 0;
       this.service.products.forEach(function(item){
+        item.total = item.price * item.quantity;
         productsTotal += item.total;
       });
+
       this.service.productsPrice = productsTotal;
       this.calculatePrice()
     }
@@ -252,14 +220,14 @@
         this.order.services = [];
       }
       this.order.services.push(this.service);
-      this.$state.go('orders.formOrder',{order: this.order} , { reload: true });
+      this.$state.go('orders.formOrder',{order: this.order, addService: true} , { reload: true });
     }
 
     cancel(){
       if (!Boolean(this.order.services)){
         this.order.services = [];
       }
-      this.$state.go('orders.formOrder',{order: this.order} , { reload: true });
+      this.$state.go('orders.formOrder',{order: this.order, addService: true} , { reload: true });
     }
 
   }

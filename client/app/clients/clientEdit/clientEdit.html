@@ -44,16 +44,6 @@
               <!-- Form Name -->
               <legend>{{$cn.title}}</legend>
 
-              <!-- Text input-->
-              <div class="form-group" ng-class="{ 'has-error' : $cn.clientForm.name.$invalid && !$cn.clientForm.name.$pristine }">
-                <label class="col-md-4 control-label" for="name">Nombre *</label>
-                <div class="col-md-6">
-                  <input id="name" name="name" type="text" placeholder="name" class="form-control input-md" required
-                    ng-model="$cn.client.name" ng-minlength="3">
-                  <p ng-show="$cn.clientForm.name.$error.minlength" class="help-block">Value too short</p>
-                </div>
-              </div>
-
               <!-- Select Basic -->
               <div class="form-group">
                 <label class="col-md-4 control-label">Tipo de client</label>
@@ -61,6 +51,16 @@
                   <select class="form-control"
                           ng-options="ct as ct.name for ct in $cn.clientTypes"
                           ng-model="$cn.clientType" ng-change="$cn.selectClientType()"></select>
+                </div>
+              </div>
+
+              <!-- Text input-->
+              <div class="form-group" ng-class="{ 'has-error' : $cn.clientForm.name.$invalid && !$cn.clientForm.name.$pristine }">
+                <label class="col-md-4 control-label" for="name">Nombre *</label>
+                <div class="col-md-6">
+                  <input id="name" name="name" type="text" placeholder="name" class="form-control input-md" required
+                    ng-model="$cn.client.name" ng-minlength="3">
+                  <p ng-show="$cn.clientForm.name.$error.minlength" class="help-block">Value too short</p>
                 </div>
               </div>
 

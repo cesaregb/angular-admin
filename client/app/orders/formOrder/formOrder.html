@@ -13,6 +13,7 @@
             <div class="col-md-9 input-group">
               <input type="text" class="form-control" ng-model="$cn.order.client.name">
               <div class="input-group-btn" ng-show="$cn.order.idOrder == null || $cn.order.idOrder == 0">
+
                 <button class="btn btn-default" type="button" ng-click="$cn.openClientSearch()">
                   <i class="fa fa-search"></i>
                 </button>
@@ -45,7 +46,7 @@
                 <!-- Select Basic -->
                 <select class="form-control" ng-disabled="$cn.order.client.idClient == null"
                         ng-options="orderType as orderType.name for orderType in $cn.orderTypes"
-                        ng-model="$cn.selectedOrderType"
+                        ng-model="$cn.orderType"
                         ng-change="$cn.validateOrderType()"></select>
               </div>
             </div>
@@ -64,9 +65,9 @@
               <div class="col-md-8 input-group">
                 <select class="form-control"
                         ng-options="addr as addr.address for addr in $cn.order.client.addresses"
-                        ng-model="$cn.order.pickup.address"
-                        ng-change="$cn.selectAddress(1, $cn.order.pickup.address)"></select>
-                <span class="input-group-addon">{{$cn.order.pickupPrice | currency}}</span>
+                        ng-model="$cn.order.transport[0].address"
+                        ng-change="$cn.selectAddress(1, $cn.order.transport[0].address)"></select>
+                <span class="input-group-addon">{{$cn.order.transport[0].price | currency}}</span>
               </div>
             </div>
           </div>
@@ -76,7 +77,9 @@
                 <label class="col-md-4 control-label">Fecha/Hora</label>
               </div>
               <div class="col-md-8 input-group">
-                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.order.pickUpDate"
+                <input type="text" class="form-control"
+                       datetime-picker="MM/dd/yyyy HH:mm"
+                       ng-model="$cn.order.transport[0].date"
                        is-open="$cn.pickUpOpen">
                 <span class="input-group-btn">
                       <button type="button" class="btn btn-default"
@@ -99,9 +102,9 @@
               </div>
               <div class="col-md-8 input-group">
                 <select class="form-control" ng-options="addr as addr.address for addr in $cn.order.client.addresses"
-                        ng-model="$cn.order.deliver.address"
-                        ng-change="$cn.selectAddress(2, $cn.order.deliver.address)"></select>
-                <span class="input-group-addon" >{{$cn.order.deliverPrice | currency}}</span>
+                        ng-model="$cn.order.transport[1].address"
+                        ng-change="$cn.selectAddress(2, $cn.order.transport[1].address)"></select>
+                <span class="input-group-addon" >{{$cn.order.transport[1].price | currency}}</span>
               </div>
             </div>
           </div>
@@ -112,7 +115,9 @@
                 <label class="col-md-4 control-label">Fecha/Hora</label>
               </div>
               <div class="col-md-8 input-group">
-                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="$cn.order.deliverDate"
+                <input type="text" class="form-control"
+                       datetime-picker="MM/dd/yyyy HH:mm"
+                       ng-model="$cn.order.transport[1].date"
                        is-open="$cn.deliverOpen">
                 <span class="input-group-btn">
                     <button type="button" class="btn btn-default"
@@ -127,7 +132,7 @@
       </div>
 
       <!--******** services!!!-->
-      <div class="row" style="padding-bottom:20px;" ng-show="$cn.selectedOrderType.idOrderType > 0">
+      <div class="row" style="padding-bottom:20px;" ng-show="$cn.orderType.idOrderType > 0">
         <div class="col-lg-12">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -179,7 +184,7 @@
         </div>
       </div>
 
-      <div class="row" style="padding-bottom:20px;" ng-show="$cn.selectedOrderType.idOrderType > 0">
+      <div class="row" style="padding-bottom:20px;" ng-show="$cn.orderType.idOrderType > 0">
         <div class="col-md-12">
 
           <div class="row">
