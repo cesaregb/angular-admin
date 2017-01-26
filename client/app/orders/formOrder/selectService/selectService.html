@@ -108,7 +108,9 @@
                         <td>
                           <input type="number" class="form-control"
                                  ng-model="product.quantity"
-                                 placeholder="1" min="1" max="{{product.maxQty}}" ng-change="$cn.calculateProductTotal(product)"/>
+                                 placeholder="1" min="1"
+                                 max="{{product.maxQty}}"
+                                 ng-blur="$cn.calculateProductsTotal()"/>
                           </td>
                         <td>{{product.price | currency}}</td>
                         <td>{{product.total | currency}}</td>
@@ -127,7 +129,7 @@
             </div>
 
             <!--Specs-->
-            <div class="panel panel-default" ng-show="$cn.serviceType.idServiceType > 0">
+            <div class="panel panel-default" ng-show="$cn.serviceType.idServiceType > 0 && $cn.service.products.length > 0">
               <div class="panel-heading">
                 Specs
               </div>

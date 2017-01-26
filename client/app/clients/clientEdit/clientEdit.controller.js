@@ -23,7 +23,10 @@ class ClientEditComponent {
     if (t.client != null) {
       t.newClient = false;
       t.title = "Edit: " + t.client.name;
+    }else {
+      t.client = {};
     }
+
 
     t.factoryServices.getResources('clientType').then(function(result){
       t.clientTypes = result;
@@ -83,8 +86,10 @@ class ClientEditComponent {
       }
     }
   }
+
   selectClientType(){
     this.client.idClientType = this.clientType.idClientType;
+    this.$log.info('[selecttype] type: ' + this.client.idClientType);
   }
 
   delete(){

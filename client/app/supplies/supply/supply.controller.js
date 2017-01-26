@@ -33,7 +33,7 @@
         deferred.resolve(filter);
       });
       return deferred.promise;
-    }
+    };
 
     getInfo() {
       var _this = this;

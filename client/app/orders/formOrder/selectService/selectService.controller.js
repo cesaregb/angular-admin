@@ -17,9 +17,9 @@
     }
 
     $onInit() {
-      if (this.$stateParams.order){
+      if (this.$stateParams.order) {
         this.order = this.$stateParams.order;
-      }else{
+      } else {
         // this.$state.go('orders.formOrder', null, { reload: true });
       }
 
@@ -27,7 +27,7 @@
       this.service = null;
       this.serviceCategories = [];
 
-      this.factoryServices.getServiceOrderDetails().then(function ( response ) {
+      this.factoryServices.getServiceOrderDetails().then(function (response) {
         _this.serviceCategories = response;
 
         if (Boolean(_this.selectedService)) {
@@ -97,7 +97,7 @@
     selectSpecOption(selectedSpec, specsValue) {
       specsValue.quantity = 1;
       let _this = this;
-      this.service.specs.forEach( (item)=>{
+      this.service.specs.forEach((item) => {
         if (item.idSpecs == selectedSpec.idSpecs) {
 
           if (specsValue.costType === _this.COST_TYPE_PERCENTAGE) {
@@ -107,13 +107,11 @@
             item.amt = specsValue.specPrice;
             item.type = "$";
           }
-
         }
       });
 
       this.calculateSpecsPrice();
     }
-
 
     preselectValues() {
       let _this = this;
@@ -128,14 +126,13 @@
             item.amt = item.specsValue.specPrice;
             item.type = "$";
           }
-
         }
       });
     }
 
     calculateSpecsPrice() {
       let _this = this;
-      if (!Boolean(this.service.products) || this.service.products.length < 1){
+      if (!Boolean(this.service.products) || this.service.products.length < 1) {
         this.noty.showNoty({
           text: 'Tenemos que seleccionar cuandomenos 1 producto',
           ttl: 1000 * 4,
@@ -167,15 +164,15 @@
       this.calculatePrice();
     }
 
-    calculatePrice(){
+    calculatePrice() {
       this.service.servicePrice = this.service.price + this.service.specsPrice + this.service.productsPrice;
     }
 
-    changeQty(){
+    changeQty() {
       this.calculateSpecsPrice();
     }
 
-    manageProducts(){
+    manageProducts() {
       let _this = this;
       let modalInstance = this.$uibModal.open({
         animation: false,
@@ -183,30 +180,35 @@
         controller: 'ProductSearchModalCtrl',
         size: 'lg',
         resolve: {
-          serviceType: function() {
+          serviceType: function () {
             return _this.serviceType;
           }
         }
       });
 
-      modalInstance.result.then(function(product) {
+      modalInstance.result.then(function (product) {
         product.quantity = 1;
-        this.service.products = (Boolean(this.service.products))?this.service.products:[];
-        this.service.products = this._.filter(this.service.products, (p)=>{ return p.idProduct == product.idProduct;});
+        this.service.products = (Boolean(this.service.products)) ? this.service.products : [];
+        // remove product if exist, and add it back again.
+        this.service.products = this._.filter(this.service.products, (p) => {
+          return p.idProduct == product.idProduct;
+        });
         this.service.products.push(product);
 
         this.calculateProductsTotal();
       }.bind(this));
     }
 
-    deleteProduct(product){
-      this.service.products = this._.filter(this.service.products, (p)=>{ return p.idProduct == product.idProduct;});
+    deleteProduct(product) {
+      this.service.products = this._.filter(this.service.products, (p) => {
+        return p.idProduct == product.idProduct;
+      });
       this.calculateProductsTotal()
     }
 
-    calculateProductsTotal(){
+    calculateProductsTotal() {
       var productsTotal = 0;
-      this.service.products.forEach(function(item){
+      this.service.products.forEach(function (item) {
         item.total = item.price * item.quantity;
         productsTotal += item.total;
       });
@@ -215,19 +217,19 @@
       this.calculatePrice()
     }
 
-    addService(){
-      if (!Boolean(this.order.services)){
+    addService() {
+      if (!Boolean(this.order.services)) {
         this.order.services = [];
       }
       this.order.services.push(this.service);
-      this.$state.go('orders.formOrder',{order: this.order, addService: true} , { reload: true });
+      this.$state.go('orders.formOrder', {order: this.order, addService: true}, {reload: true});
     }
 
-    cancel(){
-      if (!Boolean(this.order.services)){
+    cancel() {
+      if (!Boolean(this.order.services)) {
         this.order.services = [];
       }
-      this.$state.go('orders.formOrder',{order: this.order, addService: true} , { reload: true });
+      this.$state.go('orders.formOrder', {order: this.order, addService: true}, {reload: true});
     }
 
   }
