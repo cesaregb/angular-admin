@@ -21,10 +21,11 @@ angular.module('processAdminApp', [
   'angular-loading-bar',
   'ngTable',
   'ui.bootstrap.datetimepicker',
-  'dndLists',
-  'LocalStorageModule'
+  'dndLists', // remove me
+  'LocalStorageModule',
+  'ui.sortable'
 ])
-  .config(function ($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, formlyConfigProvider, localStorageServiceProvider) {
+  .config(function ($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, formlyConfigProvider, localStorageServiceProvider, $httpProvider) {
     $urlRouterProvider.otherwise('/');
     $locationProvider.html5Mode(true);
     // configure loading-bar
@@ -78,7 +79,9 @@ angular.module('processAdminApp', [
 
     // avoid storing the info in the cookie, security concern
     localStorageServiceProvider
-      .setDefaultToCookie(false)
+      .setDefaultToCookie(false);
+
+    $httpProvider.defaults.timeout = 5000;
 
   })
   .run(function ($location, $log, $rootScope, Auth, appContext, factoryCommon) {

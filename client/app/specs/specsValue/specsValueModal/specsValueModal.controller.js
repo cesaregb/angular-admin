@@ -15,6 +15,8 @@ angular.module('processAdminApp')
         }else{
           $scope.formItem.idSpecs = response[0].idSpecs;
           $scope.formItem.type = 1;
+          $scope.formItem.serviceIncrement = 0;
+          $scope.formItem.specPrice = 0;
         }
       });
     };
@@ -44,11 +46,12 @@ angular.module('processAdminApp')
       if ($scope.formItem.type == 2){
         return !Boolean($scope.formItem.idSupplyType) || $scope.formItem.idSupplyType == 0;
       }else{
+
         let result = Boolean($scope.formItem.value)
             && (
-                ($scope.formItem.costType  == 0 && Boolean($scope.formItem.serviceIncrement) )
+                ($scope.formItem.costType == 0 && $scope.formItem.serviceIncrement >= 0 )
                   ||
-                ($scope.formItem.costType == 1 && Boolean($scope.formItem.specPrice) )
+                ($scope.formItem.costType == 1 && $scope.formItem.specPrice >= 0 )
                 );
 
         return !result;

@@ -30,7 +30,7 @@ angular.module('processAdminApp')
       template: '<form-order></form-order>',
       params: {
         order: null,
-        service: null
+        addService: false
       }
     }).state('orders.ordersList', {
       url: '/ordersList',

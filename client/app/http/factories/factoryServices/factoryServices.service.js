@@ -229,13 +229,11 @@ angular.module('processAdminApp')
     };
 
     factory.getProductsByName = function (name) {
-      let uri = uris.product.uri + '/name/' + name;
-      return factoryCommon.get(uri);
+      return factoryCommon.get(uris.products.uri, {name: name});
     };
 
     factory.getProductsByType = function (idProductType) {
-      let uri = uris.product.uri + '/type/' + idProductType;
-      return factoryCommon.get(uri);
+      return factoryCommon.get(uris.products.uri, {idProductType: idProductType});
     };
 
     factory.addProducts = function (idServiceType, productTypes) {
@@ -245,7 +243,6 @@ angular.module('processAdminApp')
 
     factory.getProductsByProductTypes = function (ids) {
       let uri = uris.product.uri + '/byProductTypes';
-      // sending ids as post ...
       return factoryCommon.post(ids, uri);
     };
 

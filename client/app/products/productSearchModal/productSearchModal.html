@@ -9,7 +9,10 @@
         <div class="col-md-12">
           <div class="pull-right">
             <label>Search:
-              <input type="search" class="form-control input-sm" ng-model="searchText" aria-controls="dataTables-example">
+              <input type="search" class="form-control input-sm"
+                     ng-model="searchText"
+                     ng-blur="searchProducts()"
+                     aria-controls="dataTables-example">
               <select class="form-control" ng-model="productType"
                       ng-change="filterByType()" ng-options="filter.name for filter in productTypes"></select>
               <a href="#" ng-click="searchProducts()" class="btn btn-info btn-sm">

@@ -38,6 +38,10 @@ module.exports = function(config) {
       'client/bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js',
       'client/bower_components/underscore/underscore.js',
       'client/bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js',
+      'client/bower_components/angular-base64/angular-base64.js',
+      'client/bower_components/angular-local-storage/dist/angular-local-storage.js',
+      'client/bower_components/jquery-ui/jquery-ui.js',
+      'client/bower_components/angular-ui-sortable/sortable.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'node_modules/socket.io-client/socket.io.js',

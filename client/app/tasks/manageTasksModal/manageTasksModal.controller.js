@@ -9,6 +9,13 @@ angular.module('processAdminApp')
     $scope.selected = {};
     $scope.itemTypeTasks = [];
 
+    $scope.items = ["One", "Two", "Three"];
+
+    // $scope.sortableOptions = {
+    //   update: function(e, ui) {  },
+    //   axis: 'x'
+    // };
+
     this.init = function () {
 
       if (requester == 2) { // orders module
