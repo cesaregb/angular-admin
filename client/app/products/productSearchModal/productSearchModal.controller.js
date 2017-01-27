@@ -7,7 +7,7 @@ angular.module('processAdminApp')
     $scope.productType = null;
 
     $scope.searchProducts = function(){
-      var text = $scope.searchText;
+      let text = $scope.searchText;
       factoryServices.getProductsByName(text).then(function(response){
         $scope.products = response;
       });
@@ -28,6 +28,7 @@ angular.module('processAdminApp')
           // TODO fix me remove extra call.
           var ids = [];
           if (Boolean(serviceType.productTypes) && serviceType.productTypes.length > 0){
+
             serviceType.productTypes.forEach(function(item){
               ids.push(item.idProductType);
             });

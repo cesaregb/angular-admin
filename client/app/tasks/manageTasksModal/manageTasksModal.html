@@ -49,17 +49,12 @@
           <div class="panel-heading">
             <h3 class="panel-title ng-binding">Selected </h3>
           </div>
-          <ul dnd-list="itemTypeTasks">
-            <li ng-repeat="item in itemTypeTasks"
-                dnd-draggable="item"
-                dnd-moved="itemTypeTasks.splice($index, 1)"
-                dnd-effect-allowed="move"
-                dnd-selected="models.selected = item"
 
-                ng-class="{'selected': models.selected === item}"
-            >
+          <div ui-sortable="sortableOptions" ng-model="itemTypeTasks">
+            <div ng-repeat="item in itemTypeTasks" style="border-bottom: 1px; solid-color: #fff">
+
               <dnd-nodrag>
-                <div class="row">
+                <div class="row" style="margin-left: 0px;">
                   <div col-sm-12>
                     <div class="col-sm-1">:::</div>
                     <div class="col-sm-8">{{item.taskTypeName}} - {{item.task.name}}</div>
@@ -72,47 +67,11 @@
                 </div>
               </dnd-nodrag>
 
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!--<table class="table table-striped table-bordered table-hover dataTable no-footer"-->
-             <!--role="grid">-->
-        <!--<thead>-->
-        <!--<tr role="row">-->
-          <!--<th>Type</th>-->
-          <!--<th>Name</th>-->
-          <!--<th>Description</th>-->
-          <!--<th>Order</th>-->
-          <!--<th></th>-->
-        <!--</tr>-->
-        <!--</thead>-->
-        <!--<tbody>-->
-        <!--<tr ng-show="itemTypeTasks.length == 0 || itemTypeTasks == null">-->
-          <!--<td colspan="5">No Items found</td>-->
-        <!--</tr>-->
-        <!--<tr class="gradeA" role="row" ng-class-odd="'odd'" ng-class-even="'even'"-->
-            <!--ng-repeat="currentRow in itemTypeTasks| orderBy:'-sortingOrder'">-->
-          <!--<td>-->
-            <!--{{currentRow.taskTypeName}}-->
-          <!--</td>-->
-          <!--<td>-->
-            <!--{{currentRow.task.name}}-->
-          <!--</td>-->
-          <!--<td>{{currentRow.task.description}}</td>-->
-          <!--<td class="action-column">-->
-            <!--<input id="name" name="name" type="text" style="width:50px;" class="form-control input-sm"-->
-                   <!--ng-model="currentRow.sortingOrder">-->
-          <!--</td>-->
-          <!--<td class="action-column">-->
-            <!--<a href="#" ng-click="deleteItem(currentRow)" class="btn btn-danger btn-circle">-->
-              <!--<span class="glyphicon glyphicon-remove"></span>-->
-            <!--</a>-->
-          <!--</td>-->
-        <!--</tr>-->
-        <!--</tbody>-->
-      <!--</table>-->
     </div>
   </div>
 </div>

@@ -85,20 +85,21 @@ export function getSODToken(){
 
     let auth = "Basic " + new Buffer(config.sodInfo.serviceUser + ":" + config.sodInfo.servicePassword).toString("base64");
     request.post(url, {
-      headers : { "Authorization" : auth }
-    }, function (error, response, body) {
-      if (!error && response.statusCode >= 200 && response.statusCode < 300 ) {
-        console.log('[request] response.statusCode : ' + response.statusCode );
-        let jsonCnt = JSON.parse(body);
-        // set token in config, to be used on sod calls.
-        config.authUserInfo.sodToken = jsonCnt.token;
-        console.log('[BE Server auth] config.authUserInfo.sodToken: ' + config.authUserInfo.sodToken + '\n before resolve');
-        deferred.resolve( config.authUserInfo.sodToken );
+        timeout: 1500,
+        headers : { "Authorization" : auth }
+      }, function (error, response, body) {
+        if (!error && response.statusCode >= 200 && response.statusCode < 300 ) {
+          console.log('[request] response.statusCode : ' + response.statusCode );
+          let jsonCnt = JSON.parse(body);
+          // set token in config, to be used on sod calls.
+          config.authUserInfo.sodToken = jsonCnt.token;
+          console.log('[BE Server auth] config.authUserInfo.sodToken: ' + config.authUserInfo.sodToken + '\n before resolve');
+          deferred.resolve( config.authUserInfo.sodToken );
 
-      }else{
-        deferred.reject('NA');
-      }
-    });
+        }else{
+          deferred.reject('NA');
+        }
+      });
   }
 
   return deferred.promise;
