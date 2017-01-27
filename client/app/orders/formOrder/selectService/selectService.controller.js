@@ -191,8 +191,9 @@
         this.service.products = (Boolean(this.service.products)) ? this.service.products : [];
         // remove product if exist, and add it back again.
         this.service.products = this._.filter(this.service.products, (p) => {
-          return p.idProduct == product.idProduct;
+          return p.idProduct != product.idProduct;
         });
+
         this.service.products.push(product);
 
         this.calculateProductsTotal();

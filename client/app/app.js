@@ -21,8 +21,9 @@ angular.module('processAdminApp', [
   'angular-loading-bar',
   'ngTable',
   'ui.bootstrap.datetimepicker',
-  'dndLists',
-  'LocalStorageModule'
+  'dndLists', // remove me
+  'LocalStorageModule',
+  'ui.sortable'
 ])
   .config(function ($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, formlyConfigProvider, localStorageServiceProvider, $httpProvider) {
     $urlRouterProvider.otherwise('/');
