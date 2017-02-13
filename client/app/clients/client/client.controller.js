@@ -34,15 +34,11 @@ class ClientComponent {
     var _this = this;
     var text = this.searchText;
     var filter = this.searchFilter;
-
-    var filterArray = [];
-    var applyFilter = {'key':filter.value, 'value':text};
-    filterArray.push(applyFilter);
-
+    var filterArray = {};
+    filterArray[filter.value] = text;
     this.factoryServices.getClientByFilter(filterArray).then(function(response){
         _this.clients = response;
     });
-
   }
 
 }
