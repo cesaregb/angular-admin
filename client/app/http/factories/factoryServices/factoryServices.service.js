@@ -236,11 +236,6 @@ angular.module('processAdminApp')
       return factoryCommon.get(uris.products.uri, {idProductType: idProductType});
     };
 
-    factory.addServiceTypeProducts = function (idServiceType, productTypes) {
-      let uri = uris.serviceType.uri + '/addProducts/' + idServiceType;
-      return factoryCommon.post(productTypes, uri);
-    };
-
     factory.getProductsByProductTypes = function (ids) {
       let uri = uris.product.uri + '/byProductTypes';
       return factoryCommon.post(ids, uri);
@@ -249,12 +244,22 @@ angular.module('processAdminApp')
     factory.getClientByFilter = function (object) {
       return factoryCommon.get(uris.clients.uri, object);
     };
+
     factory.getClientByIdAddress = function (idAddress) {
       return factoryCommon.get(uris.clients.uri + '/addressId/' + idAddress);
     };
-
     factory.getAddressByStop = function (type, id) {
       return factoryCommon.get(uris.stops.uri + '/address/' + type + '/' + id);
+    };
+
+    factory.addServiceTypeProducts = function (idServiceType, productTypes) {
+      let uri = uris.serviceType.uri + '/addProducts/' + idServiceType;
+      return factoryCommon.post(productTypes, uri);
+    };
+
+    factory.addServiceTypeTasks = function (idServiceType, serviceTypeTasks) {
+      let uri = uris.serviceType.uri + '/addTasks/' + idServiceType;
+      return factoryCommon.post(serviceTypeTasks, uri);
     };
 
     factory.addServiceTypeSpecs = function (idServiceType, specs) {

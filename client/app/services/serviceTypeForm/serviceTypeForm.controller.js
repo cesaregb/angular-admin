@@ -125,7 +125,6 @@
       modalInstance.result.then(function (resultItem) {
         let serviceType = resultItem;
         if (serviceType.specs.length > 0) {
-          _this.$log.info('[openManageSpecsModal] serviceType.specs: ' + serviceType.specs.length);
           _this.factoryServices.addServiceTypeSpecs(serviceType.idServiceType, serviceType.specs).then(function (result) {
             _this.serviceType = result;
           });
@@ -152,13 +151,12 @@
 
       modalInstance.result.then(function (resultItem) {
         let serviceType = resultItem;
-        if (serviceType.serviceTypeTasks.length > 0) {
-          serviceType.serviceTypeTasks.forEach(function (serviceTypeTask) {
-            _this.factoryServices.saveResource('serviceTypeTask', serviceTypeTask).then(function (response) {
-              // do nothing..
-            })
+        if (serviceType.specs.length > 0) {
+          _this.factoryServices.addServiceTypeTasks(serviceType.idServiceType, serviceType.serviceTypeTasks).then(function (result) {
+            _this.serviceType = result;
           });
         }
+
       });
     }
 

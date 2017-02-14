@@ -22,28 +22,30 @@ angular.module('processAdminApp')
 
     this.init();
 
-    $scope.fromSelected = function(item, model) {
-      var index = _.findIndex($scope.productTypes, function(element){
-        return element.idProductType == item.idProductType;
-      });
+    $scope.fromSelected = function(item) {
+      let index = indexOfElement(item);
       if (index == -1){
         $scope.productTypes.push(item);
       }
-    }
+    };
 
-    $scope.deleteItem = function(deleteItem){
-      var deleteIndex = _.findIndex($scope.productTypes, function(element){
-        return element.idProductType == item.idProductType;
-      });
-      if (deleteIndex >= 0){
-          $scope.productTypes.splice(deleteIndex, 1);
+    $scope.deleteItem = function(item){
+      let index = indexOfElement(item);
+      if (index >= 0){
+          $scope.productTypes.splice(index, 1);
       }
     };
+
+    function indexOfElement(item){
+      return _.findIndex($scope.productTypes, function (element) {
+        return (element.idProductType == item.idProductType)
+      });
+    }
 
     $scope.okAction = function() {
       $scope.formItem.productTypes = $scope.productTypes;
       $uibModalInstance.close($scope.formItem);
-    }
+    };
 
     $scope.cancel = function() {
       $uibModalInstance.dismiss('cancel');
