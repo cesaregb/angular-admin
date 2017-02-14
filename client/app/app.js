@@ -15,17 +15,18 @@ angular.module('processAdminApp', [
   'formly',
   'formlyBootstrap',
   'angular-confirm',
-  'ngMaterial',
   'ui.select',
   'ngSanitize',
   'angular-loading-bar',
   'ngTable',
   'ui.bootstrap.datetimepicker',
-  'dndLists', // remove me
   'LocalStorageModule',
   'ui.sortable'
 ])
-  .config(function ($urlRouterProvider, $locationProvider, cfpLoadingBarProvider, formlyConfigProvider, localStorageServiceProvider, $httpProvider) {
+  .config(function ($urlRouterProvider, $locationProvider,
+                    cfpLoadingBarProvider,
+                    formlyConfigProvider, localStorageServiceProvider,
+                    $httpProvider, $qProvider) {
     $urlRouterProvider.otherwise('/');
     $locationProvider.html5Mode(true);
     // configure loading-bar
@@ -33,9 +34,7 @@ angular.module('processAdminApp', [
     // cfpLoadingBarProvider.latencyThreshold = 500;
     cfpLoadingBarProvider.includeSpinner = false;
 
-    // cfpLoadingBarProvider.spinnerTemplate = '<div class="spinning-wheel-container"><div class="spinning-wheel"></div></div>';
-
-    // set templates here
+    //********  custom formly elements
     formlyConfigProvider.setWrapper({
       name: 'horizontalBootstrapLabel',
       template: [
@@ -69,6 +68,13 @@ angular.module('processAdminApp', [
       wrapper: ['horizontalBootstrapCheckbox', 'bootstrapHasError']
     });
 
+    formlyConfigProvider.extras.removeChromeAutoComplete = true;
+    formlyConfigProvider.setType({
+      name: 'async-ui-select',
+      extends: 'select',
+      templateUrl: 'async-ui-select-type.html'
+    });
+
     // set prefix for local storege, best practice
     localStorageServiceProvider
       .setPrefix('processAdmin');
@@ -81,10 +87,15 @@ angular.module('processAdminApp', [
     localStorageServiceProvider
       .setDefaultToCookie(false);
 
+    // timeout for login request
     $httpProvider.defaults.timeout = 5000;
 
+
+    // avoid error Possibly unhandled rejection: undefined
+    $qProvider.errorOnUnhandledRejections(false);
+
   })
-  .run(function ($location, $log, $rootScope, Auth, appContext, factoryCommon) {
+  .run(function ($location, $log, $rootScope, Auth, appContext) {
 
     let url = $location.absUrl();
 

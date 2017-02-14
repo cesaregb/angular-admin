@@ -2,7 +2,7 @@
 
 function appContextCtl($log, localServices, $q, localStorageService) {
 
-  var factory = {};
+  let factory = {};
 
   // Main app context object
 

@@ -7,7 +7,8 @@
     serviceType = {};
     title = "New Service Type";
 
-    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, formlyForms, _) {
+    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, formlyForms, _, $q) {
+      var t = this;
       this.$log = $log;
       this.factoryServices = factoryServices;
       this.$confirm = $confirm;
@@ -16,35 +17,45 @@
       this.noty = noty;
       this.$state = $state;
       this.place = null;
+      this.$q = $q;
       this.serviceType = $stateParams.serviceType;
       this.editMode = (Boolean(this.serviceType) && Boolean(this.serviceType.idServiceType));
 
       // assign form
       this.formItemFields = formlyForms.serviceType;
-      // manage computed items.
-
-      var field = _.find(this.formItemFields, function (search) {
-        return (search.key === 'idServiceCategory');
-      });
 
       this.init();
 
+      let field = _.find(t.formItemFields, function (search) {
+        return (search.key === 'idServiceCategory');
+      });
+
       if (!Boolean(field)) {
-        this.formItemFields.push({
+        t.formItemFields.push({
           key: 'idServiceCategory',
           type: 'select',
           templateOptions: {
             label: 'Service Category',
-            options: this.parentSelect
+            options: []
+          },
+          controller: function ($scope, factoryServices) {
+            $scope.to.loading = factoryServices.getResources('serviceCategory').then((response) => {
+              let holder = [];
+              response.forEach((item) => {
+                holder.push({name: item.name, value: item.idServiceCategory});
+              });
+              $scope.to.options = holder;
+            });
           }
         });
       }
     };
 
     fillCategories() {
+      var deferred = this.$q.defer();
       var _this = this;
-      // load dropdown properties....
       this.factoryServices.getResources('serviceCategory').then((response) => {
+
         response.forEach((item) => {
           _this.parentSelect.push({name: item.name, value: item.idServiceCategory});
         });
@@ -52,13 +63,13 @@
         if (!Boolean(_this.serviceType.idServiceCategory)) {
           _this.serviceType.idServiceCategory = 1;
         }
-
+        deferred.resolve(_this.parentSelect);
       });
+      return deferred.promise;
     };
 
     init() {
       this.editMode = (Boolean(this.serviceType) && Boolean(this.serviceType.idServiceType));
-      this.fillCategories();
       if (Boolean(this.editMode)) {
         this.title = "Edit Service Type";
       }
@@ -112,21 +123,18 @@
       });
 
       modalInstance.result.then(function (resultItem) {
-        var serviceType = resultItem;
-        if (serviceType.serviceTypeSpecs.length > 0) {
-          serviceType.serviceTypeSpecs.forEach(function (serviceTypeSpec) {
-            _this.factoryServices.saveResource('serviceTypeSpec', serviceTypeSpec).then(function (response) {
-              // do nothing...
-            })
+        let serviceType = resultItem;
+        if (serviceType.specs.length > 0) {
+          _this.factoryServices.addServiceTypeSpecs(serviceType.idServiceType, serviceType.specs).then(function (result) {
+            _this.serviceType = result;
           });
         }
-        // all the info should be saved.
       });
     }
 
     openManageTaskModal(formItem) {
-      var _this = this;
-      var modalInstance = this.$uibModal.open({
+      let _this = this;
+      let modalInstance = this.$uibModal.open({
         animation: false,
         templateUrl: 'app/tasks/manageTasksModal/manageTasksModal.html',
         controller: 'ManageOrderTasksModalCtrl',
@@ -143,13 +151,12 @@
 
       modalInstance.result.then(function (resultItem) {
         let serviceType = resultItem;
-        if (serviceType.serviceTypeTasks.length > 0) {
-          serviceType.serviceTypeTasks.forEach(function (serviceTypeTask) {
-            _this.factoryServices.saveResource('serviceTypeTask', serviceTypeTask).then(function (response) {
-              // do nothing..
-            })
+        if (serviceType.specs.length > 0) {
+          _this.factoryServices.addServiceTypeTasks(serviceType.idServiceType, serviceType.serviceTypeTasks).then(function (result) {
+            _this.serviceType = result;
           });
         }
+
       });
     }
 
@@ -173,7 +180,7 @@
       modalInstance.result.then(function (resultItem) {
         var serviceType = resultItem;
         if (serviceType.productTypes.length > 0) {
-          _this.factoryServices.addProducts(serviceType.idServiceType, serviceType.productTypes).then(function (result) {
+          _this.factoryServices.addServiceTypeProducts(serviceType.idServiceType, serviceType.productTypes).then(function (result) {
             _this.serviceType = result;
           });
 

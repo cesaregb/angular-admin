@@ -22,8 +22,12 @@
                 <div class="col-md-12">
                   <div class="pull-right">
                     <label>Search:
-                      <input type="search" class="form-control input-sm" ng-model="$cn.searchText" aria-controls="dataTables-example">
-                      <select class="form-control" ng-model="$cn.searchFilter" ng-options="filter.name for filter in $cn.filters"></select>
+                      <input type="search" class="form-control input-sm" ng-model="$cn.searchText"
+                             aria-controls="dataTables-example">
+                      <select class="form-control"
+                              ng-model="$cn.searchFilter"
+                              ng-options="filter.name for filter in $cn.filters"></select>
+
                       <a href="#" ng-click="$cn.searchClient()" class="btn btn-info btn-sm">
                         <span class="glyphicon glyphicon-search"></span>
                       </a>
