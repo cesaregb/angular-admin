@@ -235,15 +235,15 @@
 
     filterProduct(product){
       return this._.filter(this.service.products, (p) => {
-        return p.idProduct == product.idProduct;
+        return p.idProduct !== product.idProduct;
       });
     }
 
     calculateProductsTotal() {
-      var productsTotal = 0;
-      this.service.products.forEach(function (item) {
-        item.total = item.price * item.quantity;
-        productsTotal += item.total;
+      let productsTotal = 0;
+      this.service.products.forEach(function (product) {
+        product.total = product.price * product.quantity;
+        productsTotal += product.total;
       });
 
       this.service.productsPrice = productsTotal;

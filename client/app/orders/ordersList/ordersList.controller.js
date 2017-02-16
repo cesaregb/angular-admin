@@ -37,7 +37,7 @@ class OrdersListComponent {
       deferred.resolve(filter);
     });
     return deferred.promise;
-  }
+  };
 
   openNewModal() {
     this.openModal({});

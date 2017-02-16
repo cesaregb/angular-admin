@@ -14,7 +14,8 @@
                      ng-blur="searchProducts()"
                      aria-controls="dataTables-example">
               <select class="form-control" ng-model="productType"
-                      ng-change="filterByType()" ng-options="filter.name for filter in productTypes"></select>
+                      ng-change="filterByType()"
+                      ng-options="filter.name for filter in productTypes"></select>
               <a href="#" ng-click="searchProducts()" class="btn btn-info btn-sm">
                 <span class="glyphicon glyphicon-search"></span>
               </a>
