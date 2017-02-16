@@ -13,15 +13,17 @@ angular.module('processAdminApp')
     ];
 
     $scope.searchClients = function(){
-
       var text = $scope.searchText;
       var filter = $scope.searchFilter;
-
       var filterArray = {};
       filterArray[filter.value] = text;
 
       factoryServices.getClientByFilter(filterArray).then(function(response){
         $scope.clients = response;
+        if ($scope.clients.length == 1){
+          $scope.clientInfo = $scope.clients[0];
+          $scope.selectItem();
+        }
       });
     };
 

@@ -132,8 +132,6 @@
     }
 
     saveAddress() {
-      this.$log.info('[saveAddress] _this.address: ' + JSON.stringify(this.address, null, 2));
-
       let _this = this;
       if (_this.address.idAddress != null && _this.address.idAddress > 0) {
         _this.factoryServices.updateResource('address', _this.address).then(()=>{

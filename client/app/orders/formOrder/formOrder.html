@@ -162,9 +162,10 @@
                   <table ng-table="$cn.tableParams" class="table table-condensed table-bordered table-striped">
                     <tr ng-repeat="row in $data">
                       <td data-title="'Nombre'">
-                        <a href="" ng-click="$cn.viewServiceDetails(row, $index);">
-                          {{row.name}}
-                        </a>
+                        <!--<a href="" ng-click="$cn.viewServiceDetails(row, $index);">-->
+                          <!--{{row.name}}-->
+                        <!--</a>-->
+                        {{row.name}}
                       </td>
                       <td data-title="'Precio'">{{row.totalPrice | currency}}</td>
                       <td data-title="'Action'" align="center">
@@ -190,13 +191,9 @@
           <div class="row">
             <div class="col-md-12">
               <div class="col-md-6 offset-md-6">
-                <div>
-                  <div class="col-md-3">
-                    <label class="col-md-4 control-label">Total Services</label>
-                  </div>
-                  <div class="col-md-8 input-group">
-                    {{$cn.order.totalServices | currency}}
-                  </div>
+                <div class="col-md-4 control-label">Total Services</div>
+                <div class="col-md-8 input-group">
+                  {{$cn.order.totalServices | currency}}
                 </div>
               </div>
             </div>
@@ -205,13 +202,9 @@
           <div class="row">
             <div class="col-md-12">
               <div class="col-md-6 offset-md-6">
-                <div>
-                  <div class="col-md-3">
-                    <label class="col-md-4 control-label">Total</label>
-                  </div>
-                  <div class="col-md-8 input-group">
-                    {{$cn.order.total | currency}}
-                  </div>
+                <div class="col-md-4 control-label">Total</div>
+                <div class="col-md-8 input-group">
+                  {{$cn.order.total | currency}}
                 </div>
               </div>
             </div>
