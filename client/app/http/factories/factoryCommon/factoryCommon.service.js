@@ -13,7 +13,8 @@ angular.module('processAdminApp')
         .then(function(response) {
           messageHandler.showSuccess('Action succesful!');
           deferred.resolve(response.data);
-        },function(response){
+        }).catch(function(response){
+          response = response.data;
           let message = '';
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
@@ -33,6 +34,7 @@ angular.module('processAdminApp')
           messageHandler.showSuccess('Action succesful!');
           deferred.resolve(response.data);
         },function(response){
+          response = response.data;
           let message = '';
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
@@ -51,7 +53,8 @@ angular.module('processAdminApp')
         .then(function(response) {
           messageHandler.showSuccess('Item saved succesful ');
           deferred.resolve(response.data);
-        },function(response){
+        }).catch(function(response){
+          response = response.data;
           let message = '';
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
@@ -63,7 +66,7 @@ angular.module('processAdminApp')
     };
 
     factory.get = function(url, obj) {
-      var deferred = $q.defer();
+      let deferred = $q.defer();
       url = appContext.appContextObject.sodEndpoint + url ;
       // logic for query params...
       let queryParams = '';
@@ -76,6 +79,7 @@ angular.module('processAdminApp')
         .then(function(response) {
           deferred.resolve(response.data);
         },function(response){
+          response = response.data;
           let message = '';
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
@@ -87,7 +91,7 @@ angular.module('processAdminApp')
     };
 
     factory.put = function ( data, url ) {
-      var deferred = $q.defer();
+      let deferred = $q.defer();
       url = appContext.appContextObject.sodEndpoint + url ;
 
       $http.put(url, data)
@@ -96,6 +100,7 @@ angular.module('processAdminApp')
           deferred.resolve(response.data);
 
         },function(response){
+          response = response.data;
           let message = '';
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
@@ -108,7 +113,7 @@ angular.module('processAdminApp')
     };
 
     factory.delete = function ( url ) {
-      var deferred = $q.defer();
+      let deferred = $q.defer();
       url = appContext.appContextObject.sodEndpoint + url ;
 
       $http.delete(url)
@@ -116,6 +121,7 @@ angular.module('processAdminApp')
           messageHandler.showSuccess('Item deleted');
           deferred.resolve(response.data);
         },function(response){
+          response = response.data;
           let message = '';
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;

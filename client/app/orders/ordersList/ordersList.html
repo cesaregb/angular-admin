@@ -33,21 +33,20 @@
                 <div class="col-sm-12">
 
                   <div loading-container="$cn.tableParams.settings().$loading">
-
                     <table ng-table="$cn.tableParams"
                         class="table table-condensed table-bordered table-striped">
-
                       <tr ng-repeat="row in $data track by row.idOrder">
                         <!-- <td data-title="'Client'" filter="{name: 'text'}" sortable="'client.name'"> -->
-                        <td data-title="'ID'">
+                        <td data-title="'Numero de Orden'">
                           <a href="" ui-sref="orders.formOrder({order: row})">
                             {{row.idOrder}}
                           </a>
                         </td>
-                        <td data-title="'Client'" filter="{clientName: 'text'}" sortable="'clientName'">{{row.clientName}}</td>
-                        <td data-title="'Completed'">{{row.completed}}</td>
+                        <td data-title="'Fecha'">{{row.pickUpDate | date : format : timezone}}</td>
+                        <td data-title="'Cliente'" filter="{clientName: 'text'}" sortable="'clientName'">{{row.clientName}}</td>
+                        <td data-title="'% Completo'">{{row.completed}}</td>
                         <td data-title="'Tipo Orden'" filter="{ orderTypeName: 'select'}" filter-data="$cn.createFilter()">{{row.orderTypeName}}</td>
-                        <td data-title="'Precio'" >{{row.price}}</td>
+                        <td data-title="'Precio'" >{{row.total | currency}}</td>
                         <td data-title="'#'">
                           <a href="#" ng-click="$cn.delete(row)"
                               class="btn btn-danger btn-circle">

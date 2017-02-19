@@ -14,7 +14,7 @@
     deliverOpen = false;
     status = {isopen: false};
 
-    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, NgTableParams, _, googleMapsDirections, constants, appContext) {
+    constructor($scope, $stateParams, $state, $log, $uibModal, $confirm, factoryServices, NgTableParams, _, googleMapsDirections, constants, appContext, messageHandler) {
       this.NgTableParams = NgTableParams;
       this.googleMapsDirections = googleMapsDirections;
       this.$log = $log;
@@ -22,7 +22,6 @@
       this.$confirm = $confirm;
       this.$uibModal = $uibModal;
       this.$scope = $scope;
-      this.noty = noty;
       this.$state = $state;
       this.place = null;
       this.$stateParams = $stateParams;
@@ -78,11 +77,7 @@
         if ((!Boolean(this.order.client.addresses) || this.order.client.addresses.length == 0)
           && (this.orderType.transportInfo > 0)) {
           this.orderType = null; // clear order selection ..
-          this.noty.showNoty({
-            text: 'Cliente no tiene direccion dada de alta, por favor agrega una direccion, o selecciona otro servicio',
-            ttl: 1000 * 4,
-            type: 'warning'
-          });
+          messageHandler.showError('Cliente no tiene direccion dada de alta, por favor agrega una direccion, o selecciona otro servicio');
           return;
         }
 
@@ -135,10 +130,23 @@
         }
       });
 
-      modalInstance.result.then(function (client) {
-        _this.calculateTotal();
-        _this.order.client = client;
+      modalInstance.result.then(client =>{
+        if (Boolean(client)){
+          _this.calculateTotal();
+          _this.order.client = client;
+        }else{
+          messageHandler.showError('Favor de seleccionar un cliente');
+        }
+      }, () => {
+        _this.cleanOrder();
       });
+    }
+
+    cleanOrder(){
+      this.order.client = {};
+      this.orderType = {};
+      this.pickupShow = false;
+      this.showDeliver = false;
     }
 
     /**
@@ -249,11 +257,7 @@
       }
 
       if (errors.length > 0) {
-        this.noty.showNoty({
-          text: 'Error:' + errors.join(', '),
-          ttl: 1000 * 4,
-          type: 'warning'
-        });
+        messageHandler.showError('Error:' + errors.join(', '));
         return null;
       } else {
         return orderObject;
@@ -281,11 +285,7 @@
           // ORDER SAVED Redirect me to order report...
         }, function (err) {
           // backend failed saving ...
-          this.noty.showNoty({
-            text: 'Error:' + err.message,
-            ttl: 1000 * 4,
-            type: 'warning'
-          });
+          messageHandler.showError('Error:' + err.message);
         });
       }
     };

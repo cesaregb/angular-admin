@@ -219,6 +219,11 @@ angular.module('processAdminApp')
       return factoryCommon.get(uri);
     };
 
+    factory.getTaskForOrder = function (idOrder) {
+      let uri = uris.orders.uri + '/tasks/' + idOrder;
+      return factoryCommon.get(uri);
+    };
+
     factory.getUIOrder = function (orderId) {
       let uri = uris.oder.uri + '/forEdit/' + orderId;
       return factoryCommon.get(uri);

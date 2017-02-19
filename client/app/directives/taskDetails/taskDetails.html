@@ -1,0 +1,35 @@
+<!--******** Orders information...  -->
+
+<div class="">
+  <div class="row col-md-12">
+    <div class="col-md-2">
+      <label class="control-label">Sigueinte Tarea </label>
+    </div>
+    <div class="col-md-4"><a href="" ng-click="$cn.selectTask()"> >> {{task.some}} </a></div>
+    <div class="col-md-4">
+      <button type="button" class="btn btn-default btn-xs pull-right" ng-click="isCollapsed = !isCollapsed">Ver
+        Historial
+      </button>
+    </div>
+  </div>
+  <hr>
+  <div class="row col-md-12">
+    <div class="panel panel-info" uib-collapse="isCollapsed">
+      <div class="panel-heading">
+        Historial
+      </div>
+      <div class="panel-body">
+        <div class="row col-md-12">
+          <div class="col-md-3">
+            <label class="control-label">Tarea</label>
+          </div>
+          <div class="col-md-3">
+            Old task
+          </div>
+          <div class="col-md-3">
+            12 / 12 / 2017
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
