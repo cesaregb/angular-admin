@@ -6,8 +6,21 @@
       <form novalidate>
         <div>
           <div class="modal-header">
-            <h3 class="modal-title">Agregar Servicio</h3>
+            <div class="row" style="padding-bottom:10px;">
+              <h3 class="modal-title">Agregar Servicio</h3>
+              <div class=" pull-right">
+                <div class="btn-group" role="group" aria-label="...">
+                  <button type="button" class="btn btn-default" ng-click="$cn.serviceShortcut(1)">
+                    <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Lavado General</button>
+                  <button type="button" class="btn btn-default" ng-click="$cn.serviceShortcut(5)">
+                    <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Lavado Delicados</button>
+                  <button type="button" class="btn btn-default" ng-click="$cn.serviceShortcut(6)">
+                    <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Lavado Spa</button>
+                </div>
+              </div>
+            </div>
           </div>
+
           <div class="modal-body">
             <div class="row" style="padding-bottom:10px;">
               <div class="form-group">
@@ -106,11 +119,9 @@
                           ng-repeat="product in $cn.service.products">
                         <td>{{product.name}}</td>
                         <td>
-                          <input type="number" class="form-control"
+                          <input type="number"
                                  ng-model="product.quantity"
-                                 placeholder="1" min="1"
-                                 max="{{product.maxQty}}"
-                                 ng-blur="$cn.calculateProductsTotal()"/>
+                                 ng-change="$cn.calculateProductsTotal()"/>
                           </td>
                         <td>{{product.price | currency}}</td>
                         <td>{{product.total | currency}}</td>
@@ -163,10 +174,9 @@
                                   ng-change="$cn.selectSpecOption(spec, spec.specsValue)"></select>
                         </td>
                         <td>
-                          <input type="number" class="form-control"
-                                 ng-model="spec.quantity"
-                                 placeholder="1" min="1" max="{{spec.max_qty}}"
-                                 ng-change="$cn.changeQty()"/>
+                          <input type="number"
+                                 ng-change="$cn.changeQty()"
+                                 ng-model="spec.quantity" />
                         </td>
                         <td>{{spec.type}}</td>
                         <td>{{spec.amt | currency}}</td>

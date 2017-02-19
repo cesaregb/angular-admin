@@ -72,7 +72,7 @@ angular.module('processAdminApp')
       type: 'input',
       templateOptions: {
         type: 'number',
-        label: 'Incremento en %',
+        label: 'Incremento en $',
         required: true
       }
     },{

@@ -21,7 +21,8 @@ angular.module('processAdminApp', [
   'ngTable',
   'ui.bootstrap.datetimepicker',
   'LocalStorageModule',
-  'ui.sortable'
+  'ui.sortable',
+  'ngAnimate'
 ])
   .config(function ($urlRouterProvider, $locationProvider,
                     cfpLoadingBarProvider,

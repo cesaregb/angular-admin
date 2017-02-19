@@ -23,18 +23,17 @@ angular.module('processAdminApp')
       });
 
       if (Boolean(serviceType)){
-        factoryServices.getResourceById('serviceType', serviceType.idServiceType).then(function (response) {
-          serviceType = response;
-          // TODO fix me remove extra call.
-          var ids = [];
-          if (Boolean(serviceType.productTypes) && serviceType.productTypes.length > 0){
-
-            serviceType.productTypes.forEach(function(item){
-              ids.push(item.idProductType);
+        // get service type, because serviceType may not be complete since obj is different for creating order.
+        factoryServices.getResourceById('serviceType', serviceType.idServiceType).then((st)=>{
+          if (Boolean(st.productTypes) && st.productTypes.length > 0){
+            let ids = [];
+            st.productTypes.forEach(function(prodType){
+              ids.push(prodType.idProductType);
             });
 
+            // search products by service Type
             if (ids.length > 0){
-              factoryServices.getProductsByProductTypes(ids).then(function(response){
+              factoryServices.getProductsByProductTypes(ids).then((response) => {
                 $scope.products = response;
               });
             }
@@ -45,7 +44,7 @@ angular.module('processAdminApp')
     };
 
     $scope.filterByType = function(){
-      factoryServices.getProductsByType($scope.productType.idProductType).then(function(response){
+      factoryServices.getProductsByType($scope.productType.idProductType).then((response)=>{
         $scope.products = response;
       });
     };

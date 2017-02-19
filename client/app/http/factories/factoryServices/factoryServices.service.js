@@ -215,7 +215,12 @@ angular.module('processAdminApp')
     };
 
     factory.getOrdersByStatus = function (status) {
-      let uri = uris.oder.uri + '/by/status/' + status;
+      let uri = uris.orders.uri + '/byStatus/' + status;
+      return factoryCommon.get(uri);
+    };
+
+    factory.getTaskForOrder = function (idOrder) {
+      let uri = uris.orders.uri + '/tasks/' + idOrder;
       return factoryCommon.get(uri);
     };
 
@@ -237,7 +242,7 @@ angular.module('processAdminApp')
     };
 
     factory.getProductsByProductTypes = function (ids) {
-      let uri = uris.product.uri + '/byProductTypes';
+      let uri = uris.products.uri + '/byProductTypes';
       return factoryCommon.post(ids, uri);
     };
 

@@ -12,14 +12,9 @@
     // helper variables to handle open vs closed panel
     pickUpOpen = false;
     deliverOpen = false;
-
     status = {isopen: false};
-    C = {
-      PICK_UP_INDEX: 0,
-      DELIVER_INDEX: 1
-    };
 
-    constructor($scope, $stateParams, $state, noty, $log, $uibModal, $confirm, factoryServices, NgTableParams, _, googleMapsDirections, constants, appContext) {
+    constructor($scope, $stateParams, $state, $log, $uibModal, $confirm, factoryServices, NgTableParams, _, googleMapsDirections, constants, appContext, messageHandler) {
       this.NgTableParams = NgTableParams;
       this.googleMapsDirections = googleMapsDirections;
       this.$log = $log;
@@ -27,7 +22,6 @@
       this.$confirm = $confirm;
       this.$uibModal = $uibModal;
       this.$scope = $scope;
-      this.noty = noty;
       this.$state = $state;
       this.place = null;
       this.$stateParams = $stateParams;
@@ -36,44 +30,38 @@
       this.storeInfo = null;
       this.appContext = appContext;
       this.storeInfo = this.appContext.appContextObject.store;
-      this.init();
     };
 
-    init() {
+    $onInit() {
       let _this = this;
 
       // initialize values...
       this.order = {};
 
+      // if existing order was entered...
       if (Boolean(this.$stateParams.order)) {
         this.order = this.$stateParams.order;
       }
 
-      this.order.transport = [{date: new Date(), address: null}, {date: new Date(), address: null}]; // initialize with pickup and deliver...
-
-      if (!Boolean(this.order.services)) {
-        this.order.services = [];
-      }
-
-      if (!Boolean(this.order.client)) {
-        this.order.client = {};
-      }
-
+      this.order.transport = (Boolean(this.order.transport) && this.order.transport.length > 0)?this.order.transport:[{date: new Date(), address: null, price:0}, {date: new Date(), address: null, price:0}];
+      this.order.services = (Boolean(this.order.services))?this.order.services:[];
+      this.order.client = (Boolean(this.order.client))?this.order.client:{};
       _this.validateOrder();
+      _this.calculateTotal(); // calculate total in case we are comming from services...
 
       // Get orderTypes and filter the valid ones...
-      this.factoryServices.getResources('orderType').then(function (result) {
+      this.factoryServices.getResources('orderType').then(result => {
+        // get orders that have 1+ tasks
         _this.orderTypes = _this._.filter(result, function (ot) {
           return (Boolean(ot.orderTypeTask) && ot.orderTypeTask.length > 0);
         });
 
-        // // select item if editing order
-        // if (Boolean(_this.order)){
-        //   _this.selectedOrderType = _this._.find(result, function(ot){
-        //     return ot.idOrderType === _this.order.idOrderType
-        //   });
-        //   _this.validateOrderType();
-        // }
+        if (Boolean(_this.order) && Boolean(_this.order.idOrderType)){
+          _this.orderType = _this._.find(result, (ot)=>{
+            return parseInt(ot.idOrderType) === parseInt(_this.order.idOrderType);
+          });
+          _this.validateOrderType();
+        }
       });
 
       this.tableParams = new this.NgTableParams({}, {
@@ -89,11 +77,7 @@
         if ((!Boolean(this.order.client.addresses) || this.order.client.addresses.length == 0)
           && (this.orderType.transportInfo > 0)) {
           this.orderType = null; // clear order selection ..
-          this.noty.showNoty({
-            text: 'Cliente no tiene direccion dada de alta, por favor agrega una direccion, o selecciona otro servicio',
-            ttl: 1000 * 4,
-            type: 'warning'
-          });
+          messageHandler.showError('Cliente no tiene direccion dada de alta, por favor agrega una direccion, o selecciona otro servicio');
           return;
         }
 
@@ -118,21 +102,23 @@
       _this.order.services.splice(index, 1);
       _this.tableParams.reload();
       _this.validateOrder();
+      _this.calculateTotal();
     }
 
     calculateTotal() {
-      var total = this._.reduce(this.order.transport, function(memo, tObj){ return memo + tObj.price; }, 0);
-      this.order.totalServices = this._.reduce(this.order.services, function(memo, sObject){return memo + sObject.total; } , 0);
+      let total = this._.reduce(this.order.transport, function(memo, tObj){ return memo + tObj.price; }, 0);
+      this.order.totalServices = this._.reduce(this.order.services, function(memo, sObj){return memo + sObj.totalPrice; } , 0);
       this.order.total = this.order.totalServices + total;
     }
 
     openClientSearch() {
-      var clientSearchInfo = null;
+      let _this = this;
+      let clientSearchInfo = null;
       if (Boolean(this.order.client) && Boolean(this.order.client.name)) {
         clientSearchInfo = this.order.client.name;
       }
-      var _this = this;
-      var modalInstance = this.$uibModal.open({
+      this.order.client = {};
+      let modalInstance = this.$uibModal.open({
         animation: false,
         templateUrl: 'app/clients/clientSearchModal/clientSearchModal.html',
         controller: 'ClientSearchModalCtrl',
@@ -144,10 +130,23 @@
         }
       });
 
-      modalInstance.result.then(function (client) {
-        _this.calculateTotal();
-        _this.order.client = client;
+      modalInstance.result.then(client =>{
+        if (Boolean(client)){
+          _this.calculateTotal();
+          _this.order.client = client;
+        }else{
+          messageHandler.showError('Favor de seleccionar un cliente');
+        }
+      }, () => {
+        _this.cleanOrder();
       });
+    }
+
+    cleanOrder(){
+      this.order.client = {};
+      this.orderType = {};
+      this.pickupShow = false;
+      this.showDeliver = false;
     }
 
     /**
@@ -221,20 +220,18 @@
       orderObject.idOrderType = this.orderType.idOrderType;
       orderObject.idClient = this.order.client.idClient;
       orderObject.total = this.order.total;
-      orderObject.totalServices = this._.reduce(this.order.services, function (memo, num) {
-        return memo + num;
-      }, 0);
+      orderObject.totalServices = this._.reduce(this.order.services, function(memo, sObj){return memo + sObj.totalPrice; } , 0);
 
       // parse transport to remove address...
-      orderObject.transport = this._.map(this.order.transport, function (t) {
-        t.idAddress = t.address.idAddress;
+      orderObject.transport = this._.map(this.order.transport, (t) => {
+        t.idAddress = (Boolean(t.address))?t.address.idAddress:0;
         t.address = null;
         return t;
       });
 
       orderObject.services = [];
       this.order.services.forEach(function (item) {
-        var tmpService = {};
+        let tmpService = {};
         tmpService.idServiceType = item.idServiceType;
         tmpService.comments = item.comments;
         tmpService.price = item.total;
@@ -244,7 +241,7 @@
         tmpService.specs = [];
         item.specs.forEach(function (spec) {
           if (Boolean(spec.specsValue)) {
-            var tmpSpec = {};
+            let tmpSpec = {};
             tmpSpec.idSpecs = spec.idSpecs;
             tmpSpec.value = spec.specsValue.key;
             tmpSpec.quantity = spec.qty;
@@ -260,11 +257,7 @@
       }
 
       if (errors.length > 0) {
-        this.noty.showNoty({
-          text: 'Error:' + errors.join(', '),
-          ttl: 1000 * 4,
-          type: 'warning'
-        });
+        messageHandler.showError('Error:' + errors.join(', '));
         return null;
       } else {
         return orderObject;
@@ -277,26 +270,22 @@
     }
 
     validateOrder() {
-      var _this = this;
+      let _this = this;
       if (_this.order.services.length > 0 && Boolean(_this.order.client) && Boolean(_this.order.idOrderType)) {
         _this.orderComplete = true;
       }
     }
 
     saveOrder() {
-      var _this = this;
-      var orderObj = this.castOrderObject();
+      let _this = this;
+      let orderObj = this.castOrderObject();
       if (Boolean(orderObj)) {
         this.factoryServices.saveOrder(orderObj).then(function (item) {
           _this.back();
           // ORDER SAVED Redirect me to order report...
         }, function (err) {
           // backend failed saving ...
-          this.noty.showNoty({
-            text: 'Error:' + err.message,
-            ttl: 1000 * 4,
-            type: 'warning'
-          });
+          messageHandler.showError('Error:' + err.message);
         });
       }
     };
