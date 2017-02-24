@@ -38,7 +38,7 @@
                       <tr ng-repeat="row in $data track by row.idOrder">
                         <!-- <td data-title="'Client'" filter="{name: 'text'}" sortable="'client.name'"> -->
                         <td data-title="'Numero de Orden'">
-                          <a href="" ui-sref="orders.formOrder({order: row})">
+                          <a href="" ui-sref="orders.orderDetails({order: row})">
                             {{row.idOrder}}
                           </a>
                         </td>

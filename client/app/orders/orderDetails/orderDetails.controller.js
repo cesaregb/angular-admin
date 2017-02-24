@@ -20,9 +20,18 @@
     };
 
     $onInit() {
-      this.$scope.message = 'Hola como esta? ';
+      let idOrder = 0;
+      if (Boolean(this.$stateParams.order)) {
+        idOrder = this.$stateParams.order.idOrder;
+      }
+
+      this.loadOrder(idOrder);
+    }
+
+    loadOrder(idOrder) {
       let t = this;
       this.order = {};
+      this.order.idOrder = idOrder;
       this.client = '';
       this.orderType = '';
       if (Boolean(this.$stateParams.order)) {
@@ -34,7 +43,7 @@
       t.order.orderTasks = [];
       t.order.services = [];
 
-      this.factoryServices.getTaskForOrder(1).then((result) => {
+      this.factoryServices.getTaskForOrder(this.order.idOrder).then((result) => {
         t.order.client = result.clientName;
         t.order.orderType = result.orderTypeName;
         t.order.orderTasks = result.orderTasks;
@@ -46,7 +55,12 @@
     }
 
     taskAction(actionInfo) {
-      this.$log.info('[actionInfo] task: ' + JSON.stringify(actionInfo, null, 2));
+      let t = this;
+      this.factoryServices.taskAction(this.order.idOrder, actionInfo.action, actionInfo.task).then(function (response) {
+        t.loadOrder(response.idOrder);
+      }).catch(function () {
+        t.messageHandler.showError('Error avanzando en accion de tarea! ');
+      });
     }
 
   }

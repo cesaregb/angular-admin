@@ -11,21 +11,15 @@ angular.module('processAdminApp')
       },
       link: function (scope, element, attrs) {
         scope.isCollapsed = true;
-        let actionInfo = {
-          task: scope.contextObj.nextTask
-        };
+        let actionInfo = {};
+        if (Boolean(scope) && Boolean(scope.contextObj) && Boolean(scope.contextObj.nextTask)){
+          actionInfo = {
+            task: scope.contextObj.nextTask.task
+          };
+        }
 
-        scope.startTask = function () {
-          actionInfo.action = 0;
-          fireTaskAction(actionInfo);
-        };
-
-        scope.endTask = function () {
-          actionInfo.action = 1;
-          fireTaskAction(actionInfo);
-        };
-
-        function fireTaskAction(actionInfo){
+        scope.fireTaskAction = function(action){
+          actionInfo.action = action;
           scope.taskAction()({actionInfo: actionInfo});
         }
 

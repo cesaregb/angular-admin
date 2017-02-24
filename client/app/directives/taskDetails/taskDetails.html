@@ -1,27 +1,36 @@
 <!--******** Orders information...  -->
-<div class="">
   <div class="row col-md-12">
     <div class="col-md-2">
       <label class="control-label">Sigueinte Tarea: </label>
     </div>
-    <div class="col-md-2">
-      {{contextObj.nextTask.taskName}}
+
+    <!--Tarea pendiente-->
+    <div ng-show="Boolean(contextObj.nextTask)">
+      <div class="col-md-2">
+        {{contextObj.nextTask.taskName}}
+      </div>
+
+      <div class="col-md-2">
+        <button type="button"
+                class="btn btn-default btn-xs"
+                ng-show="contextObj.nextTask.status === 0"
+                ng-click="fireTaskAction(1)">
+          Iniciar
+        </button>
+        <button type="button"
+                class="btn btn-default btn-xs"
+                ng-show="contextObj.nextTask.status === 1"
+                ng-click="fireTaskAction(2å)">
+          Terminar
+        </button>
+      </div>
     </div>
 
-    <div class="col-md-2">
-      <button type="button"
-              class="btn btn-default btn-xs"
-              ng-show="!Boolean(contextObj.nextTask.started)"
-              ng-click="startTask()">
-        Iniciar
-      </button>
-
-      <button type="button"
-              class="btn btn-default btn-xs"
-              ng-show="Boolean(contextObj.nextTask.started)"
-              ng-click="endTask()">
-        Terminar
-      </button>
+    <!--Tarea terminada-->
+    <div ng-show="!Boolean(contextObj.nextTask)">
+      <div class="col-md-4">
+        Terminado {{contextObj.ended | date}}
+      </div>
     </div>
 
     <div class="col-md-4">
@@ -30,7 +39,7 @@
       </button>
     </div>
   </div>
-  <div class="row col-md-12">
+  <div class="row col-md-12" style="padding-top: 10px;">
     <div class="panel panel-info" uib-collapse="isCollapsed">
       <div class="panel-heading">
         Historial
@@ -41,29 +50,30 @@
                  role="grid"
                  aria-describedby="dataTables-example_info">
             <thead>
-              <tr role="row">
-                <th>Tarea</th>
-                <th>Fecha Inicio</th>
-                <th>Fecha Termino</th>
-                <th>Estado</th>
-              </tr>
+            <tr role="row">
+              <th>Tarea</th>
+              <th>Fecha Inicio</th>
+              <th>Fecha Termino</th>
+              <th>Estado</th>
+            </tr>
             </thead>
             <tbody>
-              <tr ng-show="contextObj.tasks.length == 0">
-                <td colspan="5">No Items found</td>
-              </tr>
-              <tr role="row"
-                  ng-class-odd="'odd'"
-                  ng-class-even="'even'"
-                  ng-repeat="task in contextObj.tasks">
-                <td>{{task.taskName}}</td>
-                <td>{{task.started}}</td>
-                <td>{{task.ended}}</td>
-                <td>
-                  <span ng-show="task.status == 1">Terminada</span>
-                  <span ng-show="task.status == 0">Pendiente</span>
-                </td>
-              </tr>
+            <tr ng-show="contextObj.tasks.length == 0">
+              <td colspan="5">No Items found</td>
+            </tr>
+            <tr role="row"
+                ng-class-odd="'odd'"
+                ng-class-even="'even'"
+                ng-repeat="task in contextObj.tasks">
+              <td>{{task.taskName}}</td>
+              <td>{{task.started | date }}</td>
+              <td>{{task.ended | date}}</td>
+              <td>
+                <span ng-show="task.status == 2">Terminada</span>
+                <span ng-show="task.status == 1">Procesando</span>
+                <span ng-show="task.status == 0">Pendiente</span>
+              </td>
+            </tr>
             </tbody>
           </table>
 

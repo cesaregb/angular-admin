@@ -12,8 +12,9 @@
     </div>
     <hr>
     <div uib-collapse="expendedArray[$index]" ng-repeat="task in taskArray">
-      <task-details context-obj="task"
-                    task-action="taskAction"></task-details>
+      <task-details
+        context-obj="task"
+        task-action="taskAction"></task-details>
     </div>
 
   </div>
