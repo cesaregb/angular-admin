@@ -6,11 +6,29 @@ angular.module('processAdminApp')
       templateUrl: 'app/directives/taskDetails/taskDetails.html',
       restrict: 'EA',
       scope: {
-        task: '=task'
+        contextObj: '=contextObj',
+        taskAction: '&taskAction'
       },
       link: function (scope, element, attrs) {
-        $log.info('[link] $scope.message: ' + scope.message);
         scope.isCollapsed = true;
+        let actionInfo = {
+          task: scope.contextObj.nextTask
+        };
+
+        scope.startTask = function () {
+          actionInfo.action = 0;
+          fireTaskAction(actionInfo);
+        };
+
+        scope.endTask = function () {
+          actionInfo.action = 1;
+          fireTaskAction(actionInfo);
+        };
+
+        function fireTaskAction(actionInfo){
+          scope.taskAction()({actionInfo: actionInfo});
+        }
+
       }
 
     };

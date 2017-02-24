@@ -1,17 +1,20 @@
 <!--******** Orders information...  -->
 <div class="panel panel-default">
-  <div class="panel-heading"> Informacion de {{type}} </div>
+  <div class="panel-heading"> Informacion de {{title}}</div>
   <div class="panel-body">
-    <uib-tabset active="active">
-      <uib-tab index="0">
-        <uib-tab-heading>
-          <i class="glyphicon glyphicon-ok"></i> Orden / Servicio 1
-        </uib-tab-heading>
-        <!--contenido-->
-        <task-details task="task"/>
-        <!--fin contenido-->
-      </uib-tab>
-    </uib-tabset>
+
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default"
+              ng-repeat="task in taskArray"
+              ng-click="expendedArray[$index] = ! expendedArray[$index]">
+        <i class="glyphicon glyphicon-ok"></i> {{task.title}}
+      </button>
+    </div>
+    <hr>
+    <div uib-collapse="expendedArray[$index]" ng-repeat="task in taskArray">
+      <task-details context-obj="task"
+                    task-action="taskAction"></task-details>
+    </div>
 
   </div>
 </div>

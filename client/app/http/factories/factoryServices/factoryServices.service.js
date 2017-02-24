@@ -272,6 +272,11 @@ angular.module('processAdminApp')
       return factoryCommon.post(specs, uri);
     };
 
+    factory.taskAction = function(idOrder, action, task){
+      let uri  = uris.tasks.uri + '/idOrder/'+idOrder+'/action/' + action;
+      return factoryCommon.put(task, uri);
+    };
+
     return factory;
 
   });
