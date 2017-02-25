@@ -12,11 +12,8 @@ angular.module('processAdminApp')
       link: function (scope, element, attrs) {
         initScope();
 
-        scope.$watch(function(){return orderTaskInfo.order;}, function(){
-          if (Boolean(orderTaskInfo.order)){
-            parseOrder();
-          }
-        });
+        orderTaskInfo.registerObserverCallback(parseOrder);
+        //service now in control of updating foo
 
         function parseOrder(){
           initScope();
@@ -25,12 +22,14 @@ angular.module('processAdminApp')
           } else {
             processServiceTasks();
           }
+          if (Boolean(scope.taskArray[0]) && scope.taskArray.length > 0){
+            scope.selectedTask = scope.taskArray[0];
+          }
 
           // UI logic
           if (scope.expendedArray.length > 0){
             scope.expendedArray[0] = false;
           }
-
         }
 
         function processServiceTasks(){
@@ -89,9 +88,8 @@ angular.module('processAdminApp')
 
         function initScope(){
           scope.expendedArray = [];
-          scope.title = '';
+          scope.title = 'Servicios';
           scope.taskArray = [];
-
         }
 
       }

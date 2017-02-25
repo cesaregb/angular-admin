@@ -3,9 +3,8 @@
     <div class="col-md-2">
       <label class="control-label">Sigueinte Tarea: </label>
     </div>
-
     <!--Tarea pendiente-->
-    <div ng-show="Boolean(contextObj.nextTask)">
+    <div ng-show="contextObj.nextTask != null">
       <div class="col-md-2">
         {{contextObj.nextTask.taskName}}
       </div>
@@ -20,14 +19,14 @@
         <button type="button"
                 class="btn btn-default btn-xs"
                 ng-show="contextObj.nextTask.status === 1"
-                ng-click="fireTaskAction(2å)">
+                ng-click="fireTaskAction(2)">
           Terminar
         </button>
       </div>
     </div>
 
     <!--Tarea terminada-->
-    <div ng-show="!Boolean(contextObj.nextTask)">
+    <div ng-show="contextObj.nextTask == null">
       <div class="col-md-4">
         Terminado {{contextObj.ended | date}}
       </div>

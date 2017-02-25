@@ -4,11 +4,10 @@
   <div class="panel-body">
 
     <div class="btn-group" role="group">
-      <button type="button" class="btn btn-default"
-              ng-repeat="task in taskArray"
-              ng-click="expendedArray[$index] = ! expendedArray[$index]">
-        <i class="glyphicon glyphicon-ok"></i> {{task.title}}
-      </button>
+      <select class="form-control"
+              ng-options="task as task.title for task in taskArray"
+              ng-model="selectedTask"
+              ng-change="expendedArray[$index] = ! expendedArray[$index]"></select>
     </div>
     <hr>
     <div uib-collapse="expendedArray[$index]" ng-repeat="task in taskArray">

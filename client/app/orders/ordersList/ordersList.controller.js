@@ -4,6 +4,7 @@
 
   class OrdersListComponent {
     orderTypes = [];
+    includeFinished = false;
 
     constructor($q, $stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams) {
       this.$q = $q;
@@ -20,7 +21,7 @@
       this.tableParams = new this.NgTableParams({}, {
         getData: function (params) {
           return _this.factoryServices.getResourcesForTableSpecific(
-            _this.factoryServices.getActiveOrders(),
+            _this.getTableFilter(),
             params);
         }
       });
@@ -38,6 +39,19 @@
       });
       return deferred.promise;
     };
+
+    getTableFilter(){
+      if (!this.includeFinished){
+        return this.factoryServices.getActiveOrders();
+      }else{
+        return this.factoryServices.getResources('orders');
+      }
+    }
+
+
+    refreshTable(){
+      this.tableParams.reload();
+    }
 
     openNewModal() {
       this.openModal({});

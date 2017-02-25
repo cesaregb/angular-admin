@@ -27,6 +27,7 @@
       this.$stateParams = $stateParams;
       this._ = _;
       this.store = constants.store;
+      this.messageHandler = messageHandler;
       this.storeInfo = null;
       this.appContext = appContext;
       this.storeInfo = this.appContext.appContextObject.store;
@@ -70,6 +71,7 @@
     }
 
     validateOrderType() {
+      var t = this;
       if (Boolean(this.orderType)) {
         this.pickupShow = false;
         this.showDeliver = false;
@@ -77,7 +79,7 @@
         if ((!Boolean(this.order.client.addresses) || this.order.client.addresses.length == 0)
           && (this.orderType.transportInfo > 0)) {
           this.orderType = null; // clear order selection ..
-          messageHandler.showError('Cliente no tiene direccion dada de alta, por favor agrega una direccion, o selecciona otro servicio');
+          t.messageHandler.showError('Cliente no tiene direccion dada de alta, por favor agrega una direccion, o selecciona otro servicio');
           return;
         }
 
@@ -135,7 +137,7 @@
           _this.calculateTotal();
           _this.order.client = client;
         }else{
-          messageHandler.showError('Favor de seleccionar un cliente');
+          _this.messageHandler.showError('Favor de seleccionar un cliente');
         }
       }, () => {
         _this.cleanOrder();
@@ -211,6 +213,7 @@
     // }
 
     castOrderObject() {
+      var t = this;
       let orderObject = {}
       var errors = []; // as we go thru the process more than 1 error may occur...
 
@@ -257,7 +260,7 @@
       }
 
       if (errors.length > 0) {
-        messageHandler.showError('Error:' + errors.join(', '));
+        t.messageHandler.showError('Error:' + errors.join(', '));
         return null;
       } else {
         return orderObject;
@@ -285,7 +288,7 @@
           // ORDER SAVED Redirect me to order report...
         }, function (err) {
           // backend failed saving ...
-          messageHandler.showError('Error:' + err.message);
+          _this.messageHandler.showError('Error:' + err.message);
         });
       }
     };

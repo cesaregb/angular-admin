@@ -3,6 +3,7 @@
 angular.module('processAdminApp')
   .factory('factoryServices', function (factoryCommon, noty, $log, $q, $filter) {
     const ACTIVE = 0;
+    const ALL = 0;
     let factory = {};
 
     let uris = {
