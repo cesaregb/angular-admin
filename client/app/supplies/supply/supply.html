@@ -40,14 +40,14 @@
                             <span>{{row.name}}</span>
                           </a>
                         </td>
-                        <td data-title="'Tipo Supplyo'">
+                        <td data-title="'Tipo Consumible'">
                           {{row.description}}
                         </td>
                         <td data-title="'P Type'" filter="{ supplyTypeName: 'select'}" filter-data="$cn.createFilter()">
                           {{row.supplyTypeName}}
                         </td>
-                        <td data-title="'Increment'">
-                          {{row.serviceIncrement}}
+                        <td data-title="'Precio'">
+                          {{row.serviceIncrement | currency}}
                         </td>
                         <td data-title="'Action'" class="action-column">
                           <a href="#" ng-click="$cn.delete(row)" class="btn btn-danger btn-circle">

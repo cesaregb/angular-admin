@@ -160,7 +160,7 @@ angular.module('processAdminApp')
           required: true
         }
       }, {
-        key: 'max_qty',
+        key: 'maxQty',
         type: 'input',
         templateOptions: {
           type: 'number',

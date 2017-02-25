@@ -7,14 +7,12 @@ angular.module('processAdminApp')
 
     this.init = function() {
       $scope.formItemFields = formlyForms.specFields;
-      $scope.title = "Form Spec Type";
+      $scope.title = "Tipo de Spec";
 
-      if (Boolean($scope.formItem.name)) {
-        // placeholder
-      }else{
+      if (!Boolean($scope.formItem.name)) {
         formItem.optional = 0;
         formItem.isPrimary = 0; // hardcoded.. was not used... yet
-        formItem.max_qty = 0;
+        formItem.maxQty = 0;
       }
     };
 

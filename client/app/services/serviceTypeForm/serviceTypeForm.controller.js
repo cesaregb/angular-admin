@@ -151,7 +151,7 @@
 
       modalInstance.result.then(function (resultItem) {
         let serviceType = resultItem;
-        if (serviceType.specs.length > 0) {
+        if (serviceType.serviceTypeTasks.length > 0) {
           _this.factoryServices.addServiceTypeTasks(serviceType.idServiceType, serviceType.serviceTypeTasks).then(function (result) {
             _this.serviceType = result;
           });
