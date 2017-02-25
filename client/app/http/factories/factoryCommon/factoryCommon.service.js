@@ -3,17 +3,18 @@
 angular.module('processAdminApp')
   .factory('factoryCommon', function ($http, $q, messageHandler, $log, appContext, $httpParamSerializer) {
 
-    var factory = {};
+    let factory = {};
 
     factory.post = function( data, url ) {
-      var deferred = $q.defer();
+      let deferred = $q.defer();
       url = appContext.appContextObject.sodEndpoint + url ;
 
       $http.post( url, data )
-        .success(function(data, status, headers, config) {
+        .then(function(response) {
           messageHandler.showSuccess('Action succesful!');
-          deferred.resolve(data);
-        }).error(function(response){
+          deferred.resolve(response.data);
+        }).catch(function(response){
+          response = response.data;
           let message = '';
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
@@ -25,14 +26,15 @@ angular.module('processAdminApp')
     };
 
     factory.patch = function( data, url ) {
-      var deferred = $q.defer();
+      let deferred = $q.defer();
       url = appContext.appContextObject.sodEndpoint + url ;
 
       $http.patch( url, data )
-        .success(function(data, status, headers, config) {
+        .then(function(response) {
           messageHandler.showSuccess('Action succesful!');
-          deferred.resolve(data);
-        }).error(function(response){
+          deferred.resolve(response.data);
+        },function(response){
+          response = response.data;
           let message = '';
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
@@ -48,10 +50,11 @@ angular.module('processAdminApp')
       url = appContext.appContextObject.sodEndpoint + url ;
 
       $http.post( url, data )
-        .success(function(data, status, headers, config) {
+        .then(function(response) {
           messageHandler.showSuccess('Item saved succesful ');
-          deferred.resolve(data);
-        }).error(function(response){
+          deferred.resolve(response.data);
+        }).catch(function(response){
+          response = response.data;
           let message = '';
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
@@ -63,7 +66,7 @@ angular.module('processAdminApp')
     };
 
     factory.get = function(url, obj) {
-      var deferred = $q.defer();
+      let deferred = $q.defer();
       url = appContext.appContextObject.sodEndpoint + url ;
       // logic for query params...
       let queryParams = '';
@@ -73,9 +76,10 @@ angular.module('processAdminApp')
       url += queryParams;
 
       $http.get( url )
-        .success(function(data, status, headers, config) {
-          deferred.resolve(data);
-        }).error(function(response){
+        .then(function(response) {
+          deferred.resolve(response.data);
+        },function(response){
+          response = response.data;
           let message = '';
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
@@ -87,15 +91,16 @@ angular.module('processAdminApp')
     };
 
     factory.put = function ( data, url ) {
-      var deferred = $q.defer();
+      let deferred = $q.defer();
       url = appContext.appContextObject.sodEndpoint + url ;
 
       $http.put(url, data)
-        .success(function(data, status, headers, config) {
+        .then(function(response) {
           messageHandler.showSuccess('Item updated ');
-          deferred.resolve(data);
+          deferred.resolve(response.data);
 
-        }).error(function(response){
+        },function(response){
+          response = response.data;
           let message = '';
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
@@ -108,14 +113,15 @@ angular.module('processAdminApp')
     };
 
     factory.delete = function ( url ) {
-      var deferred = $q.defer();
+      let deferred = $q.defer();
       url = appContext.appContextObject.sodEndpoint + url ;
 
       $http.delete(url)
-        .success(function(data, status, headers, config) {
+        .then(function(response) {
           messageHandler.showSuccess('Item deleted');
-          deferred.resolve(data);
-        }).error(function(response){
+          deferred.resolve(response.data);
+        },function(response){
+          response = response.data;
           let message = '';
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;

@@ -43,7 +43,7 @@
                         <td data-title="'Type'" filter="{ typeName: 'select'}" filter-data="$cn.createFilter()">
                           {{row.typeName}}
                         </td>
-                        <td data-title="'Precio'" >{{row.price}}</td>
+                        <td data-title="'Precio'" >{{row.price | currency}}</td>
                         <td data-title="'Cantidad Maxima'" >{{row.maxQty}}</td>
                         <td data-title="'#'">
                           <a href="#" ng-click="$cn.delete(row)"

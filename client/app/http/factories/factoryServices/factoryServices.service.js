@@ -3,6 +3,7 @@
 angular.module('processAdminApp')
   .factory('factoryServices', function (factoryCommon, noty, $log, $q, $filter) {
     const ACTIVE = 0;
+    const ALL = 0;
     let factory = {};
 
     let uris = {
@@ -111,31 +112,25 @@ angular.module('processAdminApp')
     factory.uris = uris;
 
     factory.getResources = function (idUri) {
-      $log.debug('[getResources] idUri: ' + idUri);
       return factoryCommon.get(uris[idUri].uri);
     };
 
     factory.getResourceById = function (idUri, idResource) {
-      $log.debug('[getResourceById] idUri: ' + idUri);
       return factoryCommon.get(uris[idUri].uri + '/byId/' + idResource);
     };
 
     factory.saveResource = function (idUri, data) {
-      $log.debug('[saveResource] idUri: ' + idUri);
       return factoryCommon.save(data, uris[idUri].uri);
     };
 
     factory.patchResource = function (idUri, data) {
-      $log.debug('[patchResource] idUri: ' + idUri);
       return factoryCommon.patch(data, uris[idUri].uri);
     };
 
     factory.updateResource = function (idUri, data) {
-      $log.debug('[updateResource] idUri: ' + idUri);
       return factoryCommon.put(data, uris[idUri].uri);
     };
     factory.deleteResource = function (idUri, idResource) {
-      $log.debug('[deleteResource] idUri: ' + idUri);
       return factoryCommon.delete(uris[idUri].uri + '/' + idResource);
     };
 
@@ -215,7 +210,12 @@ angular.module('processAdminApp')
     };
 
     factory.getOrdersByStatus = function (status) {
-      let uri = uris.oder.uri + '/by/status/' + status;
+      let uri = uris.orders.uri + '/byStatus/' + status;
+      return factoryCommon.get(uri);
+    };
+
+    factory.getTaskForOrder = function (idOrder) {
+      let uri = uris.orders.uri + '/tasks/' + idOrder;
       return factoryCommon.get(uri);
     };
 
@@ -236,27 +236,41 @@ angular.module('processAdminApp')
       return factoryCommon.get(uris.products.uri, {idProductType: idProductType});
     };
 
-    factory.addProducts = function (idServiceType, productTypes) {
-      let uri = uris.serviceType.uri + '/addProducts/' + idServiceType;
-      return factoryCommon.post(productTypes, uri);
-    };
-
     factory.getProductsByProductTypes = function (ids) {
-      let uri = uris.product.uri + '/byProductTypes';
+      let uri = uris.products.uri + '/byProductTypes';
       return factoryCommon.post(ids, uri);
     };
 
     factory.getClientByFilter = function (object) {
       return factoryCommon.get(uris.clients.uri, object);
     };
+
     factory.getClientByIdAddress = function (idAddress) {
       return factoryCommon.get(uris.clients.uri + '/addressId/' + idAddress);
     };
-
     factory.getAddressByStop = function (type, id) {
       return factoryCommon.get(uris.stops.uri + '/address/' + type + '/' + id);
     };
 
+    factory.addServiceTypeProducts = function (idServiceType, productTypes) {
+      let uri = uris.serviceType.uri + '/addProducts/' + idServiceType;
+      return factoryCommon.post(productTypes, uri);
+    };
+
+    factory.addServiceTypeTasks = function (idServiceType, serviceTypeTasks) {
+      let uri = uris.serviceType.uri + '/addTasks/' + idServiceType;
+      return factoryCommon.post(serviceTypeTasks, uri);
+    };
+
+    factory.addServiceTypeSpecs = function (idServiceType, specs) {
+      let uri = uris.serviceType.uri + '/addSpecs/' + idServiceType;
+      return factoryCommon.post(specs, uri);
+    };
+
+    factory.taskAction = function(idOrder, action, task){
+      let uri  = uris.tasks.uri + '/idOrder/'+idOrder+'/action/' + action;
+      return factoryCommon.put(task, uri);
+    };
 
     return factory;
 

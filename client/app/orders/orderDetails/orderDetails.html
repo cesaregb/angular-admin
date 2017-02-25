@@ -1,0 +1,42 @@
+<div id="page-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <legend style="padding: 10px;">Detalle de Orden</legend>
+      <!--******** Client and order type -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="col-md-6">
+            <div class="col-md-3">
+              <label class="col-md-4 control-label">Cliente</label>
+            </div>
+            <div class="col-md-9 input-group">
+              {{$cn.order.client}}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div>
+              <div class="col-md-3">
+                <label class="col-md-4 control-label">Orden</label>
+              </div>
+              <div class="col-md-8 input-group">
+                {{$cn.order.idOrder}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <order-service-tasks
+        type="1"
+        task-action="$cn.taskAction(actionInfo)"></order-service-tasks>
+
+      <order-service-tasks
+        type="0"
+        task-action="$cn.taskAction(actionInfo)"></order-service-tasks>
+
+    </div>
+
+  </div>
+  <!-- /.col-lg-12 -->
+</div>
