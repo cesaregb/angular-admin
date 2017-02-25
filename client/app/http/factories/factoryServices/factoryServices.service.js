@@ -3,6 +3,7 @@
 angular.module('processAdminApp')
   .factory('factoryServices', function (factoryCommon, noty, $log, $q, $filter) {
     const ACTIVE = 0;
+    const ALL = 0;
     let factory = {};
 
     let uris = {
@@ -270,6 +271,11 @@ angular.module('processAdminApp')
     factory.addServiceTypeSpecs = function (idServiceType, specs) {
       let uri = uris.serviceType.uri + '/addSpecs/' + idServiceType;
       return factoryCommon.post(specs, uri);
+    };
+
+    factory.taskAction = function(idOrder, action, task){
+      let uri  = uris.tasks.uri + '/idOrder/'+idOrder+'/action/' + action;
+      return factoryCommon.put(task, uri);
     };
 
     return factory;

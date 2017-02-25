@@ -47,6 +47,9 @@ angular.module('processAdminApp')
       }
     }).state('orders.orderDetails', {
       url: '/orderDetails',
-      template: '<order-details></order-details>'
-    });;
+      template: '<order-details></order-details>',
+      params: {
+        order: null
+      }
+    });
   });
