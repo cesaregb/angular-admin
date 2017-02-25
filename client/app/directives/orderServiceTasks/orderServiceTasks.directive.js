@@ -27,8 +27,8 @@ angular.module('processAdminApp')
           }
 
           // UI logic
-          if (scope.expendedArray.length > 0){
-            scope.expendedArray[0] = false;
+          if (scope.expandedElementArray.length > 0){
+            scope.expandedElementArray[0] = false;
           }
         }
 
@@ -46,7 +46,7 @@ angular.module('processAdminApp')
               tasks: service.serviceTasks
             };
             scope.taskArray.push(obj);
-            scope.expendedArray.push(true);
+            scope.expandedElementArray.push(true);
           });
         }
 
@@ -62,7 +62,7 @@ angular.module('processAdminApp')
             ended: ended,
             tasks: orderTaskInfo.order.orderTasks
           };
-          scope.expendedArray.push(true);
+          scope.expandedElementArray.push(true);
           scope.taskArray.push(obj);
         }
 
@@ -87,9 +87,16 @@ angular.module('processAdminApp')
         }
 
         function initScope(){
-          scope.expendedArray = [];
+          scope.expandedElementArray = [];
           scope.title = 'Servicios';
           scope.taskArray = [];
+        }
+
+        scope.changeSubsection = function(index){
+          for (var i = 0; i < 0; i++){
+            scope.expandedElementArray[i] = true;
+          }
+          scope.expandedElementArray[index] = false;
         }
 
       }
