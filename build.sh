@@ -12,10 +12,9 @@ export PORT=9000
 
 if [ "${1}" = "build" ]
 then
-  npm install --silent -g grunt-cli bower
-  npm install
-  bower install --allow-root
+  bower install
   grunt build
+  cd dist
   npm start
 else
   grunt serve
