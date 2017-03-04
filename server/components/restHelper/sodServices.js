@@ -8,7 +8,7 @@ import config from '../../config/environment';
  * create GET request to SOD services
  * @param endpoint
  */
-export function sodGet(endpoint){
+export function sodGet(endpoint) {
 
   let deferred = Q.defer();
   let url = config.sodInfo.serviceInternalUrl + endpoint;
@@ -29,11 +29,11 @@ export function sodGet(endpoint){
       let jsonResponse = JSON.parse(body);
 
       console.log('[sodGet] body: ' + JSON.stringify(jsonResponse, null, 2));
-      if (! error && response.statusCode >= 200  && response.statusCode < 400) {
+      if (!error && response.statusCode >= 200 && response.statusCode < 400) {
         console.log('[sodGet] resolve');
         deferred.resolve(jsonResponse);
 
-      }else{
+      } else {
         console.log('[sodGet] reject');
         deferred.reject(jsonResponse);
 
@@ -44,7 +44,7 @@ export function sodGet(endpoint){
   return deferred.promise;
 }
 
-export function post(endpoint){
+export function post(endpoint) {
   let deferred = Q.defer();
   let url = config.sodInfo.serviceInternalUrl + endpoint;
   console.log('[post] url: ' + url);
@@ -58,7 +58,7 @@ export function post(endpoint){
     let jsonResponse = JSON.parse(body);
     if (!error && response.statusCode >= 200) {
       deferred.resolve(jsonResponse);
-    }else{
+    } else {
       deferred.reject(jsonResponse);
     }
   });
@@ -70,34 +70,38 @@ export function post(endpoint){
  * get Sod (Java) security token and store it on config.authUserInfo.sodToken
  * @param callback
  */
-export function getSODToken(){
+export function getSODToken() {
 
   let deferred = Q.defer();
 
-  if  (config.authUserInfo.sodToken !== 'NA') {
-    // if (typeof callback === "function") { callback(null, config.authUserInfo.sodToken); }
+  if (config.authUserInfo.sodToken !== 'NA') {
+    // If token exist, resolve promise
     console.log('[getSODToken] existing token, config.authUserInfo.sodToken: ' + config.authUserInfo.sodToken);
     return Q.when(config.authUserInfo.sodToken);
-  }else{
-
+  } else {
+    // sod auth endpoint
     let url = config.sodInfo.serviceInternalUrl + '/auth/app/process_admin';
     console.log('[getSODToken] config: ' + JSON.stringify(config.sodInfo, null, 2));
 
+    // sod auth credentials
     let auth = "Basic " + new Buffer(config.sodInfo.serviceUser + ":" + config.sodInfo.servicePassword).toString("base64");
     request.post(url, {
-        timeout: 1500,
-        headers : { "Authorization" : auth }
-      }, function (error, response, body) {
-        if (!error && response.statusCode >= 200 && response.statusCode < 300 ) {
-          console.log('[request] response.statusCode : ' + response.statusCode );
+        timeout: 2500, // timeout at 2.5 sg
+        headers: {"Authorization": auth}
+      },
+      function (error, response, body) {
+        console.log('[auth response complete!]');
+        if (Boolean(error) || !Boolean(response) || ( Boolean(response) && Boolean(response.statusCode) && response.statusCode >= 400 )) {
+          console.error('[auth] error: ' + JSON.stringify(error, null, 2));
+          deferred.reject('NA');
+        }else if (response.statusCode >= 200 && response.statusCode < 300) {
+          console.log('[request] response.statusCode : ' + response.statusCode);
           let jsonCnt = JSON.parse(body);
           // set token in config, to be used on sod calls.
           config.authUserInfo.sodToken = jsonCnt.token;
           console.log('[BE Server auth] config.authUserInfo.sodToken: ' + config.authUserInfo.sodToken + '\n before resolve');
-          deferred.resolve( config.authUserInfo.sodToken );
+          deferred.resolve(config.authUserInfo.sodToken);
 
-        }else{
-          deferred.reject('NA');
         }
       });
   }
