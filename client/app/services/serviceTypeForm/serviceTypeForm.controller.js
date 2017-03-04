@@ -38,34 +38,9 @@
             label: 'Service Category',
             options: []
           },
-          controller: function ($scope, factoryServices) {
-            $scope.to.loading = factoryServices.getResources('serviceCategory').then((response) => {
-              let holder = [];
-              response.forEach((item) => {
-                holder.push({name: item.name, value: item.idServiceCategory});
-              });
-              $scope.to.options = holder;
-            });
-          }
+          controller: 'ServiceCategoryDD'
         });
       }
-    };
-
-    fillCategories() {
-      var deferred = this.$q.defer();
-      var _this = this;
-      this.factoryServices.getResources('serviceCategory').then((response) => {
-
-        response.forEach((item) => {
-          _this.parentSelect.push({name: item.name, value: item.idServiceCategory});
-        });
-
-        if (!Boolean(_this.serviceType.idServiceCategory)) {
-          _this.serviceType.idServiceCategory = 1;
-        }
-        deferred.resolve(_this.parentSelect);
-      });
-      return deferred.promise;
     };
 
     init() {
