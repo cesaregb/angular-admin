@@ -37,32 +37,20 @@
               </div>
               <div class="row">
                 <div class="col-sm-12">
-                  <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info">
-                    <thead>
-                      <tr role="row">
-                        <th>Name</th>
-                        <th>Lastname</th>
-                        <th>Email</th>
-                        <th>Address</th>
-                        <th>Phones</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-show="$cn.clients.length == 0"><td colspan="5">No Items found</td></tr>
-                      <tr class="gradeA" role="row"
-                          ng-class-odd="'odd'" ng-class-even="'even'"
-                          ng-repeat="client in $cn.clients">
-                          <td>
-                            <a href="" ng-click="$cn.selectClient(client);">
-                              {{client.name}}
-                            </a>
-                          </td>
-                          <td>{{client.lastName}}</td>
-                          <td>{{client.email}}</td>
-                          <td>{{client.defaultAddress}}</td>
-                          <td>{{client.mobilePhone}}</td>
-                      </tr>
-                    </tbody>
+                  <table ng-table="$cn.tableParams" class="table table-condensed table-bordered table-striped">
+                    <tr ng-repeat="row in $data track by row.idClient">
+
+                      <td data-title="'Nombre'" filter="{name: 'text'}" sortable="'fullName'">
+                        <a href="" ng-click="$cn.selectClient(row);">
+                          {{row.fullName}}
+                        </a>
+                      </td>
+                      <td data-title="'Email'">
+                        {{row.email}}
+                      </td>
+                      <td data-title="'Direccion'" >{{row.defaultAddress}}</td>
+                      <td data-title="'Telefono'" >{{row.mobilePhone}}</td>
+                    </tr>
                   </table>
                 </div>
               </div>

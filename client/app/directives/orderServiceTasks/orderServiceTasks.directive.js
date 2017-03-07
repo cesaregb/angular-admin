@@ -6,29 +6,35 @@ angular.module('processAdminApp')
       templateUrl: 'app/directives/orderServiceTasks/orderServiceTasks.html',
       restrict: 'EA',
       scope:{
-        type: '@type',
         taskAction: '&taskAction'
       },
       link: function (scope, element, attrs) {
-        initScope();
 
         orderTaskInfo.registerObserverCallback(parseOrder);
         //service now in control of updating foo
 
         function parseOrder(){
-          initScope();
-          if (parseInt(scope.type) === 1){
-            processOrderTasks();
-          } else {
-            processServiceTasks();
-          }
-          if (Boolean(scope.taskArray[0]) && scope.taskArray.length > 0){
-            scope.selectedTask = scope.taskArray[0];
-          }
 
-          // UI logic
-          if (scope.expandedElementArray.length > 0){
-            scope.expandedElementArray[0] = false;
+          let nextTask = selectNextTask( orderTaskInfo.order.orderTasks );
+          // if is "Servicio para ordenes" service...
+          if (!Boolean(nextTask)){
+            // no more task in order = Order finished
+            $log.info('[Order Info] : 0');
+          } else if (Boolean(nextTask) && nextTask.idTask !== 1){
+            // init scope with order task
+            $log.info('[Order Info] : 1');
+            initScope(1);
+          } else {
+            if ( areServicesEnded() ){
+              $log.info('[Order Info] : 2');
+              // services completed, finish order tasks
+
+            }else{
+              // get services next tasks
+              $log.info('[Order Info] : 3');
+              initScope(2);
+            }
+
           }
         }
 
@@ -36,7 +42,6 @@ angular.module('processAdminApp')
           // Service Information
           // there are possible multiple services...
           orderTaskInfo.order.services.forEach(function (service) {
-            service.serviceTasks = sortTasks(service.serviceTasks);
             let nextTask = selectNextTask( service.serviceTasks );
             let ended = getEndedIfApplicable(nextTask, service.serviceTasks);
             let obj = {
@@ -53,7 +58,6 @@ angular.module('processAdminApp')
         function processOrderTasks(){
           // Order information
           scope.title = 'Orden';
-          orderTaskInfo.order.orderTasks = sortTasks(orderTaskInfo.order.orderTasks);
           let nextTask = selectNextTask( orderTaskInfo.order.orderTasks );
           let ended = getEndedIfApplicable(nextTask, orderTaskInfo.order.orderTasks);
           let obj = {
@@ -74,29 +78,79 @@ angular.module('processAdminApp')
           return ended;
         }
 
+        function initScope( type ){
+          scope.sections = [];
+
+          if (type == 1){ // Order
+            let nextTask = selectNextTask( orderTaskInfo.order.orderTasks );
+            let ended = getEndedIfApplicable(nextTask, orderTaskInfo.order.orderTasks);
+            let obj = {
+              title: orderTaskInfo.order.orderType,
+              nextTask: nextTask,
+              ended: ended,
+              tasks: orderTaskInfo.order.orderTasks
+            };
+            scope.sections.push(obj);
+          } else {
+            $log.info('[initScope] orderTaskInfo.order.services: ' + orderTaskInfo.order.services.length);
+
+            // Service Information
+            // there are possible multiple services...
+            orderTaskInfo.order.services.forEach( (service) => {
+
+              let nextTask = selectNextTask( service.serviceTasks );
+              let ended = getEndedIfApplicable(nextTask, service.serviceTasks);
+
+              $log.info('[initScope] nextTask: ' + JSON.stringify(nextTask, null, 2));
+
+              let obj = {
+                title: service.name,
+                nextTask: nextTask,
+                ended: ended,
+                tasks: service.serviceTasks
+              };
+              scope.sections.push(obj);
+
+            });
+          }
+          $log.info('[initScope] scope.sections: ' + JSON.stringify(scope.sections, null, 2));
+        }
+
+        /**
+         * Select next task based on tasks
+         * @param taskArray
+         */
         function selectNextTask(taskArray){
           return _.find(taskArray, function (itm) {
             return itm.status == 0 || itm.status == 1;
           });
         }
 
-        function sortTasks(taskArray){
-          return _.sortBy(taskArray, function (itm) {
-            return itm.sortingOrder;
+        /**
+         * check if [service] is completed
+         * @returns {boolean}
+         */
+        function areServicesEnded() {
+          let result = true;
+          orderTaskInfo.order.services.forEach(function (service) {
+            if (! isServiceEnded( service.serviceTasks ) ){
+              result = false;
+            }
           });
+          return result;
         }
 
-        function initScope(){
-          scope.expandedElementArray = [];
-          scope.title = 'Servicios';
-          scope.taskArray = [];
-        }
-
-        scope.changeSubsection = function(index){
-          for (var i = 0; i < 0; i++){
-            scope.expandedElementArray[i] = true;
+        /**
+         * check if service is completed
+         * @param taskArray
+         * @returns {boolean}
+         */
+        function isServiceEnded(taskArray){
+          if ( !Boolean(taskArray) || taskArray.length == 0 ){
+            return true;
           }
-          scope.expandedElementArray[index] = false;
+          $log.info('[isServiceEnded] taskArray[taskArray.length - 1].status: ' + taskArray[taskArray.length - 1].status);
+          return taskArray[taskArray.length - 1].status === 2;
         }
 
       }

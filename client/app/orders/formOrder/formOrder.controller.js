@@ -4,9 +4,6 @@
   class FormOrderComponent {
     order = {};
     title = 'Nueva Orden.';
-    orderTypes = [];
-    pickupShow = false;
-    showDeliver = false;
     orderComplete = false;
 
     // helper variables to handle open vs closed panel
@@ -14,9 +11,10 @@
     deliverOpen = false;
     status = {isopen: false};
 
-    constructor($scope, $stateParams, $state, $log, $uibModal, $confirm, factoryServices, NgTableParams, _, googleMapsDirections, constants, appContext, messageHandler) {
+    constructor($scope, $stateParams, $state, $log, $uibModal, $confirm, factoryServices, NgTableParams, _, constants, appContext, messageHandler, AddressHandler, $q) {
       this.NgTableParams = NgTableParams;
-      this.googleMapsDirections = googleMapsDirections;
+      this.$q = $q;
+      this.AddressHandler = AddressHandler;
       this.$log = $log;
       this.factoryServices = factoryServices;
       this.$confirm = $confirm;
@@ -28,9 +26,7 @@
       this._ = _;
       this.store = constants.store;
       this.messageHandler = messageHandler;
-      this.storeInfo = null;
       this.appContext = appContext;
-      this.storeInfo = this.appContext.appContextObject.store;
     };
 
     $onInit() {
@@ -40,67 +36,26 @@
       this.order = {};
 
       // if existing order was entered...
-      if (Boolean(this.$stateParams.order)) {
+      if ( Boolean(this.$stateParams.order) ) {
         this.order = this.$stateParams.order;
       }
-
-      this.order.transport = (Boolean(this.order.transport) && this.order.transport.length > 0)?this.order.transport:[{date: new Date(), address: null, price:0}, {date: new Date(), address: null, price:0}];
+      this.order.transport = (Boolean(this.order.transport) && this.order.transport.length > 0)?
+        this.order.transport
+        :[{date: new Date(), address: null, price:0}, {date: new Date(), address: null, price:0}];
       this.order.services = (Boolean(this.order.services))?this.order.services:[];
       this.order.client = (Boolean(this.order.client))?this.order.client:{};
       _this.validateOrder();
       _this.calculateTotal(); // calculate total in case we are comming from services...
 
-      // Get orderTypes and filter the valid ones...
-      this.factoryServices.getResources('orderType').then(result => {
-        // get orders that have 1+ tasks
-        _this.orderTypes = _this._.filter(result, function (ot) {
-          return (Boolean(ot.orderTypeTask) && ot.orderTypeTask.length > 0);
-        });
-
-        if (Boolean(_this.order) && Boolean(_this.order.idOrderType)){
-          _this.orderType = _this._.find(result, (ot)=>{
-            return parseInt(ot.idOrderType) === parseInt(_this.order.idOrderType);
-          });
-          _this.validateOrderType();
-        }
-      });
-
       this.tableParams = new this.NgTableParams({}, {
         dataset: _this.order.services
       });
-    }
 
-    validateOrderType() {
-      var t = this;
-      if (Boolean(this.orderType)) {
-        this.pickupShow = false;
-        this.showDeliver = false;
-
-        if ((!Boolean(this.order.client.addresses) || this.order.client.addresses.length == 0)
-          && (this.orderType.transportInfo > 0)) {
-          this.orderType = null; // clear order selection ..
-          t.messageHandler.showError('Cliente no tiene direccion dada de alta, por favor agrega una direccion, o selecciona otro servicio');
-          return;
-        }
-
-        this.order.idOrderType = this.orderType.idOrderType;
-        var both = false;
-        if (this.orderType.transportInfo == 3) {
-          both = true;
-        }
-        if (this.orderType.transportInfo == 1 || both) {
-          this.pickupShow = true;
-        }
-        if (this.orderType.transportInfo == 2 || both) {
-          this.showDeliver = true;
-        }
-
-        this.calculateTotal();
-      }
+      this.AddressHandler.resetValues();
     }
 
     removeService(service, index) {
-      var _this = this;
+      let _this = this;
       _this.order.services.splice(index, 1);
       _this.tableParams.reload();
       _this.validateOrder();
@@ -145,38 +100,32 @@
     }
 
     cleanOrder(){
-      this.order.client = {};
-      this.orderType = {};
-      this.pickupShow = false;
-      this.showDeliver = false;
+      this.order = {};
     }
 
-    /**
-     * Calculate price based on store info and client address...
-     * @param type
-     * @param address
-     */
     selectAddress(type, address) {
-      var _this = this;
-      var start = this.googleMapsDirections.getLatLng(this.storeInfo.lat, this.storeInfo.lng);
-      var end = this.googleMapsDirections.getLatLng(address.lat, address.lng);
-      var request = this.googleMapsDirections.getRequestObject(start, end);
-      this.googleMapsDirections.getDistance(request).then((distance) => {
-        var kmDistance = distance / 1000;
-        var price = 0;
-        var distanceInfoSorted = _this._.sortBy(_this.storeInfo.distanceInfos, 'distance');
-        distanceInfoSorted.forEach(function (item) {
-          if (item.distance > kmDistance && price === 0) {
-            price = item.price;
-          }
-        });
-        // get the last price if is not covered ...
-        if (price == 0 && distanceInfoSorted.length > 0) {
-          price = distanceInfoSorted[distanceInfoSorted.length - 1].price;
-        }
-        _this.order.transport[(type - 1)].price = price;
+      let _this = this;
+      this.AddressHandler.calculateDistancePriceByAddress(address).then(()=>{
+        _this.order.transport[(type - 1)].price = this.AddressHandler.distancePrice;
         _this.calculateTotal();
+      });
+    }
 
+    openServiceDetails(service) {
+      let modalInstance = this.$uibModal.open({
+        animation: false,
+        templateUrl: 'app/orders/formOrder/viewServiceDetailsModal/viewServiceDetailsModal.html',
+        controller: 'ViewServiceDetailsModalCtrl',
+        size: 'md',
+        resolve: {
+          service: function() {
+            return service;
+          }
+        }
+      });
+
+      modalInstance.result.then(function(info) {
+        // do nothing...
       });
     }
 
@@ -192,35 +141,14 @@
       }
     };
 
-    // To be deleted....
-    // viewServiceDetails(service){
-    //   var _this = this;
-    //   var modalInstance = this.$uibModal.open({
-    //     animation: false,
-    //     templateUrl: 'app/services/viewServiceModal/viewServiceModal.html',
-    //     controller: 'ViewServiceModalCtrl',
-    //     size: 'lg',
-    //     resolve: {
-    //       service: function() {
-    //         return service;
-    //       }
-    //     }
-    //   });
-    //
-    //   modalInstance.result.then(function(client) {
-    //     _this.order.client = client;
-    //   });
-    // }
-
     castOrderObject() {
-      var t = this;
+      let t = this;
       let orderObject = {}
-      var errors = []; // as we go thru the process more than 1 error may occur...
+      let errors = []; // as we go thru the process more than 1 error may occur...
 
       orderObject.paymentInfo = {transactionInfo: 'cash', type: 0};
       orderObject.comments = ''; // not used so far...
 
-      orderObject.idOrderType = this.orderType.idOrderType;
       orderObject.idClient = this.order.client.idClient;
       orderObject.total = this.order.total;
       orderObject.totalServices = this._.reduce(this.order.services, function(memo, sObj){return memo + sObj.totalPrice; } , 0);
@@ -274,7 +202,7 @@
 
     validateOrder() {
       let _this = this;
-      if (_this.order.services.length > 0 && Boolean(_this.order.client) && Boolean(_this.order.idOrderType)) {
+      if (_this.order.services.length > 0 && Boolean(_this.order.client)) {
         _this.orderComplete = true;
       }
     }
@@ -285,9 +213,7 @@
       if (Boolean(orderObj)) {
         this.factoryServices.saveOrder(orderObj).then(function (item) {
           _this.back();
-          // ORDER SAVED Redirect me to order report...
         }, function (err) {
-          // backend failed saving ...
           _this.messageHandler.showError('Error:' + err.message);
         });
       }

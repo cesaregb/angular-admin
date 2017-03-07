@@ -25,13 +25,10 @@
         idOrder = this.$stateParams.order.idOrder;
         this.loadOrder(idOrder);
       }else{
-        this.messageHandler.showError('Orden no encontrada');
         this.$state.go('orders.ordersList', null, { reload: true });
       }
     }
 
-    showOrders = false;
-    showServices = false;
     loadOrder(idOrder) {
       let t = this;
       this.order = {};
@@ -48,19 +45,15 @@
       t.order.services = [];
 
       this.factoryServices.getTaskForOrder(this.order.idOrder).then((result) => {
-        t.order.client = result.clientName;
-        t.order.orderType = result.orderTypeName;
-        t.order.orderTasks = result.orderTasks;
-        t.order.services = result.services;
+        t.order = {
+          client: result.clientName,
+          orderType: result.orderTypeName,
+          orderTasks: result.orderTasks,
+          services: result.services
+        };
         t.orderTaskInfo.setOrder(t.order);
-
-        // TODO should I display the service information... when...
-        // let orderTask = t._.find(t.order.orderTasks, function(task){
-        //   return task.idTask == 1;
-        // });
-        // t.showServices = orderTask.status == 1; // working
-
-      }).catch(function () {
+      }).catch( (err) => {
+        t.$log.info('[err] err: ' + JSON.stringify(err, null, 2));
         t.messageHandler.showError('Orden no encontrada')
       });
     }

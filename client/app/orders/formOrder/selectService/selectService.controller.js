@@ -78,8 +78,8 @@
     }
 
     findServiceType(id, cb){
-      var t = this;
-      var found = false;
+      let t = this;
+      let found = false;
       this.serviceCategories.forEach((sc)=>{
         let serviceType = this._.find(sc.serviceTypes, function(st){
           return st.idServiceType === id;
@@ -168,11 +168,6 @@
     calculateSpecsPrice() {
       let _this = this;
       if (!Boolean(this.service.products) || this.service.products.length < 1) {
-        // this.noty.showNoty({
-        //   text: 'Tenemos que seleccionar cuandomenos 1 producto',
-        //   ttl: 1000 * 4,
-        //   type: 'warning'
-        // });
         return;
       }
 
@@ -252,6 +247,13 @@
 
     addService() {
       this.order.services = (Boolean(this.order.services))?this.order.services:[];
+      let selectedProducts = [];
+      this.service.products.forEach(function(product){
+        if (product.quantity > 0){
+          selectedProducts.push(product);
+        }
+      });
+      this.service.selectedProducts = selectedProducts;
       this.order.services.push(this.service);
       this.$state.go('orders.formOrder', {order: this.order, addService: true}, {reload: true});
     }

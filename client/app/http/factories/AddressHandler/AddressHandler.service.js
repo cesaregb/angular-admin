@@ -1,95 +1,104 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .factory('AddressHandler', function (noty, $log, factoryServices, $timeout) {
-    var factory = {};
+  .factory('AddressHandler', function (noty, $log, factoryServices, $timeout, messageHandler, googleMapsDirections, _, appContext, $q) {
+    // TODO check == vs === for a lot of them
 
-    //********** Routes CRUD
+    let factory = {};
+
     factory.circlesTemplates = [
       {
-      id: 4,
-      center: {
-        lat: 20.621335,
-        lng: -103.418127
-      },
-      radius: 1000 * 24, //  mts
-      stroke: {
-        color: '#800000',
-        weight: 2,
-      },
-      fill: {
-        color: '#800000',
-        opacity: 0.5
-      },
-      geodesic: false,
-      draggable: false,
-      clickable: false,
-      editable: false,
-      visible: false,
-      control: {}
-    }, {
-      id: 3,
-      center: {
-        lat: 20.621335,
-        lng: -103.418127
-      },
-      radius: 1000 * 12, //  mts
-      stroke: {
-        color: '#FF0000',
-        weight: 2,
-      },
-      fill: {
-        color: '#FF0000',
-        opacity: 0.5
-      },
-      geodesic: false,
-      draggable: false,
-      clickable: false,
-      editable: false,
-      visible: false,
-      control: {}
-    }, {
-      id: 2,
-      center: {
-        lat: 20.621335,
-        lng: -103.418127
-      },
-      radius: 1000 * 6,
-      stroke: {
-        color: '#E8AD3C'
-      },
-      fill: {
-        color: '#E8AD3C'
-      }
-    }, {
-      id: 1,
-      center: {
-        lat: 20.621335,
-        lng: -103.418127
-      },
-      radius: 1000 * 3,
-      stroke: {
-        color: '#08B21F'
-      },
-      fill: {
-        color: '#08B21F'
-      }
-    }];
+        id: 4,
+        center: {
+          lat: 20.621335,
+          lng: -103.418127
+        },
+        radius: 1000 * 24, //  mts
+        stroke: {
+          color: '#800000',
+          weight: 2,
+        },
+        fill: {
+          color: '#800000',
+          opacity: 0.5
+        },
+        geodesic: false,
+        draggable: false,
+        clickable: false,
+        editable: false,
+        visible: false,
+        control: {}
+      }, {
+        id: 3,
+        center: {
+          lat: 20.621335,
+          lng: -103.418127
+        },
+        radius: 1000 * 12, //  mts
+        stroke: {
+          color: '#FF0000',
+          weight: 2,
+        },
+        fill: {
+          color: '#FF0000',
+          opacity: 0.5
+        },
+        geodesic: false,
+        draggable: false,
+        clickable: false,
+        editable: false,
+        visible: false,
+        control: {}
+      }, {
+        id: 2,
+        center: {
+          lat: 20.621335,
+          lng: -103.418127
+        },
+        radius: 1000 * 6,
+        stroke: {
+          color: '#E8AD3C'
+        },
+        fill: {
+          color: '#E8AD3C'
+        }
+      }, {
+        id: 1,
+        center: {
+          lat: 20.621335,
+          lng: -103.418127
+        },
+        radius: 1000 * 3,
+        stroke: {
+          color: '#08B21F'
+        },
+        fill: {
+          color: '#08B21F'
+        }
+      }];
     factory.circles = [];
 
-    factory.setStore = function(store){
-      // select store for map calcs.
-      factory.tersusLatLng = new google.maps.LatLng(store.lat, store.lng);
-
-      let center = { lat: store.lat, lng: store.lng };
-      factory.circlesTemplates.forEach((it) => {
-        it.center = center;
-      });
+    let center = null;
+    factory.setStore = function (store) {
+      if (Boolean(store.lat) && Boolean(store.lng)){
+        factory.tersusLatLng = new google.maps.LatLng(store.lat, store.lng);
+        center = {lat: store.lat, lng: store.lng};
+        factory.circlesTemplates.forEach((it) => {
+          it.center = center;
+        });
+      }
 
     };
+    function initStore() {
+      factory.setStore(appContext.appContextObject.store);
+    }
 
-    factory.resetValues = function(){
-      factory.tersusLatLng = new google.maps.LatLng(20.621335, -103.418127);
+    let distanceInfo = [];
+    factory.setDistanceInfo = function (_distanceInfo) {
+      distanceInfo = _.sortBy(_distanceInfo, 'distance');
+    };
+
+    factory.resetValues = function () {
       factory.circlesVisible = false;
       factory.address = {};
       factory.place = null;
@@ -101,77 +110,92 @@ angular.module('processAdminApp')
 
       // these variables settup the env.
       factory.map = null;
-      factory.initialized = false;
     };
 
-    var distanceInfo = [];
-
-    factory.initMap = function(address) {
-      // get distanceInfo
-      factoryServices.getResources('distanceInfo').then(function(response){
-        distanceInfo = response;
-        var i = 0;
-        distanceInfo.forEach(function(item){
-          var circleTemplate = factory.circlesTemplates[i];
-          i++;
-          circleTemplate.radius = 1000 * item.distance;
-          factory.circles.push(circleTemplate);
-        });
-      });
-
-      // initialize the component only once, after that only showing and hiding the component is enough
-      if (!factory.initialized){
-        $timeout(function() {
-          initGMaps();
-          if (address != null && address.idAddress != null) {
-            factory.setAddress(address);
-            factory.addExistingMarker();
-          }
-        }, 100);
-      }else{
-        $("#map").show();
+    /**
+     * Call all the async gathering data methods.
+     * initialize the gMap after is complete
+     */
+    function asyncInitialization(){
+      let deferred = $q.defer();
+      if (distanceInfo.length > 0 ){
+        deferred.resolve();
       }
+      let promises = [factoryServices.getResources('distanceInfo')];
+      $q.all(promises).then((values) => {
+        factory.setDistanceInfo(values[0]);
+        deferred.resolve();
+      });
+      return deferred.promise;
+    }
 
-      factory.initialized = true;
-    };
+    function initFactory() {
+      factory.resetValues();
+      initStore();
+      asyncInitialization();
+    }
+    initFactory();
 
-    function initGMaps(){
+    function validateAHFactory() {
+      if (!Boolean(distanceInfo) || distanceInfo.length < 1) {
+        messageHandler.showError('No distanceInfo Found');
+        return false;
+      }
+      if (!Boolean(factory.tersusLatLng)) {
+        messageHandler.showError('No store info Found');
+        return false;
+      }
+      return true;
+    }
+
+    function createCircleTemplates() {
+      let i = 0;
+      distanceInfo.forEach(function (item) {
+        let circleTemplate = factory.circlesTemplates[i];
+        i++;
+        circleTemplate.radius = 1000 * item.distance;
+        factory.circles.push(circleTemplate);
+      });
+    }
+
+    /**
+     * google related logic
+     */
+    function initGMaps() {
+      $log.info('[initGMaps] : ');
       // google provided code...
-      var map = new google.maps.Map(document.getElementById('map'), {
-        center: {
-          lat: 20.621335,
-          lng: -103.418127
-        },
+      let map = new google.maps.Map(document.getElementById('map'), {
+        center: center,
         scrollwheel: false,
         zoom: 13,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       });
 
-      var input = /** @type {!HTMLInputElement} */ (
+      let input = /** @type {!HTMLInputElement} */ (
         document.getElementById('pac-input'));
 
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-      var types = document.getElementById('type-selector');
+      let types = document.getElementById('type-selector');
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
 
-      var options = {
+      let options = {
         componentRestrictions: {
           country: 'mx'
         }
       };
 
-      var autocomplete = new google.maps.places.Autocomplete(input, options);
+      let autocomplete = new google.maps.places.Autocomplete(input, options);
       autocomplete.bindTo('bounds', map);
       autocomplete.setTypes([]);
 
-      var infowindow = new google.maps.InfoWindow();
-      var marker = new google.maps.Marker({
+      let infowindow = new google.maps.InfoWindow();
+      let marker = new google.maps.Marker({
         map: map,
         anchorPoint: new google.maps.Point(0, -29)
       });
 
-      autocomplete.addListener('place_changed', function() {
+      autocomplete.addListener('place_changed', function () {
         infowindow.close();
         marker.setVisible(false);
         var place = autocomplete.getPlace();
@@ -189,7 +213,7 @@ angular.module('processAdminApp')
           map.setCenter(place.geometry.location);
           map.setZoom(17); // Why 17? Because it looks good.
         }
-        marker.setIcon( /** @type {google.maps.Icon} */ ({
+        marker.setIcon(/** @type {google.maps.Icon} */ ({
           url: place.icon,
           size: new google.maps.Size(71, 71),
           origin: new google.maps.Point(0, 0),
@@ -215,7 +239,7 @@ angular.module('processAdminApp')
       // Sets a listener on a radio button to change the filter type on Places Autocomplete.
       function setupClickListener(id, types) {
         var radioButton = document.getElementById(id);
-        radioButton.addEventListener('click', function() {
+        radioButton.addEventListener('click', function () {
           autocomplete.setTypes(types);
         });
       }
@@ -227,82 +251,97 @@ angular.module('processAdminApp')
 
       factory.map = map;
 
-      google.maps.event.addListener(factory.map, 'click', function(event) {
-        factory.placeMarker(event.latLng);
+      google.maps.event.addListener(factory.map, 'click', function (event) {
+        placeMarker(event.latLng);
       });
 
     }
 
-    factory.setAddress = function(address){
-      factory.address = address;
+    /**
+     * initialize map with a address
+     * @param address
+     */
+
+    factory.initMap = function (address) {
+      factory.address = (Boolean(address))?address:null;
+      asyncInitialization().then(()=>{
+        createCircleTemplates();
+        // initialize the component only once, after that only showing and hiding the component is enough
+        factory.showMap();
+      });
+    };
+
+    factory.showMap = function(){
+      if (factory.map == null){
+        $timeout(() => {
+          initGMaps();
+          factory.addExistingMarker();
+        }, 100);
+      }else{
+        $("#map").hide();
+        factory.addExistingMarker();
+      }
     };
 
     factory.addExistingMarker = function () {
-      if (factory.address != null && factory.address.lat != null && factory.address.lng != null) {
-        var selectedPlaceLatLng = new google.maps.LatLng(factory.address.lat, factory.address.lng);
-        // add marker
-        var marker = new google.maps.Marker({
-          position: selectedPlaceLatLng,
-          map: factory.map
-        });
-
-        factory.markers.push(marker);
-        factory.existingMarker = true;
-        factory.map.panTo(selectedPlaceLatLng);
+      if (factory.address == null || factory.address.lat == null || factory.address.lng == null) {
+        return;
       }
+      let selectedPlaceLatLng = new google.maps.LatLng(factory.address.lat, factory.address.lng);
+      addMarker(selectedPlaceLatLng);
     };
 
-
-    factory.placeMarker = function (location) {
-      if (factory.addressParsed) {
-        noty.showNoty({
-          text: "Please make a search before creating marker.",
-          ttl: 1000 * 2,
-          type: "warning"
+    /**
+     * gets a location and add the marker panning to the location.
+     * @param location
+     */
+    function addMarker(location){
+      // clear markers
+      if (factory.existingMarker && factory.markers.length > 0) {
+        factory.markers.forEach(function (item) {
+          item.setMap(null);
         });
-      } else if (factory.place == null) {
-        noty.showNoty({
-          text: "Please search by address first",
-          ttl: 1000 * 2,
-          type: "warning"
-        });
-      } else {
-
-        // clear markers
-        if (factory.existingMarker && factory.markers.length > 0) {
-          factory.markers.forEach(function(item) {
-            item.setMap(null);
-          });
-          factory.markers = [];
-        }
-        // add marker
-        var marker = new google.maps.Marker({
-          position: location,
-          map: factory.map
-        });
-
-        factory.markers.push(marker);
-        factory.existingMarker = true;
-        factory.map.panTo(location);
-
-        factory.address.lat = location.lat();
-        factory.address.lng = location.lng();
+        factory.markers = [];
       }
-    };
 
-    var circleObj = [];
-    factory.createCircles = function() {
+      // add marker
+      let marker = new google.maps.Marker({
+        position: location,
+        map: factory.map
+      });
+
+      factory.markers.push(marker);
+      factory.existingMarker = true;
+      factory.map.panTo(location);
+    }
+
+    /**
+     * add Marker but + validations
+     * @param location
+     */
+    function placeMarker(location) {
+      if (factory.addressParsed || factory.place == null) {
+        messageHandler.showError('Please make a search before creating marker.');
+        return;
+      }
+      addMarker(location);
+      factory.address.lat = location.lat();
+      factory.address.lng = location.lng();
+    }
+
+    let circleObj = [];
+    factory.createCircles = function () {
       if (factory.circlesVisible) {
         factory.circlesVisible = false;
-        circleObj.forEach(function(item) {
+        circleObj.forEach(function (item) {
           item.setMap(null);
         });
 
       } else {
 
         factory.circlesVisible = true;
-        factory.circles.forEach(function(item) {
-          var priceCircle = new google.maps.Circle({
+        factory.circles.forEach(function (item) {
+          let priceCircle = new google.maps.Circle({
             strokeColor: item.stroke.color,
             strokeOpacity: 0.8,
             strokeWeight: 2,
@@ -319,45 +358,35 @@ angular.module('processAdminApp')
 
     // requires to have initialized the tersus address
     // require to have the endpoint address
-    factory.calculateDistancePrice = function(){
-      var selectedPlaceLatLng = new google.maps.LatLng(factory.address.lat, factory.address.lng);
-      factory.distance = google.maps.geometry.spherical.computeDistanceBetween(factory.tersusLatLng, selectedPlaceLatLng);
-      if (factory.distance < 2000) {
-        factory.distancePrice = 20;
-      } else if (factory.distance > 2000 && factory.distance < 4000) {
-        factory.distancePrice = 25;
-      } else if (factory.distance > 4000) {
-        factory.distancePrice = 30;
+    factory.calculateDistancePrice = function () {
+      let deferred = $q.defer();
+      if (!validateAHFactory()) {
+        deferred.reject({err: 'invalid Address Handler'})
       }
-      factory.distance = factory.distance/1000;
-      factory.distance = Math.round(factory.distance);
-      return factory.distance; // helper to avoid other call..
+      factory.distancePrice = 0;
+      factory.distance = 0;
+      googleMapsDirections.calculateDistancePrice(factory.tersusLatLng, factory.address, distanceInfo).then((result) => {
+        factory.distancePrice = result.distancePrice;
+        factory.distance = result.distance;
+        deferred.resolve();
+      });
+      return deferred.promise;
     };
 
-    factory.parseAddress = function() {
-      var selectedPlaceLatLng = new google.maps.LatLng(factory.address.lat, factory.address.lng);
-      factory.distance = google.maps.geometry.spherical.computeDistanceBetween(factory.tersusLatLng, selectedPlaceLatLng);
+    factory.calculateDistancePriceByAddress = function (address) {
+      factory.address = address;
+      return factory.calculateDistancePrice();
+    };
 
-      if (factory.distance < 2000) {
-        factory.distancePrice = 20;
-      } else if (factory.distance > 2000 && factory.distance < 4000) {
-        factory.distancePrice = 25;
-      } else if (factory.distance > 4000) {
-        factory.distancePrice = 30;
-      }
-      factory.distance = factory.distance/1000;
-      factory.distance = Math.round(factory.distance);
+    factory.parseAddress = function () {
+      factory.calculateDistancePrice();
 
       if (factory.place == null) {
-        noty.showNoty({
-          text: "Please search by address first",
-          ttl: 1000 * 2,
-          type: "warning"
-        });
+        messageHandler.showError('Please search by address first');
       } else {
-        var components = factory.place.address_components;
+        let components = factory.place.address_components;
         factory.addressParsed = true;
-        components.forEach(function(item) {
+        components.forEach(function (item) {
           if ($.inArray('route', item.types) >= 0) {
             factory.address.address = item.long_name;
           }
@@ -380,7 +409,6 @@ angular.module('processAdminApp')
       }
 
     };
-
 
     return factory;
   });

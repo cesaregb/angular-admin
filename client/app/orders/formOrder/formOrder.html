@@ -4,8 +4,9 @@
     <div class="col-lg-12">
       <legend>Orden</legend>
       <!--******** Client and order type -->
-      <div class="row" style="padding-bottom:20px;">
+      <div class="row order-section">
         <div class="col-md-12">
+          <!--client section-->
           <div class="col-md-6">
             <div class="col-md-3">
               <label class="col-md-4 control-label">Cliente</label>
@@ -13,7 +14,6 @@
             <div class="col-md-9 input-group">
               <input type="text" class="form-control" ng-model="$cn.order.client.name">
               <div class="input-group-btn" ng-show="$cn.order.idOrder == null || $cn.order.idOrder == 0">
-
                 <button class="btn btn-default" type="button" ng-click="$cn.openClientSearch()">
                   <i class="fa fa-search"></i>
                 </button>
@@ -35,95 +35,82 @@
               <br/>
             </div>
           </div>
-
-          <div class="col-md-6">
-            <div>
-              <div class="col-md-3">
-                <label class="col-md-4 control-label">Orden</label>
-              </div>
-              <div class="col-md-8 input-group">
-                <!-- Select Basic -->
-                <select class="form-control" ng-disabled="$cn.order.client.idClient == null"
-                        ng-options="orderType as orderType.name for orderType in $cn.orderTypes"
-                        ng-model="$cn.orderType"
-                        ng-change="$cn.validateOrderType()"></select>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-      <!--******** pickup and deliver informaiton -->
-      <div class="row" ng-show="$cn.pickupShow" style="padding-bottom:20px;">
-        <div class="col-md-12">
-          <div class="col-md-6">
-            <div>
-              <div class="col-md-3">
-                <label class="col-md-4 control-label">Recojer</label>
-              </div>
 
-              <div class="col-md-8 input-group">
-                <select class="form-control"
-                        ng-options="addr as addr.address for addr in $cn.order.client.addresses"
-                        ng-model="$cn.order.transport[0].address"
-                        ng-change="$cn.selectAddress(1, $cn.order.transport[0].address)"></select>
-                <span class="input-group-addon">{{$cn.order.transport[0].price | currency}}</span>
+      <!--******** pickup and deliver informaiton -->
+      <div class="row order-section">
+        <div class="row order-section" ng-show="$cn.order.client.idClient != null">
+          <div class="col-md-12">
+            <div class="col-md-6">
+              <div>
+                <div class="col-md-3">
+                  <label class="col-md-4 control-label">Recojer</label>
+                </div>
+
+                <div class="col-md-8 input-group">
+                  <select class="form-control"
+                          ng-options="addr as addr.address for addr in $cn.order.client.addresses"
+                          ng-model="$cn.order.transport[0].address"
+                          ng-change="$cn.selectAddress(1, $cn.order.transport[0].address)"></select>
+                  <span class="input-group-addon">{{$cn.order.transport[0].price | currency}}</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div>
-              <div class="col-md-3">
-                <label class="col-md-4 control-label">Fecha/Hora</label>
-              </div>
-              <div class="col-md-8 input-group">
-                <input type="text" class="form-control"
-                       datetime-picker="MM/dd/yyyy HH:mm"
-                       ng-model="$cn.order.transport[0].date"
-                       is-open="$cn.pickUpOpen">
-                <span class="input-group-btn">
+            <div class="col-md-6">
+              <div>
+                <div class="col-md-3">
+                  <label class="col-md-4 control-label">Fecha/Hora</label>
+                </div>
+                <div class="col-md-8 input-group">
+                  <input type="text" class="form-control"
+                         datetime-picker="MM/dd/yyyy HH:mm"
+                         ng-model="$cn.order.transport[0].date"
+                         is-open="$cn.pickUpOpen">
+                  <span class="input-group-btn">
                       <button type="button" class="btn btn-default"
                               ng-click="$cn.openCalendar($event, 'pickUpDate')">
                         <i class="fa fa-calendar"></i></button>
                   </span>
-              </div>
+                </div>
 
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="row" ng-show="$cn.showDeliver" style="padding-bottom:20px;">
-        <div class="col-md-12">
-          <div class="col-md-6">
-            <div>
-              <div class="col-md-3">
-                <label class="col-md-4 control-label">Entregar</label>
-              </div>
-              <div class="col-md-8 input-group">
-                <select class="form-control" ng-options="addr as addr.address for addr in $cn.order.client.addresses"
-                        ng-model="$cn.order.transport[1].address"
-                        ng-change="$cn.selectAddress(2, $cn.order.transport[1].address)"></select>
-                <span class="input-group-addon" >{{$cn.order.transport[1].price | currency}}</span>
+        <div class="row order-section" ng-show="$cn.order.client.idClient != null">
+          <div class="col-md-12">
+            <div class="col-md-6">
+              <div>
+                <div class="col-md-3">
+                  <label class="col-md-4 control-label">Entregar</label>
+                </div>
+                <div class="col-md-8 input-group">
+                  <select class="form-control" ng-options="addr as addr.address for addr in $cn.order.client.addresses"
+                          ng-model="$cn.order.transport[1].address"
+                          ng-change="$cn.selectAddress(2, $cn.order.transport[1].address)"></select>
+                  <span class="input-group-addon" >{{$cn.order.transport[1].price | currency}}</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-md-6">
-            <div>
-              <div class="col-md-3">
-                <label class="col-md-4 control-label">Fecha/Hora</label>
-              </div>
-              <div class="col-md-8 input-group">
-                <input type="text" class="form-control"
-                       datetime-picker="MM/dd/yyyy HH:mm"
-                       ng-model="$cn.order.transport[1].date"
-                       is-open="$cn.deliverOpen">
-                <span class="input-group-btn">
+            <div class="col-md-6">
+              <div>
+                <div class="col-md-3">
+                  <label class="col-md-4 control-label">Fecha/Hora</label>
+                </div>
+                <div class="col-md-8 input-group">
+                  <input type="text" class="form-control"
+                         datetime-picker="MM/dd/yyyy HH:mm"
+                         ng-model="$cn.order.transport[1].date"
+                         is-open="$cn.deliverOpen">
+                  <span class="input-group-btn">
                     <button type="button" class="btn btn-default"
                             ng-click="$cn.openCalendar($event, 'deliverDate')">
                       <i class="fa fa-calendar"></i>
                     </button>
                   </span>
+                </div>
               </div>
             </div>
           </div>
@@ -131,7 +118,7 @@
       </div>
 
       <!--******** services!!!-->
-      <div class="row" style="padding-bottom:20px;" ng-show="$cn.orderType.idOrderType > 0">
+      <div class="row order-section" ng-show="$cn.order.client.idClient != null">
         <div class="col-lg-12">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -164,7 +151,7 @@
                         <!--<a href="" ng-click="$cn.viewServiceDetails(row, $index);">-->
                           <!--{{row.name}}-->
                         <!--</a>-->
-                        {{row.name}}
+                        <a href="" ng-click="$cn.openServiceDetails(row)">{{row.name}}</a>
                       </td>
                       <td data-title="'Precio'">{{row.totalPrice | currency}}</td>
                       <td data-title="'Action'" align="center">
@@ -184,7 +171,8 @@
         </div>
       </div>
 
-      <div class="row" style="padding-bottom:20px;" ng-show="$cn.orderType.idOrderType > 0">
+      <!--Total Info-->
+      <div class="row order-section" ng-show="$cn.order.client.idClient != null">
         <div class="col-md-12">
 
           <div class="row">
@@ -208,13 +196,11 @@
               </div>
             </div>
           </div>
-
-
         </div>
       </div>
 
       <!-- Button (Double) -->
-      <div class="buttons-footer">
+      <div class="buttons-footer" ng-show="$cn.order.client.idClient != null">
         <button type="button" class="btn btn-primary" ng-disabled="!$cn.orderComplete" ng-click="$cn.saveOrder()">
           Submit
         </button>
