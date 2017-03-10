@@ -4,7 +4,11 @@ angular.module('processAdminApp')
   .factory('AddressHandler', function (noty, $log, factoryServices, $timeout, messageHandler, googleMapsDirections, _, appContext, $q) {
     // TODO check == vs === for a lot of them
 
+    let divContent = '<div class="col-lg-12" id="mapContainer"> <input id="pac-input" class="controls" type="text" placeholder="Enter a location"> <div id="type-selector" class="controls"> <input type="radio" name="type" id="changetype-all" checked="checked"> <label for="changetype-all">All<\/label> <input type="radio" name="type" id="changetype-establishment"> <label for="changetype-establishment">Establishments<\/label> <input type="radio" name="type" id="changetype-address"> <label for="changetype-address">Addresses<\/label><\/div><div id="map"><\/div>';
+
     let factory = {};
+    let center = null;
+    let distanceInfo = [];
 
     factory.circlesTemplates = [
       {
@@ -78,40 +82,6 @@ angular.module('processAdminApp')
       }];
     factory.circles = [];
 
-    let center = null;
-    factory.setStore = function (store) {
-      if (Boolean(store.lat) && Boolean(store.lng)){
-        factory.tersusLatLng = new google.maps.LatLng(store.lat, store.lng);
-        center = {lat: store.lat, lng: store.lng};
-        factory.circlesTemplates.forEach((it) => {
-          it.center = center;
-        });
-      }
-
-    };
-    function initStore() {
-      factory.setStore(appContext.appContextObject.store);
-    }
-
-    let distanceInfo = [];
-    factory.setDistanceInfo = function (_distanceInfo) {
-      distanceInfo = _.sortBy(_distanceInfo, 'distance');
-    };
-
-    factory.resetValues = function () {
-      factory.circlesVisible = false;
-      factory.address = {};
-      factory.place = null;
-      factory.markers = [];
-      factory.existingMarker = false;
-      factory.addressParsed = false;
-      factory.distance = 0;
-      factory.distancePrice = 0;
-
-      // these variables settup the env.
-      factory.map = null;
-    };
-
     /**
      * Call all the async gathering data methods.
      * initialize the gMap after is complete
@@ -128,13 +98,6 @@ angular.module('processAdminApp')
       });
       return deferred.promise;
     }
-
-    function initFactory() {
-      factory.resetValues();
-      initStore();
-      asyncInitialization();
-    }
-    initFactory();
 
     function validateAHFactory() {
       if (!Boolean(distanceInfo) || distanceInfo.length < 1) {
@@ -158,11 +121,18 @@ angular.module('processAdminApp')
       });
     }
 
+    function showMap(){
+      $timeout(() => {
+        initGMaps();
+        factory.addExistingMarker();
+      }, 100);
+    }
+
     /**
      * google related logic
      */
     function initGMaps() {
-      $log.info('[initGMaps] : ');
+      $('#' + factory.componentContainer).html(divContent);
       // google provided code...
       let map = new google.maps.Map(document.getElementById('map'), {
         center: center,
@@ -252,35 +222,55 @@ angular.module('processAdminApp')
       factory.map = map;
 
       google.maps.event.addListener(factory.map, 'click', function (event) {
-        placeMarker(event.latLng);
+        addAddressMarker(event.latLng);
       });
 
     }
+
+    factory.setStore = function (store) {
+      if (Boolean(store.lat) && Boolean(store.lng)){
+        factory.tersusLatLng = new google.maps.LatLng(store.lat, store.lng);
+        center = {lat: store.lat, lng: store.lng};
+        factory.circlesTemplates.forEach((it) => {
+          it.center = center;
+        });
+      }
+
+    };
+
+    factory.setDistanceInfo = function (_distanceInfo) {
+      distanceInfo = _.sortBy(_distanceInfo, 'distance');
+    };
+
+    factory.resetValues = function () {
+      factory.circlesVisible = false;
+      factory.address = {};
+      factory.place = null;
+      factory.markers = [];
+      factory.existingMarker = false;
+      factory.addressParsed = false;
+      factory.distance = 0;
+      factory.distancePrice = 0;
+
+      // these variables settup the env.
+      factory.map = null;
+    };
 
     /**
      * initialize map with a address
      * @param address
      */
-
     factory.initMap = function (address) {
       factory.address = (Boolean(address))?address:null;
       asyncInitialization().then(()=>{
         createCircleTemplates();
         // initialize the component only once, after that only showing and hiding the component is enough
-        factory.showMap();
+        showMap();
       });
     };
 
-    factory.showMap = function(){
-      if (factory.map == null){
-        $timeout(() => {
-          initGMaps();
-          factory.addExistingMarker();
-        }, 100);
-      }else{
-        $("#map").hide();
-        factory.addExistingMarker();
-      }
+    factory.hideMap = function(){
+      $("#map").hide();
     };
 
     factory.addExistingMarker = function () {
@@ -319,8 +309,8 @@ angular.module('processAdminApp')
      * add Marker but + validations
      * @param location
      */
-    function placeMarker(location) {
-      if (factory.addressParsed || factory.place == null) {
+    function addAddressMarker(location) {
+      if (factory.place == null) {
         messageHandler.showError('Please make a search before creating marker.');
         return;
       }
@@ -330,6 +320,9 @@ angular.module('processAdminApp')
     }
 
     let circleObj = [];
+    /**
+     * display price circles
+     */
     factory.createCircles = function () {
       if (factory.circlesVisible) {
         factory.circlesVisible = false;
@@ -338,7 +331,6 @@ angular.module('processAdminApp')
         });
 
       } else {
-
         factory.circlesVisible = true;
         factory.circles.forEach(function (item) {
           let priceCircle = new google.maps.Circle({
@@ -360,19 +352,22 @@ angular.module('processAdminApp')
     // require to have the endpoint address
     factory.calculateDistancePrice = function () {
       let deferred = $q.defer();
-      if (!validateAHFactory()) {
-        deferred.reject({err: 'invalid Address Handler'})
-      }
-      factory.distancePrice = 0;
-      factory.distance = 0;
-      googleMapsDirections.calculateDistancePrice(factory.tersusLatLng, factory.address, distanceInfo).then((result) => {
-        factory.distancePrice = result.distancePrice;
-        factory.distance = result.distance;
-        deferred.resolve();
+      asyncInitialization().then(()=>{
+        factory.distancePrice = 0;
+        factory.distance = 0;
+        googleMapsDirections.calculateDistancePrice(factory.tersusLatLng, factory.address, distanceInfo).then((result) => {
+          factory.distancePrice = result.distancePrice;
+          factory.distance = result.distance;
+          deferred.resolve();
+        });
       });
       return deferred.promise;
     };
 
+    /**
+     * calculateDistancePrice entering address
+     * @param address
+     */
     factory.calculateDistancePriceByAddress = function (address) {
       factory.address = address;
       return factory.calculateDistancePrice();
@@ -409,6 +404,13 @@ angular.module('processAdminApp')
       }
 
     };
+
+    function initFactory() {
+      factory.resetValues();
+      factory.setStore(appContext.appContextObject.store);
+    }
+    initFactory();
+
 
     return factory;
   });

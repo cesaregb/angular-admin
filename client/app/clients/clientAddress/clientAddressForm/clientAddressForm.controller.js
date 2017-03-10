@@ -23,6 +23,7 @@
       t.place = null;
       t.address = $stateParams.address;
       t.factoryServices = factoryServices;
+      t.AddressHandler.componentContainer = 'mapContainer';
 
       if (t.client == null) { // redirect
         t.$state.go('client.all', null, { reload: true });

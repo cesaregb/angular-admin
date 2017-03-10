@@ -9,65 +9,35 @@ angular.module('processAdminApp')
         taskAction: '&taskAction'
       },
       link: function (scope, element, attrs) {
-
+        scope.orderFinished = false;
         orderTaskInfo.registerObserverCallback(parseOrder);
-        //service now in control of updating foo
 
+        /**
+         * entrypoint for observable.
+         */
         function parseOrder(){
-
+          // clean sections
+          scope.sections = [];
           let nextTask = selectNextTask( orderTaskInfo.order.orderTasks );
           // if is "Servicio para ordenes" service...
           if (!Boolean(nextTask)){
-            // no more task in order = Order finished
-            $log.info('[Order Info] : 0');
+            scope.orderFinished = true;
           } else if (Boolean(nextTask) && nextTask.idTask !== 1){
-            // init scope with order task
-            $log.info('[Order Info] : 1');
+            // init scope for Order
             initScope(1);
           } else {
             if ( areServicesEnded() ){
-              $log.info('[Order Info] : 2');
-              // services completed, finish order tasks
-
+              // Services completed, finish the order service auth
+              let actionInfo = {
+                task: nextTask.task,
+                action: 2
+              };
+              scope.taskAction({actionInfo: actionInfo});
             }else{
-              // get services next tasks
-              $log.info('[Order Info] : 3');
+              // init scope for services
               initScope(2);
             }
-
           }
-        }
-
-        function processServiceTasks(){
-          // Service Information
-          // there are possible multiple services...
-          orderTaskInfo.order.services.forEach(function (service) {
-            let nextTask = selectNextTask( service.serviceTasks );
-            let ended = getEndedIfApplicable(nextTask, service.serviceTasks);
-            let obj = {
-              title: service.name,
-              nextTask: nextTask,
-              ended: ended,
-              tasks: service.serviceTasks
-            };
-            scope.taskArray.push(obj);
-            scope.expandedElementArray.push(true);
-          });
-        }
-
-        function processOrderTasks(){
-          // Order information
-          scope.title = 'Orden';
-          let nextTask = selectNextTask( orderTaskInfo.order.orderTasks );
-          let ended = getEndedIfApplicable(nextTask, orderTaskInfo.order.orderTasks);
-          let obj = {
-            title: orderTaskInfo.order.orderType,
-            nextTask: nextTask,
-            ended: ended,
-            tasks: orderTaskInfo.order.orderTasks
-          };
-          scope.expandedElementArray.push(true);
-          scope.taskArray.push(obj);
         }
 
         function getEndedIfApplicable(nextTask, taskArray){
@@ -78,6 +48,12 @@ angular.module('processAdminApp')
           return ended;
         }
 
+        /**
+         * Init the scope for the directive
+         * 1 = order
+         * 2 = services
+         * @param type
+         */
         function initScope( type ){
           scope.sections = [];
 
@@ -92,17 +68,11 @@ angular.module('processAdminApp')
             };
             scope.sections.push(obj);
           } else {
-            $log.info('[initScope] orderTaskInfo.order.services: ' + orderTaskInfo.order.services.length);
-
             // Service Information
             // there are possible multiple services...
             orderTaskInfo.order.services.forEach( (service) => {
-
               let nextTask = selectNextTask( service.serviceTasks );
               let ended = getEndedIfApplicable(nextTask, service.serviceTasks);
-
-              $log.info('[initScope] nextTask: ' + JSON.stringify(nextTask, null, 2));
-
               let obj = {
                 title: service.name,
                 nextTask: nextTask,
@@ -113,7 +83,6 @@ angular.module('processAdminApp')
 
             });
           }
-          $log.info('[initScope] scope.sections: ' + JSON.stringify(scope.sections, null, 2));
         }
 
         /**

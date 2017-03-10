@@ -18,7 +18,6 @@ angular.module('processAdminApp')
       });
     };
 
-
     factory.order = {
       client: '',
       orderType: '',
@@ -28,16 +27,12 @@ angular.module('processAdminApp')
 
     factory.setOrder = function (order) {
       order.orderTasks = sortTasks(order.orderTasks);
+      order.services = _.sortBy(order.services, (service)=>{return service.idService;});
       order.services.forEach( (service) => {
         service.serviceTasks = sortTasks(service.serviceTasks);
       });
-
-      $log.info('[after order] : ');
       factory.order = order;
-      // TODO validate tasks are sorted correctly ...
-
       notifyObservers();
-      $log.info('[after notify] : ');
     };
 
     function sortTasks(taskArray){

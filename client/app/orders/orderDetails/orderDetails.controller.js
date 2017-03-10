@@ -13,9 +13,7 @@
       this._ = _;
       this.messageHandler = messageHandler;
       this.store = constants.store;
-      this.storeInfo = null;
       this.appContext = appContext;
-      this.storeInfo = this.appContext.appContextObject.store;
       this.orderTaskInfo = orderTaskInfo;
     };
 
@@ -32,7 +30,6 @@
     loadOrder(idOrder) {
       let t = this;
       this.order = {};
-      this.order.idOrder = idOrder;
       this.client = '';
       this.orderType = '';
       if (Boolean(this.$stateParams.order)) {
@@ -49,8 +46,10 @@
           client: result.clientName,
           orderType: result.orderTypeName,
           orderTasks: result.orderTasks,
-          services: result.services
+          services: result.services,
+          idOrder: idOrder
         };
+        // t.$log.info('[init] t.order: ' + JSON.stringify(t.order, null, 2));
         t.orderTaskInfo.setOrder(t.order);
       }).catch( (err) => {
         t.$log.info('[err] err: ' + JSON.stringify(err, null, 2));
