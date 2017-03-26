@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .factory('orderTaskInfo', function () {
+  .factory('orderTaskInfo', function ($log, _) {
     let factory = {};
 
     var observerCallbacks = [];
@@ -18,7 +18,6 @@ angular.module('processAdminApp')
       });
     };
 
-
     factory.order = {
       client: '',
       orderType: '',
@@ -27,9 +26,20 @@ angular.module('processAdminApp')
     };
 
     factory.setOrder = function (order) {
+      order.orderTasks = sortTasks(order.orderTasks);
+      order.services = _.sortBy(order.services, (service)=>{return service.idService;});
+      order.services.forEach( (service) => {
+        service.serviceTasks = sortTasks(service.serviceTasks);
+      });
       factory.order = order;
       notifyObservers();
     };
+
+    function sortTasks(taskArray){
+      return _.sortBy(taskArray, function (itm) {
+        return itm.sortingOrder;
+      });
+    }
 
     return factory;
   });

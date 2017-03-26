@@ -1,224 +1,238 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <base href="/">
-    <title>Tersus Lavanderia</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(client) app/vendor.css -->
-      <!-- bower:css -->
-      <link rel="stylesheet" href="bower_components/Angular-Notys/angular-notys.css" />
-      <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
-      <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
-      <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.css" />
-      <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css({.tmp,client}) app/app.css -->
-      <link rel="stylesheet" href="app/app.css">
-      <!-- injector:css -->
-      <!-- endinjector -->
-    <!-- endbuild -->
-  </head>
-  <body ng-app="processAdminApp">
-    <!--[if lt IE 7]>
-      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <base href="/">
+  <title>Tersus Lavanderia</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(client) app/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/Angular-Notys/angular-notys.css" />
+  <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
+  <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+  <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css({.tmp,client}) app/app.css -->
+  <link rel="stylesheet" href="app/app.css">
+  <!-- injector:css -->
+  <!-- endinjector -->
+  <!-- endbuild -->
+</head>
+<body ng-app="processAdminApp">
+<!--[if lt IE 7]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+  your browser</a> to improve your experience.</p>
+<![endif]-->
 
-    <!-- Add your site or application content here -->
-    <navbar></navbar>
-    <div noty-container></div>
-    <div ui-view=""></div>
-    <footer></footer>
+<!-- Add your site or application content here -->
+<navbar></navbar>
+<div noty-container></div>
+<div ui-view=""></div>
+<footer></footer>
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-      ga('create', 'UA-XXXXX-X');
-      ga('send', 'pageview');
-    </script>
+  ga('create', 'UA-XXXXX-X');
+  ga('send', 'pageview');
+</script>
 
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkf62CueLleu2_yaZqfL_lxKvTQm-srS0&libraries=geometry,places" async defer></script>
-    <!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>-->
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCkf62CueLleu2_yaZqfL_lxKvTQm-srS0&libraries=geometry,places"
+        async defer></script>
 
-    <!--[if lt IE 9]>
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.min.js"></script>
-    <![endif]-->
-    <!-- build:js({client,node_modules}) app/vendor.js -->
-      <!-- bower:js -->
-      <script src="bower_components/jquery/dist/jquery.js"></script>
-      <script src="bower_components/angular/angular.js"></script>
-      <script src="bower_components/angular-resource/angular-resource.js"></script>
-      <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-      <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-      <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-      <script src="bower_components/lodash/dist/lodash.compat.js"></script>
-      <script src="bower_components/angular-socket-io/socket.js"></script>
-      <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-      <script src="bower_components/angular-validation-match/dist/angular-validation-match.min.js"></script>
-      <script src="bower_components/angular-animate/angular-animate.js"></script>
-      <script src="bower_components/Angular-Notys/angular-notys.js"></script>
-      <script src="bower_components/api-check/dist/api-check.js"></script>
-      <script src="bower_components/angular-formly/dist/formly.js"></script>
-      <script src="bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js"></script>
-      <script src="bower_components/angular-confirm-modal/angular-confirm.js"></script>
-      <script src="bower_components/angular-ui-select/dist/select.js"></script>
-      <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
-      <script src="bower_components/ng-table/dist/ng-table.js"></script>
-      <script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
-      <script src="bower_components/underscore/underscore.js"></script>
-      <script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
-      <script src="bower_components/angular-base64/angular-base64.js"></script>
-      <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
-      <script src="bower_components/jquery-ui/jquery-ui.js"></script>
-      <script src="bower_components/angular-ui-sortable/sortable.js"></script>
-      <!-- endbower -->
-      <!--<script src="socket.io-client/dist/socket.io.js"></script>-->
-      <script src="socket.io-client/socket.io.js"></script>
-    <!-- endbuild -->
-    <!-- build:js(.tmp) app/app.js -->
-      <script src="app/app.js"></script>
-      <!-- injector:js -->
-      <script src="app/admin/admin.module.js"></script>
-      <script src="components/auth/auth.module.js"></script>
-      <script src="components/util/util.module.js"></script>
-      <script src="app/products/product/product.controller.js"></script>
-      <script src="app/admin/admin.controller.js"></script>
-      <script src="app/account/account.js"></script>
-      <script src="app/admin/admin.router.js"></script>
-      <script src="app/app.constant.js"></script>
-      <script src="app/appContext/appContext.service.js"></script>
-      <script src="app/assets/AssetMainController/AssetMainController.controller.js"></script>
-      <script src="app/assets/asset.js"></script>
-      <script src="app/assets/asset/asset.controller.js"></script>
-      <script src="app/assets/asset/assetModal/assetModal.controller.js"></script>
-      <script src="app/assets/assetMenu/assetMenu.controller.js"></script>
-      <script src="app/assets/assetType/assetType.controller.js"></script>
-      <script src="app/assets/assetType/assetTypeModal/assetTypeModal.controller.js"></script>
-      <script src="app/clients/client.js"></script>
-      <script src="app/clients/client/client.controller.js"></script>
-      <script src="app/clients/clientAddress/clientAddress.controller.js"></script>
-      <script src="app/clients/clientAddress/clientAddressForm/clientAddressForm.controller.js"></script>
-      <script src="app/clients/clientAddress/clientAddressModal/clientAddressModal.controller.js"></script>
-      <script src="app/clients/clientBag/clientBag.controller.js"></script>
-      <script src="app/clients/clientBag/clientBagModal/clientBagModal.controller.js"></script>
-      <script src="app/clients/clientEdit/clientEdit.controller.js"></script>
-      <script src="app/clients/clientMainController/clientMainController.controller.js"></script>
-      <script src="app/clients/clientPaymentInfo/clientPaymentInfo.controller.js"></script>
-      <script src="app/clients/clientPaymentInfo/clientPaymentInfoModal/clientPhoneModal.controller.js"></script>
-      <script src="app/clients/clientSearchModal/clientSearchModal.controller.js"></script>
-      <script src="app/constants/constants.service.js"></script>
-      <script src="app/directives/orderServiceTasks/orderServiceTasks.directive.js"></script>
-      <script src="app/directives/taskDetails/taskDetails.directive.js"></script>
-      <script src="app/directives/taskDetails/taskDetailsController.controller.js"></script>
-      <script src="app/employees/EmployeeMainController/EmployeeMainController.controller.js"></script>
-      <script src="app/employees/employee.js"></script>
-      <script src="app/employees/employee/employee.controller.js"></script>
-      <script src="app/employees/employee/employeeModal/employeeModal.controller.js"></script>
-      <script src="app/employees/employeeMenu/employeeMenu.controller.js"></script>
-      <script src="app/employees/employeeType/employeeType.controller.js"></script>
-      <script src="app/employees/employeeType/employeeTypeModal/employeeTypeModal.controller.js"></script>
-      <script src="app/http/factories/AddressHandler/AddressHandler.service.js"></script>
-      <script src="app/http/factories/factoryCommon/factoryCommon.service.js"></script>
-      <script src="app/http/factories/factoryServices/factoryServices.service.js"></script>
-      <script src="app/http/factories/factoryUtils/factoryUtils.service.js"></script>
-      <script src="app/http/factories/formlyForms/formlyForms.service.js"></script>
-      <script src="app/http/factories/googleMapsDirections/googleMapsDirections.service.js"></script>
-      <script src="app/http/factories/localServices/localServices.service.js"></script>
-      <script src="app/http/factories/messageHandler/messageHandler.service.js"></script>
-      <script src="app/http/services/serviceClients/serviceClients.service.js"></script>
-      <script src="app/main/main.controller.js"></script>
-      <script src="app/main/main.js"></script>
-      <script src="app/orders/OrderMainController/OrderMainController.controller.js"></script>
-      <script src="app/orders/formOrder/formOrder.controller.js"></script>
-      <script src="app/orders/formOrder/selectService/selectService.controller.js"></script>
-      <script src="app/orders/orderDetails/orderDetails.controller.js"></script>
-      <script src="app/orders/orderDetails/orderTaskInfo/orderTaskInfo.service.js"></script>
-      <script src="app/orders/orderMenu/orderMenu.controller.js"></script>
-      <script src="app/orders/orderType/manageOrderServiceTypeModal/manageOrderServiceTypeModal.controller.js"></script>
-      <script src="app/orders/orderType/orderType.controller.js"></script>
-      <script src="app/orders/orderTypeForm/orderTypeForm.controller.js"></script>
-      <script src="app/orders/orders.js"></script>
-      <script src="app/orders/ordersList/ordersList.controller.js"></script>
-      <script src="app/products/ProductMainController/ProductMainController.controller.js"></script>
-      <script src="app/products/manageProductTypeModal/manageProductTypeModal.controller.js"></script>
-      <script src="app/products/product.js"></script>
-      <script src="app/account/login/login.controller.js"></script>
-      <script src="app/products/product/productModal/productModal.controller.js"></script>
-      <script src="app/products/productMenu/productMenu.controller.js"></script>
-      <script src="app/products/productSearchModal/productSearchModal.controller.js"></script>
-      <script src="app/products/productType/productType.controller.js"></script>
-      <script src="app/products/productType/productTypeModal/productTypeModal.controller.js"></script>
-      <script src="app/propsFilter/propsFilter.filter.js"></script>
-      <script src="app/routes/RoutesMainController/RoutesMainController.controller.js"></script>
-      <script src="app/routes/calendarRoute/calendarRoute.controller.js"></script>
-      <script src="app/routes/calendarRoute/calendarRouteModal/calendarRouteModal.controller.js"></script>
-      <script src="app/routes/route/routes.controller.js"></script>
-      <script src="app/routes/routes.js"></script>
-      <script src="app/routes/routesAll/routesAll.controller.js"></script>
-      <script src="app/routes/stops/stopForm/stopForm.controller.js"></script>
-      <script src="app/routes/stops/stopsAll/stopsAll.controller.js"></script>
-      <script src="app/services/ServiceMainController/ServiceMainController.controller.js"></script>
-      <script src="app/services/addServiceModal/addServiceModal.controller.js"></script>
-      <script src="app/services/service.js"></script>
-      <script src="app/services/serviceCategory/serviceCategory.controller.js"></script>
-      <script src="app/services/serviceCategory/serviceCategoryModal/serviceCategoryModal.controller.js"></script>
-      <script src="app/services/serviceMenu/serviceMenu.controller.js"></script>
-      <script src="app/services/serviceType/serviceType.controller.js"></script>
-      <script src="app/services/serviceType/serviceTypeModal/serviceTypeModal.controller.js"></script>
-      <script src="app/services/serviceTypeForm/ServiceCategoryDD.controller.js"></script>
-      <script src="app/services/serviceTypeForm/serviceTypeForm.controller.js"></script>
-      <script src="app/services/viewServiceModal/viewServiceModal.controller.js"></script>
-      <script src="app/specs/SpecMainController/SpecMainController.controller.js"></script>
-      <script src="app/specs/manageSpecsModal/manageSpecsModal.controller.js"></script>
-      <script src="app/specs/spec.js"></script>
-      <script src="app/specs/spec/spec.controller.js"></script>
-      <script src="app/specs/spec/specModal/specModal.controller.js"></script>
-      <script src="app/specs/specMenu/specMenu.controller.js"></script>
-      <script src="app/specs/specsValue/specsValue.controller.js"></script>
-      <script src="app/specs/specsValue/specsValueModal/specsValueModal.controller.js"></script>
-      <script src="app/supplies/SupplyMainController/SupplyMainController.controller.js"></script>
-      <script src="app/supplies/supply.js"></script>
-      <script src="app/supplies/supply/supply.controller.js"></script>
-      <script src="app/supplies/supply/supplyModal/supplyModal.controller.js"></script>
-      <script src="app/supplies/supplyMenu/supplyMenu.controller.js"></script>
-      <script src="app/supplies/supplyType/supplyType.controller.js"></script>
-      <script src="app/supplies/supplyType/supplyTypeModal/supplyTypeModal.controller.js"></script>
-      <script src="app/tasks/TasksMainController/TaskMainController.controller.js"></script>
-      <script src="app/tasks/manageTasksModal/manageTasksModal.controller.js"></script>
-      <script src="app/tasks/task.js"></script>
-      <script src="app/tasks/task/task.controller.js"></script>
-      <script src="app/tasks/task/taskModal/taskModal.controller.js"></script>
-      <script src="app/tasks/taskMenu/taskMenu.controller.js"></script>
-      <script src="app/tasks/taskType/taskType.controller.js"></script>
-      <script src="app/tasks/taskType/taskTypeModal/taskTypeModal.controller.js"></script>
-      <script src="app/utils/underscore/underscore.service.js"></script>
-      <script src="app/account/settings/settings.controller.js"></script>
-      <script src="components/auth/auth.service.js"></script>
-      <script src="components/auth/interceptor.service.js"></script>
-      <script src="components/auth/router.decorator.js"></script>
-      <script src="components/auth/user.service.js"></script>
-      <script src="components/footer/footer.directive.js"></script>
-      <script src="components/modal/modal.service.js"></script>
-      <script src="components/mongoose-error/mongoose-error.directive.js"></script>
-      <script src="components/navbar/navbar.controller.js"></script>
-      <script src="components/navbar/navbar.directive.js"></script>
-      <script src="components/oauth-buttons/oauth-buttons.controller.js"></script>
-      <script src="components/oauth-buttons/oauth-buttons.directive.js"></script>
-      <script src="components/socket/socket.service.js"></script>
-      <script src="app/account/signup/signup.controller.js"></script>
-      <script src="components/util/util.service.js"></script>
-      <!-- endinjector -->
-    <!-- endbuild -->
-  </body>
+<!--[if lt IE 9]>
+<script src="bower_components/es5-shim/es5-shim.js"></script>
+<script src="bower_components/json3/lib/json3.min.js"></script>
+<![endif]-->
+<!-- build:js({client,node_modules}) app/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/lodash/dist/lodash.compat.js"></script>
+<script src="bower_components/angular-socket-io/socket.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-validation-match/dist/angular-validation-match.min.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/Angular-Notys/angular-notys.js"></script>
+<script src="bower_components/api-check/dist/api-check.js"></script>
+<script src="bower_components/angular-formly/dist/formly.js"></script>
+<script src="bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js"></script>
+<script src="bower_components/angular-confirm-modal/angular-confirm.js"></script>
+<script src="bower_components/angular-ui-select/dist/select.js"></script>
+<script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+<script src="bower_components/ng-table/dist/ng-table.js"></script>
+<script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
+<script src="bower_components/underscore/underscore.js"></script>
+<script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
+<script src="bower_components/angular-base64/angular-base64.js"></script>
+<script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+<script src="bower_components/jquery-ui/jquery-ui.js"></script>
+<script src="bower_components/angular-ui-sortable/sortable.js"></script>
+<!-- endbower -->
+<!--<script src="socket.io-client/dist/socket.io.js"></script>-->
+<script src="socket.io-client/socket.io.js"></script>
+<!-- endbuild -->
+<!-- build:js(.tmp) app/app.js -->
+<script src="app/app.js"></script>
+<!-- injector:js -->
+<script src="app/admin/admin.module.js"></script>
+<script src="components/auth/auth.module.js"></script>
+<script src="components/util/util.module.js"></script>
+<script src="app/products/product/product.controller.js"></script>
+<script src="app/admin/admin.controller.js"></script>
+<script src="app/account/account.js"></script>
+<script src="app/admin/admin.router.js"></script>
+<script src="app/app.constant.js"></script>
+<script src="app/appContext/appContext.service.js"></script>
+<script src="app/assets/AssetMainController/AssetMainController.controller.js"></script>
+<script src="app/assets/asset.js"></script>
+<script src="app/assets/asset/asset.controller.js"></script>
+<script src="app/assets/asset/assetModal/assetModal.controller.js"></script>
+<script src="app/assets/assetMenu/assetMenu.controller.js"></script>
+<script src="app/assets/assetType/assetType.controller.js"></script>
+<script src="app/assets/assetType/assetTypeModal/assetTypeModal.controller.js"></script>
+<script src="app/clients/client.js"></script>
+<script src="app/clients/client/client.controller.js"></script>
+<script src="app/clients/clientAddress/clientAddress.controller.js"></script>
+<script src="app/clients/clientAddress/clientAddressForm/clientAddressForm.controller.js"></script>
+<script src="app/clients/clientAddress/clientAddressModal/clientAddressModal.controller.js"></script>
+<script src="app/clients/clientBag/clientBag.controller.js"></script>
+<script src="app/clients/clientBag/clientBagModal/clientBagModal.controller.js"></script>
+<script src="app/clients/clientEdit/clientEdit.controller.js"></script>
+<script src="app/clients/clientMainController/clientMainController.controller.js"></script>
+<script src="app/clients/clientPaymentInfo/clientPaymentInfo.controller.js"></script>
+<script src="app/clients/clientPaymentInfo/clientPaymentInfoModal/clientPhoneModal.controller.js"></script>
+<script src="app/clients/clientSearchModal/clientSearchModal.controller.js"></script>
+<script src="app/constants/constants.service.js"></script>
+<script src="app/directives/orderServiceTasks/orderServiceTasks.directive.js"></script>
+<script src="app/directives/taskDetails/taskDetails.directive.js"></script>
+<script src="app/directives/taskDetails/taskDetailsController.controller.js"></script>
+<script src="app/employees/EmployeeMainController/EmployeeMainController.controller.js"></script>
+<script src="app/employees/employee.js"></script>
+<script src="app/employees/employee/employee.controller.js"></script>
+<script src="app/employees/employee/employeeModal/employeeModal.controller.js"></script>
+<script src="app/employees/employeeMenu/employeeMenu.controller.js"></script>
+<script src="app/employees/employeeType/employeeType.controller.js"></script>
+<script src="app/employees/employeeType/employeeTypeModal/employeeTypeModal.controller.js"></script>
+<script src="app/http/factories/AddressHandler/AddressHandler.service.js"></script>
+<script src="app/http/factories/factoryCommon/factoryCommon.service.js"></script>
+<script src="app/http/factories/factoryServices/factoryServices.service.js"></script>
+<script src="app/http/factories/factoryUtils/factoryUtils.service.js"></script>
+<script src="app/http/factories/formlyForms/formlyForms.service.js"></script>
+<script src="app/http/factories/googleMapsDirections/googleMapsDirections.service.js"></script>
+<script src="app/http/factories/localServices/localServices.service.js"></script>
+<script src="app/http/factories/messageHandler/messageHandler.service.js"></script>
+<script src="app/http/services/serviceClients/serviceClients.service.js"></script>
+<script src="app/main/main.controller.js"></script>
+<script src="app/main/main.js"></script>
+<script src="app/orders/OrderMainController/OrderMainController.controller.js"></script>
+<script src="app/orders/formOrder/formOrder.controller.js"></script>
+<script src="app/orders/formOrder/selectService/selectService.controller.js"></script>
+<script src="app/orders/formOrder/viewServiceDetailsModal/viewServiceDetailsModal.controller.js"></script>
+<script src="app/orders/orderDetails/orderDetails.controller.js"></script>
+<script src="app/orders/orderDetails/orderTaskInfo/orderTaskInfo.service.js"></script>
+<script src="app/orders/orderMenu/orderMenu.controller.js"></script>
+<script src="app/orders/orderType/manageOrderServiceTypeModal/manageOrderServiceTypeModal.controller.js"></script>
+<script src="app/orders/orderType/orderType.controller.js"></script>
+<script src="app/orders/orderTypeForm/orderTypeForm.controller.js"></script>
+<script src="app/orders/orders.js"></script>
+<script src="app/orders/ordersList/ordersList.controller.js"></script>
+<script src="app/products/ProductMainController/ProductMainController.controller.js"></script>
+<script src="app/products/manageProductTypeModal/manageProductTypeModal.controller.js"></script>
+<script src="app/products/product.js"></script>
+<script src="app/account/login/login.controller.js"></script>
+<script src="app/products/product/productModal/productModal.controller.js"></script>
+<script src="app/products/productMenu/productMenu.controller.js"></script>
+<script src="app/products/productSearchModal/productSearchModal.controller.js"></script>
+<script src="app/products/productType/productType.controller.js"></script>
+<script src="app/products/productType/productTypeModal/productTypeModal.controller.js"></script>
+<script src="app/propsFilter/propsFilter.filter.js"></script>
+<script src="app/routes/RoutesMainController/RoutesMainController.controller.js"></script>
+<script src="app/routes/calendarRoute/calendarRoute.controller.js"></script>
+<script src="app/routes/calendarRoute/calendarRouteModal/calendarRouteModal.controller.js"></script>
+<script src="app/routes/route/routes.controller.js"></script>
+<script src="app/routes/routes.js"></script>
+<script src="app/routes/routesAll/routesAll.controller.js"></script>
+<script src="app/routes/stops/stopForm/stopForm.controller.js"></script>
+<script src="app/routes/stops/stopsAll/stopsAll.controller.js"></script>
+<script src="app/services/ServiceMainController/ServiceMainController.controller.js"></script>
+<script src="app/services/addServiceModal/addServiceModal.controller.js"></script>
+<script src="app/services/service.js"></script>
+<script src="app/services/serviceCategory/serviceCategory.controller.js"></script>
+<script src="app/services/serviceCategory/serviceCategoryModal/serviceCategoryModal.controller.js"></script>
+<script src="app/services/serviceMenu/serviceMenu.controller.js"></script>
+<script src="app/services/serviceType/serviceType.controller.js"></script>
+<script src="app/services/serviceType/serviceTypeModal/serviceTypeModal.controller.js"></script>
+<script src="app/services/serviceTypeForm/ServiceCategoryDD.controller.js"></script>
+<script src="app/services/serviceTypeForm/serviceTypeForm.controller.js"></script>
+<script src="app/services/viewServiceModal/viewServiceModal.controller.js"></script>
+<script src="app/specs/SpecMainController/SpecMainController.controller.js"></script>
+<script src="app/specs/manageSpecsModal/manageSpecsModal.controller.js"></script>
+<script src="app/specs/spec.js"></script>
+<script src="app/specs/spec/spec.controller.js"></script>
+<script src="app/specs/spec/specModal/specModal.controller.js"></script>
+<script src="app/specs/specMenu/specMenu.controller.js"></script>
+<script src="app/specs/specsValue/specsValue.controller.js"></script>
+<script src="app/specs/specsValue/specsValueModal/specsValueModal.controller.js"></script>
+<script src="app/supplies/SupplyMainController/SupplyMainController.controller.js"></script>
+<script src="app/supplies/supply.js"></script>
+<script src="app/supplies/supply/supply.controller.js"></script>
+<script src="app/supplies/supply/supplyModal/supplyModal.controller.js"></script>
+<script src="app/supplies/supplyMenu/supplyMenu.controller.js"></script>
+<script src="app/supplies/supplyType/supplyType.controller.js"></script>
+<script src="app/supplies/supplyType/supplyTypeModal/supplyTypeModal.controller.js"></script>
+<script src="app/tasks/TasksMainController/TaskMainController.controller.js"></script>
+<script src="app/tasks/manageTasksModal/manageTasksModal.controller.js"></script>
+<script src="app/tasks/task.js"></script>
+<script src="app/tasks/task/task.controller.js"></script>
+<script src="app/tasks/task/taskModal/taskModal.controller.js"></script>
+<script src="app/tasks/taskMenu/taskMenu.controller.js"></script>
+<script src="app/tasks/taskType/taskType.controller.js"></script>
+<script src="app/tasks/taskType/taskTypeModal/taskTypeModal.controller.js"></script>
+<script src="app/utils/underscore/underscore.service.js"></script>
+<script src="app/account/settings/settings.controller.js"></script>
+<script src="components/auth/auth.service.js"></script>
+<script src="components/auth/interceptor.service.js"></script>
+<script src="components/auth/router.decorator.js"></script>
+<script src="components/auth/user.service.js"></script>
+<script src="components/footer/footer.directive.js"></script>
+<script src="components/modal/modal.service.js"></script>
+<script src="components/mongoose-error/mongoose-error.directive.js"></script>
+<script src="components/navbar/navbar.controller.js"></script>
+<script src="components/navbar/navbar.directive.js"></script>
+<script src="components/oauth-buttons/oauth-buttons.controller.js"></script>
+<script src="components/oauth-buttons/oauth-buttons.directive.js"></script>
+<script src="components/socket/socket.service.js"></script>
+<script src="app/account/signup/signup.controller.js"></script>
+<script src="components/util/util.service.js"></script>
+<!-- endinjector -->
+<!-- endbuild -->
+</body>
 </html>

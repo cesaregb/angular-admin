@@ -34,8 +34,12 @@
         deferred.resolve(filter);
       });
       return deferred.promise;
-    }
+    };
 
+
+    getInfo() {
+      this.tableParams.reload();
+    }
 
     openNewModal() {
       this.openModal({});

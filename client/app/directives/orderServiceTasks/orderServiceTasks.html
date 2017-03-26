@@ -1,19 +1,20 @@
 <!--******** Orders information...  -->
 <div class="panel panel-default">
-  <div class="panel-heading"> Informacion de {{title}}</div>
+  <div class="panel-heading"> Informacion de Orden</div>
   <div class="panel-body">
 
-    <div class="btn-group" role="group">
-      <select class="form-control"
-              ng-options="task as task.title for task in taskArray"
-              ng-model="selectedTask"
-              ng-change="changeSubsection($index)"></select>
-    </div>
-    <hr>
-    <div uib-collapse="expandedElementArray[$index]" ng-repeat="task in taskArray">
+    <div class="row col-md-12" ng-repeat="section in sections">
+      <h></h>
+      <h4>{{section.title}}</h4>
       <task-details
-        context-obj="task"
+        context-obj="section"
         task-action="taskAction"></task-details>
+
+      <div class="row col-md-12" ng-show="orderFinished">
+        <h2>Orden terminada!</h2>
+      </div>
+      <br>
+      <hr>
     </div>
 
   </div>
