@@ -75,9 +75,6 @@ angular.module('processAdminApp')
       distanceInfo: {
         uri: '/distance-info'
       },
-      appOrder: {
-        uri: '/app-orders'
-      },
       products: {
         uri: '/products'
       },
@@ -135,7 +132,6 @@ angular.module('processAdminApp')
     };
 
     // End General
-
     factory.getResourcesForTable = function (idUri, params) {
       var deferred = $q.defer();
       this.getResources(idUri).then(function (result) {
@@ -195,7 +191,7 @@ angular.module('processAdminApp')
     };
 
     factory.getServiceOrderDetails = function () {
-      let uri = uris.appOrder.uri + '/orderTypes';
+      let uri = uris.orderType.uri + '/pre-order';
       return factoryCommon.get(uri);
     };
 
@@ -205,7 +201,7 @@ angular.module('processAdminApp')
     };
 
     factory.saveOrder = function (order) {
-      let uri = uris.appOrder.uri;
+      let uri = uris.orderType.uri + '/create-order';
       return factoryCommon.post(order, uri);
     };
 

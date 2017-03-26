@@ -5,7 +5,7 @@
 
     constructor($scope, $stateParams, $timeout, $state, noty, AddressHandler, $log,
                 $confirm, factoryServices, formlyForms, $q, appContext) {
-      var t = this;
+      let t = this;
       // form options, to be updated if the form is new
       t.formOptions = {};
       t.$q = $q;
@@ -16,19 +16,15 @@
       t.$log = $log;
       t.$scope = $scope;
       t.AddressHandler = AddressHandler;
-      t.AddressHandler.setStore(appContext.appContextObject.store);
-      t.AddressHandler.resetValues();
-
       t.noty = noty;
       t.addressFields = formlyForms.addressFields;
-
-      // get information from "context"
       t.client = $stateParams.client;
       t.$state = $state;
       t.place = null;
-
       t.address = $stateParams.address;
       t.factoryServices = factoryServices;
+      t.AddressHandler.componentContainer = 'mapContainer';
+
       if (t.client == null) { // redirect
         t.$state.go('client.all', null, { reload: true });
       } else {
@@ -38,6 +34,7 @@
         t.showMap = false;
         if (t.address != null && t.address.address != null) {
           t.title = "Direccion Existente";
+          t.calculateDistancePrice();
         }else{
           t.showMap = true;
           // t.formOptions.formState = { disabled: true };
@@ -46,25 +43,11 @@
           t.updateFormStatus();
         }
         t.title += " Client: " + t.client.name;
-
       }
-
-      t.getAsyncDep();
-    }
-
-    getAsyncDep(){
-      var t = this;
-      let promises = [t.factoryServices.getResources('distanceInfo'), t.factoryServices.getResources('stores')];
-      t.$q.all(promises).then((values) => {
-        t.distanceInfo = values[0];
-        t.stores = values[1];
-        // TODO get Correct Store.
-        t.calculateDistancePrice();
-      });
     }
 
     fnShowMap(){
-      var t = this;
+      let t = this;
       if (t.showMap){
         t.AddressHandler.initMap(t.address);
       }else{
@@ -102,18 +85,11 @@
     calculateDistancePrice(){
       let t = this;
       if(Boolean(t.address) && t.address.idAddress > 0){
-        // probably repeated, but we can be here without init.
-        t.AddressHandler.setAddress(t.address);
-        t.distance = this.AddressHandler.calculateDistancePrice();
-        if (Boolean(this.distanceInfo)){
-          // the more expensive or.. other..
-          t.distancePrice = this.distanceInfo[0].price;
-          this.distanceInfo.forEach(function(item){
-            if (t.distance < item.distance ){
-              t.distancePrice = item.price;
-            }
-          });
-        }
+        t.AddressHandler.initMap(t.address);
+        this.AddressHandler.calculateDistancePrice().then(()=>{
+          t.distance = this.AddressHandler.distance;
+          t.distancePrice = this.AddressHandler.distancePrice;
+        });
       }
     }
 
