@@ -44,6 +44,8 @@
         :[{date: new Date(), address: null, price:0}, {date: new Date(), address: null, price:0}];
       this.order.services = (Boolean(this.order.services))?this.order.services:[];
       this.order.client = (Boolean(this.order.client))?this.order.client:{};
+      this.order.totalTransport = (Boolean(this.order.totalTransport))?this.order.totalTransport:0;
+      this.order.discount = (Boolean(this.order.discount))?this.order.discount:0;
       _this.validateOrder();
       _this.calculateTotal(); // calculate total in case we are comming from services...
 
@@ -63,9 +65,9 @@
     }
 
     calculateTotal() {
-      let total = this._.reduce(this.order.transport, function(memo, tObj){ return memo + tObj.price; }, 0);
+      this.order.totalTransport = this._.reduce(this.order.transport, function(memo, tObj){ return memo + tObj.price; }, 0);
       this.order.totalServices = this._.reduce(this.order.services, function(memo, sObj){return memo + sObj.totalPrice; } , 0);
-      this.order.total = this.order.totalServices + total;
+      this.order.total = this.order.totalServices + this.order.totalTransport - this.order.discount;
     }
 
     openClientSearch() {
@@ -151,6 +153,7 @@
 
       orderObject.idClient = this.order.client.idClient;
       orderObject.total = this.order.total;
+      orderObject.discount = this.order.discount;
       orderObject.totalServices = this._.reduce(this.order.services, function(memo, sObj){return memo + sObj.totalPrice; } , 0);
 
       // parse transport to remove address...
@@ -221,6 +224,10 @@
 
     back() {
       this.$state.go('orders.ordersList', {status: 'open'}, {reload: true});
+    }
+
+    viewClient(){
+      this.$log.info('[viewClient]');
     }
 
   }
