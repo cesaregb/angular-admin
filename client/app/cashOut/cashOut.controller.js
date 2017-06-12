@@ -1,8 +1,7 @@
 'use strict';
-
 (function () {
 
-  class OrdersListComponent {
+  class CashOutComponent {
     orderTypes = [];
     includeFinished = false;
 
@@ -20,32 +19,13 @@
       var _this = this;
       this.tableParams = new this.NgTableParams({}, {
         getData: function (params) {
-          return _this.factoryServices.getResourcesForTableSpecific(
-            _this.getTableFilter(),
-            params);
+          return _this.factoryServices.getResourcesForTableSpecific(_this.getTableFilter(), params);
         }
       });
     }
 
-    createFilter = function (url) {
-      var deferred = this.$q.defer();
-
-      var filter = [];
-      this.factoryServices.getResources('orderType').then(function (response) {
-        response.forEach(function (item) {
-          filter.push({title: item.name, id: item.name});
-        });
-        deferred.resolve(filter);
-      });
-      return deferred.promise;
-    };
-
     getTableFilter() {
-      if (!this.includeFinished) {
-        return this.factoryServices.getActiveOrders();
-      } else {
-        return this.factoryServices.getResources('orders');
-      }
+      return this.factoryServices.getNextCashOut();
     }
 
     refreshTable() {
@@ -73,7 +53,7 @@
         });
     }
 
-    payOrder(order){
+    payOrder(order) {
       this.$log.info('[payOrder] order: ' + JSON.stringify(order, null, 2));
     }
 
@@ -83,9 +63,9 @@
   }
 
   angular.module('processAdminApp')
-    .component('ordersList', {
-      templateUrl: 'app/orders/ordersList/ordersList.html',
-      controller: OrdersListComponent,
+    .component('cashOut', {
+      templateUrl: 'app/cashOut/cashOut.html',
+      controller: CashOutComponent,
       controllerAs: '$cn'
     });
 

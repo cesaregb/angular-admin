@@ -1,0 +1,48 @@
+<div id="page-wrapper">
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Ordenes para el corte de caja
+        </div>
+        <div class="panel-body">
+          <div class="dataTable_wrapper">
+            <div id="viewItemsTable" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div loading-container="$cn.tableParams.settings().$loading">
+                    <table ng-table="$cn.tableParams"
+                           class="table table-condensed table-bordered table-striped">
+                      <tr ng-repeat="row in $data track by row.idOrder">
+                        <!-- <td data-title="'Client'" filter="{name: 'text'}" sortable="'client.name'"> -->
+                        <td data-title="'Numero de Orden'">
+                          <a href="" ui-sref="orders.orderDetails({order: row})">
+                            {{row.idOrder}}
+                          </a>
+                        </td>
+                        <td data-title="'Cliente'" sortable="'clientName'">
+                          {{row.clientName}}
+                        </td>
+                        <td data-title="'Tipo Orden'"
+                            filter-data="$cn.createFilter()">{{row.orderTypeName}}
+                        </td>
+                        <td data-title="'Precio'">{{row.total | currency}}</td>
+                        <td data-title="'Estado'">
+                          <span ng-show="row.paymentStatus == 0" class="alert-danger">Pendiente</span>
+                          <span ng-show="row.paymentStatus == 1">Pagado</span>
+                        </td>
+                      </tr>
+                    </table>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

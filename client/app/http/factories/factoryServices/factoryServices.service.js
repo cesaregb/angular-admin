@@ -104,6 +104,12 @@ angular.module('processAdminApp')
       },
       assets: {
         uri: '/assets'
+      },
+      priceAdjustments: {
+        uri: '/priceAdjustments'
+      },
+      cashOut: {
+        uri: '/cash-out'
       }
     };
     factory.uris = uris;
@@ -151,17 +157,17 @@ angular.module('processAdminApp')
     };
 
     //
-    factory.getResourcesForTableSpecific = function (functionPromice, params) {
-      var deferred = $q.defer();
-      functionPromice.then(function (result) {
-        var filterData = params.filter() ?
+    factory.getResourcesForTableSpecific = function (functionPromise, params) {
+      let deferred = $q.defer();
+      functionPromise.then(function (result) {
+        let filterData = params.filter() ?
           $filter('filter')(result, params.filter()) :
           result;
-        var orderedData = params.sorting() ?
+        let orderedData = params.sorting() ?
           $filter('orderBy')(filterData, params.orderBy()) :
           filterData;
 
-        var sortOrdResult = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count())
+        let sortOrdResult = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
         deferred.resolve(sortOrdResult);
       }, function (err) {
         deferred.reject(err);
@@ -266,6 +272,11 @@ angular.module('processAdminApp')
     factory.taskAction = function(idOrder, action, task){
       let uri  = uris.tasks.uri + '/idOrder/'+idOrder+'/action/' + action;
       return factoryCommon.put(task, uri);
+    };
+
+    factory.getNextCashOut = function(){
+      let uri = uris.orders.uri + '/forCashOut';
+      return factoryCommon.get(uri);
     };
 
     return factory;

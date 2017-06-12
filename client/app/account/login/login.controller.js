@@ -19,33 +19,19 @@ class LoginController {
 
   login(form) {
     this.submitted = true;
-    var t = this;
+    const t = this;
     if (form.$valid) {
-
       this.Auth.login({
         email: this.user.email,
         password: this.user.password
-      })
-      .then((result) => {
-        this.$log.info('[abc] result: ' + result);
-
-        let reloadFn = function(){
-          // $state.go(referrer);
-          // $location.path('/login');
-          // this.$state.go('main', null , { reload: true });
-          t.$location.path('/');
-          t.$window.location.reload();
-        };
-
-        // Logged in, redirect to home
-        var redirect = true;
-        if ( redirect ){
-          reloadFn();
-        }
-
+      }).then((result) => {
+        // $state.go(referrer);
+        // $location.path('/login');
         // this.$state.go('main', null , { reload: true });
-      })
-      .catch(err => {
+        // TODO change page differently
+        t.$location.path('/');
+        t.$window.location.reload();
+      }).catch(err => {
         this.errors.other = err.message;
       });
     }

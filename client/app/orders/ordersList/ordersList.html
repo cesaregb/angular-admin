@@ -46,9 +46,13 @@
                         </td>
                         <td data-title="'Fecha'">{{row.pickUpDate | date : format : timezone}}</td>
                         <td data-title="'Cliente'" filter="{clientName: 'text'}" sortable="'clientName'">{{row.clientName}}</td>
-                        <td data-title="'% Completo'">{{row.completed}}</td>
+                        <td data-title="'% Completo'">{{row.completed | number}}</td>
                         <td data-title="'Tipo Orden'" filter="{ orderTypeName: 'select'}" filter-data="$cn.createFilter()">{{row.orderTypeName}}</td>
                         <td data-title="'Precio'" >{{row.total | currency}}</td>
+                        <td data-title="'Pagado'" >
+                          <a href="#" ng-click="$cn.payOrder(row)"> <span ng-show="row.paymentStatus == 0">Pagar</span></a>
+                          <span ng-show="row.paymentStatus == 1">----</span>
+                        </td>
                         <td data-title="'#'">
                           <a href="#" ng-click="$cn.delete(row)"
                               class="btn btn-danger btn-circle">
