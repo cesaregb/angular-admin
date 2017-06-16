@@ -75,6 +75,9 @@
 
     payOrder(order){
       this.$log.info('[payOrder] order: ' + JSON.stringify(order, null, 2));
+
+
+
     }
 
     back() {

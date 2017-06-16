@@ -109,7 +109,7 @@ angular.module('processAdminApp')
         uri: '/priceAdjustments'
       },
       cashOut: {
-        uri: '/cash-out'
+        uri: '/cash-outs'
       }
     };
     factory.uris = uris;
@@ -275,9 +275,30 @@ angular.module('processAdminApp')
     };
 
     factory.getNextCashOut = function(){
+      let uri = uris.cashOut.uri + '/next';
+      return factoryCommon.get(uri);
+    };
+
+    factory.saveCashOut = function(){
+      let uri = uris.cashOut.uri;
+      return factoryCommon.post({}, uri);
+    };
+
+    factory.getOrdersPendingOfCashOut = function(){
       let uri = uris.orders.uri + '/forCashOut';
       return factoryCommon.get(uri);
     };
+
+
+    factory.payOrder = function(idOrder){
+      let order = {
+        idOrder: idOrder,
+        paymentStatus: 1
+      };
+      let uri = uris.orders.uri + '/forCashOut';
+      return factoryCommon.get(uri);
+    };
+
 
     return factory;
 
