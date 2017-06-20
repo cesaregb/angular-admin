@@ -2,35 +2,33 @@
 
 angular.module('processAdminApp')
   .factory('factoryServices', function (factoryCommon, noty, $log, $q, $filter) {
-    const ACTIVE = 0;
-    const ALL = 0;
     let factory = {};
 
     let uris = {
-      clients:{
-        name:'clients',
-        uri:'/clients'
+      clients: {
+        name: 'clients',
+        uri: '/clients'
       },
-      clientType:{
-        name:'clientType',
-        uri:'/clients/client-type'
+      clientType: {
+        name: 'clientType',
+        uri: '/clients/client-type'
       },
-      phoneNumber:{
-        name:'phoneNumber',
-        uri:'/clients/phone-number'
+      phoneNumber: {
+        name: 'phoneNumber',
+        uri: '/clients/phone-number'
       },
-      address:{
-        name:'address',
-        uri:'/clients/address'
+      address: {
+        name: 'address',
+        uri: '/clients/address'
       },
-      clientPaymentInfo:{
-        uri:'/clients/client-payment-info'
+      clientPaymentInfo: {
+        uri: '/clients/client-payment-info'
       },
       clientBag: {
         uri: '/client-bag'
       },
       services: {
-        name:'services',
+        name: 'services',
         uri: '/services'
       },
       serviceType: {
@@ -211,23 +209,14 @@ angular.module('processAdminApp')
       return factoryCommon.post(order, uri);
     };
 
-    factory.getOrdersByStatus = function (status) {
-      let uri = uris.orders.uri + '/byStatus/' + status;
-      return factoryCommon.get(uri);
-    };
-
     factory.getTaskForOrder = function (idOrder) {
       let uri = uris.orders.uri + '/tasks/' + idOrder;
       return factoryCommon.get(uri);
     };
 
-    factory.getUIOrder = function (orderId) {
-      let uri = uris.oder.uri + '/forEdit/' + orderId;
-      return factoryCommon.get(uri);
-    };
-
     factory.getActiveOrders = function () {
-      return factory.getOrdersByStatus(ACTIVE);
+      const params = {pending: true};
+      return factoryCommon.get(uris.orders.uri, params);
     };
 
     factory.getProductsByName = function (name) {
@@ -269,36 +258,34 @@ angular.module('processAdminApp')
       return factoryCommon.post(specs, uri);
     };
 
-    factory.taskAction = function(idOrder, action, task){
-      let uri  = uris.tasks.uri + '/idOrder/'+idOrder+'/action/' + action;
+    factory.taskAction = function (idOrder, action, task) {
+      let uri = uris.tasks.uri + '/idOrder/' + idOrder + '/action/' + action;
       return factoryCommon.put(task, uri);
     };
 
-    factory.getNextCashOut = function(){
+    factory.getNextCashOut = function () {
       let uri = uris.cashOut.uri + '/next';
       return factoryCommon.get(uri);
     };
 
-    factory.saveCashOut = function(){
+    factory.saveCashOut = function () {
       let uri = uris.cashOut.uri;
       return factoryCommon.post({}, uri);
     };
 
-    factory.getOrdersPendingOfCashOut = function(){
-      let uri = uris.orders.uri + '/forCashOut';
-      return factoryCommon.get(uri);
+    factory.getOrdersPendingOfCashOut = function () {
+      const params = {forCashOut: true};
+      return factoryCommon.get(uris.orders.uri, params);
     };
 
-
-    factory.payOrder = function(idOrder){
+    factory.payOrder = function (idOrder) {
       let order = {
         idOrder: idOrder,
-        paymentStatus: 1
+        paymentStatus: true
       };
-      let uri = uris.orders.uri + '/forCashOut';
-      return factoryCommon.get(uri);
+      let uri = uris.orders.uri;
+      return factoryCommon.put(order, uri);
     };
-
 
     return factory;
 

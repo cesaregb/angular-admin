@@ -1,35 +1,53 @@
 <div id="page-wrapper">
+
   <div class="row">
     <div class="col-lg-12">
-      <legend style="padding: 10px;">Detalle de Orden</legend>
-      <!--******** Client and order type -->
-      <div class="row">
-        <div class="col-md-12">
-          <div class="col-md-6">
-            <div class="col-md-3">
-              <label class="col-md-4 control-label">Cliente</label>
-            </div>
-            <div class="col-md-9 input-group">
-              {{$cn.order.client}}
-            </div>
+      <div class="pull-right" style="padding: 10px;">
+        <a href="#" ui-sref="orders.ordersList" class="btn btn-info btn-sm">
+          <span class="glyphicon glyphicon-chevron-left"></span> Atras
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row col-lg-12" style="padding: 10px;">
+    <legend>Detalle de Orden</legend>
+    <!--<div style="padding: 10px;" class="col-md-4 pull-right">-->
+    <!--<a href="#" ui-sref="orders.ordersList" class="btn btn-info btn-sm">-->
+    <!--<span class="glyphicon glyphicon-chevron-left"></span> Atras-->
+    <!--</a>-->
+    <!--</div>-->
+    <!--******** Client and order type -->
+    <div class="row col-md-12">
+      <div class="col-md-6">
+        <div class="col-md-3">
+          <label class="col-md-4 control-label">Cliente</label>
+        </div>
+        <div class="col-md-9 input-group">
+          {{$cn.order.client}}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div>
+          <div class="col-md-3">
+            <label class="col-md-4 control-label">Orden</label>
           </div>
-          <div class="col-md-6">
-            <div>
-              <div class="col-md-3">
-                <label class="col-md-4 control-label">Orden</label>
-              </div>
-              <div class="col-md-8 input-group">
-                {{$cn.order.idOrder}}
-              </div>
-            </div>
+          <div class="col-md-8 input-group">
+            {{$cn.order.idOrder}}
+            <button type="button" class="btn btn-default btn-xs" ng-show="!$cn.order.paymentStatus"
+                    ng-click="$cn.payOrder()">
+              <span class="glyphicon glyphicon-usd"></span>Pagar
+            </button>
+            <button type="button" class="btn btn-default btn-xs"
+                    ng-click="$cn.uiUtils.showOrderHistory()">
+              <span class="glyphicon glyphicon-tasks"></span> Ver Historial
+            </button>
           </div>
         </div>
       </div>
-      <hr>
-      <order-service-tasks
-        task-action="$cn.taskAction(actionInfo)"></order-service-tasks>
     </div>
-
+    <order-service-tasks
+      task-action="$cn.taskAction(actionInfo)"></order-service-tasks>
   </div>
-  <!-- /.col-lg-12 -->
+
 </div>

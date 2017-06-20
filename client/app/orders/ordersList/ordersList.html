@@ -39,25 +39,33 @@
                         class="table table-condensed table-bordered table-striped">
                       <tr ng-repeat="row in $data track by row.idOrder">
                         <!-- <td data-title="'Client'" filter="{name: 'text'}" sortable="'client.name'"> -->
+                        <td data-title="'Corte de caja'">
+                          <span ng-show="row.idCashOut > 0" class="glyphicon glyphicon-ok"></span>
+                          <span ng-show="row.idCashOut == 0" class="glyphicon glyphicon-remove"></span>
+                        </td>
                         <td data-title="'Numero de Orden'">
-                          <a href="" ui-sref="orders.orderDetails({order: row})">
+                          <a href="" ui-sref="orders.orderDetails({order: row})"  ng-show="row.completed < 99">
                             {{row.idOrder}}
                           </a>
+                          <span ng-show="row.completed >= 99">
+                            {{row.idOrder}}
+                          </span>
                         </td>
                         <td data-title="'Fecha'">{{row.pickUpDate | date : format : timezone}}</td>
                         <td data-title="'Cliente'" filter="{clientName: 'text'}" sortable="'clientName'">{{row.clientName}}</td>
                         <td data-title="'% Completo'">{{row.completed | number}}</td>
                         <td data-title="'Tipo Orden'" filter="{ orderTypeName: 'select'}" filter-data="$cn.createFilter()">{{row.orderTypeName}}</td>
-                        <td data-title="'Precio'" >{{row.total | currency}}</td>
-                        <td data-title="'Pagado'" >
-                          <a href="#" ng-click="$cn.payOrder(row)"> <span ng-show="row.paymentStatus == 0">Pagar</span></a>
-                          <span ng-show="row.paymentStatus == 1">----</span>
-                        </td>
-                        <td data-title="'#'">
-                          <a href="#" ng-click="$cn.delete(row)"
-                              class="btn btn-danger btn-circle">
-                            <span class="glyphicon glyphicon-remove"></span>
+                        <td data-title="'Precio'" >{{ (row.total - row.discount) | currency}}</td>
+                        <td data-title="'Accion'">
+                          <a href="#" ng-click="$cn.payOrder(row)"  ng-show="row.paymentStatus == 0" class="btn btn-success btn-sm">
+                            <span class="glyphicon glyphicon-usd"></span> Pagar
                           </a>
+                          <span ng-show="row.paymentStatus == 1">Pagado</span>
+                          <button type="button" class="btn btn-default btn-xs"
+                                  ng-click="$cn.uiUtils.showOrderHistory()">
+                            <span class="glyphicon glyphicon-tasks"></span> Ver Historial
+                          </button>
+
                         </td>
                       </tr>
                     </table>

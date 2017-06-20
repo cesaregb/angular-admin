@@ -11,7 +11,7 @@ angular.module('processAdminApp')
 
       $http.post( url, data )
         .then(function(response) {
-          messageHandler.showSuccess('Action succesful!');
+          messageHandler.showSuccess('Accion Copleta');
           deferred.resolve(response.data);
         }).catch(function(response){
           response = response.data;
@@ -19,7 +19,7 @@ angular.module('processAdminApp')
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
           }
-          messageHandler.showError('Error in action ' + message);
+          messageHandler.showError('Error en accion [favor de tomar nota] ' + message);
           deferred.reject(response);
         });
       return deferred.promise;
@@ -31,7 +31,7 @@ angular.module('processAdminApp')
 
       $http.patch( url, data )
         .then(function(response) {
-          messageHandler.showSuccess('Action succesful!');
+          messageHandler.showSuccess('Accion Copleta');
           deferred.resolve(response.data);
         },function(response){
           response = response.data;
@@ -39,7 +39,7 @@ angular.module('processAdminApp')
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
           }
-          messageHandler.showError('Error in action ' + message);
+          messageHandler.showError('Error en accion [favor de tomar nota] ' + message);
           deferred.reject(response);
         });
       return deferred.promise;
@@ -59,7 +59,7 @@ angular.module('processAdminApp')
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
           }
-          messageHandler.showError('Error in action ' + message);
+          messageHandler.showError('Error en accion [favor de tomar nota] ' + message);
           deferred.reject(response);
         });
       return deferred.promise;
@@ -84,7 +84,7 @@ angular.module('processAdminApp')
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
           }
-          messageHandler.showError('Error in action ' + message);
+          messageHandler.showError('Error en accion [favor de tomar nota] ' + message);
           deferred.reject(response);
         });
       return deferred.promise;
@@ -96,7 +96,7 @@ angular.module('processAdminApp')
 
       $http.put(url, data)
         .then(function(response) {
-          messageHandler.showSuccess('Item updated ');
+          messageHandler.showSuccess('Campo modificado ');
           deferred.resolve(response.data);
 
         },function(response){
@@ -105,7 +105,7 @@ angular.module('processAdminApp')
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
           }
-          messageHandler.showError('Error in action ' + message);
+          messageHandler.showError('Error en accion [favor de tomar nota] ' + message);
           deferred.reject(response);
         });
 
@@ -126,7 +126,7 @@ angular.module('processAdminApp')
           if(Boolean(response) && Boolean(response.message)){
             message = response.message;
           }
-          messageHandler.showError('Error in action ' + message);
+          messageHandler.showError('Error en accion [favor de tomar nota] ' + message);
           deferred.reject(response);
         });
 

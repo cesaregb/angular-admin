@@ -48,7 +48,7 @@
         // set up initial address
         if (this.selectedAddress === null
           && this.client !== null
-          && this.client.addresses !== null
+          && Boolean(this.client.addresses)
           && this.client.addresses.length > 0) {
 
           this.selectedAddress = this.client.addresses[0];
@@ -62,7 +62,7 @@
         // set up initial payment
         if (this.selectedPayment === null
           && this.client !== null
-          && this.client.clientPaymentInfos !== null
+          && Boolean(this.client.clientPaymentInfos)
           && this.client.clientPaymentInfos.length > 0) {
 
           this.selectedPayment = this.client.clientPaymentInfos[0];
