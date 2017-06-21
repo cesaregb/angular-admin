@@ -20,7 +20,7 @@
       if (this.$stateParams.order) {
         this.order = this.$stateParams.order;
       } else {
-        // this.$state.go('orders.formOrder', null, { reload: true });
+        this.$state.go('orders.formOrder', null, { reload: true });
       }
 
       let _this = this;
@@ -194,7 +194,6 @@
     }
 
     changeQty() {
-      this.$log.info('[changeQty] ');
       this.calculateSpecsPrice();
     }
 

@@ -21,7 +21,7 @@ angular.module('processAdminApp')
         scope.fireTaskAction = function(action){
           actionInfo.action = action;
           scope.taskAction()({actionInfo: actionInfo});
-        }
+        };
 
       }
 

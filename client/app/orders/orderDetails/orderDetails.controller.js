@@ -3,7 +3,7 @@
 
   class OrderDetailsComponent {
 
-    constructor($scope, $stateParams, $state, $log, $confirm, factoryServices, _, constants, appContext, messageHandler, orderTaskInfo) {
+    constructor($scope, $stateParams, $state, $log, $confirm, factoryServices, _, constants, messageHandler, orderTaskInfo, uiUtils) {
       this.$log = $log;
       this.factoryServices = factoryServices;
       this.$confirm = $confirm;
@@ -13,8 +13,8 @@
       this._ = _;
       this.messageHandler = messageHandler;
       this.store = constants.store;
-      this.appContext = appContext;
       this.orderTaskInfo = orderTaskInfo;
+      this.uiUtils = uiUtils;
     };
 
     $onInit() {
@@ -22,8 +22,8 @@
       if (Boolean(this.$stateParams) && Boolean(this.$stateParams.order)) {
         idOrder = this.$stateParams.order.idOrder;
         this.loadOrder(idOrder);
-      }else{
-        this.$state.go('orders.ordersList', null, { reload: true });
+      } else {
+        this.$state.go('orders.ordersList', null, {reload: true});
       }
     }
 
@@ -41,19 +41,23 @@
       t.order.orderTasks = [];
       t.order.services = [];
 
-      this.factoryServices.getTaskForOrder(this.order.idOrder).then((result) => {
+      idOrder = (parseInt(idOrder) > 0 ) ? idOrder : t.order.idOrder;
+
+      this.$log.info('[info] idOrder: ' + idOrder);
+
+      this.factoryServices.getTaskForOrder(idOrder).then((result) => {
         t.order = {
+          idOrder: idOrder,
+          paymentStatus: result.paymentStatus,
           client: result.clientName,
           orderType: result.orderTypeName,
           orderTasks: result.orderTasks,
-          services: result.services,
-          idOrder: idOrder
+          services: result.services
         };
-        // t.$log.info('[init] t.order: ' + JSON.stringify(t.order, null, 2));
         t.orderTaskInfo.setOrder(t.order);
-      }).catch( (err) => {
-        t.$log.info('[err] err: ' + JSON.stringify(err, null, 2));
-        t.messageHandler.showError('Orden no encontrada')
+      }).catch(() => {
+        t.messageHandler.showError('Orden no encontrada, probablemente ya se termino');
+        this.$state.go('orders.ordersList', null, {reload: true});
       });
     }
 
@@ -63,6 +67,17 @@
         t.loadOrder(response.idOrder);
       }).catch(function () {
         t.messageHandler.showError('Error avanzando en accion de tarea! ');
+      });
+    }
+
+    // repeated code with the orderList module
+    payOrder() {
+      const order = this.order;
+      this.$confirm({
+        text: `Estas seguro de pagar la orden ${order.idOrder}`
+      }).then(() => {
+        this.factoryServices.payOrder(order.idOrder).then(() => {
+        });
       });
     }
 

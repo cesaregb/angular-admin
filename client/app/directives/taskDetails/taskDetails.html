@@ -1,28 +1,14 @@
-<!--******** Orders information...  -->
+<div class="row col-md-12" style="padding-top: 8px;">
+  <!--******** Orders information...  -->
   <div class="row col-md-12">
-    <div class="col-md-2">
-      <label class="control-label">Sigueinte Tarea: </label>
-    </div>
-    <!--Tarea pendiente-->
-    <div ng-show="contextObj.nextTask != null">
-      <div class="col-md-2">
-        {{contextObj.nextTask.taskName}}
-      </div>
-
-      <div class="col-md-2">
-        <button type="button"
-                class="btn btn-default btn-xs"
-                ng-show="contextObj.nextTask.status === 0"
-                ng-click="fireTaskAction(1)">
-          Iniciar
-        </button>
-        <button type="button"
-                class="btn btn-default btn-xs"
-                ng-show="contextObj.nextTask.status === 1"
-                ng-click="fireTaskAction(2)">
-          Terminar
-        </button>
-      </div>
+    <div class="col-md-3">Tarea: {{contextObj.nextTask.taskName}} </div>
+    <div class="col-md-2" ng-show="contextObj.nextTask != null">
+      <button type="button"
+              class="btn btn-default btn-xs"
+              ng-click="fireTaskAction(contextObj.nextTask.status + 1)">
+        <span ng-show="contextObj.nextTask.status === 0">Iniciar</span>
+        <span ng-show="contextObj.nextTask.status === 1">Terminar</span>
+      </button>
     </div>
 
     <!--Tarea terminada-->
@@ -31,15 +17,11 @@
         Terminado {{contextObj.ended | date}}
       </div>
     </div>
-
-    <div class="col-md-4">
-      <button type="button" class="btn btn-default btn-xs pull-right" ng-click="isCollapsed = !isCollapsed">
-        Ver Historial
-      </button>
-    </div>
   </div>
+  <!--historial-->
   <div class="row col-md-12" style="padding-top: 10px;">
-    <div class="panel panel-info" uib-collapse="isCollapsed">
+    <!--<div class="panel panel-info" uib-collapse="isCollapsed">-->
+    <div class="panel panel-info" ng-show="!isCollapsed">
       <div class="panel-heading">
         Historial
       </div>
@@ -65,8 +47,8 @@
                 ng-class-even="'even'"
                 ng-repeat="task in contextObj.tasks">
               <td>{{task.taskName}}</td>
-              <td>{{task.started | date }}</td>
-              <td>{{task.ended | date}}</td>
+              <td>{{task.started | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+              <td>{{task.ended | date:'yyyy-MM-dd HH:mm:ss'}}</td>
               <td>
                 <span ng-show="task.status == 2">Terminada</span>
                 <span ng-show="task.status == 1">Procesando</span>
@@ -80,3 +62,4 @@
       </div>
     </div>
   </div>
+</div>

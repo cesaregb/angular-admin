@@ -3,10 +3,9 @@
 (function () {
 
   class OrdersListComponent {
-    orderTypes = [];
     includeFinished = false;
 
-    constructor($q, $stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams) {
+    constructor($q, $stateParams, $state, noty, factoryServices, $confirm, $log, $uibModal, NgTableParams, uiUtils) {
       this.$q = $q;
       this.NgTableParams = NgTableParams;
       this.$log = $log;
@@ -16,8 +15,9 @@
       this.noty = noty;
       this.$state = $state;
       this.route = $stateParams.route;
+      this.uiUtils = uiUtils;
 
-      var _this = this;
+      let _this = this;
       this.tableParams = new this.NgTableParams({}, {
         getData: function (params) {
           return _this.factoryServices.getResourcesForTableSpecific(
@@ -28,10 +28,9 @@
     }
 
     createFilter = function (url) {
-      var deferred = this.$q.defer();
-
-      var filter = [];
-      this.factoryServices.getResources('orderType').then(function (response) {
+      let deferred = this.$q.defer();
+      let filter = [];
+      this.factoryServices.getResources('orderType').then((response) => {
         response.forEach(function (item) {
           filter.push({title: item.name, id: item.name});
         });
@@ -40,16 +39,15 @@
       return deferred.promise;
     };
 
-    getTableFilter(){
-      if (!this.includeFinished){
+    getTableFilter() {
+      if (!this.includeFinished) {
         return this.factoryServices.getActiveOrders();
-      }else{
+      } else {
         return this.factoryServices.getResources('orders');
       }
     }
 
-
-    refreshTable(){
+    refreshTable() {
       this.tableParams.reload();
     }
 
@@ -66,12 +64,21 @@
       var _this = this;
       this.$confirm({
         text: 'Are you sure you want to delete?'
-      })
-        .then(function () {
-          _this.factoryServices.deleteResource('orderType', item.idOrderType).then(function (info) {
-            _this.back();
-          });
+      }).then(function () {
+        _this.factoryServices.deleteResource('orderType', item.idOrderType).then(function (info) {
+          _this.back();
         });
+      });
+    }
+
+    payOrder(order) {
+      this.$confirm({
+        text: `Estas seguro de pagar la orden ${order.idOrder}`
+      }).then(() => {
+        this.factoryServices.payOrder(order.idOrder).then(() => {
+          this.refreshTable();
+        });
+      });
     }
 
     back() {

@@ -12,7 +12,7 @@ let sodServices = require('../../components/restHelper/sodServices.js');
 
 function respondWithResult(res, statusCode) {
   statusCode = statusCode || 200;
-  return function(entity) {
+  return function (entity) {
     console.log("[respondWithResult.function] entity: " + JSON.stringify(entity, null, 2));
     if (entity) {
       res.status(statusCode).json(entity);
@@ -21,9 +21,9 @@ function respondWithResult(res, statusCode) {
 }
 
 function handleEntityNotFound(res) {
-  return function(entity) {
+  return function (entity) {
     if (!entity) {
-      console.log("[handleEntityNotFound.function] entity not found returning 404!" );
+      console.log("[handleEntityNotFound.function] entity not found returning 404!");
       res.status(404).end();
       return null;
     }
@@ -33,14 +33,14 @@ function handleEntityNotFound(res) {
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
-  return function(err) {
+  return function (err) {
     console.log("[handleError.function] err: " + JSON.stringify(err, null, 2));
     res.status(statusCode).send(err);
   };
 }
 
-function getMenu(role){
-  return function(){
+function getMenu(role) {
+  return function () {
     console.log('[getMenu] getting: > /app-utils/menu/' + role + ' < ')
     return sodServices.sodGet('/app-utils/menu/' + role);
   }
@@ -48,12 +48,10 @@ function getMenu(role){
 
 function getStore() {
   let deferred = Q.defer();
-  sodServices.sodGet('/stores').then( (stores) => {
-    console.log("[getStore] response from sodServices.sodGet completed ");
+  sodServices.sodGet('/stores').then((stores) => {
     deferred.resolve(stores[0]);
 
   }, (err) => {
-    console.log('[getStore] err: ' + JSON.stringify(err, null, 2));
     deferred.reject(err)
 
   });
@@ -61,32 +59,43 @@ function getStore() {
   return deferred.promise;
 }
 
-export function getAppContext(){
+function getPriceAdjustments() {
   let deferred = Q.defer();
-  console.log('[getAppContext] init ');
+  sodServices.sodGet('/stores').then((stores) => {
+    deferred.resolve(stores[0]);
+
+  }, (err) => {
+    deferred.reject(err)
+
+  });
+
+  return deferred.promise;
+}
+
+export function getAppContext() {
+  let deferred = Q.defer();
   let result = {
-    sodEndpoint : config.sodInfo.serviceUrl
+    sodEndpoint: config.sodInfo.serviceUrl
   };
 
-  // if token exist...
   Q.fcall(sodServices.getSODToken)
     .then(getMenu(config.authUserInfo.role))
-    .then(function(menu){
-        console.log('[getAppContext] getMenu completed ');
-        result.sodToken = config.authUserInfo.sodToken;
-        result.menu = menu;
-        return getStore();
-      })
-    .then(function(store){
-        console.log('[getAppContext] getStore completed ');
-        result.store = store;
-        deferred.resolve(result);
-
-      })
-    .catch(function(err){
-        // error
-        deferred.reject(err);
-      })
+    .then(function (menu) {
+      result.sodToken = config.authUserInfo.sodToken;
+      result.menu = menu;
+      return getStore();
+    })
+    .then(function (store) {
+      result.store = store;
+      return getStore();
+    })
+    .then(function (store) {
+      result.store = store;
+      deferred.resolve(result);
+    })
+    .catch(function (err) {
+      deferred.reject(err);
+    })
     .done();
 
   return deferred.promise;
@@ -97,10 +106,10 @@ export function show(req, res) {
   console.log('[show] init');
 
   // validate if user is logged...
-  if (config.authUserInfo.token === 'NA'){
+  if (config.authUserInfo.token === 'NA') {
     console.error('[show] Token non existing, reject request ');
-    return res.status(401).json({message:"Please login"}).end();
-  }else{
+    return res.status(401).json({message: "Please login"}).end();
+  } else {
     return getAppContext()
       .then(handleEntityNotFound(res))
       .then(respondWithResult(res))

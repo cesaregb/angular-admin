@@ -99,4 +99,4 @@ if (Boolean(process.env.DOCKER)){
 }
 
 
-module.exports = exportInfo
+module.exports = exportInfo;
