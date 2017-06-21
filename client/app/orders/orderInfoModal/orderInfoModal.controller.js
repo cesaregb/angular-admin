@@ -1,29 +1,51 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .controller('OrderInfoModalController', function($scope, factoryServices, $uibModalInstance, wrapper, $log) {
+  .controller('OrderInfoModalCtrl', function($scope, factoryServices, $uibModalInstance, injectData, $log) {
 
-    $scope.wrapper = wrapper;
+    $scope.order = injectData;
+
+
+
 
     this.init = function() {
-      const type = wrapper.typeTask;
-      $scope.prefix = "Orden";
-      if (type === 0){
-        $scope.prefix = "Servicio";
+      $scope.title = "Form Task Type";
+      if (Boolean($scope.formItem)) {
+        // placeholder
       }
-
-
-      if (Boolean(wrapper.tasks)){
-        $scope.tasks = wrapper.tasks;
-      }else{
-        // TODO get tasks for service or order.
-      }
-
     };
 
-    $scope.parentSelect = [];
-
     this.init();
+
+    /*******  FORM  */
+    $scope.formItemFields = [
+      {
+        key: 'name',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'Name',
+          required: true
+        }
+      }, {
+        key: 'description',
+        type: 'input',
+        templateOptions: {
+          type: 'text',
+          label: 'Description',
+          required: true
+        }
+      },{
+        "type": "checkbox",
+        "key": "ordersOnly",
+        "templateOptions": {
+          "label": "Ordenes [Aplica solo en nivel de orden, NO servicios]"
+        }
+      }];
+
+    $scope.okAction = function() {
+      $uibModalInstance.close($scope.formItem);
+    }
 
     $scope.cancel = function() {
       $uibModalInstance.dismiss('cancel');

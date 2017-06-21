@@ -1,36 +1,35 @@
 'use strict';
 
 angular.module('processAdminApp')
-  .factory('uiUtils', function (factoryCommon, $uibModal, $log, messageHandler) {
+  .factory('uiUtils', function (factoryServices, $uibModal, $log, messageHandler) {
 
     let factory = {};
 
     factory.showOrderHistory = function (idOrder) {
-      $log.info('[showOrderHistory] idOrder: ' + idOrder);
-      factoryCommon.getResourceById('orders', idOrder).then((order) => {
+      if (!Boolean(idOrder)) {
+        messageHandler.showError(`Orden ${idOrder} no encontrada`);
+        return;
+      }
+
+      factoryServices.getResourceById('orders', idOrder).then((order) => {
         let modalInstance = $uibModal.open({
           animation: false,
           templateUrl: 'app/orders/orderInfoModal/orderInfoModal.html',
-          controller: 'OrderInfoModalController',
-          size: 'lg',
+          controller: 'OrderInfoModalCtrl',
+          size: 'md',
           resolve: {
-            order: function () {
+            injectData: function () {
               return order;
             }
           }
         });
-
         modalInstance.result.then(function (resultItem) {
-          // nothid to do...
         });
-
       }, () => {
         messageHandler.showError(`Orden ${idOrder} no encontrada`);
       });
 
-
     };
-
 
     return factory;
 

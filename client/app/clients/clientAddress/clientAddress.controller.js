@@ -1,5 +1,5 @@
 'use strict';
-(function() {
+(function () {
 
   class ClientAddressComponent {
 
@@ -12,7 +12,7 @@
       this.noty = noty;
       this.$state = $state;
       this.client = $stateParams.client;
-      if (this.client == null) {
+      if (this.client === null) {
         this.$state.go('client.all', null, {
           reload: true
         });
@@ -23,10 +23,9 @@
 
     getClientInfo() {
       var _this = this;
-      _this.factoryServices.getResourceById('clients', this.client.idClient).then(function(response) {
-          _this.client = response;
-        }),
-        function(err) {}
+      _this.factoryServices.getResourceById('clients', this.client.idClient).then(function (response) {
+        _this.client = response;
+      }), function (err) { }
     }
 
     addNewItem() {
@@ -39,16 +38,16 @@
       this.$scope.$parent.openAddressForm(this.client, address);
     }
 
-    delete(address){
+    delete(address) {
       var _this = this;
       this.$confirm({
         text: 'Are you sure you want to delete?'
       })
-      .then(function() {
-        _this.factoryServices.deleteResource('address', address.idAddress).then(function(){
-          _this.back();
+        .then(function () {
+          _this.factoryServices.deleteResource('address', address.idAddress).then(function () {
+            _this.back();
+          });
         });
-      });
     }
 
     back() {
@@ -63,7 +62,7 @@
   angular.module('processAdminApp')
     .component('clientAddress', {
       templateUrl: 'app/clients/clientAddress/clientAddress.html',
-       controller: ClientAddressComponent,
+      controller: ClientAddressComponent,
       controllerAs: '$cn'
     });
 

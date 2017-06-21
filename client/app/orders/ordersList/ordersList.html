@@ -62,7 +62,7 @@
                           </a>
                           <span ng-show="row.paymentStatus == 1">Pagado</span>
                           <button type="button" class="btn btn-default btn-xs"
-                                  ng-click="$cn.uiUtils.showOrderHistory()">
+                                  ng-click="$cn.uiUtils.showOrderHistory(row.idOrder)">
                             <span class="glyphicon glyphicon-tasks"></span> Ver Historial
                           </button>
 

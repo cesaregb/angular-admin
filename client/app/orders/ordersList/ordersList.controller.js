@@ -15,6 +15,7 @@
       this.noty = noty;
       this.$state = $state;
       this.route = $stateParams.route;
+      this.uiUtils = uiUtils;
 
       let _this = this;
       this.tableParams = new this.NgTableParams({}, {
