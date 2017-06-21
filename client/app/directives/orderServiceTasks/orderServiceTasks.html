@@ -1,20 +1,19 @@
-<!--******** Orders information...  -->
-<div class="panel panel-default">
-  <div class="panel-heading"> Informacion de Orden</div>
-  <div class="panel-body">
+<div class="row col-md-12" style="padding-top: 15px;">
+  <legend style="padding: 10px;">Informacion de Orden</legend>
 
-    <div class="row col-md-12" ng-repeat="section in sections">
-      <h></h>
-      <h4>{{section.title}}</h4>
+  <div ng-repeat="section in sections">
+    <div class="row col-md-12 section-divider" style="padding: 10px;">
+      <div class="col-md-3"><strong>Titulo: {{section.title}}</strong></div>
+      <div class="col-md-6">Descripcion: {{section.description}}</div>
+
       <task-details
+        ng-show="!orderFinished"
         context-obj="section"
         task-action="taskAction"></task-details>
 
       <div class="row col-md-12" ng-show="orderFinished">
         <h2>Orden terminada!</h2>
       </div>
-      <br>
-      <hr>
     </div>
 
   </div>

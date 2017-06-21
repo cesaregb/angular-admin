@@ -1,16 +1,10 @@
 'use strict';
 
 function appContextCtl($log, localServices, $q, localStorageService) {
-
   let factory = {};
 
-  // Main app context object
-
-  factory.appContextObject = {
-    validate: false
-  };
-
-  factory.init = function(){
+  factory.appContextObject = {};
+  function cleanAppContext() {
     factory.appContextObject = {
       validate: false,
       sodToken: '',
@@ -18,59 +12,49 @@ function appContextCtl($log, localServices, $q, localStorageService) {
       menu: [],
       store: null
     };
-  };
+  }
 
-  factory.init();
+  cleanAppContext();
 
-  factory.getAppContext = function() {
+  function isContextObjectExisting() {
+    return Boolean(factory.appContextObject) && Boolean(factory.appContextObject.validate);
+  }
+
+  factory.getAppContext = function () {
     let deferred = $q.defer();
 
-    // get it from localstorage
-    if(localStorageService.isSupported) {
+    if (localStorageService.isSupported) {
       factory.appContextObject = localStorageService.get('appContextObject');
     }
 
-    if (Boolean(factory.appContextObject) &&  Boolean(factory.appContextObject.validate)){
-      // we have the object in context
+    if (isContextObjectExisting()) {
       return $q.when(factory.appContextObject);
-
-    }else{
+    } else {
       // fetch it from
       localServices.getAppContext()
         .then((response) => {
           factory.appContextObject = response;
           factory.appContextObject.validate = true;
           localStorageService.set('appContextObject', factory.appContextObject);
-          $log.info('[getAppContext] factory.appContextObject.sodEndpoint: ' + factory.appContextObject.sodEndpoint);
-          deferred.resolve(factory.appContextObject);
 
+          deferred.resolve(factory.appContextObject);
         }).catch(() => {
         deferred.reject();
-        $log.info('[logout] Error ');
       });
 
     }
     return deferred.promise;
-
   };
 
-  factory.destroy = function(){
+  factory.destroy = function () {
     let deferred = $q.defer();
-
-    // remove from local
-    factory.init();
-
-    // remove from local storage.
+    cleanAppContext();
     localStorageService.remove('appContextObject');
-
-    // remove from services.
-    localServices.deleteAppContext().then(res => {
-
+    localServices.deleteAppContext().then((res) => {
       deferred.resolve(factory.appContextObject);
     }).catch((err) => {
       deferred.reject();
     });
-
     return deferred.promise;
   };
 

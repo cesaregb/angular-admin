@@ -64,6 +64,12 @@
       _this.calculateTotal();
     }
 
+    // addPaymentDiscount(){
+    //   this.order.discount = 5;
+    //
+    //   this.calculateTotal();
+    // }
+
     calculateTotal() {
       this.order.totalTransport = this._.reduce(this.order.transport, function(memo, tObj){ return memo + tObj.price; }, 0);
       this.order.totalServices = this._.reduce(this.order.services, function(memo, sObj){return memo + sObj.totalPrice; } , 0);
@@ -150,6 +156,8 @@
 
       orderObject.paymentInfo = {transactionInfo: 'cash', type: 0};
       orderObject.comments = ''; // not used so far...
+
+      orderObject.paymentStatus = this.order.paymentStatus;
 
       orderObject.idClient = this.order.client.idClient;
       orderObject.total = this.order.total;
