@@ -1,12 +1,12 @@
 # To build:
-# docker build -t interactivelabs/process-admin:dev -f Dockerfile .
-# docker push interactivelabs/process-admin:v1
+# docker build -t cesaregb/process-admin:dev -f Dockerfile .
+# docker push cesaregb/process-admin:v1
 #
 # To run:
 # run docker mongo....
 # docker run -p 27017:27017 --name mongo-admin -d mongo
-# docker run -p 9000:9000 --link mongo-admin:mongo -it interactivelabs/process-admin
-# docker run -p 9000:9000 --link mongo-admin:mongo -it --entrypoint bash interactivelabs/process-admin
+# docker run -p 9000:9000 --link mongo-admin:mongo -it cesaregb/process-admin
+# docker run -p 9000:9000 --link mongo-admin:mongo -it --entrypoint bash cesaregb/process-admin
 
 # docker run -p 9000:9000-it process-admin:v1
 # docker run -p 9000:9000 -it --entrypoint bash process-admin:v1
@@ -36,8 +36,8 @@ ADD . /app
 RUN grunt build --force
 WORKDIR /app/dist
 
-# Define default command.
-ENTRYPOINT ["npm", "start"]
-
 # Expose ports.
 EXPOSE 9000
+
+# Define default command.
+ENTRYPOINT ["npm", "start"]
