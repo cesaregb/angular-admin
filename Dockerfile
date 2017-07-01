@@ -11,7 +11,7 @@
 # docker run -p 9000:9000-it process-admin:v1
 # docker run -p 9000:9000 -it --entrypoint bash process-admin:v1
 FROM node:6.9.1
-MAINTAINER Cesar Gonzalez, cesareg.borjon@gmail.com
+MAINTAINER cesareg.borjon@gmail.com
 
 RUN apt-get update && apt-get install -y ruby ruby-compass && \
             apt-get clean && \
