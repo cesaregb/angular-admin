@@ -65,9 +65,9 @@ export function post(endpoint) {
  */
 export function getSODToken() {
   let deferred = Q.defer();
-  if (config.authUserInfo.sodToken !== 'NA') {
+  if ('NA'.localeCompare(config.authUserInfo.sodToken) === 0) {
     // If token exist, resolve promise
-    console.log('[getSODToken] existing token, config.authUserInfo.sodToken: ' + config.authUserInfo.sodToken);
+    console.log('[getSODToken] existing token, config.authUserInfo.sodToken: ' + JSON.stringify(config.authUserInfo, null, 2));
     return Q.when(config.authUserInfo.sodToken);
   } else {
     // sod auth endpoint

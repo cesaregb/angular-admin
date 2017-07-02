@@ -20,6 +20,7 @@ function appContextCtl($log, localServices, $q, localStorageService) {
     return Boolean(factory.appContextObject) && Boolean(factory.appContextObject.validate);
   }
 
+  // TODO change the way this method is called from multiple places (navbar, app.js, etc.. )
   factory.getAppContext = function () {
     let deferred = $q.defer();
 

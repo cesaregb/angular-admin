@@ -6,14 +6,15 @@
     COST_TYPE_PERCENTAGE = 0;
     COST_TYPE_FIXED = 1;
 
-    constructor(factoryServices, $log, noty, $uibModal, _, $stateParams, $state) {
+    constructor(factoryServices, $log, $uibModal, _, $stateParams, $state, messageHandler) {
       this.factoryServices = factoryServices;
       this.$log = $log;
-      this.noty = noty;
       this.$stateParams = $stateParams;
       this.$state = $state;
       this._ = _;
       this.$uibModal = $uibModal;
+      this.messageHandler = messageHandler;
+      this.products = [];
     }
 
     $onInit() {
@@ -33,55 +34,25 @@
           return parseFloat(a.idServiceCategory) - parseFloat(b.idServiceCategory);
         });
 
-        // open existing service
-        // if (Boolean(_this.selectedService)) {
-        //   // if open selected service...
-        //   _this.service = selectedService;
-        //   var indexCat = -1;
-        //   var indexSt = -1;
-        //
-        //   response.forEach(function (item, index) {
-        //
-        //     item.serviceTypes.forEach(function (st, index2) {
-        //       if (st.idServiceType == _this.service.idServiceType) {
-        //         indexCat = index;
-        //         indexSt = index2;
-        //       }
-        //     });
-        //   });
-        //
-        //   _this.serviceCategorie = response[indexCat];
-        //   _this.serviceType = response[indexCat].serviceTypes[indexSt];
-        //
-        //   if (Boolean(selectedService.savedService)) {
-        //     _this.calculatePrice();
-        //   } else {
-        //     _this.service = {};
-        //   }
-        // }
       });
     }
 
-    serviceShortcut(idServiceType){
+    serviceShortcut(idServiceType) {
       let t = this;
-      this.findServiceType(idServiceType, function (err, serviceType) {
-        if (serviceType){
+      this.findServiceType(idServiceType, (err, serviceType) => {
+        if (serviceType) {
           t.selectService(serviceType);
-        }else {
-          t.noty.showNoty({
-            text: 'Servicio no encontrado',
-            ttl: 1000 * 4,
-            type: 'warning'
-          });
+        } else {
+          this.messageHandler.showError('Servicio no encontrado');
         }
       });
     }
 
-    findServiceType(id, cb){
+    findServiceType(id, cb) {
       let t = this;
       let found = false;
-      this.serviceCategories.forEach((sc)=>{
-        let serviceType = this._.find(sc.serviceTypes, function(st){
+      this.serviceCategories.forEach((sc) => {
+        let serviceType = this._.find(sc.serviceTypes, function (st) {
           return st.idServiceType === id;
         });
         if (Boolean(serviceType)) {
@@ -90,17 +61,20 @@
           found = true;
         }
       });
-      if (!found){
-        return cb({err:'not_found'}, null);
+      if (!found) {
+        return cb({err: 'not_found'}, null);
       }
     }
 
     selectService(serviceType) {
       this.serviceType = serviceType;
+      this.products = serviceType.products;
+
       let _this = this;
       _this.service = {};
 
       _this.service = serviceType;
+      _this.service.products = [];
       _this.service.specsPrice = 0;
       _this.service.productsPrice = 0;
       _this.service.totalPrice = 0;
@@ -124,11 +98,7 @@
         this.calculateSpecsPrice();
 
       } else {
-        _this.noty.showNoty({
-          text: "Servicio no tiene specs. ",
-          ttl: 1000 * 2,
-          type: "warning"
-        });
+        this.messageHandler.showError('Servicio no tiene specs');
       }
     }
 
@@ -137,9 +107,9 @@
       let _this = this;
       // TODO should we search for the item?
       let spec = this._.find(this.service.specs, (item) => {
-        return (item.idSpecs == selectedSpec.idSpecs)
+        return (item.idSpecs === selectedSpec.idSpecs)
       });
-      if (Boolean(spec)){
+      if (Boolean(spec)) {
         spec.quantity = 1;
         spec.specsValue = specsValue;
         if (specsValue.costType === _this.COST_TYPE_PERCENTAGE) {
@@ -159,7 +129,7 @@
     preselectValues() {
       let _this = this;
       this.service.specs.forEach(function (spec) {
-        if (!spec.optional ) {
+        if (!spec.optional) {
           _this.selectSpecOption(spec, spec.options[spec.idSpecs][0]);
         }
       });
@@ -179,7 +149,7 @@
         if (spec.type === '$') {
           spec.price = spec.amt * spec.quantity;
           specsPrice += spec.price;
-        }else if (spec.type === '%') {
+        } else if (spec.type === '%') {
           spec.price = ((spec.amt / 100) * basePrice) * spec.quantity;
           specsPrice += spec.price;
         }
@@ -197,6 +167,21 @@
       this.calculateSpecsPrice();
     }
 
+    addProduct2Multiple(product) {
+      this.service.products = (Boolean(this.service.products)) ? this.service.products : [];
+      this.service.products = this.filterProduct(product);
+      this.service.products.push(product);
+      this.calculateSpecsPrice();
+      this.calculateProductsTotal();
+    }
+
+    addProduct(product) {
+      this.service.products = [];
+      this.service.products.push(product);
+      this.calculateSpecsPrice();
+      this.calculateProductsTotal();
+    }
+
     manageProducts() {
       let _this = this;
       let modalInstance = this.$uibModal.open({
@@ -207,19 +192,17 @@
         resolve: {
           serviceType: function () {
             return _this.serviceType;
+          },
+          products: ()=>{
+            return this.products;
           }
         }
       });
 
-      modalInstance.result.then(function (product) {
+      modalInstance.result.then((product) => {
         product.quantity = 1;
-        this.service.products = (Boolean(this.service.products)) ? this.service.products : [];
-        // remove product if exist, and add it back again.
-        this.service.products = this.filterProduct(product);
-        this.service.products.push(product);
-        this.calculateSpecsPrice();
-        this.calculateProductsTotal();
-      }.bind(this));
+        this.addProduct(product);
+      });
     }
 
     deleteProduct(product) {
@@ -227,7 +210,7 @@
       this.calculateProductsTotal()
     }
 
-    filterProduct(product){
+    filterProduct(product) {
       return this._.filter(this.service.products, (p) => {
         return p.idProduct !== product.idProduct;
       });
@@ -245,10 +228,10 @@
     }
 
     addService() {
-      this.order.services = (Boolean(this.order.services))?this.order.services:[];
+      this.order.services = (Boolean(this.order.services)) ? this.order.services : [];
       let selectedProducts = [];
-      this.service.products.forEach(function(product){
-        if (product.quantity > 0){
+      this.service.products.forEach(function (product) {
+        if (product.quantity > 0) {
           selectedProducts.push(product);
         }
       });
@@ -258,7 +241,7 @@
     }
 
     cancel() {
-      this.order.services = (Boolean(this.order.services))?this.order.services:[];
+      this.order.services = (Boolean(this.order.services)) ? this.order.services : [];
       this.$state.go('orders.formOrder', {order: this.order, addService: true}, {reload: true});
     }
 
