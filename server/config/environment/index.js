@@ -46,21 +46,21 @@ let all = {
   },
 
   facebook: {
-    clientID:     process.env.FACEBOOK_ID || 'id',
+    clientID: process.env.FACEBOOK_ID || 'id',
     clientSecret: process.env.FACEBOOK_SECRET || 'secret',
-    callbackURL:  (process.env.DOMAIN || '') + '/auth/facebook/callback'
+    callbackURL: (process.env.DOMAIN || '') + '/auth/facebook/callback'
   },
 
   twitter: {
-    clientID:     process.env.TWITTER_ID || 'id',
+    clientID: process.env.TWITTER_ID || 'id',
     clientSecret: process.env.TWITTER_SECRET || 'secret',
-    callbackURL:  (process.env.DOMAIN || '') + '/auth/twitter/callback'
+    callbackURL: (process.env.DOMAIN || '') + '/auth/twitter/callback'
   },
 
   google: {
-    clientID:     process.env.GOOGLE_ID || 'id',
+    clientID: process.env.GOOGLE_ID || 'id',
     clientSecret: process.env.GOOGLE_SECRET || 'secret',
-    callbackURL:  (process.env.DOMAIN || '') + '/auth/google/callback'
+    callbackURL: (process.env.DOMAIN || '') + '/auth/google/callback'
   },
 
   //SOD (Java) service information.
@@ -91,10 +91,10 @@ let exportInfo = _.merge(
 
 console.log('[environment] exportInfo: ' + JSON.stringify(exportInfo, null, 2));
 
-if (Boolean(process.env.DOCKER)){
+if (Boolean(process.env.DOCKER)) {
   console.log("[environment] ****** env: [" + process.env.NODE_ENV + "] - Changing the MONGO uri.... exportInfo: " + exportInfo.mongoDocker.uri);
   exportInfo.mongo.uri = exportInfo.mongoDocker.uri;
-}else{
+} else {
   console.log("[environment] ****** SAME OLD MONGO!!");
 }
 
