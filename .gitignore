@@ -1,4 +1,11 @@
-node_modules
+# Intellij
+*/.idea/
+.idea/
+*.iml
+*.iws
+
+
+*node_modules
 public
 .tmp
 .idea
@@ -7,3 +14,6 @@ dist
 /server/config/local.env.js
 npm-debug.log
 coverage
+
+.env
+export.properties

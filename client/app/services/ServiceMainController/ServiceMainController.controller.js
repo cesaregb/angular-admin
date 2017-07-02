@@ -2,9 +2,5 @@
 
 angular.module('processAdminApp')
   .controller('ServiceMainControllerCtrl', function ($scope, $state) {
-
-
-    $scope.appModule = "services"
-
-
+    $scope.appModule = 'services'
   });
