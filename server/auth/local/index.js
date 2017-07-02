@@ -6,7 +6,6 @@ import {signToken} from "../auth.service";
 import config from "../../config/environment";
 
 let router = express.Router();
-
 let sodServices = require('../../components/restHelper/sodServices.js');
 
 function cleanSodToken() {
