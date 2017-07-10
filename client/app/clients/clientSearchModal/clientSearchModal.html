@@ -7,9 +7,15 @@
       <div class="row">
         <div class="col-md-12">
           <div class="pull-right">
-            <label>Search:
-              <input type="search" class="form-control input-sm" ng-model="searchText" aria-controls="dataTables-example">
-              <select class="form-control" ng-model="searchFilter" ng-options="filter.name for filter in filters"></select>
+            <label>Buscar:
+              <input type="search" class="form-control input-sm"
+                     ng-model="searchText"
+                     ng-keydown="checkSearch($event)"
+                     aria-controls="dataTables-example">
+              <select class="form-control"
+                      ng-model="searchFilter"
+                      ng-keydown="$event.keyCode === 13 && searchFilter()"
+                      ng-options="filter.name for filter in filters"></select>
               <a href="#" ng-click="searchClients()" class="btn btn-info btn-sm">
                 <span class="glyphicon glyphicon-search"></span>
               </a>
@@ -19,31 +25,34 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info">
+          <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example"
+                 role="grid" aria-describedby="dataTables-example_info">
             <thead>
-              <tr role="row">
-                <th>Name</th>
-                <th>Lastname</th>
-                <th>Email</th>
-                <th>Phones</th>
-                <th>Address</th>
-              </tr>
+            <tr role="row">
+              <th>Name</th>
+              <th>Lastname</th>
+              <th>Email</th>
+              <th>Phones</th>
+              <th>Address</th>
+            </tr>
             </thead>
             <tbody>
-              <tr ng-show="clients.length == 0"><td colspan="5">No Items found</td></tr>
-              <tr class="gradeA" role="row"
-                  ng-class-odd="'odd'" ng-class-even="'even'"
-                  ng-repeat="client in clients">
-                  <td>
-                    <a href="" ng-click="preSelectItem(client);" ng-dblclick="selectItemAction(client);">
-                      {{client.name}}
-                    </a>
-                  </td>
-                  <td>{{client.lastName}}</td>
-                  <td>{{client.email}}</td>
-                  <td>{{client.defaultPhone}}</td>
-                  <td>{{client.defaultAddress}}</td>
-              </tr>
+            <tr ng-show="clients.length == 0">
+              <td colspan="5">No se encontro ningun resultado</td>
+            </tr>
+            <tr class="gradeA" role="row"
+                ng-class-odd="'odd'" ng-class-even="'even'"
+                ng-repeat="client in clients">
+              <td>
+                <a href="" ng-click="preSelectItem(client);" ng-dblclick="selectItemAction(client);">
+                  {{client.name}}
+                </a>
+              </td>
+              <td>{{client.lastName}}</td>
+              <td>{{client.email}}</td>
+              <td>{{client.defaultPhone}}</td>
+              <td>{{client.defaultAddress}}</td>
+            </tr>
             </tbody>
           </table>
         </div>
@@ -52,11 +61,16 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <strong>Selected: {{clientInfo.name}}</strong>
+      <strong>Seleccionado: {{clientInfo.name}} {{clientInfo.lastName}}</strong>
     </div>
   </div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" type="submit" ng-click="selectItem()" ng-disabled="clientInfo == null">OK</button>
-  <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+  <button class="btn btn-primary"
+          type="submit"
+          ng-click="selectItem()"
+          ng-disabled="clientInfo == null">OK</button>
+  <button class="btn btn-warning"
+          type="button"
+          ng-click="cancel()">Cancel</button>
 </div>

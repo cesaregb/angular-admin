@@ -28,13 +28,6 @@
                         ng-show="$cn.order.client.idClient != null">
                   <i class="glyphicon glyphicon-pencil"></i>
                 </button>
-
-                <button class="btn btn-default" type="button"
-                        ng-click="$cn.viewClient"
-                        ng-show="$cn.order.client.idClient != null">
-                  <i class="glyphicon glyphicon-user"></i>
-                </button>
-
               </div>
             </div>
           </div>
@@ -51,6 +44,8 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label class="control-label">Recojer</label>
+                <button type="button" class="btn btn-default btn-xs glyphicon glyphicon glyphicon-remove"
+                        ng-show="$cn.order.transport[0].address != null" ng-click="$cn.order.transport[0].address = null"></button>
                 <div class="input-group">
                   <select class="form-control"
                           ng-options="addr as addr.address for addr in $cn.order.client.addresses"
@@ -87,6 +82,8 @@
             <div class="col-md-4">
               <div class="form-group">
                 <label class="control-label">Entregar</label>
+                <button type="button" class="btn btn-default btn-xs glyphicon glyphicon glyphicon-remove"
+                        ng-show="$cn.order.transport[1].address != null" ng-click="$cn.order.transport[1].address = null"></button>
                 <div class="input-group">
                   <select class="form-control"
                           ng-options="addr as addr.address for addr in $cn.order.client.addresses"

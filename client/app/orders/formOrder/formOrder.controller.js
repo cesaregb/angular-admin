@@ -6,7 +6,6 @@
     title = 'Nueva Orden.';
     orderComplete = false;
 
-    // helper variables to handle open vs closed panel
     pickUpOpen = false;
     deliverOpen = false;
     status = {isopen: false};
@@ -31,21 +30,17 @@
 
     $onInit() {
       let _this = this;
-
-      // initialize values...
       this.order = {};
-
-      // if existing order was entered...
-      if ( Boolean(this.$stateParams.order) ) {
+      if (Boolean(this.$stateParams.order)) {
         this.order = this.$stateParams.order;
       }
-      this.order.transport = (Boolean(this.order.transport) && this.order.transport.length > 0)?
+      this.order.transport = (Boolean(this.order.transport) && this.order.transport.length > 0) ?
         this.order.transport
-        :[{date: new Date(), address: null, price:0}, {date: new Date(), address: null, price:0}];
-      this.order.services = (Boolean(this.order.services))?this.order.services:[];
-      this.order.client = (Boolean(this.order.client))?this.order.client:{};
-      this.order.totalTransport = (Boolean(this.order.totalTransport))?this.order.totalTransport:0;
-      this.order.discount = (Boolean(this.order.discount))?this.order.discount:0;
+        : [{date: new Date(), address: null, price: 0}, {date: new Date(), address: null, price: 0}];
+      this.order.services = (Boolean(this.order.services)) ? this.order.services : [];
+      this.order.client = (Boolean(this.order.client)) ? this.order.client : {};
+      this.order.totalTransport = (Boolean(this.order.totalTransport)) ? this.order.totalTransport : 0;
+      this.order.discount = (Boolean(this.order.discount)) ? this.order.discount : 0;
       _this.validateOrder();
       _this.calculateTotal(); // calculate total in case we are comming from services...
 
@@ -64,15 +59,13 @@
       _this.calculateTotal();
     }
 
-    // addPaymentDiscount(){
-    //   this.order.discount = 5;
-    //
-    //   this.calculateTotal();
-    // }
-
     calculateTotal() {
-      this.order.totalTransport = this._.reduce(this.order.transport, function(memo, tObj){ return memo + tObj.price; }, 0);
-      this.order.totalServices = this._.reduce(this.order.services, function(memo, sObj){return memo + sObj.totalPrice; } , 0);
+      this.order.totalTransport = this._.reduce(this.order.transport, function (memo, tObj) {
+        return memo + tObj.price;
+      }, 0);
+      this.order.totalServices = this._.reduce(this.order.services, function (memo, sObj) {
+        return memo + sObj.totalPrice;
+      }, 0);
       this.order.total = this.order.totalServices + this.order.totalTransport - this.order.discount;
     }
 
@@ -95,11 +88,17 @@
         }
       });
 
-      modalInstance.result.then(client =>{
-        if (Boolean(client)){
+      modalInstance.result.then(client => {
+        if (Boolean(client)) {
           _this.calculateTotal();
           _this.order.client = client;
-        }else{
+          if (_this.order.client.address.length > 0) {
+            _this.order.client.address.push({
+              address: "Ninguna",
+              idAddress: 0,
+            });
+          }
+        } else {
           _this.messageHandler.showError('Favor de seleccionar un cliente');
         }
       }, () => {
@@ -107,13 +106,13 @@
       });
     }
 
-    cleanOrder(){
+    cleanOrder() {
       this.order = {};
     }
 
     selectAddress(type, address) {
       let _this = this;
-      this.AddressHandler.calculateDistancePriceByAddress(address).then(()=>{
+      this.AddressHandler.calculateDistancePriceByAddress(address).then(() => {
         _this.order.transport[(type - 1)].price = this.AddressHandler.distancePrice;
         _this.calculateTotal();
       });
@@ -126,13 +125,13 @@
         controller: 'ViewServiceDetailsModalCtrl',
         size: 'md',
         resolve: {
-          service: function() {
+          service: function () {
             return service;
           }
         }
       });
 
-      modalInstance.result.then(function(info) {
+      modalInstance.result.then(function (info) {
         // do nothing...
       });
     }
@@ -162,11 +161,13 @@
       orderObject.idClient = this.order.client.idClient;
       orderObject.total = this.order.total;
       orderObject.discount = this.order.discount;
-      orderObject.totalServices = this._.reduce(this.order.services, function(memo, sObj){return memo + sObj.totalPrice; } , 0);
+      orderObject.totalServices = this._.reduce(this.order.services, function (memo, sObj) {
+        return memo + sObj.totalPrice;
+      }, 0);
 
       // parse transport to remove address...
       orderObject.transport = this._.map(this.order.transport, (t) => {
-        t.idAddress = (Boolean(t.address))?t.address.idAddress:0;
+        t.idAddress = (Boolean(t.address)) ? t.address.idAddress : 0;
         t.address = null;
         return t;
       });
@@ -194,7 +195,7 @@
         orderObject.services.push(tmpService);
       });
 
-      if (orderObject.services.length == 0) {
+      if (orderObject.services.length === 0) {
         errors.push('Seleccionar cuandomenos un servicio');
       }
 
@@ -232,10 +233,6 @@
 
     back() {
       this.$state.go('orders.ordersList', {status: 'open'}, {reload: true});
-    }
-
-    viewClient(){
-      this.$log.info('[viewClient]');
     }
 
   }

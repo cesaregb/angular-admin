@@ -1,67 +1,61 @@
 <div id="page-wrapper" class="row">
   <div class="row">
     <div class="col-lg-12">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          {{$cn.title}}
-        </div>
-        <!-- /.panel-heading -->
-        <div class="panel-body">
-          <div class="dataTable_wrapper">
-            <div id="viewItemsTable" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="pull-right" style="padding: 10px;">
-                    <a href="#" ui-sref="client.edit" class="btn btn-info btn-sm">
-                      <span class="glyphicon glyphicon-plus"></span> Add Client
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="pull-right">
-                    <label>Search:
-                      <input type="search" class="form-control input-sm" ng-model="$cn.searchText"
-                             aria-controls="dataTables-example">
-                      <select class="form-control"
-                              ng-model="$cn.searchFilter"
-                              ng-options="filter.name for filter in $cn.filters"></select>
+      <h1 class="page-header">Clientes</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="dataTable_wrapper">
+        <div id="viewItemsTable" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+          <div class="row">
+            <div class="col-md-6">
+              <label>Buscar:
+                <input type="search" class="form-control input-sm" aria-controls="dataTables-example"
+                       ng-model="$cn.searchText">
+                <select class="form-control"
+                        ng-model="$cn.searchFilter"
+                        ng-options="filter.name for filter in $cn.filters"></select>
 
-                      <a href="#" ng-click="$cn.searchClient()" class="btn btn-info btn-sm">
-                        <span class="glyphicon glyphicon-search"></span>
-                      </a>
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <table ng-table="$cn.tableParams" class="table table-condensed table-bordered table-striped">
-                    <tr ng-repeat="row in $data track by row.idClient">
-
-                      <td data-title="'Nombre'" filter="{name: 'text'}" sortable="'fullName'">
-                        <a href="" ng-click="$cn.selectClient(row);">
-                          {{row.fullName}}
-                        </a>
-                      </td>
-                      <td data-title="'Email'">
-                        {{row.email}}
-                      </td>
-                      <td data-title="'Direccion'" >{{row.defaultAddress}}</td>
-                      <td data-title="'Telefono'" >{{row.mobilePhone}}</td>
-                    </tr>
-                  </table>
-                </div>
+                <a href="#" ng-click="$cn.searchClient()" class="btn btn-info btn-sm">
+                  <span class="glyphicon glyphicon-search"></span>
+                </a>
+                <a href="#" ng-click="$cn.searchText = ''; $cn.searchClient()" class="btn btn-info btn-sm">
+                  <span class="glyphicon glyphicon-repeat"></span>
+                </a>
+              </label>
+            </div>
+            <div class="col-lg-6">
+              <div class="pull-right">
+                <a href="#" ui-sref="client.edit" class="btn btn-info btn-sm">
+                  <span class="glyphicon glyphicon-plus"></span> Nuevo Cliente
+                </a>
               </div>
             </div>
           </div>
-          <!-- /.table-responsive -->
+          <div class="row">
+            <div class="col-sm-12">
+              <table ng-table="$cn.tableParams" class="table table-condensed table-bordered table-striped">
+                <tr ng-repeat="row in $data track by row.idClient">
+                  <td data-title="'#'">
+                    {{row.idClient}}
+                  </td>
+                  <td data-title="'Nombre'" filter="{name: 'text'}" sortable="'fullName'">
+                    <a href="" ng-click="$cn.selectClient(row);">
+                      {{row.fullName}}
+                    </a>
+                  </td>
+                  <td data-title="'Email'">
+                    {{row.email}}
+                  </td>
+                  <td data-title="'Direccion'">{{row.defaultAddress}}</td>
+                  <td data-title="'Telefono'">{{row.mobilePhone}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
         </div>
-        <!-- /.panel-body -->
       </div>
-      <!-- /.panel -->
     </div>
-    <!-- /.col-lg-12 -->
   </div>
 </div>

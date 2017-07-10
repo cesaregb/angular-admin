@@ -68,7 +68,7 @@
     delete() {
       var _this = this;
       this.$confirm({
-        text: 'Are you sure you want to delete?'
+        text: 'Estas seguro de borrar el registro??'
       })
         .then(function () {
           _this.factoryServices.deleteResource('serviceType', _this.serviceType.idServiceType).then(function (info) {

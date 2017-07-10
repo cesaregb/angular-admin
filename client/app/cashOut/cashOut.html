@@ -27,7 +27,9 @@
                           <td data-title="'Tipo Orden'"
                               filter-data="$cn.createFilter()">{{row.orderTypeName}}
                           </td>
-                          <td data-title="'Precio'">{{row.total | currency}}</td>
+                          <td data-title="'Precio'">{{row.subtotal | currency}}</td>
+                          <td data-title="'Descuento'">{{row.discount | currency}}</td>
+                          <td data-title="'Total'">{{row.total | currency}}</td>
                           <td data-title="'Estado'">
                             <span ng-show="row.paymentStatus == 0" class="alert-danger">Pendiente</span>
                             <span ng-show="row.paymentStatus == 1">Pagado</span>
@@ -47,19 +49,19 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Subtotal</label>
                   <div class="col-sm-7">
-                    <input type="email" class="form-control" placeholder="0" ng-value="$cn.cashOut.subtotal" ng-disabled="true">
+                    <input type="email" class="form-control" placeholder="0" ng-value="$cn.cashOut.subtotal | currency" ng-disabled="true">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Descuento</label>
                   <div class="col-sm-7">
-                    <input type="email" class="form-control" placeholder="0" ng-value="$cn.cashOut.discount" ng-disabled="true">
+                    <input type="email" class="form-control" placeholder="0" ng-value="$cn.cashOut.discount | currency" ng-disabled="true">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Total</label>
                   <div class="col-sm-7">
-                    <input type="email" class="form-control" placeholder="0" ng-value="$cn.cashOut.total" ng-disabled="true">
+                    <input type="email" class="form-control" placeholder="0" ng-value="$cn.cashOut.total | currency" ng-disabled="true">
                   </div>
                 </div>
               </div>

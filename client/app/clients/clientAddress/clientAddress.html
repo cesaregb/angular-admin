@@ -3,7 +3,9 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="pull-right" style="padding: 10px;">
-        <a href="#" ui-sref="client.edit({client: $cn.client})" class="btn btn-info btn-sm">
+        <a href="#"
+           ui-sref="client.edit({client: $cn.client})"
+           class="btn btn-info btn-sm">
           <span class="glyphicon glyphicon-chevron-left"></span> Atras
         </a>
       </div>
@@ -14,7 +16,7 @@
     <div class="col-lg-12">
       <div class="panel panel-default">
         <div class="panel-heading">
-          Address List {{$cn.client.name}}
+          Lista de direcciones {{$cn.client.name}}
         </div>
         <!-- /.panel-heading -->
         <div class="panel-body">
@@ -24,7 +26,7 @@
                 <div class="col-lg-12">
                   <div class="pull-right" style="padding: 10px;">
                     <a href="#" ng-click="$cn.addNewItem();" class="btn btn-info btn-sm">
-                      <span class="glyphicon glyphicon-plus"></span> Add Address
+                      <span class="glyphicon glyphicon-plus"></span> Agregar Direccion
                     </a>
                   </div>
                 </div>
@@ -34,16 +36,16 @@
                   <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info">
                     <thead>
                       <tr role="row">
-                        <th>Address</th>
-                        <th>Address 2</th>
-                        <th>City</th>
-                        <th>Zipcode</th>
-                        <th>Default</th>
-                        <th>Action</th>
+                        <th>Direccion</th>
+                        <th>Mas Datos</th>
+                        <th>Ciudad</th>
+                        <th>C.P.</th>
+                        <th>-</th>
+                        <th>Acciones</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr ng-show="$cn.client.addresses.length == 0 || $cn.client.addresses == null"><td colspan="6">No Items found</td></tr>
+                      <tr ng-show="$cn.client.addresses.length == 0 || $cn.client.addresses == null"><td colspan="6">No se encontro ningun resultado</td></tr>
                       <tr class="gradeA" role="row"
                           ng-class-odd="'odd'" ng-class-even="'even'"
                           ng-repeat="address in $cn.client.addresses">
@@ -68,13 +70,9 @@
               </div>
             </div>
           </div>
-          <!-- /.table-responsive -->
         </div>
-        <!-- /.panel-body -->
       </div>
-      <!-- /.panel -->
     </div>
-    <!-- /.col-lg-12 -->
   </div>
 
 </div>
