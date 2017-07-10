@@ -17,28 +17,6 @@
           Client Form
         </div>
         <div class="panel-body">
-          <!--<div class="row" ng-show="$cn.editMode">-->
-            <!--<div class="col-lg-12 pull-right">-->
-              <!--<div class="pull-right" style="padding: 10px;">-->
-                <!--<a href="#" ng-click="$cn.openManageSpecsModal($cn.serviceType)"-->
-                   <!--class="btn btn-info btn-sm">-->
-                  <!--<span class="glyphicon glyphicon-list-alt"></span>-->
-                  <!--Specs-->
-                <!--</a>-->
-                <!--<a href="#" ng-click="$cn.openManageTaskModal($cn.serviceType)"-->
-                   <!--class="btn btn-info btn-sm">-->
-                  <!--<span class="glyphicon glyphicon-tasks"></span>-->
-                  <!--Tareas-->
-                <!--</a>-->
-                <!--<a href="#" ng-click="$cn.openManageProductTypes($cn.serviceType)"-->
-                   <!--class="btn btn-info btn-sm">-->
-                  <!--<span class="glyphicon glyphicon-list-alt"></span>-->
-                  <!--Products-->
-                <!--</a>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-
           <form class="form-horizontal" name="$cn.clientForm" ng-submit="$cn.saveClient()" novalidate>
             <fieldset>
               <!-- Form Name -->
@@ -63,21 +41,23 @@
               </div>
 
               <!-- Text input-->
-              <div class="form-group" ng-class="{ 'has-error' : $cn.clientForm.name.$invalid && !$cn.clientForm.name.$pristine }">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : $cn.clientForm.name.$invalid && !$cn.clientForm.name.$pristine }">
                 <label class="col-md-4 control-label" for="name">Nombre *</label>
                 <div class="col-md-6">
                   <input id="name" name="name" type="text" placeholder="name" class="form-control input-md" required
-                    ng-model="$cn.client.name" ng-minlength="3">
+                         ng-model="$cn.client.name" ng-minlength="3">
                   <p ng-show="$cn.clientForm.name.$error.minlength" class="help-block">Value too short</p>
                 </div>
               </div>
 
               <!-- Text input-->
-              <div class="form-group" ng-class="{ 'has-error' : $cn.clientForm.lastName.$invalid && !$cn.clientForm.lastName.$pristine }">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : $cn.clientForm.lastName.$invalid && !$cn.clientForm.lastName.$pristine }">
                 <label class="col-md-4 control-label" for="lastName">Apellido *</label>
                 <div class="col-md-6">
                   <input id="lastName" name="lastName" type="text" class="form-control input-md" required
-                    ng-model="$cn.client.lastName">
+                         ng-model="$cn.client.lastName">
                 </div>
               </div>
 
@@ -104,10 +84,11 @@
                 <label class="col-md-4 control-label">Direccion Principal</label>
                 <div class="col-md-6">
                   <select class="form-control"
-                      ng-options="addr as addr.address for addr in $cn.client.addresses"
-                      ng-model="$cn.selectedAddress" ng-change="$cn.changeDefaultAddress()"></select>
+                          ng-options="addr as addr.address for addr in $cn.client.addresses"
+                          ng-model="$cn.selectedAddress" ng-change="$cn.changeDefaultAddress()"></select>
                 </div>
-                <button type="button" class="btn btn-default glyphicon glyphicon-pencil" ui-sref="client.address({client: $cn.client})"></button>
+                <button type="button" class="btn btn-default glyphicon glyphicon-pencil"
+                        ui-sref="client.address({client: $cn.client})"></button>
               </div>
 
               <!-- Select Basic -->
@@ -115,10 +96,11 @@
                 <label class="col-md-4 control-label">Principal metodo de pago</label>
                 <div class="col-md-6">
                   <select class="form-control"
-                      ng-options="payment as payment.token for payment in $cn.client.clientPaymentInfos"
-                      ng-model="$cn.selectedPayment" ng-change="$cn.changeDefaultPayment()"></select>
+                          ng-options="payment as payment.token for payment in $cn.client.clientPaymentInfos"
+                          ng-model="$cn.selectedPayment" ng-change="$cn.changeDefaultPayment()"></select>
                 </div>
-                <button type="button" class="btn btn-default glyphicon glyphicon-pencil" ui-sref="client.payment({client: $cn.client})"></button>
+                <button type="button" class="btn btn-default glyphicon glyphicon-pencil"
+                        ui-sref="client.payment({client: $cn.client})"></button>
               </div>
 
               <!-- Text input-->
@@ -126,7 +108,7 @@
                 <label class="col-md-4 control-label" for="twitter">Twitter</label>
                 <div class="col-md-6">
                   <input id="twitter" name="twitter" type="text" placeholder="@username" class="form-control input-md"
-                    ng-model="$cn.client.twitter">
+                         ng-model="$cn.client.twitter">
                 </div>
               </div>
 
@@ -135,17 +117,18 @@
                 <label class="col-md-4 control-label" for="email">Email</label>
                 <div class="col-md-6">
                   <input id="email" name="email" type="text" placeholder="name@domain.com" class="form-control input-md"
-                    ng-model="$cn.client.email">
+                         ng-model="$cn.client.email">
 
                 </div>
               </div>
 
               <!-- Text input-->
-              <div class="form-group" ng-class="{ 'has-error' : $cn.clientForm.name.$invalid && !$cn.clientForm.name.$pristine }">
+              <div class="form-group"
+                   ng-class="{ 'has-error' : $cn.clientForm.name.$invalid && !$cn.clientForm.name.$pristine }">
                 <label class="col-md-4 control-label" for="name">Facturacion</label>
                 <div class="col-md-6">
                   <input name="facturacion" type="checkbox"
-                    ng-model="$cn.facturacion">
+                         ng-model="$cn.facturacion">
                 </div>
               </div>
 
@@ -154,7 +137,7 @@
                 <label class="col-md-4 control-label" for="rfc">RFC</label>
                 <div class="col-md-6">
                   <input id="rfc" name="rfc" type="text" class="form-control input-md"
-                    ng-model="$cn.client.rfc" >
+                         ng-model="$cn.client.rfc">
                   <p ng-show="$cn.clientForm.rfc.$error.minlength" class="help-block">Value too short</p>
                 </div>
               </div>
@@ -164,7 +147,7 @@
                 <label class="col-md-4 control-label" for="razonSocial">Razon Social</label>
                 <div class="col-md-6">
                   <input id="razonSocial" name="razonSocial" type="text" class="form-control input-md"
-                    ng-model="$cn.client.razonSocial" >
+                         ng-model="$cn.client.razonSocial">
                   <p ng-show="$cn.clientForm.razonSocial.$error.minlength" class="help-block">Value too short</p>
                 </div>
               </div>
@@ -174,24 +157,27 @@
                 <label class="col-md-4 control-label">Direccion Facturacion</label>
                 <div class="col-md-6">
                   <select class="form-control"
-                      ng-options="addr as addr.address for addr in $cn.client.addresses"
-                      ng-model="$cn.facturacionAddress" ng-change="$cn.changeDireccionFacturacion()"></select>
+                          ng-options="addr as addr.address for addr in $cn.client.addresses"
+                          ng-model="$cn.facturacionAddress" ng-change="$cn.changeDireccionFacturacion()"></select>
                 </div>
               </div>
 
               <!-- Button (Double) -->
               <div class="buttons-footer">
                 <button type="submit" class="btn btn-primary" ng-disabled="$cn.clientForm.$invalid">Guardar</button>
-                <button type="button" class="btn btn-regular" ng-click="$parent.openAddressForm($cn.client, {idClient: $cn.client.idClient})"
-                    ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">
-                  Agregar Direccion</button>
                 <button type="button" class="btn btn-regular"
-                    ng-click="$cn.createOrder()"
-                    ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">
+                        ng-click="$parent.openAddressForm($cn.client, {idClient: $cn.client.idClient})"
+                        ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">
+                  Agregar Direccion
+                </button>
+                <button type="button" class="btn btn-regular"
+                        ng-click="$cn.createOrder()"
+                        ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">
                   Crear Orden
                 </button>
                 <button type="button" class="btn btn-danger" ng-click="$cn.delete()"
-                    ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">Delete</button>
+                        ng-disabled="$cn.client.idClient == null || $cn.client.idClient == 0">Delete
+                </button>
               </div>
 
             </fieldset>

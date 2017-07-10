@@ -2,17 +2,14 @@
 (function(){
 
 class ClientComponent {
-
-  title = "Clients";
-
   filters = [
-      {name:'Name', value:'name'},
-      {name:'Email', value:'email'},
-      {name:'Phone Number', value:'phone'}
+      {name:'Nombre', value:'name'},
+      {name:'E-mail', value:'email'},
+      {name:'Numero Telefonico', value:'phone'}
     ];
 
   constructor( factoryServices, serviceClients, $state, $log, NgTableParams ) {
-    var _this = this;
+    let _this = this;
     this.$state = $state;
     this.NgTableParams = NgTableParams;
     this.$log = $log;
@@ -29,12 +26,8 @@ class ClientComponent {
   }
 
   gatherClients(){
-    // clients not being used.
     this.clients = this.serviceClients.query();
-
-    let _this = this;
     let text = this.searchText;
-
     if(Boolean(text)){
       let filter = this.searchFilter;
       let filterArray = {};
@@ -43,7 +36,6 @@ class ClientComponent {
     }else{
       return this.factoryServices.getResources('clients');
     }
-
   }
 
   selectClient(client){
