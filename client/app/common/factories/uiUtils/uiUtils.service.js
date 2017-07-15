@@ -12,6 +12,7 @@ angular.module('processAdminApp')
       }
 
       factoryServices.getResourceById('orders', idOrder).then((order) => {
+        $log.info('[init popup] order: ' + JSON.stringify(order, null, 2));
         let modalInstance = $uibModal.open({
           animation: false,
           templateUrl: 'app/orders/orderInfoModal/orderInfoModal.html',

@@ -12,9 +12,6 @@ angular.module('processAdminApp')
         scope.orderFinished = false;
         orderTaskInfo.registerObserverCallback(parseOrder);
 
-        /**
-         * entrypoint for observable.
-         */
         function parseOrder() {
           scope.sections = [];
           let nextTask = selectNextTask(orderTaskInfo.order.orderTasks);
@@ -25,7 +22,7 @@ angular.module('processAdminApp')
             initScope(1);
           } else {
             scope.orderFinished = false;
-            if (areServicesEnded()) {
+            if (areServicesEnded() &&  Boolean(nextTask) &&  Boolean(nextTask.task)) {
               let actionInfo = {
                 task: nextTask.task,
                 action: 2
@@ -84,15 +81,18 @@ angular.module('processAdminApp')
         }
 
         function selectNextTask(taskArray) {
-          return _.find(taskArray, function (itm) {
-            return itm.status === 0 || itm.status === 1;
-          });
+          if (Boolean(taskArray) && taskArray.length > 0) {
+            return _.find(taskArray, function (itm) {
+              return itm.status === 0 || itm.status === 1;
+            });
+          }
         }
 
         function areServicesEnded() {
           let result = true;
           orderTaskInfo.order.services.forEach(function (service) {
-            if (!isServiceEnded(service.serviceTasks)) {
+            if (Boolean(service.serviceTasks)
+              && !isServiceEnded(service.serviceTasks)) {
               result = false;
             }
           });
@@ -105,7 +105,6 @@ angular.module('processAdminApp')
           }
           return taskArray[taskArray.length - 1].status === 2;
         }
-
       }
     };
   });

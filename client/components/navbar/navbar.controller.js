@@ -11,15 +11,15 @@ class NavbarController {
   isCollapsed = true;
   isLogged = false;
 
-  searchOrder(){
-    if (!Boolean(this.orderSearch)){
-      this.messageHandler.showError('Please enter the order number to search')
-    }else{
-      // search...
+  searchOrder() {
+    if (!Boolean(this.orderSearch) || isNaN(this.orderSearch)) {
+      this.messageHandler.showError('Favor de dar un numero de orden valido, tiene que ser numerico ');
+    } else {
+      this.$state.go('orders.orderDetails', {order: {idOrder: this.orderSearch}}, {reload: true});
     }
   }
 
-  constructor(Auth, factoryUtils, $log, messageHandler, appContext) {
+  constructor(Auth, factoryUtils, $log, messageHandler, appContext, $state) {
     this.factoryUtils = factoryUtils;
     this.messageHandler = messageHandler;
     this.isLoggedIn = Auth.isLoggedIn;
@@ -27,13 +27,14 @@ class NavbarController {
     this.getCurrentUser = Auth.getCurrentUser;
     this.appContext = appContext;
     this.$log = $log;
+    this.$state = $state;
     this.loadMenu();
 
   }
 
-  loadMenu(){
+  loadMenu() {
     let t = this;
-    this.appContext.getAppContext().then( (appContextObject) => {
+    this.appContext.getAppContext().then((appContextObject) => {
       t.menu = appContextObject.menu;
       t.isLogged = true;
     });
