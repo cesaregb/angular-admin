@@ -2,86 +2,63 @@
 
   <div class="row">
     <div class="col-lg-12">
-      <div class="pull-right" style="padding: 10px;">
-        <a href="#" ui-sref="orders.orderMenu()" class="btn btn-info btn-sm">
-          <span class="glyphicon glyphicon-chevron-left"></span> Atras
-        </a>
-      </div>
+      <h2 class="page-header">Lista de ordenes</h2>
     </div>
   </div>
 
   <div class="row">
     <div class="col-lg-12">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          Lista de Ordenes
-        </div>
-        <!-- /.panel-heading -->
-        <div class="panel-body">
-          <div class="row row-buffer-space">
+      <div class="pull-right" style="padding-bottom: 10px;">
+        <a href="#" ui-sref="orders.formOrder" class="btn btn-info btn-sm">
+          <span class="glyphicon glyphicon-plus"></span> Nueva Orden
+        </a>
+      </div>
+      <div class="dataTable_wrapper">
+        <div id="viewItemsTable" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+          <div class="row">
             <div class="col-md-12">
-            <!--<div class="col-md-4">-->
-            <!--Incluir finalizados: <input type="checkbox" ng-click="$cn.refreshTable()" ng-model="$cn.includeFinished">-->
-            <!--</div>-->
-            <div class="pull-right">
-              <a href="#" ui-sref="orders.formOrder" class="btn btn-info btn-sm">
-                <span class="glyphicon glyphicon-plus"></span> Nueva Orden
-              </a>
-            </div>
-            </div>
-          </div>
-          <div class="dataTable_wrapper">
-            <div id="viewItemsTable" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
-              <div class="row">
-                <div class="col-sm-12">
-                  <div loading-container="$cn.tableParams.settings().$loading">
-                    <table ng-table="$cn.tableParams"
-                        class="table table-condensed table-bordered table-striped">
-                      <tr ng-repeat="row in $data track by row.idOrder">
-                        <!-- <td data-title="'Client'" filter="{name: 'text'}" sortable="'client.name'"> -->
-                        <td data-title="'Corte de caja'">
-                          <span ng-show="row.idCashOut > 0" class="glyphicon glyphicon-ok"></span>
-                          <span ng-show="row.idCashOut == 0" class="glyphicon glyphicon-remove"></span>
-                        </td>
-                        <td data-title="'Numero de Orden'">
-                          <a href="" ui-sref="orders.orderDetails({order: row})"  ng-show="row.completed < 99">
-                            {{row.idOrder}}
-                          </a>
-                          <span ng-show="row.completed >= 99">
-                            {{row.idOrder}}
-                          </span>
-                        </td>
-                        <td data-title="'Fecha'">{{row.pickUpDate | date : format : timezone}}</td>
-                        <td data-title="'Cliente'" filter="{clientName: 'text'}" sortable="'clientName'">{{row.clientName}}</td>
-                        <td data-title="'% Completo'">{{row.completed | number}}</td>
-                        <td data-title="'Tipo Orden'" filter="{ orderTypeName: 'select'}" filter-data="$cn.createFilter()">{{row.orderTypeName}}</td>
-                        <td data-title="'Precio'" >{{ (row.total - row.discount) | currency}}</td>
-                        <td data-title="'Accion'">
-                          <a href="#" ng-click="$cn.payOrder(row)"  ng-show="row.paymentStatus == 0" class="btn btn-success btn-sm">
-                            <span class="glyphicon glyphicon-usd"></span> Pagar
-                          </a>
-                          <span ng-show="row.paymentStatus == 1">Pagado</span>
-                          <button type="button" class="btn btn-default btn-xs"
-                                  ng-click="$cn.uiUtils.showOrderHistory(row.idOrder)">
-                            <span class="glyphicon glyphicon-tasks"></span> Ver Historial
-                          </button>
+              <div loading-container="$cn.tableParams.settings().$loading">
+                <table ng-table="$cn.tableParams"
+                       class="table table-condensed table-bordered table-striped">
+                  <tr ng-repeat="row in $data track by row.idOrder">
+                    <td data-title="'Corte de caja'">
+                      <span ng-show="row.idCashOut > 0" class="glyphicon glyphicon-ok"></span>
+                      <span ng-show="row.idCashOut == 0" class="glyphicon glyphicon-remove"></span>
+                    </td>
+                    <td data-title="'Numero de Orden'">
+                      <a type="button" class="btn btn-default btn-xs"
+                         ui-sref="orders.orderDetails({order: row})">
+                        <span class="glyphicon glyphicon-th-large"></span> Detalles {{row.idOrder}}
+                      </a>
+                    </td>
+                    <td data-title="'Fecha'">{{row.pickUpDate | date : format : timezone}}</td>
+                    <td data-title="'Cliente'" filter="{clientName: 'text'}" sortable="'clientName'">
+                      {{row.clientName}}
+                    </td>
+                    <td data-title="'% Completo'">{{row.completed | number}}</td>
+                    <td data-title="'Tipo Orden'" filter="{ orderTypeName: 'select'}" filter-data="$cn.createFilter()">
+                      {{row.orderTypeName}}
+                    </td>
+                    <td data-title="'Precio'">{{ (row.total - row.discount) | currency}}</td>
+                    <td data-title="'Accion'">
+                      <a href="#" ng-click="$cn.payOrder(row)"
+                         ng-show="row.paymentStatus == 0" class="btn btn-success btn-xs">
+                        <span class="glyphicon glyphicon-usd"></span> Pagar
+                      </a>
+                      <span ng-show="row.paymentStatus == 1">Pagado</span>
 
-                        </td>
-                      </tr>
-                    </table>
-
-                  </div>
-                </div>
+                      <button type="button" class="btn btn-default btn-xs"
+                              ng-click="$cn.uiUtils.showOrderHistory(row.idOrder)">
+                        <span class="glyphicon glyphicon-tasks"></span> Ver Historial
+                      </button>
+                    </td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
-          <!-- /.table-responsive -->
         </div>
-        <!-- /.panel-body -->
       </div>
-      <!-- /.panel -->
     </div>
-    <!-- /.col-lg-12 -->
   </div>
-
 </div>

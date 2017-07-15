@@ -1,7 +1,7 @@
 <div id="page-wrapper" class="row">
   <div class="row">
     <div class="col-lg-12">
-      <h1 class="page-header">Clientes</h1>
+      <h2 class="page-header">Clientes</h2>
     </div>
   </div>
   <div class="row">
@@ -50,6 +50,12 @@
                   </td>
                   <td data-title="'Direccion'">{{row.defaultAddress}}</td>
                   <td data-title="'Telefono'">{{row.mobilePhone}}</td>
+                  <td data-title="'#'">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="$cn.uiUtils.showClientOrders(row)">
+                      <span class="glyphicon glyphicon-tasks"></span> Ver Pedidos
+                    </button>
+                  </td>
                 </tr>
               </table>
             </div>

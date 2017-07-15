@@ -12,17 +12,17 @@
       this.$state = $state;
       this.client = $stateParams.client;
 
-      this.title = "New Client"
+      this.title = "Nuevo Cliente";
       this.setupClient();
       this.clientTypes = [];
     }
 
     // load initial client if any...
     setupClient() {
-      var t = this;
-      if (t.client != null) {
+      let t = this;
+      if (t.client !== null) {
         t.newClient = false;
-        t.title = "Edit: " + t.client.name;
+        t.title = "Editar cliente: " + t.client.name;
       } else {
         t.client = {};
       }

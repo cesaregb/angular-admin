@@ -51,7 +51,7 @@ angular.module('processAdminApp')
 
       $http.post( url, data )
         .then(function(response) {
-          messageHandler.showSuccess('Item saved succesful ');
+          messageHandler.showSuccess('Accion Exitosa ');
           deferred.resolve(response.data);
         }).catch(function(response){
           response = response.data;
@@ -96,7 +96,7 @@ angular.module('processAdminApp')
 
       $http.put(url, data)
         .then(function(response) {
-          messageHandler.showSuccess('Campo modificado ');
+          messageHandler.showSuccess('Accion Exitosa ');
           deferred.resolve(response.data);
 
         },function(response){
