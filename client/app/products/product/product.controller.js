@@ -14,18 +14,17 @@
       this.noty = noty;
       this.$state = $state;
       this.route = $stateParams.route;
-      var _this = this;
       this.tableParams = new this.NgTableParams({}, {
-        getData: function(params) {
-          return _this.factoryServices.getResourcesForTable('products', params);
+        getData: (params)=>{
+          return this.factoryServices.getResourcesForTable('products', params);
         }
       });
 
     }
 
     createFilter() {
-      var deferred = this.$q.defer();
-      var filter = [];
+      let deferred = this.$q.defer();
+      let filter = [];
       this.factoryServices.getResources('productType').then(function(response) {
         response.forEach(function(item){
           filter.push({title: item.name, id:item.name});
@@ -37,10 +36,6 @@
 
     getInfo() {
       this.tableParams.reload();
-      // var _this = this;
-      // this.factoryServices.getResources('product').then(function(response) {
-      //   _this.products = response;
-      // });
     }
 
     openNewModal() {
@@ -61,9 +56,10 @@
         }
       });
 
-      modalInstance.result.then(function(resultItem) {
-        var product = resultItem;
-        if (product.idProduct != null && product.idProduct > 0) {
+      modalInstance.result.then((resultItem)=>{
+        const product = resultItem;
+        this.$log.info('[openModal Result] product: ' + JSON.stringify(product, null, 2));
+        if (product.idProduct !== null && product.idProduct > 0) {
           _this.factoryServices.updateResource('products', product).then(function() {
             _this.getInfo();
           });
@@ -76,7 +72,7 @@
     }
 
     delete(item){
-      var _this = this;
+      let _this = this;
       this.$confirm({
         text: 'Estas seguro de borrar el registro??'
       })

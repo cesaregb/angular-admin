@@ -278,6 +278,11 @@ angular.module('processAdminApp')
       return factoryCommon.get(uris.orders.uri, params);
     };
 
+    factory.getOrdersByClient = function (idClient) {
+      const params = {idClient: idClient};
+      return factoryCommon.get(uris.orders.uri, params);
+    };
+
     factory.payOrder = function (idOrder) {
       let order = {
         idOrder: idOrder,

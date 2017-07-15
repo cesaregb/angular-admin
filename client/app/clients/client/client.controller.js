@@ -8,13 +8,14 @@ class ClientComponent {
       {name:'Numero Telefonico', value:'phone'}
     ];
 
-  constructor( factoryServices, serviceClients, $state, $log, NgTableParams ) {
+  constructor( factoryServices, serviceClients, $state, $log, NgTableParams, uiUtils ) {
     let _this = this;
     this.$state = $state;
     this.NgTableParams = NgTableParams;
     this.$log = $log;
     this.factoryServices = factoryServices;
     this.serviceClients = serviceClients;
+    this.uiUtils = uiUtils;
     this.client = null;
     this.searchFilter = this.filters[0];
     this.tableParams = new this.NgTableParams({}, {

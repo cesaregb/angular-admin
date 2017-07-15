@@ -6,20 +6,12 @@ angular.module('processAdminApp')
     $scope.formItem = formItem;
 
     this.init = function() {
-
-      $scope.title = "Form Product Type";
-      if (Boolean($scope.formItem)) {
-        // placeholder
-      }
-
       factoryServices.getResources('productType').then(function(response){
         response.forEach(function(item){
           $scope.parentSelect.push({name : item.name, value: item.idProductType});
         });
         if (!Boolean($scope.formItem.idProductType) ){
           $scope.formItem.idProductType = 1;
-        }else{
-
         }
       });
     };
@@ -65,7 +57,7 @@ angular.module('processAdminApp')
 
     $scope.okAction = function() {
       $uibModalInstance.close($scope.formItem);
-    }
+    };
 
     $scope.cancel = function() {
       $uibModalInstance.dismiss('cancel');

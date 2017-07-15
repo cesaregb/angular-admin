@@ -5,9 +5,7 @@ angular.module('processAdminApp')
 
     $scope.order = injectData;
 
-    this.init = function() {
-      $log.info('[init] $scope.order: ' + JSON.stringify($scope.order, null, 2));
-    };
+    this.init = function() {};
 
     this.init();
 

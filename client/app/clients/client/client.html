@@ -50,6 +50,12 @@
                   </td>
                   <td data-title="'Direccion'">{{row.defaultAddress}}</td>
                   <td data-title="'Telefono'">{{row.mobilePhone}}</td>
+                  <td data-title="'#'">
+                    <button type="button" class="btn btn-default btn-xs"
+                            ng-click="$cn.uiUtils.showClientOrders(row)">
+                      <span class="glyphicon glyphicon-tasks"></span> Ver Pedidos
+                    </button>
+                  </td>
                 </tr>
               </table>
             </div>
