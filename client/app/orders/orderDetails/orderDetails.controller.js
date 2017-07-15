@@ -35,16 +35,11 @@
       if (Boolean(this.$stateParams.order)) {
         this.order = this.$stateParams.order;
       }
-
       t.order.orderType = '';
       t.order.client = '';
       t.order.orderTasks = [];
       t.order.services = [];
-
       idOrder = (parseInt(idOrder) > 0 ) ? idOrder : t.order.idOrder;
-
-      this.$log.info('[info] idOrder: ' + idOrder);
-
       this.factoryServices.getTaskForOrder(idOrder).then((result) => {
         t.order = {
           idOrder: idOrder,
@@ -55,7 +50,7 @@
           services: result.services
         };
         t.orderTaskInfo.setOrder(t.order);
-      }).catch(() => {
+      }).catch((e) => {
         t.messageHandler.showError('Orden no encontrada, probablemente ya se termino');
         this.$state.go('orders.ordersList', null, {reload: true});
       });
@@ -80,7 +75,6 @@
         });
       });
     }
-
   }
 
   angular.module('processAdminApp')

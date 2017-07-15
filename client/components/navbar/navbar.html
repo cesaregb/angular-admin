@@ -18,30 +18,30 @@
         <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
       </a>
       <!--<ul class="dropdown-menu dropdown-alerts">-->
-        <!--<li>-->
-          <!--<a href="#">-->
-            <!--<div>-->
-              <!--<i class="fa fa-comment fa-fw"></i> New Comment-->
-              <!--<span class="pull-right text-muted small">4 minutes ago</span>-->
-            <!--</div>-->
-          <!--</a>-->
-        <!--</li>-->
-        <!--<li class="divider"></li>-->
-        <!--<li>-->
-          <!--<a href="#">-->
-            <!--<div>-->
-              <!--<i class="fa fa-twitter fa-fw"></i> 3 New Followers-->
-              <!--<span class="pull-right text-muted small">12 minutes ago</span>-->
-            <!--</div>-->
-          <!--</a>-->
-        <!--</li>-->
-        <!--<li class="divider"></li>-->
-        <!--<li>-->
-          <!--<a class="text-center" href="#">-->
-            <!--<strong>See All Alerts</strong>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-          <!--</a>-->
-        <!--</li>-->
+      <!--<li>-->
+      <!--<a href="#">-->
+      <!--<div>-->
+      <!--<i class="fa fa-comment fa-fw"></i> New Comment-->
+      <!--<span class="pull-right text-muted small">4 minutes ago</span>-->
+      <!--</div>-->
+      <!--</a>-->
+      <!--</li>-->
+      <!--<li class="divider"></li>-->
+      <!--<li>-->
+      <!--<a href="#">-->
+      <!--<div>-->
+      <!--<i class="fa fa-twitter fa-fw"></i> 3 New Followers-->
+      <!--<span class="pull-right text-muted small">12 minutes ago</span>-->
+      <!--</div>-->
+      <!--</a>-->
+      <!--</li>-->
+      <!--<li class="divider"></li>-->
+      <!--<li>-->
+      <!--<a class="text-center" href="#">-->
+      <!--<strong>See All Alerts</strong>-->
+      <!--<i class="fa fa-angle-right"></i>-->
+      <!--</a>-->
+      <!--</li>-->
       <!--</ul>-->
       <!-- /.dropdown-alerts -->
     </li>
@@ -52,10 +52,10 @@
       </a>
       <ul class="dropdown-menu dropdown-user">
         <!--<li>-->
-          <!--<a href="#"><i class="fa fa-user fa-fw"></i> {{nav.employee.name}} Profile</a>-->
+        <!--<a href="#"><i class="fa fa-user fa-fw"></i> {{nav.employee.name}} Profile</a>-->
         <!--</li>-->
         <!--<li>-->
-          <!--<a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>-->
+        <!--<a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>-->
         <!--</li>-->
         <!--<li class="divider"></li>-->
         <li ng-show="!nav.isLogged">
@@ -76,16 +76,18 @@
       <ul class="nav" id="side-menu" ng-show="nav.isLogged" ng-show="nav.isLogged">
 
         <!--Search -->
-        <!--<li class="sidebar-search">-->
-          <!--<div class="input-group custom-search-form">-->
-            <!--<input type="text" class="form-control" placeholder="Search..." ng-model="nav.orderSearch">-->
-            <!--<span class="input-group-btn">-->
-                <!--<button class="btn btn-default" type="button" ng-click="nav.searchOrder()">-->
-                  <!--<i class="fa fa-search"></i>-->
-                <!--</button>-->
-            <!--</span>-->
-          <!--</div>-->
-        <!--</li>-->
+        <li class="sidebar-search">
+          <div class="input-group custom-search-form">
+            <input type="text" class="form-control" placeholder="Numero de Orden"
+                   ng-model="nav.orderSearch">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button"
+                        ng-click="nav.searchOrder()">
+                  <i class="fa fa-search"></i>
+                </button>
+            </span>
+          </div>
+        </li>
         <li>
           <a href="" ui-sref="orders.formOrder({order:null})">
             <i class="glyphicon glyphicon-plus"></i> Nueva Orden
