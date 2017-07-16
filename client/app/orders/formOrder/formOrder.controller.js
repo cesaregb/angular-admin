@@ -132,7 +132,24 @@
       });
 
       modalInstance.result.then(function (info) {
-        // do nothing...
+      });
+    }
+
+    selectDiscount(){
+      let modalInstance = this.$uibModal.open({
+        animation: false,
+        templateUrl: 'app/modals/selectDiscountModal/selectDiscountModal.html',
+        controller: 'SelectDiscountModalCtrl',
+        size: 'md',
+        resolve: {
+          something: function () {
+            return {};
+          }
+        }
+      });
+
+      modalInstance.result.then( (info) =>{
+        this.order.discount += info.amount;
       });
     }
 
@@ -230,6 +247,14 @@
         });
       }
     };
+
+    applyPaymentDiscount(){
+      if (this.order.paymentStatus){
+        this.order.discount += 5;
+      }else{
+        this.order.discount -= 5;
+      }
+    }
 
     back() {
       this.$state.go('orders.ordersList', {status: 'open'}, {reload: true});

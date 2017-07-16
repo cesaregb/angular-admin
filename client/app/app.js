@@ -76,41 +76,26 @@ angular.module('processAdminApp', [
       templateUrl: 'async-ui-select-type.html'
     });
 
-    // set prefix for local storege, best practice
     localStorageServiceProvider.setPrefix('processAdmin');
-
-    // storage last as much as the session
     localStorageServiceProvider.setStorageType('sessionStorage');
-
-    // avoid storing the info in the cookie, security concern
     localStorageServiceProvider.setDefaultToCookie(false);
-
-    // timeout for login request
     $httpProvider.defaults.timeout = 5000;
 
-    // avoid error Possibly unhandled rejection: undefined
     $qProvider.errorOnUnhandledRejections(false);
-
   })
   .run(function ($location, $log, $rootScope, Auth, appContext) {
     let url = $location.absUrl();
     $rootScope.$on('$stateChangeStart', function (event, next) {
-
-      // SET AUTH FOR ALL THE APP
-      // we may require to skip some screens.
       Auth.isLoggedIn(function (loggedIn) {
         if (next.authenticate && !loggedIn) {
           appContext.destroy();
           $location.path('/login');
         } else {
-          // once is logged...
           appContext.getAppContext().then((appContext) => { });
           if (url.includes('login')) {
             $location.path('/main');
           }
         }
       });
-
     });
-
   });

@@ -24,7 +24,7 @@
         <label>Orden</label>
         <p class="form-control-static">{{$cn.order.idOrder}}</p>
       </div>
-      <button type="button" class="btn btn-default btn-sm" ng-show="!$cn.order.paymentStatus"
+      <button type="button" class="btn btn-default btn-sm" ng-show="$cn.order.paymentStatus == 0"
               ng-click="$cn.payOrder()">
         <span class="glyphicon glyphicon-usd"></span>Pagar
       </button>

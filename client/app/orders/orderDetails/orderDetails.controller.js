@@ -41,6 +41,7 @@
       t.order.services = [];
       idOrder = (parseInt(idOrder) > 0 ) ? idOrder : t.order.idOrder;
       this.factoryServices.getTaskForOrder(idOrder).then((result) => {
+        this.$log.info('[init] result: ' + JSON.stringify(result, null, 2));
         t.order = {
           idOrder: idOrder,
           paymentStatus: result.paymentStatus,
