@@ -40,41 +40,45 @@
                 </div>
               </div>
             </div>
-            <div class="row" ng-show="$cn.serviceCategorie.idServiceCategory > 0" style="padding-bottom:10px;">
-              <div class="form-group">
-                <label class="col-md-4 control-label">Precio Servicio:</label>
-                <div class="col-md-6">
-                  <span>{{$cn.service.price | currency}}</span>
+
+            <div ng-show="false">
+              <div class="row" ng-show="$cn.serviceCategorie.idServiceCategory > 0" style="padding-bottom:10px;">
+                <div class="form-group">
+                  <label class="col-md-4 control-label">Precio Servicio:</label>
+                  <div class="col-md-6">
+                    <span>{{$cn.service.price | currency}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" ng-show="$cn.serviceCategorie.idServiceCategory > 0" style="padding-bottom:10px;">
+                <div class="form-group">
+                  <label class="col-md-4 control-label">Precio Specs:</label>
+                  <div class="col-md-6">
+                    <span>{{$cn.service.specsPrice | currency}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" ng-show="$cn.serviceCategorie.idServiceCategory > 0" style="padding-bottom:10px;">
+                <div class="form-group">
+                  <label class="col-md-4 control-label">Precio Productos:</label>
+                  <div class="col-md-6">
+                    <span>{{$cn.service.productsPrice | currency}}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" ng-show="$cn.serviceCategorie.idServiceCategory > 0" style="padding-bottom:10px;">
+                <div class="form-group">
+                  <label class="col-md-4 control-label">Total:</label>
+                  <div class="col-md-6">
+                    <span>{{$cn.service.totalPrice | currency}}</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="row" ng-show="$cn.serviceCategorie.idServiceCategory > 0" style="padding-bottom:10px;">
-              <div class="form-group">
-                <label class="col-md-4 control-label">Precio Specs:</label>
-                <div class="col-md-6">
-                  <span>{{$cn.service.specsPrice | currency}}</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="row" ng-show="$cn.serviceCategorie.idServiceCategory > 0" style="padding-bottom:10px;">
-              <div class="form-group">
-                <label class="col-md-4 control-label">Precio Productos:</label>
-                <div class="col-md-6">
-                  <span>{{$cn.service.productsPrice | currency}}</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="row" ng-show="$cn.serviceCategorie.idServiceCategory > 0" style="padding-bottom:10px;">
-              <div class="form-group">
-                <label class="col-md-4 control-label">Total:</label>
-                <div class="col-md-6">
-                  <span>{{$cn.service.totalPrice | currency}}</span>
-                </div>
-              </div>
-            </div>
 
             <!--Products-->
             <div class="panel panel-default" ng-show="$cn.serviceType.idServiceType > 0">

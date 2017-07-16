@@ -17,55 +17,62 @@
 }
 
 #page-wrapper {
-    min-height: 568px;
-    background-color: white;
+  min-height: 568px;
+  background-color: white;
 
 }
 
 #viewItemsTable label {
-    font-weight: normal;
-    white-space: nowrap;
-    text-align: left;
+  font-weight: normal;
+  white-space: nowrap;
+  text-align: left;
 }
 
-@media(min-width:768px) {
-    #page-wrapper {
-        position: inherit;
-        margin: 0 0 0 250px;
-        padding: 10px 30px;
-        border-left: 1px solid darken(@gray-lightest, 6.5%);
-    }
+@media (min-width: 768px) {
+  #page-wrapper {
+    position: inherit;
+    margin: 0 0 0 250px;
+    padding: 10px 30px;
+    border-left: 1px solid darken(@gray-lightest, 6.5%);
+  }
 }
 
 .buttons-footer {
-    padding: 15px;
-    text-align: right;
-    border-top: 1px solid #e5e5e5;
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
 }
 
-.divider{
+.divider {
   border-bottom: 1px solid @gray-darker;
   margin: 5px 0;
 }
 
 .btn-circle {
-    width: 30px;
-    height: 30px;
-    padding: 6px 0;
-    border-radius: 15px;
-    text-align: center;
-    font-size: 12px;
-    line-height: 1.428571429;
+  width: 30px;
+  height: 30px;
+  padding: 6px 0;
+  border-radius: 15px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.428571429;
 }
 
 .action-column {
   text-align: center;
 }
 
-.row-buffer-space{
-  margin:10px 0;
+.row-buffer-space {
+  margin: 10px 0;
 }
 
+// ****  Styles for ng-table, generic styles
+.pagination {
+  display: inline-block;
+  padding-left: 0;
+  margin: 0!important;
+  border-radius: 4px;
+}
 
 /* inject:less */
 @import 'admin/admin.less';
@@ -95,6 +102,9 @@
 @import 'products/product/product.less';
 @import 'products/productMenu/productMenu.less';
 @import 'products/productType/productType.less';
+@import 'reports/historyCashOut/historyCashOut.less';
+@import 'reports/historyOrders/historyOrders.less';
+@import 'reports/reportsMenu/reportsMenu.less';
 @import 'routes/calendarRoute/calendarRoute.less';
 @import 'routes/route/routes.less';
 @import 'routes/routesAll/routesAll.less';

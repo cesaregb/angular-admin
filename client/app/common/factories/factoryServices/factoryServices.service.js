@@ -161,10 +161,10 @@ angular.module('processAdminApp')
         let filterData = params.filter() ?
           $filter('filter')(result, params.filter()) :
           result;
+        params.total(filterData.length);
         let orderedData = params.sorting() ?
           $filter('orderBy')(filterData, params.orderBy()) :
           filterData;
-
         let sortOrdResult = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
         deferred.resolve(sortOrdResult);
       }, function (err) {
@@ -275,6 +275,22 @@ angular.module('processAdminApp')
 
     factory.getOrdersPendingOfCashOut = function () {
       const params = {forCashOut: true};
+      return factoryCommon.get(uris.orders.uri, params);
+    };
+
+    factory.getCashOutBetweenDates = function (dateA, dateB) {
+      const params = {
+        initDate: dateA,
+        endDate: dateB
+      };
+      return factoryCommon.get(uris.cashOut.uri, params);
+    };
+
+    factory.getOrdersBetweenDates = function (dateA, dateB) {
+      const params = {
+        initDate: dateA,
+        endDate: dateB
+      };
       return factoryCommon.get(uris.orders.uri, params);
     };
 

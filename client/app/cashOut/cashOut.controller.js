@@ -13,7 +13,6 @@
       this.$state = $state;
       this.route = $stateParams.route;
       this.cashOut = {};
-
       let _this = this;
       this.tableParams = new this.NgTableParams({}, {
         getData: function (params) {
@@ -45,7 +44,6 @@
         });
       });
     }
-
   }
 
   angular.module('processAdminApp')
